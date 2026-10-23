@@ -1,0 +1,46 @@
+{
+  "id": "d9",
+  "no": 9,
+  "title": "Desmos сорилт",
+  "en": "Checkpoint — solve it yourself",
+  "skill": "Intersections",
+  "minutes": 6,
+  "xp": 60,
+  "badge": "desmos-master",
+  "question": "The graphs of $y=x^2-4$ and $y=x+2$ intersect at two points. What is the greater $x$-coordinate?",
+  "intro": "Одоо ганцаараа! Сэжүүр хэрэгтэй бол дуудаарай, гэхдээ эхлээд өөрөө оролдоорой.",
+  "initial": [""],
+  "steps": [
+    {
+      "type": "enter",
+      "say": "Параболоо бич.",
+      "target": "y=x^2-4",
+      "hint": "y=x^2-4",
+      "demo": "y=x^2-4"
+    },
+    {
+      "type": "enter",
+      "say": "Шулуунаа бич.",
+      "target": "y=x+2",
+      "hint": "y=x+2",
+      "demo": "y=x+2"
+    },
+    {
+      "type": "select",
+      "say": "Баруун талын огтлолцлыг сонго.",
+      "kind": "intersection",
+      "at": [3, 5],
+      "hint": "Хоёр огтлолцол бий: $(-2,0)$ ба өөр нэг.",
+      "wrong": "Энэ {kind}. Баруун талын огтлолцлыг сонго."
+    },
+    {
+      "type": "answer",
+      "say": "Их x-координат хэд вэ?",
+      "prompt": "Greater $x$-coordinate",
+      "accept": ["3", "x=3"],
+      "hint": "Цэг $(3, 5)$.",
+      "explain": "$x^2-4=x+2$ → $x^2-x-6=0$ → $x=3$ эсвэл $-2$."
+    }
+  ],
+  "outro": "Desmos Академийн сорилтыг давлаа! Одоо SAT бодлогуудад Desmos-оо зориудаар ашиглаарай."
+}

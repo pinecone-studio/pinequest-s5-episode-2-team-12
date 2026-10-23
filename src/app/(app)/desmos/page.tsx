@@ -1,8 +1,7 @@
-import { ComingSoon } from '@/components/ComingSoon';
-import { getT } from '@/lib/i18n';
+import { AcademyHome } from '@/features/desmos/components/academy-home';
+import { listDesmosLessons, listHacks } from '@/features/desmos/queries';
 
-// Section B · B5 · B6
-export default function DesmosPage() {
-  const t = getT('desmos');
-  return <ComingSoon section="B" title={t('pages.desmos.title')} tasks="B5 · B6" />;
+export default async function DesmosPage() {
+  const [lessons, hacks] = await Promise.all([listDesmosLessons(), listHacks()]);
+  return <AcademyHome lessons={lessons} hacks={hacks} />;
 }
