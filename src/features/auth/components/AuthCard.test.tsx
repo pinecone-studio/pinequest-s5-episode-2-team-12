@@ -9,7 +9,7 @@ import { AuthCard } from './AuthCard';
 MotionGlobalConfig.skipAnimations = true;
 const nativeAnimate = Object.getOwnPropertyDescriptor(Element.prototype, 'animate');
 beforeAll(() => {
-  // biome-ignore lint/performance/noDelete: the property must be absent, not undefined, for Framer's check
+  // the property must be absent (not undefined) for Framer's WAAPI check
   delete (Element.prototype as { animate?: unknown }).animate;
 });
 afterAll(() => {
@@ -28,24 +28,24 @@ function setup(props: Parameters<typeof AuthCard>[0] = {}) {
 describe('AuthCard', () => {
   test('opens on sign-in, in Mongolian', () => {
     setup();
-    expect(screen.getByRole('heading', { level: 1, name: 'Эргээд тавтай морил' })).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'Нэвтрэх' })).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getByLabelText('Имэйл хаяг')).toBeInTheDocument();
-    expect(screen.getByLabelText('Нууц үг')).toHaveAttribute('type', 'password');
+    expect(screen.getByRole('heading', { level: 1, name: 'Эргээд тавтай морил' })).toBeTruthy();
+    expect(screen.getByRole('tab', { name: 'Нэвтрэх' }).getAttribute('aria-selected')).toBe('true');
+    expect(screen.getByLabelText('Имэйл хаяг')).toBeTruthy();
+    expect(screen.getByLabelText('Нууц үг').getAttribute('type')).toBe('password');
   });
 
   test('empty submit shows required errors and focuses the first field', async () => {
     const { user } = setup();
     await user.click(screen.getByRole('button', { name: 'Нэвтрэх' }));
-    expect(await screen.findByText('Имэйл хаягаа оруулна уу.')).toBeInTheDocument();
-    expect(screen.getByText('Нууц үгээ оруулна уу.')).toBeInTheDocument();
-    expect(screen.getByLabelText('Имэйл хаяг')).toHaveFocus();
+    expect(await screen.findByText('Имэйл хаягаа оруулна уу.')).toBeTruthy();
+    expect(screen.getByText('Нууц үгээ оруулна уу.')).toBeTruthy();
+    expect(document.activeElement).toBe(screen.getByLabelText('Имэйл хаяг'));
   });
 
   test('the eye button reveals the password', async () => {
     const { user } = setup();
     await user.click(screen.getByRole('button', { name: 'Нууц үгийг харуулах' }));
-    expect(screen.getByLabelText('Нууц үг')).toHaveAttribute('type', 'text');
+    expect(screen.getByLabelText('Нууц үг').getAttribute('type')).toBe('text');
   });
 
   test('a wrong password shows the service error on the password field', async () => {
@@ -53,7 +53,7 @@ describe('AuthCard', () => {
     await user.type(screen.getByLabelText('Имэйл хаяг'), 'bat@school.mn');
     await user.type(screen.getByLabelText('Нууц үг'), DEMO_TRIGGERS.wrongPassword);
     await user.click(screen.getByRole('button', { name: 'Нэвтрэх' }));
-    expect(await screen.findByText('Имэйл эсвэл нууц үг буруу байна.')).toBeInTheDocument();
+    expect(await screen.findByText('Имэйл эсвэл нууц үг буруу байна.')).toBeTruthy();
   });
 
   test('a successful sign-in greets the user and redirects to the dashboard', async () => {
@@ -62,7 +62,7 @@ describe('AuthCard', () => {
     await user.type(screen.getByLabelText('Имэйл хаяг'), 'bat.erdene@school.mn');
     await user.type(screen.getByLabelText('Нууц үг'), 'anything');
     await user.click(screen.getByRole('button', { name: 'Нэвтрэх' }));
-    expect(await screen.findByText('Эргээд тавтай морил, Bat')).toBeInTheDocument();
+    expect(await screen.findByText('Эргээд тавтай морил, Bat')).toBeTruthy();
     await user.click(screen.getByRole('button', { name: /Одоо очих/ }));
     expect(onRedirect).toHaveBeenCalledWith('/dashboard');
   });
@@ -78,16 +78,16 @@ describe('AuthCard', () => {
 
   test('sign-up asks for a name, rates the password and requires the terms', async () => {
     const { user } = setup({ defaultView: 'signup' });
-    expect(screen.getByRole('heading', { level: 1, name: 'Бүртгэл үүсгэх' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Бүртгэл үүсгэх' })).toBeTruthy();
     await user.type(screen.getByLabelText('Нэр'), 'Бат');
     await user.type(screen.getByLabelText('Имэйл хаяг'), 'bat@school.mn');
     await user.type(screen.getByLabelText('Нууц үг'), 'Abcdef1!');
-    expect(await screen.findByText('Хүчтэй')).toBeInTheDocument();
+    expect(await screen.findByText('Хүчтэй')).toBeTruthy();
     await user.click(screen.getByRole('button', { name: 'Бүртгэл үүсгэх' }));
-    expect(await screen.findByText('Үргэлжлүүлэхийн тулд нөхцөлийг зөвшөөрнө үү.')).toBeInTheDocument();
+    expect(await screen.findByText('Үргэлжлүүлэхийн тулд нөхцөлийг зөвшөөрнө үү.')).toBeTruthy();
     await user.click(screen.getByLabelText(/Үйлчилгээний нөхцөл/));
     await user.click(screen.getByRole('button', { name: 'Бүртгэл үүсгэх' }));
-    expect(await screen.findByText('Тавтай морил, Бат')).toBeInTheDocument();
+    expect(await screen.findByText('Тавтай морил, Бат')).toBeTruthy();
   });
 
   test('a taken email is flagged on sign-up', async () => {
@@ -97,26 +97,26 @@ describe('AuthCard', () => {
     await user.type(screen.getByLabelText('Нууц үг'), 'Abcdef1!');
     await user.click(screen.getByLabelText(/Үйлчилгээний нөхцөл/));
     await user.click(screen.getByRole('button', { name: 'Бүртгэл үүсгэх' }));
-    expect(await screen.findByText('Энэ имэйлээр бүртгэл аль хэдийн үүссэн байна.')).toBeInTheDocument();
+    expect(await screen.findByText('Энэ имэйлээр бүртгэл аль хэдийн үүссэн байна.')).toBeTruthy();
   });
 
   test('forgot password sends a reset link', async () => {
     const { user } = setup();
     await user.click(screen.getByRole('button', { name: 'Нууц үгээ мартсан?' }));
-    expect(await screen.findByRole('heading', { name: 'Нууц үгээ сэргээх' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Нууц үгээ сэргээх' })).toBeTruthy();
     await user.type(screen.getByLabelText('Имэйл хаяг'), 'bat@school.mn');
     await user.click(screen.getByRole('button', { name: 'Холбоос илгээх' }));
-    expect(await screen.findByText('Имэйлээ шалгана уу')).toBeInTheDocument();
+    expect(await screen.findByText('Имэйлээ шалгана уу')).toBeTruthy();
   });
 
   test('social sign-in succeeds', async () => {
     const { user } = setup();
     await user.click(screen.getByRole('button', { name: 'GitHub ашиглан үргэлжлүүлэх' }));
-    await waitFor(() => expect(screen.getByText('Эргээд тавтай морил, Demo')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Эргээд тавтай морил, Demo')).toBeTruthy());
   });
 
   test('renders in English', () => {
     render(<AuthCard service={fast} />, { locale: 'en' });
-    expect(screen.getByRole('heading', { level: 1, name: 'Welcome back' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Welcome back' })).toBeTruthy();
   });
 });
