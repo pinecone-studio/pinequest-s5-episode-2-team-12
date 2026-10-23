@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "incremental": false },
+  "include": [
+    "src/features/desmos/**/*.ts",
+    "src/features/desmos/**/*.tsx",
+    "src/app/(app)/desmos/**/*.tsx",
+    "e2e/desmos.spec.ts",
+    "playwright.desmos.config.ts"
+  ],
+  "exclude": ["node_modules", "prototype", ".next"]
+}
