@@ -1,5 +1,7 @@
 // Aggregates every messages/*.json. Add a line here when a new feature folder gets messages.
 
+import auth_en from '@/features/auth/messages/en.json';
+import auth_mn from '@/features/auth/messages/mn.json';
 import cards_en from '@/features/cards/messages/en.json';
 import cards_mn from '@/features/cards/messages/mn.json';
 import desmos_en from '@/features/desmos/messages/en.json';
@@ -30,6 +32,7 @@ import common_mn from './mn.json';
 
 const mn: Messages = {
   common: common_mn,
+  auth: auth_mn,
   cards: cards_mn,
   desmos: desmos_mn,
   exam: exam_mn,
@@ -46,6 +49,7 @@ const mn: Messages = {
 
 const en: Messages = {
   common: common_en,
+  auth: auth_en,
   cards: cards_en,
   desmos: desmos_en,
   exam: exam_en,

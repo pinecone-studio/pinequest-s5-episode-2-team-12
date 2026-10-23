@@ -1,0 +1,111 @@
+/*
+  Auth screen · glass card over a slow "emerald aurora".
+  Every color comes from the Suprep tokens in globals.css, so light/dark/system all work.
+*/
+@keyframes auth-orb-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(6%, 8%, 0) scale(1.08); }
+  66% { transform: translate3d(-5%, 4%, 0) scale(0.95); }
+}
+@keyframes auth-orb-drift-rev {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  40% { transform: translate3d(-8%, -6%, 0) scale(1.1); }
+  70% { transform: translate3d(4%, -10%, 0) scale(0.92); }
+}
+@keyframes auth-orb-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.18); }
+}
+@keyframes auth-gradient-pan {
+  from { background-position: 0% 50%; }
+  to { background-position: 300% 50%; }
+}
+@keyframes auth-shimmer {
+  from { transform: translateX(-120%) skewX(-12deg); }
+  to { transform: translateX(320%) skewX(-12deg); }
+}
+@keyframes auth-glow-pulse {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50% { opacity: 0.95; transform: scale(1.06); }
+}
+
+.auth-orb { position: absolute; border-radius: 9999px; will-change: transform; }
+.auth-orb-a { animation: auth-orb-drift 18s ease-in-out infinite; }
+.auth-orb-b { animation: auth-orb-drift-rev 22s ease-in-out infinite; }
+.auth-orb-c { animation: auth-orb-drift 30s ease-in-out infinite; }
+.auth-orb-d { animation: auth-orb-pulse 9s ease-in-out infinite; }
+
+/* gradient used by the primary button, its bloom and the accent text */
+.auth-gradient {
+  background-image: linear-gradient(
+    90deg,
+    var(--c-leaf-2),
+    var(--c-leaf),
+    var(--c-teal-2),
+    var(--c-leaf-2)
+  );
+  background-size: 300% 100%;
+  animation: auth-gradient-pan 6s linear infinite;
+}
+.auth-gradient-fast { animation-duration: 2s; }
+.auth-shimmer { animation: auth-shimmer 1.4s ease-in-out infinite; }
+.auth-glow-pulse { animation: auth-glow-pulse 1.6s ease-in-out infinite; }
+
+.auth-text-accent {
+  background-image: linear-gradient(100deg, var(--c-leaf-ink) 0%, var(--c-leaf) 45%, var(--c-teal) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* frosted surface */
+.auth-glass {
+  background: color-mix(in srgb, var(--c-paper) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-line-2) 70%, transparent);
+  box-shadow:
+    var(--soft-shadow),
+    0 0 120px -40px color-mix(in srgb, var(--c-leaf) 55%, transparent);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  backdrop-filter: blur(22px) saturate(1.3);
+}
+
+/* pointer spotlight on the card fill and its 1px border (--spot-x/y set from JS) */
+.auth-spot-fill {
+  background: radial-gradient(
+    520px circle at var(--spot-x, 50%) var(--spot-y, 0%),
+    color-mix(in srgb, var(--c-leaf) 10%, transparent),
+    transparent 45%
+  );
+}
+.auth-spot-ring {
+  padding: 1px;
+  background: radial-gradient(
+    260px circle at var(--spot-x, 50%) var(--spot-y, 0%),
+    color-mix(in srgb, var(--c-leaf) 70%, transparent),
+    transparent 50%
+  );
+  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(black 0 0) content-box exclude, linear-gradient(black 0 0);
+}
+
+/* focus ring for the floating inputs */
+.auth-ring { background-image: linear-gradient(90deg, var(--c-leaf), var(--c-lime), var(--c-teal)); }
+.auth-ring-error { background-image: linear-gradient(90deg, var(--c-danger), var(--c-rose), var(--c-amber)); }
+
+.auth-vignette { background: radial-gradient(ellipse at center, transparent 35%, var(--c-bg) 100%); }
+.auth-aurora {
+  background: radial-gradient(
+    ellipse 90% 60% at 50% -10%,
+    color-mix(in srgb, var(--c-leaf) 20%, transparent),
+    transparent 70%
+  );
+}
+.auth-grid-mask {
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-orb, .auth-gradient, .auth-shimmer, .auth-glow-pulse { animation: none; }
+}

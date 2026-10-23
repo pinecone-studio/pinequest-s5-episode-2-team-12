@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "title": "Sign in",
+    "description": "Sign in to Suprep or create an account."
+  },
+  "tabs": {
+    "label": "Sign-in mode",
+    "signin": "Sign In",
+    "signup": "Create Account"
+  },
+  "views": {
+    "signin": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to pick up your prep where you left it.",
+      "cta": "Sign in",
+      "loading": "Signing you in…"
+    },
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Start free. Your first study plan is ready in minutes.",
+      "cta": "Create account",
+      "loading": "Setting up your account…"
+    },
+    "reset": {
+      "title": "Reset your password",
+      "subtitle": "Enter your account email and we'll send a reset link.",
+      "cta": "Send reset link",
+      "loading": "Sending link…"
+    }
+  },
+  "fields": {
+    "name": "Name",
+    "email": "Email address",
+    "password": "Password"
+  },
+  "password": {
+    "show": "Show password",
+    "hide": "Hide password",
+    "strength": {
+      "0": "Too short",
+      "1": "Weak",
+      "2": "Fair",
+      "3": "Good",
+      "4": "Strong"
+    },
+    "rules": {
+      "length": "8+ characters",
+      "case": "Upper & lower",
+      "number": "A number",
+      "symbol": "A symbol",
+      "met": "(met)",
+      "unmet": "(not met)"
+    }
+  },
+  "remember": "Remember me",
+  "forgot": "Forgot password?",
+  "terms": "I agree to the Terms of Service and Privacy Policy",
+  "divider": "or",
+  "social": {
+    "continue": "Continue with {provider}"
+  },
+  "switch": {
+    "toSignupPrompt": "New to Suprep?",
+    "toSignup": "Create an account",
+    "toSigninPrompt": "Already have an account?",
+    "toSignin": "Sign in"
+  },
+  "back": "Back to sign in",
+  "errors": {
+    "nameRequired": "Enter your name.",
+    "nameShort": "Name must be at least 2 characters.",
+    "emailRequired": "Enter your email address.",
+    "emailInvalid": "That email address isn't valid.",
+    "passwordRequired": "Enter your password.",
+    "passwordShort": "Use at least 8 characters.",
+    "passwordWeak": "Add upper and lowercase letters, a number or a symbol.",
+    "termsRequired": "Accept the terms to continue.",
+    "wrongPassword": "Incorrect email or password.",
+    "emailTaken": "An account with this email already exists.",
+    "generic": "Something went wrong. Try again.",
+    "social": "Couldn't reach {provider}. Try again."
+  },
+  "resetSent": {
+    "title": "Check your inbox",
+    "body": "If an account exists for {email}, a reset link is on its way. It expires in 30 minutes.",
+    "other": "Use a different email"
+  },
+  "success": {
+    "welcomeBack": "Welcome back, {name}",
+    "welcome": "Welcome aboard, {name}",
+    "signinBody": "You're signed in. Picking up where you left off.",
+    "signupBody": "Your Suprep account is ready. We've made your first study plan.",
+    "redirecting": "Taking you to Home",
+    "ready": "Home is ready",
+    "seconds": "{n}s",
+    "goNow": "Go now",
+    "restart": "Restart demo",
+    "stats": {
+      "streak": "Streak",
+      "mastery": "Mastery",
+      "next": "Next quiz"
+    }
+  },
+  "demo": {
+    "hint": "Demo mode: any valid email signs in with any password. To see errors, use the password {wrong} or sign up as {taken}."
+  },
+  "brand": {
+    "eyebrow": "SAT Math · 2026",
+    "titleTop": "Master SAT Math,",
+    "titleAccent": "the smart way.",
+    "body": "The AI SAT Math platform for Mongolian students. Your plan updates itself after every practice session.",
+    "features": {
+      "journey": {
+        "title": "My Journey",
+        "body": "Lessons that level up step by step."
+      },
+      "desmos": {
+        "title": "Desmos Academy",
+        "body": "Solve problems faster with Desmos."
+      },
+      "tutor": {
+        "title": "AI tutor Suu",
+        "body": "Explains every step when you're stuck."
+      }
+    },
+    "bubble": "Hi! Want to solve 3 questions today?"
+  }
+}
