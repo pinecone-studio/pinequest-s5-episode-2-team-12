@@ -19,6 +19,8 @@ const seg = (id: string) => encodeURIComponent(id);
 export const routes = {
   landing: '/',
   onboarding: '/onboarding',
+  login: '/login',
+  signup: '/login?mode=signup',
   dashboard: '/dashboard',
   planner: '/planner',
   help: '/help',
