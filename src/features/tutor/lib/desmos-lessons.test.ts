@@ -36,3 +36,11 @@ test('every lesson id the chat can send exists', async () => {
     expect(lesson && ids.has(lesson)).toBe(true);
   }
 });
+
+test('every step has a short title', () => {
+  for (const l of DESMOS_AI_LESSONS)
+    for (const s of l.steps) {
+      expect(s.title.length).toBeGreaterThan(3);
+      expect(s.title.length).toBeLessThan(30);
+    }
+});

@@ -69,5 +69,9 @@
     "answer": "Answer",
     "loading": "Loading Desmos…",
     "failed": "Desmos didn't load. Check the internet connection and reload the page."
+  },
+  "lesson": {
+    "title": "Desmos solution",
+    "stepOf": "Step {n} of {total}"
   }
 }

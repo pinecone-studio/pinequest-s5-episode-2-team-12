@@ -218,9 +218,9 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
   const empty = messages.length === 0;
 
   return (
-    <div className="soft-card overflow-hidden md:grid md:grid-cols-[250px_minmax(0,1fr)] md:h-[calc(100dvh-124px)] min-h-[calc(100dvh-180px)]">
+    <div className="soft-card overflow-hidden md:flex md:flex-col lg:grid lg:grid-cols-[250px_minmax(0,1fr)] md:h-[calc(100dvh-124px)] min-h-[calc(100dvh-180px)]">
       {/* recent chats */}
-      <aside className="hidden md:flex flex-col gap-3 border-r border-line bg-paper-2/60 p-3 min-h-0">
+      <aside className="hidden lg:flex flex-col gap-3 border-r border-line bg-paper-2/60 p-3 min-h-0">
         <button
           type="button"
           onClick={newChat}
@@ -263,7 +263,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
 
       {/* conversation */}
       <div className="flex flex-col min-h-0 min-w-0">
-        <div className="md:hidden flex items-center justify-between gap-3 px-4 pt-4">
+        <div className="lg:hidden flex items-center justify-between gap-3 px-4 pt-4">
           <h1 className="font-bold text-ink">{t('pages.tutor.title')}</h1>
           <button
             type="button"

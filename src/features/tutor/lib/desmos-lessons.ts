@@ -13,6 +13,8 @@ export type DesmosItem = {
 };
 
 export type DesmosStep = {
+  /** Short step heading, e.g. «Огтлолцлыг ол». */
+  title: string;
   text: string;
   desmos: DesmosItem[];
   bounds?: { left: number; right: number; bottom: number; top: number };
@@ -39,6 +41,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
     match: ['3x+5', '3x + 5'],
     steps: [
       {
+        title: 'Зүүн талыг зур',
         text: 'Тэгшитгэлийн (equation) зүүн талыг шулуун болгож бич: y = 3x + 5.',
         desmos: [
           {
@@ -54,6 +57,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
         },
       },
       {
+        title: 'Баруун талыг зур',
         text: 'Баруун талыг бас шулуун болгож бич: y = 20.',
         desmos: [
           {
@@ -63,6 +67,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
         ],
       },
       {
+        title: 'Огтлолцлыг ол',
         text: 'Хоёр шулууны огтлолцлын цэг (intersection point) дээр дар. (5, 20) гарна. x = 5.',
         desmos: [
           {
@@ -84,6 +89,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
     match: ['(1,2)', '(1, 2)', 'slope', 'налалт'],
     steps: [
       {
+        title: 'Хүснэгт оруул',
         text: 'Цэгүүдийг хүснэгт (table) болгож оруул. Desmos-д + товч → table.',
         desmos: [
           {
@@ -108,6 +114,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
         },
       },
       {
+        title: 'Регресс бич',
         text: 'Шугаман регресс (linear regression) бич: y₁ ~ m x₁ + b. Desmos m ба b-г шууд гаргана.',
         desmos: [
           {
@@ -117,6 +124,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
         ],
       },
       {
+        title: 'Налалтыг унш',
         text: 'm = 3 гарна. Энэ бол налалт (slope).',
         desmos: [],
       },
@@ -131,6 +139,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
     match: ['kx', 'no solution', 'шийдгүй'],
     steps: [
       {
+        title: 'Тогтмол шулууныг зур',
         text: 'Эхний шулууныг бич: y = 2x − 1.',
         desmos: [
           {
@@ -146,6 +155,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
         },
       },
       {
+        title: 'k-д slider үүсгэ',
         text: 'k-г slider болгож үүсгэ. k = 1 гэж бичээд slider-ийн хязгаарыг −5-аас 5 болго.',
         desmos: [
           {
@@ -159,6 +169,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
         ],
       },
       {
+        title: 'k-тэй шулууныг зур',
         text: 'Хоёр дахь шулууныг бич: y = kx + 3. Slider-ийг хөдөлгө.',
         desmos: [
           {
@@ -168,6 +179,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
         ],
       },
       {
+        title: 'Параллель болгох',
         text: 'k = 2 үед хоёр шулуун параллель (parallel) болж огтлолцохгүй. Тиймээс шийдгүй (no solution).',
         desmos: [
           {
@@ -186,6 +198,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
     match: ['mean', 'дундаж', '4, 7, 7'],
     steps: [
       {
+        title: 'Жагсаалт үүсгэ',
         text: 'Өгөгдлийг жагсаалт (list) болгож бич: d₁ = [4, 7, 7, 9, 13].',
         desmos: [
           {
@@ -194,6 +207,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
         ],
       },
       {
+        title: 'Дунджийг бод',
         text: 'Дундаж (mean) функцийг бич: mean(d₁). 8 гарна.',
         desmos: [
           {
@@ -202,6 +216,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
         ],
       },
       {
+        title: 'Медиантай харьцуул',
         text: 'Нэмэлт: median(d₁) = 7. SAT-д mean ба median-ийг харьцуулах асуулт их гардаг.',
         desmos: [
           {
@@ -221,6 +236,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
     match: ['height', 'өндөр', 'maximum'],
     steps: [
       {
+        title: 'Функцээ зур',
         text: 'Функцийг x-ээр бич. Хугацаа сөрөг байж болохгүй тул хязгаарлалт (restriction) {x ≥ 0} нэм.',
         desmos: [
           {
@@ -236,6 +252,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
         },
       },
       {
+        title: 'Оройн цэгийг ол',
         text: 'Параболын хамгийн өндөр цэг (maximum) дээр дар. (2, 21) гарна.',
         desmos: [
           {
@@ -258,6 +275,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
     match: ['inequal', 'тэнцэтгэл', 'y > 2x'],
     steps: [
       {
+        title: 'Тэнцэтгэл бишүүдийг зур',
         text: 'Хоёр тэнцэтгэл бишийг (inequality) бич. Хоёулаа будагдсан хэсэг нь шийд.',
         desmos: [
           {
@@ -277,6 +295,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
         },
       },
       {
+        title: 'Хариултын цэгүүдийг оруул',
         text: 'Хариултын 4 цэгийг шошготой (label) оруул.',
         desmos: [
           {
@@ -306,6 +325,7 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
         ],
       },
       {
+        title: 'Шийдийг сонго',
         text: 'Зөвхөн C цэг хоёр өнгө давхцсан хэсэгт байна. B нь шулуун дээр байгаа тул тооцогдохгүй (> тэмдэг).',
         desmos: [],
       },

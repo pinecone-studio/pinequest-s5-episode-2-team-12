@@ -169,7 +169,7 @@ export function DesmosAiTutor({ initial }: { initial?: string }) {
                       )}
                     >
                       <span className="mr-1.5 font-bold text-leaf-2">{i + 1}.</span>
-                      {s.text}
+                      <strong className="font-semibold text-ink">{s.title}.</strong> {s.text}
                     </button>
                   </li>
                 ))}
