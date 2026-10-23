@@ -19,3 +19,20 @@ test('finds a lesson from its own question and from typed variants', () => {
   expect(findLesson('Пифагор')).toBeNull();
   expect(findLesson('   ')).toBeNull();
 });
+
+test('every lesson id the chat can send exists', async () => {
+  const { scriptedReply } = await import('@/server/tutor/scripted');
+  const ids = new Set(DESMOS_AI_LESSONS.map((l) => l.id));
+  for (const q of [
+    '3x+5=20',
+    'kx+3',
+    'регресс',
+    'дундаж',
+    'maximum height',
+    'y > 2x + 1',
+    'шугаман тэгшитгэл',
+  ]) {
+    const lesson = scriptedReply(q)?.lesson;
+    expect(lesson && ids.has(lesson)).toBe(true);
+  }
+});

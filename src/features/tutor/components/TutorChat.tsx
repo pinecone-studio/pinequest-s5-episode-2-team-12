@@ -2,7 +2,6 @@
 // Section G · G4 · Chat with Suu. Left: new chat + recent chats (kept in this browser). Centre: the cat,
 // suggested prompts, then the conversation. Quick actions (hint, explain, Desmos, similar, translate) appear
 // for a problem; free chat for anything else. Math renders with KaTeX; every real (non-demo) reply gets 👍/👎.
-import Link from 'next/link';
 import { type FormEvent, type KeyboardEvent, useEffect, useId, useRef, useState } from 'react';
 import { Rich } from '@/components/math';
 import { Icon } from '@/components/shell/icons';
@@ -10,7 +9,6 @@ import { Button } from '@/components/ui/Button';
 import { Pill } from '@/components/ui/Pill';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
-import { routes } from '@/lib/routes';
 import type { TutorContext, TutorMode } from '@/types';
 import {
   askSuu,
@@ -22,6 +20,7 @@ import {
   requestFor,
   userBubbleText,
 } from '../lib/chat';
+import { ChatLesson } from './ChatLesson';
 import { FeedbackButtons } from './FeedbackButtons';
 
 type Props = {
@@ -414,7 +413,12 @@ function SuuBubble({ msg, onRetry }: { msg: ChatMsg; onRetry: () => void }) {
     );
   }
   return (
-    <div className="grid max-w-[85%] gap-2 rounded-2xl rounded-tl-md bg-paper-2 px-4 py-3">
+    <div
+      className={cn(
+        'grid gap-2 rounded-2xl rounded-tl-md bg-paper-2 px-4 py-3',
+        msg.lesson ? 'w-full min-w-0 flex-1' : 'max-w-[85%]',
+      )}
+    >
       {msg.demo && (
         <Pill tone="amber" className="w-fit">
           {t('chat.demo')}
@@ -426,15 +430,7 @@ function SuuBubble({ msg, onRetry }: { msg: ChatMsg; onRetry: () => void }) {
         </Pill>
       )}
       <Rich text={msg.text} className="text-[15px] leading-relaxed text-ink" />
-      {msg.lesson && (
-        <Link
-          href={`${routes.desmosHome}/ai?l=${encodeURIComponent(msg.lesson)}`}
-          className="mt-1 inline-flex w-fit items-center gap-2 rounded-xl bg-sage px-3.5 py-2 text-[14px] font-bold text-leaf-2 hover:brightness-105"
-        >
-          {t('chat.openDesmos')}
-          <Icon name="chevron" size={16} />
-        </Link>
-      )}
+      {msg.lesson && <ChatLesson id={msg.lesson} />}
       {!msg.demo && !msg.sample && msg.sent && (
         <FeedbackButtons
           mode={msg.sent.mode}
