@@ -17,5 +17,6 @@
   "board": "See the leaderboard",
   "flagged": "Answers came in too fast, so this run does not count for rankings.",
   "loading": "Loading…",
-  "error": "Something went wrong. Please try again."
+  "error": "Something went wrong. Please try again.",
+  "hint": "💡 Use a hint ({n} left)"
 }

@@ -4,11 +4,17 @@ import { cache } from 'react';
 import { getProfile } from '@/features/home/queries';
 import { getStats } from '@/features/progress/queries';
 import type { StudentSettings } from '@/features/settings/use-settings';
+import { getWallet, type ServerWallet } from '@/features/shop/queries';
 import { calculateLevel } from '@/lib/level';
 import { getSession } from '@/lib/session';
 import type { ShellUser } from './AppShell';
 
-export type ShellData = { user?: ShellUser; settings: StudentSettings; demo: boolean };
+export type ShellData = {
+  user?: ShellUser;
+  settings: StudentSettings;
+  demo: boolean;
+  wallet: ServerWallet | null;
+};
 
 export const loadShell = cache(async (): Promise<ShellData> => {
   const [profile, session] = await Promise.all([getProfile(), getSession().catch(() => null)]);
@@ -19,6 +25,7 @@ export const loadShell = cache(async (): Promise<ShellData> => {
     friendsOnly: profile.friendsOnly,
   };
   const demo = session?.kind !== 'user';
+  const wallet = session?.kind === 'user' ? await getWallet(session.userId).catch(() => null) : null;
   try {
     const stats = await getStats(profile.id);
     return {
@@ -31,9 +38,10 @@ export const loadShell = cache(async (): Promise<ShellData> => {
       },
       settings,
       demo,
+      wallet,
     };
   } catch {
     // the shell still renders without stats (e.g. Supabase offline)
-    return { settings, demo };
+    return { settings, demo, wallet };
   }
 });

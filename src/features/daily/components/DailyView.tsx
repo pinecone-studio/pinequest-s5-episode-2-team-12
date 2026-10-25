@@ -6,11 +6,15 @@ import { useEffect, useState } from 'react';
 import { Rich } from '@/components/math';
 import { Button } from '@/components/ui/Button';
 import { QuestionView } from '@/features/roadmap/components/QuestionView';
+import { loadLocalWallet, saveLocalWallet } from '@/features/shop/lib/local-wallet';
+import { useWallet } from '@/features/shop/lib/use-wallet';
+import { consume } from '@/features/shop/lib/wallet';
+import type { ServerWallet } from '@/features/shop/queries';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
 import type { Question } from '@/types';
-import { answerDaily, type DailyStep, startDaily } from '../actions';
+import { answerDaily, type DailyStep, dailyHint, startDaily } from '../actions';
 import type { DailyAttempt } from '../lib/daily';
 
 const KEY = 'suprep:daily:v1';
@@ -21,15 +25,22 @@ const read = (): DailyAttempt | undefined => {
     return undefined;
   }
 };
+const DAYS = 'suprep:daily:days';
 const write = (a?: DailyAttempt) => {
   try {
     if (a) localStorage.setItem(KEY, JSON.stringify(a));
+    // finished days (for demo gems: localStorage keeps only today's attempt)
+    if (a?.finishedAt && !a.flagged) {
+      const days = new Set<string>(JSON.parse(localStorage.getItem(DAYS) ?? '[]'));
+      days.add(a.day);
+      localStorage.setItem(DAYS, JSON.stringify([...days].slice(-400)));
+    }
   } catch {
     // storage blocked
   }
 };
 
-export function DailyView({ demo }: { demo: boolean }) {
+export function DailyView({ demo, wallet = null }: { demo: boolean; wallet?: ServerWallet | null }) {
   const t = useT('daily');
   const [step, setStep] = useState<DailyStep | null>(null);
   const [started, setStarted] = useState(false);
@@ -38,6 +49,19 @@ export function DailyView({ demo }: { demo: boolean }) {
   const [error, setError] = useState('');
   const [feedback, setFeedback] = useState<DailyStep['last'] | null>(null);
   const [pending, setPending] = useState<DailyStep | null>(null);
+  const [hint, setHint] = useState('');
+  const w = useWallet(demo, wallet);
+  const tokens = w.owned['hints-3'] ?? 0;
+
+  const askHint = async () => {
+    if (demo) {
+      const spent = consume(loadLocalWallet(), 'hints-3');
+      if (!spent) return;
+      saveLocalWallet(spent);
+    }
+    const r = await dailyHint({ attempt: demo ? read() : undefined });
+    if (r.ok) setHint(r.hint);
+  };
 
   useEffect(() => {
     // peek without starting the clock: a finished or begun local run shows its state
@@ -80,6 +104,7 @@ export function DailyView({ demo }: { demo: boolean }) {
     setPending(null);
     setFeedback(null);
     setValue('');
+    setHint('');
   };
 
   if (!started || !step) {
@@ -154,6 +179,22 @@ export function DailyView({ demo }: { demo: boolean }) {
             onChange={setValue}
             revealed={false}
           />
+          {!feedback &&
+            (hint ? (
+              <p className="rounded-2xl bg-amber-soft px-4 py-2 text-[14px] text-ink-2" role="note">
+                💡 <Rich text={hint} />
+              </p>
+            ) : (
+              tokens > 0 && (
+                <button
+                  type="button"
+                  onClick={askHint}
+                  className="justify-self-start text-[13px] font-bold text-amber underline underline-offset-4"
+                >
+                  {t('hint', { n: tokens })}
+                </button>
+              )
+            ))}
           {feedback ? (
             <div
               className={cn(

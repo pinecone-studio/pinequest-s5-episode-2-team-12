@@ -7,6 +7,8 @@ import { z } from 'zod';
 import { routes } from '@/lib/routes';
 import { getDb } from '@/lib/supabase/server';
 import { getAdminDb } from '@/server/db';
+import { EARN } from '@/features/shop/catalog';
+import { afterStudy, awardGems } from '@/server/gems';
 import { recordMistakes } from '@/server/mistakes';
 import { awardXp } from '@/server/xp';
 import type { Question } from '@/types';
@@ -178,8 +180,11 @@ export async function submitModule(input: {
       graded.filter((a) => a.answer && !a.correct).map((a) => ({ qid: a.qid, chosen: a.answer })),
       'mock',
     );
-    if (r.attempt.finishedAt && !r.attempt.flagged)
+    if (r.attempt.finishedAt && !r.attempt.flagged) {
       await awardXp(s.userId, XP_FOR_MOCK, 'exam', `mock:${r.attempt.id}`);
+      await awardGems(s.userId, EARN.mock, 'mock', `mock:${r.attempt.id}`);
+      await afterStudy(s.userId);
+    }
     if (r.attempt.finishedAt) revalidatePath(routes.profile);
   }
   return { ok: true, step: stepOf(r.attempt, !s, r.late) };

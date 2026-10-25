@@ -264,6 +264,7 @@ export function RoadmapMap({
   fullBleed = false,
   cluster = true,
   selectedNo = null,
+  skin,
 }: {
   views: StopView[];
   /** Current position; null when every stop is done. */
@@ -276,6 +277,8 @@ export function RoadmapMap({
   cluster?: boolean;
   /** The stop whose panel is open: its label is highlighted. Framed maps also fly to it. */
   selectedNo?: number | null;
+  /** Shop map skin: 'winter' | 'night'. */
+  skin?: string;
 }) {
   const t = useT('roadmap');
   const helpId = useId();
@@ -555,9 +558,11 @@ export function RoadmapMap({
         aria-roledescription={t('map.role')}
         aria-label={t('map.label')}
         aria-describedby={fullBleed ? undefined : helpId}
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: the map takes focus itself so arrow keys pan and + / − zoom
         tabIndex={fullBleed ? undefined : 0}
         onKeyDown={fullBleed ? undefined : onKeyDown}
         onPointerDown={fullBleed ? undefined : onPointerDown}
+        data-skin={skin}
         className={cn(
           'roadmap-stage relative h-full w-full overflow-clip',
           !fullBleed && 'rounded-[26px] border border-line',

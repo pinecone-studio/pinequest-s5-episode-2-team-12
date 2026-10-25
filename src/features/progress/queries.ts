@@ -11,9 +11,18 @@ const DEMO_STATS: Stats = { xp: 0, level: 1, streak: 0, days: [], mastery: {} };
 export async function getStats(userId: string): Promise<Stats> {
   const db = await getDb();
   if (!db) return DEMO_STATS;
-  const { data, error } = await db.from('xp_events').select('amount, at').eq('user_id', userId);
+  const [{ data, error }, freezes] = await Promise.all([
+    db.from('xp_events').select('amount, at').eq('user_id', userId),
+    // streak freezes from the shop bridge missed days
+    db
+      .from('inventory')
+      .select('qty')
+      .eq('user_id', userId)
+      .eq('item_id', 'streak-freeze')
+      .maybeSingle(),
+  ]);
   if (error) throw error;
-  return statsFromXp((data ?? []) as XpRow[]);
+  return statsFromXp((data ?? []) as XpRow[], undefined, freezes.data?.qty ?? 0);
 }
 
 /** All badges with `earned` flags. */
