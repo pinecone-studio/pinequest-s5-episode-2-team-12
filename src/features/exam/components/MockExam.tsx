@@ -59,7 +59,13 @@ function useCountdown(endsAt: string | undefined, onZero: () => void) {
 const mmss = (s: number) =>
   `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 
-export function MockExam({ demo }: { demo: boolean }) {
+export function MockExam({
+  demo,
+  attemptId,
+}: {
+  demo: boolean /** Open this signed-in attempt (group mock). */;
+  attemptId?: string;
+}) {
   const t = useT('exam');
   const router = useRouter();
   const [step, setStep] = useState<ExamStep | null>(null);
@@ -97,6 +103,15 @@ export function MockExam({ demo }: { demo: boolean }) {
     },
     [persist, router, t],
   );
+
+  // a group mock arrives with its attempt already created on the server
+  useEffect(() => {
+    if (!attemptId) return;
+    viewMock({ id: attemptId }).then((r) => {
+      if (r.ok) apply(r.step);
+      else setError(t('error'));
+    });
+  }, [attemptId, apply, t]);
 
   const seen = useCallback(
     () => (demo ? loadLocalMocks().flatMap((a) => a.modules.flatMap((m) => m.ids)) : undefined),

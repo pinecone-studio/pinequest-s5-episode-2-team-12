@@ -74,6 +74,32 @@ export function startAttempt(
   };
 }
 
+/** A group mock attempt: the session's frozen form on the session's shared clock. */
+export function startGroupAttempt(
+  id: string,
+  groupId: string,
+  form: { module1: string[]; module2: string[] },
+  clock: { module1: { startedAt: string; endsAt: string }; module2: { startedAt: string; endsAt: string } },
+  now: number,
+): MockAttempt {
+  return {
+    id,
+    groupId,
+    startedAt: iso(now),
+    finishedAt: null,
+    route: null,
+    modules: [
+      { no: 1, ids: form.module1, answers: [], ...clock.module1, submittedAt: null },
+      { no: 2, ids: form.module2, answers: [], ...clock.module2, submittedAt: null },
+    ],
+    score: null,
+    raw: { correct: 0, total: 0 },
+    domains: emptyDomains(),
+    timeUsedSec: 0,
+    flagged: false,
+  };
+}
+
 export type Submitted = { qid: string; answer: string; timeMs: number }[];
 export type StepError = 'wrong_module' | 'finished' | 'late';
 
@@ -102,6 +128,10 @@ export function submitModule(
     submittedAt: iso(Math.min(now, Date.parse(mod.endsAt))),
   };
   let next: MockAttempt = { ...a, modules: a.modules.map((m) => (m.no === no ? graded : m)) };
+  if (no === 1 && a.groupId) {
+    // group mocks keep the shared module 2 (same questions, same clock for everyone)
+    return { attempt: next, late };
+  }
   if (no === 1) {
     const route = routeFor(graded.answers.filter((x) => x.correct).length);
     const ids = buildModule({ pool, mix: MOCK.mix[route], exclude: new Set(mod.ids), seen, rng });
