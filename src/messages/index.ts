@@ -22,6 +22,8 @@ import practice_en from '@/features/practice/messages/en.json';
 import practice_mn from '@/features/practice/messages/mn.json';
 import progress_en from '@/features/progress/messages/en.json';
 import progress_mn from '@/features/progress/messages/mn.json';
+import roadmap_en from '@/features/roadmap/messages/en.json';
+import roadmap_mn from '@/features/roadmap/messages/mn.json';
 import tutor_en from '@/features/tutor/messages/en.json';
 import tutor_mn from '@/features/tutor/messages/mn.json';
 import type { Messages } from '@/lib/i18n';
@@ -41,6 +43,7 @@ const mn: Messages = {
   planner: planner_mn,
   practice: practice_mn,
   progress: progress_mn,
+  roadmap: roadmap_mn,
   tutor: tutor_mn,
 };
 
@@ -57,6 +60,7 @@ const en: Messages = {
   planner: planner_en,
   practice: practice_en,
   progress: progress_en,
+  roadmap: roadmap_en,
   tutor: tutor_en,
 };
 

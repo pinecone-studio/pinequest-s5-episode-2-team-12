@@ -9,5 +9,14 @@
     "league": {
       "title": "Green league"
     }
+  },
+  "achievements": {
+    "eyebrow": "ACHIEVEMENTS",
+    "title": "Badge collection",
+    "lead": "Every badge is earned by real study. Complete your collection.",
+    "collected": "collected",
+    "earned": "Earned",
+    "locked": "Locked",
+    "roadmap": "Journey across Mongolia"
   }
 }

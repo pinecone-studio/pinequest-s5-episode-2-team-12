@@ -1,0 +1,94 @@
+/* «Монголын аялал» — map and stop styles. Colors come from the theme tokens only. */
+.roadmap-stage {
+  --rm-side: color-mix(in srgb, var(--c-leaf-2) 55%, var(--c-forest));
+  --rm-top-1: color-mix(in srgb, var(--c-leaf) 16%, var(--c-paper));
+  --rm-top-2: var(--c-sage);
+  --rm-border: color-mix(in srgb, var(--c-leaf) 70%, transparent);
+  --rm-glow: color-mix(in srgb, var(--c-lime) 55%, transparent);
+  --rm-route-dim: color-mix(in srgb, var(--c-ink-3) 55%, transparent);
+  background:
+    radial-gradient(70% 60% at 50% 45%, color-mix(in srgb, var(--c-leaf) 12%, transparent), transparent 70%),
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--c-ink) 7%, transparent) 1px, transparent 0) 0 0 / 22px 22px,
+    var(--c-paper-2);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.roadmap-stage:focus-visible { outline-offset: -3px; border-radius: 26px; }
+.roadmap-layer { transform-origin: 0 0; will-change: transform; }
+.roadmap-stage.is-dragging { cursor: grabbing; }
+.roadmap-stage:not(.is-dragging) { cursor: grab; }
+.roadmap-stage button { cursor: pointer; }
+
+/* constant on-screen size for pins and cards, whatever the zoom */
+.roadmap-pin { position: absolute; width: 0; height: 0; transform: scale(var(--inv, 1)); transform-origin: 0 0; }
+
+.roadmap-coin {
+  --face: var(--c-paper);
+  --edge: var(--c-line-2);
+  position: absolute;
+  left: -22px;
+  top: -58px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 2.5px solid var(--edge);
+  font: 800 14px var(--font-sans);
+  color: var(--c-ink);
+  background: var(--face);
+  box-shadow: 0 4px 0 var(--edge), 0 12px 18px -10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.15s ease;
+}
+.roadmap-coin:hover, .roadmap-coin:focus-visible { transform: translateY(-3px); }
+.roadmap-coin[data-status="locked"] { --face: var(--c-paper-2); --edge: var(--c-line); color: var(--c-ink-3); }
+.roadmap-coin[data-status="available"] { --face: var(--c-sage); --edge: var(--c-leaf); color: var(--c-leaf-ink); }
+.roadmap-coin[data-status="current"] { --face: var(--c-lime); --edge: var(--c-lime-2); color: var(--c-on-lime); animation: roadmap-bob 2.4s ease-in-out infinite; }
+.roadmap-coin[data-status="completed"],
+.roadmap-coin[data-status="tested-out"] { --face: var(--c-leaf); --edge: var(--c-leaf-2); color: var(--c-on-leaf); }
+.roadmap-stem { position: absolute; left: -1px; top: -12px; width: 2px; height: 12px; background: var(--c-line-2); border-radius: 2px; }
+.roadmap-pin[data-status="completed"] .roadmap-stem,
+.roadmap-pin[data-status="tested-out"] .roadmap-stem { background: var(--c-leaf); }
+.roadmap-pin[data-status="current"] .roadmap-stem,
+.roadmap-pin[data-status="available"] .roadmap-stem { background: var(--c-lime-2); }
+
+.roadmap-label {
+  position: absolute;
+  top: 6px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font: 700 11.5px/1.5 var(--font-sans);
+  color: var(--c-ink);
+  background: color-mix(in srgb, var(--c-paper) 88%, transparent);
+  border: 1px solid var(--c-line);
+  pointer-events: none;
+}
+.roadmap-pin[data-status="locked"] .roadmap-label { color: var(--c-ink-3); }
+
+.roadmap-float { position: absolute; left: -100px; bottom: 66px; pointer-events: none; animation: rise 0.25s ease both; }
+.roadmap-float::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  width: 2px;
+  height: 14px;
+  background: var(--c-lime-2);
+}
+
+.roadmap-pulse { animation: roadmap-pulse 2.4s ease-out infinite; }
+.roadmap-dash { stroke-dasharray: 8 8; animation: roadmap-dash 1.1s linear infinite; }
+
+@keyframes roadmap-pulse {
+  0% { box-shadow: var(--shadow-pop), 0 0 0 0 color-mix(in srgb, var(--c-lime) 55%, transparent); }
+  70%, 100% { box-shadow: var(--shadow-pop), 0 0 0 14px transparent; }
+}
+@keyframes roadmap-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -4px; } }
+@keyframes roadmap-dash { to { stroke-dashoffset: -16; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .roadmap-pulse, .roadmap-dash, .roadmap-coin[data-status="current"], .roadmap-float { animation: none; }
+}

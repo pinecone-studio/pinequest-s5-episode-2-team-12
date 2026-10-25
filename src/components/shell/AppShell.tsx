@@ -35,7 +35,7 @@ function NavLink({ item, pathname, onClick }: { item: NavItem; pathname: string;
   );
 }
 
-function Avatar({ name, size = 42 }: { name: string; size?: number }) {
+export function Avatar({ name, size = 42 }: { name: string; size?: number }) {
   return (
     <span
       className="grid place-items-center rounded-full font-bold text-[var(--c-on-leaf)] shrink-0"

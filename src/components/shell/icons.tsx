@@ -31,6 +31,12 @@ const PATHS: Record<string, ReactNode> = {
       <path d="M6.5 8h2M6.5 11h2M15.5 8h2M15.5 11h2" />
     </>
   ),
+  roadmap: (
+    <>
+      <path d="M9 4.5 3.5 6.5v13l5.5-2 6 2 5.5-2v-13l-5.5 2z" />
+      <path d="M9 4.5v13M15 6.5v13" />
+    </>
+  ),
   desmos: (
     <>
       <path d="M4 4v16h16" />

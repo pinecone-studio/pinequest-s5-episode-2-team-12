@@ -5,6 +5,7 @@ import { getProfile } from '@/features/home/queries';
 import { getProgress, listStages } from '@/features/journey/queries';
 import { listQuestions } from '@/features/practice/queries';
 import { getLeague, getStats } from '@/features/progress/queries';
+import { currentUserId, getRoadmap } from '@/features/roadmap/queries';
 import { getT } from '@/lib/i18n';
 import { getUlaanbaatarDate } from '@/lib/streak';
 
@@ -22,8 +23,8 @@ function weekId(day = getUlaanbaatarDate()): string {
 // Section I · I3
 export default async function DashboardPage() {
   const t = getT('home');
-  const profile = await getProfile();
-  const [stats, stages, progress, league, decks, desmos, questions] = await Promise.all([
+  const [profile, userId] = await Promise.all([getProfile(), currentUserId()]);
+  const [stats, stages, progress, league, decks, desmos, questions, roadmap] = await Promise.all([
     getStats(profile.id),
     listStages(),
     getProgress(profile.id),
@@ -31,6 +32,7 @@ export default async function DashboardPage() {
     listDecks(profile.id).catch(() => []),
     listDesmosLessons().catch(() => []),
     listQuestions().catch(() => []),
+    userId ? getRoadmap(userId).catch(() => null) : Promise.resolve(null),
   ]);
   return (
     <Dashboard
@@ -49,6 +51,7 @@ export default async function DashboardPage() {
           decks: decks.length,
           questions: questions.length,
         },
+        roadmap: { demo: !userId, server: roadmap },
       }}
     />
   );

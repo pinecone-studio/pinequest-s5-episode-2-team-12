@@ -1,17 +1,14 @@
-import { getT } from "@/lib/i18n";
-import { getProgressData } from "@/features/progress/actions";
+import { getProfile } from '@/features/home/queries';
+import { getProgressData } from '@/features/progress/actions';
 
 export default async function LeaguePage() {
-  const t = getT("progress");
+  const userId = (await getProfile()).id;
 
-  // TODO: Session/Auth-аас одоогийн хэрэглэгчийн ID-г авна
-  const userId = "test-user-id";
-
-  let progressData = {
+  let progressData: Awaited<ReturnType<typeof getProgressData>> = {
     levelInfo: { level: 1, currentXp: 0, nextLevelXp: 100, progressPercent: 0 },
     streak: 0,
-    quests: [] as any[],
-    badges: [] as any[],
+    quests: [],
+    badges: [],
   };
 
   try {
@@ -20,7 +17,7 @@ export default async function LeaguePage() {
       progressData = data;
     }
   } catch (error) {
-    console.error("Өгөгдөл татахад алдаа гарлаа:", error);
+    console.error('Өгөгдөл татахад алдаа гарлаа:', error);
   }
 
   const { levelInfo, streak, badges } = progressData;
@@ -118,9 +115,7 @@ export default async function LeaguePage() {
               </div>
             </div>
             <div className="text-right">
-              <span className="text-base font-extrabold text-[#4ade80]">
-                {levelInfo.currentXp} XP
-              </span>
+              <span className="text-base font-extrabold text-[#4ade80]">{levelInfo.currentXp} XP</span>
             </div>
           </div>
         </div>

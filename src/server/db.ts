@@ -1,0 +1,18 @@
+// Service-role Supabase client for trusted writes (XP, badges, roadmap progress) from Server Actions.
+// It bypasses RLS, so call it only after the action has authenticated the user and validated the input.
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { publicEnv } from '@/lib/env';
+import { serverEnv } from './env';
+
+let admin: SupabaseClient | null = null;
+
+/** null when the service-role key or the project URL is missing. */
+export function getAdminDb(): SupabaseClient | null {
+  const { supabaseUrl } = publicEnv();
+  const key = serverEnv().supabaseServiceRole;
+  if (!supabaseUrl || !key) return null;
+  if (!admin) {
+    admin = createClient(supabaseUrl, key, { auth: { autoRefreshToken: false, persistSession: false } });
+  }
+  return admin;
+}

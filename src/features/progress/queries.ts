@@ -2,20 +2,18 @@
 import { getDb } from '@/lib/supabase/server';
 import { BADGES } from '@/mocks/meta';
 import type { Badge, LeagueRow, Stats } from '@/types';
+import { statsFromXp, type XpRow } from './lib/stats';
 
 // Demo mode shows a fresh student: no invented XP, streak or rivals.
 const DEMO_STATS: Stats = { xp: 0, level: 1, streak: 0, days: [], mastery: {} };
 
+/** XP, level, streak and study days, all derived from xp_events. */
 export async function getStats(userId: string): Promise<Stats> {
   const db = await getDb();
   if (!db) return DEMO_STATS;
-  const { data, error } = await db
-    .from('user_stats')
-    .select('xp, level, streak, days, mastery')
-    .eq('user_id', userId)
-    .maybeSingle();
+  const { data, error } = await db.from('xp_events').select('amount, at').eq('user_id', userId);
   if (error) throw error;
-  return (data as Stats) ?? { ...DEMO_STATS, xp: 0, level: 1, streak: 0 };
+  return statsFromXp((data ?? []) as XpRow[]);
 }
 
 /** All badges with `earned` flags. */

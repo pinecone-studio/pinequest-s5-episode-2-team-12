@@ -15,6 +15,7 @@ export const NAV: NavGroup[] = [
     items: [
       { key: 'dashboard', href: routes.dashboard, section: 'I', mobile: true },
       { key: 'journey', href: routes.journey, section: 'A', mobile: true },
+      { key: 'roadmap', href: routes.roadmap, section: 'A' },
       { key: 'tutor', href: routes.tutor(), section: 'G', mobile: true },
       { key: 'planner', href: routes.planner, section: 'I', mobile: true },
     ],

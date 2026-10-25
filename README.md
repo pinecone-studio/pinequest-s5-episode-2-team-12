@@ -46,7 +46,7 @@ prototype/                prototype-ийн код, зөвхөн лавлагаа
 
 | Хэсэг | Хавтас | Хуудас |
 |---|---|---|
-| A Замнал ба хичээл | `features/journey` | /journey, /lesson/[id] |
+| A Замнал ба хичээл | `features/journey`, `features/roadmap` | /journey, /lesson/[id], /roadmap, /roadmap/stop/[no], /roadmap/placement, /admin/questions |
 | B Desmos Академи | `features/desmos` | /desmos, /desmos/[id] |
 | C Дасгал | `features/practice` | /bank, /hard, /practice |
 | D Бүтэн тест ба алдаа | `features/exam`, `features/mistakes` | /mock, /mistakes |
@@ -55,6 +55,21 @@ prototype/                prototype-ийн код, зөвхөн лавлагаа
 | G AI багш Суу | `features/tutor`, `server/tutor`, `api/tutor` | /tutor |
 | H AI сургалт | `ai/` | — |
 | I Нүүр, онбординг, төлөвлөгөө, PWA | `features/home`, `onboarding`, `planner`, `notifications` | /, /onboarding, /dashboard, /planner, /help |
+
+## Монголын аялал (SAT Math roadmap)
+
+26 зогсоол = SAT Math-ийн 26 сэдэв. Эхлээд түвшин тогтоох тест (2 модуль, 35 мин) → түвшин (Сул/Дунд/Сайн)
+ба сэдэв бүрийн эзэмшил нь зогсоол бүрийн бодлогын тоо, хүндийг тодорхойлно.
+
+- Тохиргоо: `features/roadmap/{stops,topics,config}.ts` (зогсоолын дараалал, сэдэв, босго, XP).
+- Логик (unit тесттэй): `features/roadmap/lib/` — `selectProblems`, placement, unlock, scoring, submit.
+- Асуулт: `content/roadmap/<domain>/{questions,placement,intros}.json` — **бүгд анхны (original)**, College
+  Board-оос зөвхөн ангилал (domain/skill/difficulty/format) авсан. Production-д зөвхөн `reviewed: true` гарна.
+- `bun run roadmap:check-answers` — хариуг тоогоор шалгана · `bun run roadmap:import [-- file.csv] [--dry-run]`
+  — JSON/CSV-г шалгаад Supabase руу · `bun run roadmap:map` — газрын зургийг Natural Earth-оос дахин үүсгэнэ.
+- DB: `supabase/migrations/0006_roadmap.sql`. Бичилт Server Action → service role (`src/server/db.ts`).
+  Админ: `profiles.role = 'admin'` (зөвхөн service role/админ өөрчилнө) → `/admin/questions`.
+- `/roadmap?demo=states` — картын бүх төлөвийг харуулна.
 
 ## GitHub: Issue → Branch → Тест → Код → Commit → PR
 

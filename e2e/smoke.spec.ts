@@ -4,6 +4,12 @@ import { expect, test } from '@playwright/test';
 const PAGES = [
   '/dashboard',
   '/journey',
+  '/roadmap',
+  '/roadmap?demo=states',
+  '/roadmap/placement',
+  '/roadmap/placement/results',
+  '/roadmap/stop/1',
+  '/admin/questions',
   '/lesson/s1-l3',
   '/desmos',
   '/desmos/d3',

@@ -27,6 +27,14 @@ export const routes = {
   journey: '/journey',
   lesson: (id: string) => `/lesson/${seg(id)}`,
 
+  // A · roadmap («Монголын аялал»)
+  roadmap: '/roadmap',
+  roadmapStop: (no: number, opts: { testOut?: boolean } = {}) =>
+    `/roadmap/stop/${no}${qs({ testout: opts.testOut })}`,
+  placement: '/roadmap/placement',
+  placementResults: '/roadmap/placement/results',
+  adminQuestions: '/admin/questions',
+
   // B · Desmos Academy
   desmosHome: '/desmos',
   desmos: (id: string) => `/desmos/${seg(id)}`,

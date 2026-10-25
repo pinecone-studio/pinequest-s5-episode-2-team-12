@@ -8,7 +8,9 @@ export type XpReason =
   | 'cards'
   | 'quest'
   | 'streak'
-  | 'onboarding';
+  | 'onboarding'
+  | 'placement'
+  | 'roadmap';
 
 /** One row in xp_events. `key` makes awarding idempotent (same key = counted once). */
 export type XpEvent = {
@@ -34,7 +36,9 @@ export type BadgeGlyph =
   | 'compass'
   | 'flame'
   | 'mend'
-  | 'clock';
+  | 'clock'
+  | 'map'
+  | 'flag';
 export type Badge = { id: string; en: string; mn: string; how: string; glyph: BadgeGlyph };
 
 export type Quest = { id: string; title: string; target: number; xp: number; href: string };

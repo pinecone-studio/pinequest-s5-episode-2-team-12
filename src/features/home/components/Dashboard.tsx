@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { Flame, Icon } from '@/components/shell/icons';
 import { Bar } from '@/components/ui/Bar';
 import { Ring } from '@/components/ui/Ring';
+import { ContinueLink, RoadmapContinueCard } from '@/features/roadmap/components/RoadmapContinue';
+import type { RoadmapState } from '@/features/roadmap/types';
 import type { T } from '@/lib/i18n';
 import { calculateLevel } from '@/lib/level';
 import { routes } from '@/lib/routes';
@@ -23,6 +25,8 @@ export type DashboardData = {
   done: Set<string>;
   league: LeagueRow[];
   counts: { lessons: number; desmos: number; decks: number; questions: number };
+  /** «Монголын аялал»: server state when signed in; demo mode reads localStorage on the client. */
+  roadmap: { demo: boolean; server: RoadmapState | null };
 };
 
 const DAY_KEYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
@@ -92,7 +96,17 @@ function SectionHead({ title, href, more }: { title: string; href?: string; more
   );
 }
 
-function Hero({ t, name, next }: { t: T; name: string; next: string }) {
+function Hero({
+  t,
+  name,
+  next,
+  roadmap,
+}: {
+  t: T;
+  name: string;
+  next: string;
+  roadmap: DashboardData['roadmap'];
+}) {
   const h = ubHour();
   const greet = h < 12 ? 'morning' : h < 18 ? 'day' : 'evening';
   return (
@@ -125,12 +139,13 @@ function Hero({ t, name, next }: { t: T; name: string; next: string }) {
             {t('dashboard.cta')}
             <Icon name="arrow" size={20} />
           </Link>
-          <Link
-            href={next}
+          <ContinueLink
+            {...roadmap}
+            fallback={next}
             className="inline-flex items-center h-[54px] px-5 rounded-2xl bg-paper/70 backdrop-blur text-ink font-bold text-[15px] hover:bg-paper"
           >
             {t('dashboard.continueCta')}
-          </Link>
+          </ContinueLink>
         </div>
       </div>
     </section>
@@ -630,9 +645,14 @@ export function Dashboard({ t, data }: { t: T; data: DashboardData }) {
   return (
     <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px] items-start">
       <div className="grid gap-7 min-w-0 stagger">
-        <Hero t={t} name={data.name} next={next ? routes.lesson(next.lesson.id) : routes.journey} />
+        <Hero
+          t={t}
+          name={data.name}
+          next={next ? routes.lesson(next.lesson.id) : routes.journey}
+          roadmap={data.roadmap}
+        />
         <ScoreBanner t={t} />
-        {next && <ContinueCard t={t} item={next} />}
+        <RoadmapContinueCard {...data.roadmap} fallback={next && <ContinueCard t={t} item={next} />} />
         <section>
           <SectionHead
             title={t('dashboard.plan.title')}

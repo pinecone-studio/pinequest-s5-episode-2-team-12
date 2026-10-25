@@ -16,6 +16,9 @@
     "messages": "bun scripts/check-messages.ts",
     "seed:questions": "bun scripts/seed-questions.ts",
     "seed:journey": "bun scripts/seed-journey.ts",
+    "roadmap:map": "bun scripts/roadmap/build-map.ts && biome format --write src/features/roadmap/map",
+    "roadmap:import": "bun scripts/roadmap/import-questions.ts",
+    "roadmap:check-answers": "bun scripts/roadmap/check-answers.ts",
     "check": "biome check . && tsc --noEmit && bun run messages && bun test src ai scripts",
     "ai:build": "bun ai/pipeline/ingest.ts && bun ai/train/export.ts",
     "ai:eval": "bun ai/eval/run.ts"
@@ -41,9 +44,12 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/bun": "^1.2.22",
+    "@types/d3-geo": "^3.1.1",
     "@types/katex": "^0.16.7",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
+    "d3-geo": "^3.1.1",
+    "mapshaper": "^0.7.98",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
     "whatwg-mimetype": "^5.0.0"

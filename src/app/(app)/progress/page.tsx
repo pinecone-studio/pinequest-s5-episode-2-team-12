@@ -1,18 +1,14 @@
-import { getT } from "@/lib/i18n";
-import { getProgressData } from "@/features/progress/actions";
+import { getProfile } from '@/features/home/queries';
+import { getProgressData } from '@/features/progress/actions';
 
 export default async function ProgressPage() {
-  const t = getT("progress");
-  
+  const userId = (await getProfile()).id;
 
-  const userId = "test-user-id";
-
-
-  let progressData = {
+  let progressData: Awaited<ReturnType<typeof getProgressData>> = {
     levelInfo: { level: 1, currentXp: 0, nextLevelXp: 100, progressPercent: 0 },
     streak: 0,
-    quests: [] as any[],
-    badges: [] as any[],
+    quests: [],
+    badges: [],
   };
 
   try {
@@ -21,41 +17,34 @@ export default async function ProgressPage() {
       progressData = data;
     }
   } catch (error) {
-    console.error("Өгөгдөл татахад алдаа гарлаа:", error);
+    console.error('Өгөгдөл татахад алдаа гарлаа:', error);
   }
 
   const { levelInfo, streak } = progressData;
 
-
   const levelRoadmap = [
-    { lvl: 1, name: "Судлаач · Explorer", xp: 0 },
-    { lvl: 2, name: "Сэтгэгч · Thinker", xp: 200 },
-    { lvl: 3, name: "Бодлогч · Problem Solver", xp: 500 },
-    { lvl: 4, name: "Графикийн жолооч · Graph Navigator", xp: 900 },
-    { lvl: 5, name: "Desmos стратегич · Desmos Strategist", xp: 1400 },
-    { lvl: 6, name: "Математикийн мастер · Math Master", xp: 2000 },
+    { lvl: 1, name: 'Судлаач · Explorer', xp: 0 },
+    { lvl: 2, name: 'Сэтгэгч · Thinker', xp: 200 },
+    { lvl: 3, name: 'Бодлогч · Problem Solver', xp: 500 },
+    { lvl: 4, name: 'Графикийн жолооч · Graph Navigator', xp: 900 },
+    { lvl: 5, name: 'Desmos стратегич · Desmos Strategist', xp: 1400 },
+    { lvl: 6, name: 'Математикийн мастер · Math Master', xp: 2000 },
   ];
 
-
   const currentLevelObj = levelRoadmap.find((r) => r.lvl === levelInfo.level) || levelRoadmap[0];
-  const [mnName, enName] = currentLevelObj.name.split(" · ");
+  const [mnName, enName] = currentLevelObj.name.split(' · ');
 
   return (
     <div className="min-h-screen bg-[#060b08] text-white p-8 font-sans space-y-8">
-
       <div>
-        <span className="text-[10px] uppercase tracking-widest text-[#4ade80] font-semibold">
-          МИНИЙ АХИЦ
-        </span>
+        <span className="text-[10px] uppercase tracking-widest text-[#4ade80] font-semibold">МИНИЙ АХИЦ</span>
         <h1 className="text-4xl font-extrabold tracking-tight mt-1">Ахиц ба эзэмшил</h1>
         <p className="text-sm text-zinc-400 mt-1">
           Түвшин нь хичээл зүтгэлийг, эзэмшил нь мэдлэгийг хэмждэг. Хоёуланг нь тусад нь харцгаая.
         </p>
       </div>
 
-
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
         <div className="lg:col-span-5 bg-[#0b140f] border border-[#182c1f] rounded-3xl p-6 flex flex-col justify-between">
           <div className="flex items-center gap-6">
             {/* Дугуй Progress Gauge */}
@@ -100,13 +89,13 @@ export default async function ProgressPage() {
                 <div
                   key={item.lvl}
                   className={`flex items-center justify-between p-2.5 rounded-xl text-xs font-medium transition-colors ${
-                    isCurrent ? "bg-[#14281c] text-[#4ade80]" : "text-zinc-400"
+                    isCurrent ? 'bg-[#14281c] text-[#4ade80]' : 'text-zinc-400'
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <span
                       className={`w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold ${
-                        isCurrent ? "bg-[#22472f] text-[#4ade80]" : "bg-[#142219] text-zinc-500"
+                        isCurrent ? 'bg-[#22472f] text-[#4ade80]' : 'bg-[#142219] text-zinc-500'
                       }`}
                     >
                       {item.lvl}
@@ -119,7 +108,6 @@ export default async function ProgressPage() {
             })}
           </div>
         </div>
-
 
         <div className="lg:col-span-7 bg-[#0b140f] border border-[#182c1f] rounded-3xl p-6 flex flex-col justify-between space-y-6">
           <div>

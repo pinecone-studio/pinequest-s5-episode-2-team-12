@@ -1,70 +1,48 @@
+// Section F · F2 & F6 — level, streak, quests and badges for the progress pages.
+
+import { calculateLevel } from '@/lib/level';
+import { getUlaanbaatarDate } from '@/lib/streak';
+import { getDb } from '@/lib/supabase/server';
+import { BADGES } from '@/mocks/meta';
+import { getStats } from './queries';
+import { DAILY_QUESTS } from './quests';
+
+export { awardXp } from '@/server/xp';
+
 export async function getProgressData(userId: string) {
-  "use server";
-
-  const { getDb } = await import("@/lib/supabase/server");
-  const { calculateLevel } = await import("@/lib/level");
-  const { BADGES } = await import("@/lib/badge-rules");
-  const { DAILY_QUESTS } = await import("./quests");
-  const { getUlaanbaatarDate } = await import("@/lib/streak");
-
   const supabase = await getDb();
-  
+  const stats = await getStats(userId);
+  const levelInfo = calculateLevel(stats.xp);
 
   if (!supabase) {
-    const defaultLevel = calculateLevel(0);
     return {
-      levelInfo: defaultLevel,
-      streak: 0,
+      levelInfo,
+      streak: stats.streak,
       quests: DAILY_QUESTS.map((q) => ({ ...q, current: 0, completed: false })),
-      badges: BADGES.map((b) => ({ ...b, unlocked: false })),
+      badges: BADGES.map((b) => ({ ...b, name: b.mn, description: b.how, unlocked: false })),
     };
   }
 
   const today = getUlaanbaatarDate();
-
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("xp, streak")
-    .eq("id", userId)
-    .single();
-
-  const totalXp = profile?.xp || 0;
-  const streak = profile?.streak || 0;
-  const levelInfo = calculateLevel(totalXp);
-
-
   const { data: questProgressList } = await supabase
-    .from("quest_progress")
-    .select("*")
-    .eq("user_id", userId)
-    .eq("date", today);
+    .from('quest_progress')
+    .select('quest_id, progress, completed')
+    .eq('user_id', userId)
+    .eq('date', today);
 
   const quests = DAILY_QUESTS.map((q) => {
     const p = questProgressList?.find((item) => item.quest_id === q.id);
-    return {
-      ...q,
-      current: p?.progress || 0,
-      completed: p?.completed || false,
-    };
+    return { ...q, current: p?.progress || 0, completed: p?.completed || false };
   });
 
-
-  const { data: userBadges } = await supabase
-    .from("user_badges")
-    .select("badge_id")
-    .eq("user_id", userId);
-
-  const unlockedBadgeIds = userBadges?.map((b) => b.badge_id) || [];
+  const { data: userBadges } = await supabase.from('user_badges').select('badge_id').eq('user_id', userId);
+  const unlockedBadgeIds = new Set(userBadges?.map((b) => b.badge_id as string) ?? []);
   const badges = BADGES.map((b) => ({
     ...b,
-    unlocked: unlockedBadgeIds.includes(b.id),
+    name: b.mn,
+    description: b.how,
+    unlocked: unlockedBadgeIds.has(b.id),
   }));
 
-  return {
-    levelInfo,
-    streak,
-    quests,
-    badges,
-  };
+  return { levelInfo, streak: stats.streak, quests, badges };
 }

@@ -1,92 +1,68 @@
-import { getT } from "@/lib/i18n";
-import { BADGES } from "@/lib/badge-rules";
-import { getProgressData } from "@/features/progress/actions";
+import { Pill } from '@/components/ui/Pill';
+import { getProfile } from '@/features/home/queries';
+import { BadgeEmblem } from '@/features/progress/components/BadgeEmblem';
+import { listBadges } from '@/features/progress/queries';
+import { cn } from '@/lib/cn';
+import { getT } from '@/lib/i18n';
 
+export const metadata = { title: 'Амжилтууд' };
+
+// Section F · F4 — every badge from the single catalog (src/mocks/meta.ts BADGES), earned ones from user_badges.
 export default async function AchievementsPage() {
-  const t = getT("progress");
-
-  // TODO: Session/Auth-аас одоогийн хэрэглэгчийн ID-г авна
-  const userId = "test-user-id";
-
-  let userBadges: { id: string; unlocked: boolean }[] = [];
-
-  try {
-    const data = await getProgressData(userId);
-    if (data && data.badges) {
-      userBadges = data.badges;
-    }
-  } catch (error) {
-    userBadges = BADGES.map((b) => ({ ...b, unlocked: false }));
-  }
-
-  const unlockedCount = userBadges.filter((b) => b.unlocked).length;
+  const t = getT('progress');
+  const profile = await getProfile();
+  const badges = await listBadges(profile.id).catch(() => []);
+  const earned = badges.filter((b) => b.earned).length;
+  const groups = [
+    { key: 'core', items: badges.filter((b) => !b.id.startsWith('roadmap-')) },
+    { key: 'roadmap', items: badges.filter((b) => b.id.startsWith('roadmap-')) },
+  ];
 
   return (
-    <div className="min-h-screen bg-[#060b08] text-white p-8 font-sans space-y-8">
-      {/* Header хэсэг */}
-      <div className="flex items-end justify-between border-b border-[#142319] pb-8">
+    <div className="mx-auto flex max-w-6xl flex-col gap-8">
+      <header className="flex flex-wrap items-end justify-between gap-4 border-b border-line pb-6">
         <div>
-          <span className="text-[10px] uppercase tracking-widest text-[#4ade80] font-semibold">
-            АМЖИЛТУУД
-          </span>
-          <h1 className="text-4xl font-extrabold tracking-tight mt-1 text-white">
-            Тэмдгийн цуглуулга
+          <p className="eyebrow">{t('achievements.eyebrow')}</p>
+          <h1 className="mt-1 font-display text-3xl font-bold text-ink sm:text-4xl">
+            {t('achievements.title')}
           </h1>
-          <p className="text-sm text-zinc-400 mt-2">
-            Тэмдэг бүр бодит суралцах үйлдэлээр олгогдоно. Цуглуулгаа гүйцээгээрэй.
-          </p>
+          <p className="mt-2 text-sm text-ink-2">{t('achievements.lead')}</p>
         </div>
-        <div className="text-right">
-          <span className="text-5xl font-black text-white">
-            <span className="text-[#a3e635]">{unlockedCount}</span>/{BADGES.length}
+        <p className="text-right">
+          <span className="font-display text-4xl font-bold text-ink tnum">
+            <span className="text-leaf-2">{earned}</span>/{badges.length}
           </span>
-          <p className="text-xs text-zinc-500 uppercase tracking-wider mt-1">цуглуулсан</p>
-        </div>
-      </div>
+          <span className="block text-xs uppercase tracking-wider text-ink-3">
+            {t('achievements.collected')}
+          </span>
+        </p>
+      </header>
 
-      {/* Badges Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {BADGES.map((badge) => {
-          const isUnlocked = userBadges.find((b) => b.id === badge.id)?.unlocked;
-
-          return (
-            <div
-              key={badge.id}
-              className={`flex flex-col items-center justify-between p-6 rounded-2xl border text-center transition-all ${
-                isUnlocked
-                  ? "bg-[#0d1611] border-[#1f3829] shadow-lg shadow-black/40"
-                  : "bg-[#0a100c]/60 border-[#142319] opacity-50"
-              }`}
-            >
-              {/* Icon Circle */}
-              <div className="my-2 relative flex items-center justify-center w-20 h-20 rounded-full border-2 border-[#1e3a2b] bg-[#112218]">
-                <span className="text-3xl">{badge.icon}</span>
-              </div>
-
-              {/* Title & Description */}
-              <div className="mt-3 space-y-1">
-                <h3 className="font-bold text-base text-white">{badge.name}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed px-1">
-                  {badge.description}
-                </p>
-              </div>
-
-              {/* Status Pill */}
-              <div className="mt-6">
-                {isUnlocked ? (
-                  <span className="inline-block px-3 py-1 text-[11px] font-medium text-[#a3e635] bg-[#1a3320] rounded-full border border-[#2c5837]">
-                    Нээгдсэн
-                  </span>
-                ) : (
-                  <span className="inline-block px-3 py-1 text-[11px] font-medium text-zinc-500 bg-[#121d16] rounded-full border border-[#1b2f23]">
-                    Түгжээтэй
-                  </span>
+      {groups.map((g) => (
+        <section key={g.key} className="flex flex-col gap-4">
+          {g.key === 'roadmap' && (
+            <h2 className="font-display text-xl font-bold text-ink">{t('achievements.roadmap')}</h2>
+          )}
+          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            {g.items.map((b) => (
+              <li
+                key={b.id}
+                className={cn(
+                  'soft-card flex flex-col items-center p-5 text-center',
+                  !b.earned && 'opacity-70',
                 )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+              >
+                <BadgeEmblem badge={b} earned={b.earned} size={80} />
+                <h3 className="mt-3 text-[15px] font-bold text-ink">{b.mn}</h3>
+                <p className="mt-1 text-xs leading-relaxed text-ink-2">{b.how}</p>
+                <Pill tone={b.earned ? 'leaf' : 'neutral'} className="mt-4">
+                  {b.earned ? t('achievements.earned') : t('achievements.locked')}
+                </Pill>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
     </div>
   );
 }
