@@ -60,7 +60,8 @@ export const routes = {
   deck: (id: string) => `/cards/${seg(id)}`,
   deckQuiz: (id: string) => `/cards/${seg(id)}/quiz`,
   myCards: '/cards/mine',
-  flashcards: '/flashcards',
+  flashcards: (topic?: number) => `/flashcards${qs({ topic })}`,
+  adminFlashcards: '/admin/flashcards',
 
   // F · progress
   progress: '/progress',

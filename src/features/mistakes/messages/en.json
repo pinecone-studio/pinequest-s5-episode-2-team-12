@@ -3,5 +3,37 @@
     "mistakes": {
       "title": "Mistake notebook"
     }
-  }
+  },
+  "lead": "Every problem you get wrong is saved here automatically. Solve it again on a spaced schedule until it sticks.",
+  "stats": {
+    "due": "Due today",
+    "total": "Total",
+    "resolved": "Learned"
+  },
+  "filter": "Topic",
+  "allTopics": "All topics",
+  "review": "Start reviewing",
+  "empty": "No mistakes yet. Wrong answers will collect here as you practise.",
+  "allDone": "Done for today.",
+  "source": {
+    "stop": "Stop",
+    "placement": "Placement test",
+    "testout": "Test-out",
+    "mock": "Full test",
+    "daily": "Daily challenge",
+    "duel": "Duel",
+    "practice": "Practice"
+  },
+  "yourWas": "Your earlier answer: {a}",
+  "check": "Check",
+  "right": "Correct! The next review moves later.",
+  "wrong": "Not quite. Correct answer: {a}",
+  "explain": "Explanation",
+  "next": "Next",
+  "stop": "Stop",
+  "ask": "Ask Suu",
+  "due": "Due",
+  "later": "Later",
+  "learned": "Learned",
+  "list": "All mistakes"
 }
