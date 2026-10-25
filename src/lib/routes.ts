@@ -50,6 +50,8 @@ export const routes = {
 
   // D · exam & mistakes
   mock: '/mock',
+  mockResult: (id: string) => `/profile/mock/${seg(id)}`,
+  mockCompare: (id: string, withId?: string) => `/profile/mock/${seg(id)}/compare${qs({ with: withId })}`,
   mistakes: '/mistakes',
   daily: '/daily',
 

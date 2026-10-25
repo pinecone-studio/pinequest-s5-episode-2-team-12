@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
 import { Logo } from '@/components/brand';
+import { Avatar } from '@/components/brand/Avatar';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { useDialog } from '@/components/ui/useDialog';
 import type { StudentSettings } from '@/features/settings/use-settings';
@@ -15,7 +16,8 @@ import { routes } from '@/lib/routes';
 import { ExamChip } from './ExamChip';
 import { Flame, Icon } from './icons';
 
-export type ShellUser = { name: string; level: number; xp: number; streak: number };
+export type ShellUser = { name: string; level: number; xp: number; streak: number; avatarId?: string };
+export { Avatar };
 
 function NavLink({ item, pathname }: { item: NavItem; pathname: string }) {
   const t = useT('common');
@@ -34,23 +36,6 @@ function NavLink({ item, pathname }: { item: NavItem; pathname: string }) {
       <Icon name={item.key} size={21} className={on ? 'text-leaf-2' : 'text-ink-3'} />
       <span className="truncate">{t(`nav.${item.key}`)}</span>
     </Link>
-  );
-}
-
-export function Avatar({ name, size = 42 }: { name: string; size?: number }) {
-  return (
-    <span
-      className="grid place-items-center rounded-full font-bold text-[var(--c-on-leaf)] shrink-0"
-      style={{
-        width: size,
-        height: size,
-        fontSize: size * 0.4,
-        background: 'linear-gradient(135deg, var(--c-leaf), var(--c-leaf-2))',
-      }}
-      aria-hidden="true"
-    >
-      {(name.trim()[0] ?? 'S').toUpperCase()}
-    </span>
   );
 }
 
@@ -164,7 +149,7 @@ function NavDrawer({
             href={routes.profile}
             className="flex items-center gap-3 rounded-3xl border border-line bg-paper p-3 hover:border-leaf"
           >
-            <Avatar name={name} />
+            <Avatar name={name} avatarId={user.avatarId} />
             <span className="min-w-0 flex-1">
               <span className="block font-bold text-ink truncate">{name}</span>
               <span className="block text-[13px] text-ink-3">{t('shell.level', { n: user.level })}</span>
@@ -246,7 +231,7 @@ export function AppShell({
             aria-label={t('shell.profile')}
             className="rounded-full ring-2 ring-paper/80 hover:ring-leaf"
           >
-            <Avatar name={me.name || t('shell.guest')} size={40} />
+            <Avatar name={me.name || t('shell.guest')} avatarId={me.avatarId} size={40} />
           </Link>
         </div>
       </header>

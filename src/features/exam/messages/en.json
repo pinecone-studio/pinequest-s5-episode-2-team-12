@@ -1,7 +1,63 @@
 {
   "pages": {
     "mock": {
-      "title": "Full practice test"
+      "title": "Full mock test"
     }
+  },
+  "intro": {
+    "eyebrow": "Full test",
+    "title": "SAT Math — full practice test",
+    "lead": "Built like the real SAT: 2 modules of 22 questions, 35 minutes each. Module 2 gets harder or easier based on module 1.",
+    "note": "The result is an estimated score (200–800), not an official SAT score.",
+    "start": "Start the test",
+    "resume": "Resume",
+    "history": "Past tests",
+    "rule1": "No pausing inside a module — the clock keeps running.",
+    "rule2": "A 10-minute break between modules (you can skip it).",
+    "rule3": "Flag questions (🚩) to come back to them.",
+    "rule4": "Answers and explanations appear only after the test."
+  },
+  "module": {
+    "title": "Module {n} of 2",
+    "question": "Question {n} of {total}",
+    "prev": "Back",
+    "next": "Next",
+    "mark": "Flag",
+    "marked": "Flagged",
+    "nav": "Question list",
+    "answered": "{n}/{total} answered",
+    "finish": "Finish module",
+    "finishTest": "Finish test",
+    "confirm": "Finish this module? You can't come back to it.",
+    "unanswered": "{n} questions are unanswered.",
+    "yes": "Yes, finish",
+    "no": "Go back",
+    "timeLeft": "Time left",
+    "timeUp": "Time is up — sending your answers…",
+    "saving": "Sending…"
+  },
+  "break": {
+    "title": "Break",
+    "lead": "Drink some water and stretch. Module 2 starts automatically.",
+    "continue": "Start module 2"
+  },
+  "done": {
+    "title": "Test finished!",
+    "score": "Estimated score",
+    "view": "See your results"
+  },
+  "late": "Time had run out, so this module's answers were not counted.",
+  "error": "Something went wrong. Please try again.",
+  "domains": {
+    "alg": "Algebra",
+    "adv": "Advanced",
+    "psda": "Data",
+    "geo": "Geometry"
+  },
+  "domainsFull": {
+    "alg": "Algebra",
+    "adv": "Advanced Math",
+    "psda": "Problem-Solving and Data Analysis",
+    "geo": "Geometry and Trigonometry"
   }
 }

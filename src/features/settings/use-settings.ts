@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { type SaveResult, type SettingsPatch, saveSettings } from './actions';
 import { readLocalSettings, writeLocalSettings } from './local';
 
-export type StudentSettings = Required<SettingsPatch>;
+export type StudentSettings = Pick<Required<SettingsPatch>, 'examDate' | 'tz' | 'hidePublic' | 'friendsOnly'>;
 
 const EVENT = 'suprep-settings';
 

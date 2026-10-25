@@ -22,6 +22,8 @@ import planner_en from '@/features/planner/messages/en.json';
 import planner_mn from '@/features/planner/messages/mn.json';
 import practice_en from '@/features/practice/messages/en.json';
 import practice_mn from '@/features/practice/messages/mn.json';
+import profile_en from '@/features/profile/messages/en.json';
+import profile_mn from '@/features/profile/messages/mn.json';
 import progress_en from '@/features/progress/messages/en.json';
 import progress_mn from '@/features/progress/messages/mn.json';
 import roadmap_en from '@/features/roadmap/messages/en.json';
@@ -47,6 +49,7 @@ const mn: Messages = {
   onboarding: onboarding_mn,
   planner: planner_mn,
   practice: practice_mn,
+  profile: profile_mn,
   progress: progress_mn,
   roadmap: roadmap_mn,
   settings: settings_mn,
@@ -66,6 +69,7 @@ const en: Messages = {
   onboarding: onboarding_en,
   planner: planner_en,
   practice: practice_en,
+  profile: profile_en,
   progress: progress_en,
   roadmap: roadmap_en,
   settings: settings_en,

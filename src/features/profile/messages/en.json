@@ -1,0 +1,118 @@
+{
+  "title": "Profile",
+  "header": {
+    "level": "Level {n}",
+    "xp": "XP",
+    "streak": "Day streak",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "name": "Name",
+    "avatar": "Avatar",
+    "aimag": "Aimag / city",
+    "aimagNone": "Not set",
+    "school": "School (optional)",
+    "saved": "Saved",
+    "failed": "Could not save",
+    "demo": "In demo mode changes stay on this device."
+  },
+  "rank": {
+    "title": "Ranking",
+    "week": "This week",
+    "all": "All time",
+    "friends": "Friends",
+    "aimag": "Aimag",
+    "national": "Mongolia",
+    "position": "#{n}",
+    "none": "—",
+    "soon": "Friends and aimag rankings are coming soon.",
+    "demo": "Rankings are not computed in demo mode.",
+    "more": "See leaderboard"
+  },
+  "radar": {
+    "title": "Skill map",
+    "clusters": "8 skills",
+    "domains": "4 SAT domains",
+    "current": "Now",
+    "previous": "Last full test",
+    "overlay": "Compare with the last test",
+    "empty": "Not enough data",
+    "noData": "Solve problems and your strengths and weaknesses will show up here.",
+    "start": "Go to the map",
+    "caption": "Share correct per skill (recent answers count more)",
+    "axes": {
+      "linEq": "Linear equations",
+      "linFn": "Linear functions, systems",
+      "ratio": "Ratios, percents",
+      "data": "Data, probability",
+      "stats": "Statistical inference",
+      "expr": "Expressions, equations",
+      "nonlin": "Nonlinear functions",
+      "geo": "Geometry, trigonometry",
+      "alg": "Algebra",
+      "adv": "Advanced Math",
+      "psda": "Problem-Solving & Data"
+    }
+  },
+  "mocks": {
+    "title": "Full tests",
+    "none": "No full tests yet.",
+    "take": "Take a full test",
+    "chart": "Estimated score over time",
+    "score": "Estimated score",
+    "time": "{m} min",
+    "route": {
+      "hard": "Harder module 2",
+      "easy": "Easier module 2"
+    },
+    "open": "See results",
+    "flagged": "Suspicious timing"
+  },
+  "achievements": {
+    "title": "Achievements",
+    "regions": "Region badges",
+    "none": "No badges yet.",
+    "all": "See all"
+  },
+  "quests": {
+    "title": "Today's quests"
+  },
+  "result": {
+    "title": "Full test results",
+    "score": "Estimated score",
+    "disclaimer": "This is Suprep's estimated score, not an official SAT score.",
+    "date": "Date",
+    "time": "Time used",
+    "correct": "Correct",
+    "route": "Module 2",
+    "domains": "By domain",
+    "questions": "Every question",
+    "module": "Module {n}",
+    "yours": "Your answer",
+    "right": "Correct answer",
+    "blank": "No answer",
+    "spent": "Time",
+    "explain": "Explanation",
+    "ask": "Ask Suu",
+    "compare": "Compare with an earlier test",
+    "compareWith": "Compare with which test?",
+    "noPrevious": "No earlier test to compare with.",
+    "notFound": "This test was not found.",
+    "loading": "Loading…",
+    "back": "Back to profile",
+    "flagged": "Answers came in too fast, so this test does not count for rankings."
+  },
+  "compare": {
+    "title": "Compare with an earlier test",
+    "score": "Score",
+    "delta": "Change",
+    "domains": "By domain",
+    "radar": "4-domain map",
+    "current": "This test",
+    "previous": "Earlier test",
+    "improved": "Topics that improved",
+    "worse": "Topics that got worse",
+    "none": "No notable change.",
+    "pp": "{n} pts"
+  }
+}
