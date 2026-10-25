@@ -22,7 +22,13 @@ export const loadShell = cache(async (): Promise<ShellData> => {
   try {
     const stats = await getStats(profile.id);
     return {
-      user: { name: profile.name, level: calculateLevel(stats.xp).level, xp: stats.xp, streak: stats.streak },
+      user: {
+        name: profile.name,
+        level: calculateLevel(stats.xp).level,
+        xp: stats.xp,
+        streak: stats.streak,
+        avatarId: profile.avatarId,
+      },
       settings,
       demo,
     };

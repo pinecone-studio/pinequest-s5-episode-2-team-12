@@ -45,3 +45,11 @@ describe('countdown', () => {
     expect(countdown('nope', Date.now())).toBeNull();
   });
 });
+
+test('isoWeekId', async () => {
+  const { isoWeekId } = await import('./time');
+  expect(isoWeekId('2026-10-26')).toBe('2026-W44'); // Monday
+  expect(isoWeekId('2026-10-25')).toBe('2026-W43'); // Sunday
+  expect(isoWeekId('2027-01-01')).toBe('2026-W53');
+  expect(isoWeekId('2024-12-30')).toBe('2025-W01');
+});

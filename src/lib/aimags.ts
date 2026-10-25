@@ -1,0 +1,26 @@
+// The student's home aimag (profile, aimag leaderboard). Only the aimag — never a finer location.
+export const AIMAGS = [
+  'Улаанбаатар',
+  'Архангай',
+  'Баян-Өлгий',
+  'Баянхонгор',
+  'Булган',
+  'Говь-Алтай',
+  'Говьсүмбэр',
+  'Дархан-Уул',
+  'Дорноговь',
+  'Дорнод',
+  'Дундговь',
+  'Завхан',
+  'Орхон',
+  'Өвөрхангай',
+  'Өмнөговь',
+  'Сүхбаатар',
+  'Сэлэнгэ',
+  'Төв',
+  'Увс',
+  'Ховд',
+  'Хөвсгөл',
+  'Хэнтий',
+] as const;
+export type Aimag = (typeof AIMAGS)[number];
