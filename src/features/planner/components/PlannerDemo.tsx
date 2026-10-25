@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { type FormEvent, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Pill } from '@/components/ui/Pill';
-import { usePlacementWeak } from '@/features/roadmap/components/RoadmapContinue';
+import { usePlacementWeak } from '@/features/roadmap/components/placement-weak';
 import type { RoadmapState } from '@/features/roadmap/types';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';

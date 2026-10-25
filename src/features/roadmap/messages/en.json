@@ -34,13 +34,6 @@
     "mid": "Medium",
     "strong": "Strong"
   },
-  "header": {
-    "xp": "Total XP",
-    "nextRegion": "Next region: {region}",
-    "regionProgress": "{done} / {total} stops",
-    "finished": "Every region done!",
-    "stopsDone": "{done}/26 stops"
-  },
   "map": {
     "label": "Map of Mongolia: a journey with 26 stops",
     "help": "Drag to move, pinch or scroll to zoom. Arrow keys move, + / − zoom.",
@@ -74,7 +67,10 @@
     "skippedTitle": "You have not taken the placement test",
     "skippedBody": "You are on the Medium level for now. Take the test so the problems fit you better.",
     "retake": "Retake the test",
-    "retakeBody": "The new result updates the stops you have not finished."
+    "retakeBody": "The new result updates the stops you have not finished.",
+    "prompt": "Take the placement test",
+    "skipShort": "Skip",
+    "skippedShort": "Take the test so the problems fit you better."
   },
   "demoStates": "Sample: every card state",
   "placement": {
@@ -184,5 +180,9 @@
     "weak": "Weak",
     "ok": "Medium",
     "strong": "Strong"
+  },
+  "trip": {
+    "chip": "{done} / {total} stops",
+    "label": "Trip progress: {done} of {total} stops done"
   }
 }

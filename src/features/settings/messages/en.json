@@ -1,0 +1,37 @@
+{
+  "title": "Settings",
+  "appearance": {
+    "title": "Appearance"
+  },
+  "exam": {
+    "title": "SAT test",
+    "date": "Test date",
+    "tz": "Time zone",
+    "tzHint": "The countdown runs to 00:00 of the test day in this zone.",
+    "zones": {
+      "Asia/Ulaanbaatar": "Ulaanbaatar (UTC+8)",
+      "Asia/Hovd": "Khovd, western aimags (UTC+7)",
+      "device": "This device's zone ({tz})"
+    }
+  },
+  "privacy": {
+    "title": "Privacy",
+    "hidePublic": "Hide me from the national and aimag leaderboards",
+    "friendsOnly": "Only my friends can see me",
+    "note": "Others see only your name, avatar and level. We never collect phone numbers or locations."
+  },
+  "language": {
+    "title": "Language",
+    "mn": "Монгол",
+    "en": "English (soon)"
+  },
+  "account": {
+    "title": "Account",
+    "demo": "You are in demo mode. Progress is saved on this device only.",
+    "anonymous": "You are using a demo account. Log in to keep your progress.",
+    "signedIn": "Signed in as {email}",
+    "login": "Log in / Sign up"
+  },
+  "saved": "Saved",
+  "failed": "Could not save"
+}

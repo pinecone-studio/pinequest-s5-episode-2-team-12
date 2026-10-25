@@ -61,7 +61,7 @@ export function JourneyMap({ stages, progress }: JourneyMapProps) {
       </header>
 
       <Link
-        href={routes.roadmap}
+        href={routes.home}
         className="group flex items-center gap-4 rounded-3xl border border-sage-2 bg-sage p-5 transition-colors hover:border-leaf"
       >
         <span

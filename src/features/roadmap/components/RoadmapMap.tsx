@@ -179,12 +179,15 @@ export function RoadmapMap({
   frontierNo,
   onOpen,
   className,
+  fullBleed = false,
 }: {
   views: StopView[];
   /** Current position; null when every stop is done. */
   frontierNo: number | null;
   onOpen: (no: number) => void;
   className?: string;
+  /** Edge to edge under the floating top bar (the home screen): no frame, controls clear the safe area. */
+  fullBleed?: boolean;
 }) {
   const t = useT('roadmap');
   const helpId = useId();
@@ -221,7 +224,7 @@ export function RoadmapMap({
     apply(centerOn([x, y - 70 / scale], box, scale));
   }, [apply, box, fit, frontierNo, narrow]);
 
-  // measure the box; first layout: whole map on wide screens, the current stop on phones
+  // measure the box; first layout: fly to the current stop (the whole map once every stop is done)
   const placed = useRef(false);
   useEffect(() => {
     const el = boxRef.current;
@@ -236,9 +239,9 @@ export function RoadmapMap({
   useEffect(() => {
     if (!box || !fit || placed.current) return;
     placed.current = true;
-    if (box.w < 768) locate();
+    if (frontierNo !== null) locate();
     else setView(fit);
-  }, [box, fit, locate]);
+  }, [box, fit, locate, frontierNo]);
 
   // wheel zoom needs a non-passive listener to stop the page from scrolling
   useEffect(() => {
@@ -386,7 +389,8 @@ export function RoadmapMap({
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
         className={cn(
-          'roadmap-stage relative h-full w-full overflow-hidden rounded-[26px] border border-line',
+          'roadmap-stage relative h-full w-full overflow-hidden',
+          !fullBleed && 'rounded-[26px] border border-line',
           dragging && 'is-dragging',
         )}
       >
@@ -457,7 +461,12 @@ export function RoadmapMap({
         )}
       </div>
 
-      <div className="absolute right-3 bottom-3 flex flex-col items-end gap-2">
+      <div
+        className={cn(
+          'absolute right-3 flex flex-col items-end gap-2',
+          fullBleed ? 'bottom-[max(16px,env(safe-area-inset-bottom))]' : 'bottom-3',
+        )}
+      >
         <button
           type="button"
           onClick={locate}

@@ -1,5 +1,7 @@
 // Aggregates every messages/*.json. Add a line here when a new feature folder gets messages.
 
+import auth_en from '@/features/auth/messages/en.json';
+import auth_mn from '@/features/auth/messages/mn.json';
 import cards_en from '@/features/cards/messages/en.json';
 import cards_mn from '@/features/cards/messages/mn.json';
 import desmos_en from '@/features/desmos/messages/en.json';
@@ -24,6 +26,8 @@ import progress_en from '@/features/progress/messages/en.json';
 import progress_mn from '@/features/progress/messages/mn.json';
 import roadmap_en from '@/features/roadmap/messages/en.json';
 import roadmap_mn from '@/features/roadmap/messages/mn.json';
+import settings_en from '@/features/settings/messages/en.json';
+import settings_mn from '@/features/settings/messages/mn.json';
 import tutor_en from '@/features/tutor/messages/en.json';
 import tutor_mn from '@/features/tutor/messages/mn.json';
 import type { Messages } from '@/lib/i18n';
@@ -32,6 +36,7 @@ import common_mn from './mn.json';
 
 const mn: Messages = {
   common: common_mn,
+  auth: auth_mn,
   cards: cards_mn,
   desmos: desmos_mn,
   exam: exam_mn,
@@ -44,11 +49,13 @@ const mn: Messages = {
   practice: practice_mn,
   progress: progress_mn,
   roadmap: roadmap_mn,
+  settings: settings_mn,
   tutor: tutor_mn,
 };
 
 const en: Messages = {
   common: common_en,
+  auth: auth_en,
   cards: cards_en,
   desmos: desmos_en,
   exam: exam_en,
@@ -61,6 +68,7 @@ const en: Messages = {
   practice: practice_en,
   progress: progress_en,
   roadmap: roadmap_en,
+  settings: settings_en,
   tutor: tutor_en,
 };
 

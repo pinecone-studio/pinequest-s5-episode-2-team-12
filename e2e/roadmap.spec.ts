@@ -32,14 +32,14 @@ async function answerCorrectly(page: Page) {
 
 test('placement → results → stop 1 → pass → stop 2 unlocks', async ({ page }) => {
   test.setTimeout(120_000);
-  await page.goto('/roadmap');
+  await page.goto('/');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
 
   // the roadmap is closed until the placement test
   await page
     .getByRole('region', { name: 'Аялал эхлэхийн өмнө' })
-    .getByRole('link', { name: 'Тест өгөх' })
+    .getByRole('link', { name: 'Түвшин тогтоох тест өгөх' })
     .click();
   await page.getByRole('button', { name: 'Тест эхлэх' }).click();
 
@@ -55,7 +55,7 @@ test('placement → results → stop 1 → pass → stop 2 unlocks', async ({ pa
   await expect(page.getByText('Энэ бол SAT оноо биш', { exact: false })).toBeVisible();
   await page.getByRole('link', { name: 'Аяллаа эхлэх' }).click();
 
-  await expect(page).toHaveURL(/\/roadmap$/);
+  await expect(page).toHaveURL(/:\d+\/$/);
   await page.getByRole('button', { name: /^1-р зогсоол, Өлгий/ }).click();
   await page.getByRole('dialog').getByRole('link', { name: 'Эхлэх' }).click();
 
@@ -77,16 +77,16 @@ test('placement → results → stop 1 → pass → stop 2 unlocks', async ({ pa
 });
 
 test('skipping the test opens the roadmap at Дунд with a persistent prompt', async ({ page }) => {
-  await page.goto('/roadmap');
+  await page.goto('/');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
-  await page.getByRole('button', { name: 'Алгасах (Дунд түвшин)' }).click();
+  await page.getByRole('button', { name: 'Алгасах', exact: true }).click();
   await expect(page.getByText('Түвшин тогтоох тест өгөөгүй байна')).toBeVisible();
   await expect(page.getByRole('button', { name: /^1-р зогсоол, Өлгий, .*нээлттэй$/ })).toBeVisible();
 });
 
 test('the map is keyboard reachable and opens a stop sheet', async ({ page }) => {
-  await page.goto('/roadmap?demo=states');
+  await page.goto('/?demo=states');
   const pin = page.getByRole('button', { name: /^5-р зогсоол, Улиастай/ });
   await pin.focus();
   await page.keyboard.press('Enter');

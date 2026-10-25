@@ -18,6 +18,22 @@ Prototype (дизайн): https://claude.ai/artifact/Qa2ruJcMEp3fZ38jzed8AP · �
 Supabase-ийн түлхүүргүй үед апп `src/mocks/`-ийн жишээ өгөгдлөөр ажиллана. Gemini-ийн түлхүүргүй үед Суу
 «Демо горим»-оор хариулна (`demo: true`).
 
+## Нэвтрэлт (Supabase Auth)
+
+Нүүр (`/`) нь нэвтэрсэн сурагчид газрын зураг, нэвтрээгүй хүнд зөвхөн «Нэвтрэх / Бүртгүүлэх», «Демо сурагчаар
+орох» товчтой дэлгэц харуулна. `src/proxy.ts` session-ийг шинэчилж, нэвтрээгүй хүнийг `/` руу буцаана.
+Supabase-гүй үед «Демо» нь зөвхөн cookie тавьж, өмнөх шигээ жишээ өгөгдлөөр ажиллана.
+
+Supabase төсөл дээр нэг удаа (Dashboard → Authentication):
+
+1. **Sign In / Providers**: Email (OTP), Google (Client ID/Secret), **Anonymous sign-ins** асаана (демо).
+2. **URL Configuration**: Redirect URL-д `http://localhost:3001/auth/callback` ба production домэйн нэмнэ.
+3. **Email Templates → Magic Link**: 6 оронтой код ирэхийн тулд `{{ .Token }}`-г загварт оруулна.
+4. `supabase/migrations/0007_profile_settings.sql`-г ажиллуулна (шинэ хэрэглэгч бүрт profile мөр үүснэ).
+
+`.env.local`-г git-д хэзээ ч оруулахгүй (`.gitignore`-д бий). Багийнханд хувийн чатаар дамжуулна;
+`SUPABASE_SERVICE_ROLE_KEY` бүх RLS-ийг тойрдог тул олон нийтийн суваг руу хэзээ ч бичихгүй.
+
 ## Бүтэц
 
 ```

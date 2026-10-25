@@ -1,0 +1,27 @@
+{
+  "entry": {
+    "lead": "Travel 26 stops across Mongolia and master every SAT Math topic.",
+    "login": "Log in / Sign up",
+    "demo": "Try as a demo student"
+  },
+  "login": {
+    "title": "Log in / Sign up",
+    "lead": "New here? An account is created automatically. No phone number needed.",
+    "google": "Continue with Google",
+    "or": "or",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "send": "Send code",
+    "codeSent": "We sent a 6-digit code to {email}. The link in the email works too.",
+    "code": "Login code",
+    "verify": "Log in",
+    "changeEmail": "Use another email",
+    "demo": "Try as a demo student",
+    "notConfigured": "Supabase is not configured here, so only demo mode works.",
+    "invalid": "The email or code is not valid.",
+    "failed": "Something went wrong. Please try again.",
+    "callbackError": "The login link is invalid or has expired.",
+    "back": "Back"
+  },
+  "signOut": "Log out"
+}
