@@ -1,0 +1,44 @@
+{
+  "title": "Flashcards",
+  "lead": "Learn the math English and the formulas with spaced repetition.",
+  "decks": {
+    "all": "All",
+    "words": "Words",
+    "formulas": "Formulas"
+  },
+  "topic": "Topic",
+  "allTopics": "All topics",
+  "current": "Current stop: {place}",
+  "stats": {
+    "due": "Due today",
+    "fresh": "New",
+    "learned": "Learned"
+  },
+  "flip": "Flip",
+  "show": "Show answer",
+  "grades": {
+    "again": "Again",
+    "hard": "Hard",
+    "good": "Good",
+    "easy": "Easy"
+  },
+  "in": {
+    "min": "{n} min",
+    "day": "{n} d"
+  },
+  "when": "When to use",
+  "example": "Example",
+  "draft": "Draft",
+  "done": "Done for today!",
+  "doneBody": "New and due cards come back tomorrow.",
+  "left": "{n} cards left",
+  "keys": "Space flip · 1–4 grade",
+  "admin": {
+    "title": "Review flashcards",
+    "lead": "Check drafted cards and approve them. Unapproved cards show as «Draft».",
+    "approve": "Approve",
+    "unapprove": "Undo",
+    "reviewed": "Approved",
+    "readOnly": "Read-only: Supabase is not configured or you are not an admin."
+  }
+}

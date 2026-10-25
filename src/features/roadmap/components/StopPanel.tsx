@@ -373,7 +373,7 @@ export function StopPanel({
                 {detail.cards.map((c) => (
                   <Link
                     key={`${c.deck}/${c.id}`}
-                    href={routes.deck(c.deck)}
+                    href={routes.flashcards(v.topic.id)}
                     className="rounded-xl border border-line bg-paper px-2.5 py-1 text-[12.5px] font-semibold text-ink-2 hover:border-leaf"
                   >
                     {c.front} <span className="text-ink-3">· {c.back}</span>

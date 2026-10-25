@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { routes } from '@/lib/routes';
 import { getDb } from '@/lib/supabase/server';
 import { getAdminDb } from '@/server/db';
+import { recordMistakes } from '@/server/mistakes';
 import { awardXp } from '@/server/xp';
 import type { Question } from '@/types';
 import { MOCK } from './config';
@@ -170,6 +171,13 @@ export async function submitModule(input: {
   if ('error' in r) return { ok: false, reason: r.error };
   if (s) {
     if (!(await saveRow(s, r.attempt))) return { ok: false, reason: 'database_error' };
+    const graded = r.attempt.modules.find((m) => m.no === input.no)?.answers ?? [];
+    // blanks are not mistakes the notebook can teach from; wrong answers are
+    await recordMistakes(
+      s.userId,
+      graded.filter((a) => a.answer && !a.correct).map((a) => ({ qid: a.qid, chosen: a.answer })),
+      'mock',
+    );
     if (r.attempt.finishedAt && !r.attempt.flagged)
       await awardXp(s.userId, XP_FOR_MOCK, 'exam', `mock:${r.attempt.id}`);
     if (r.attempt.finishedAt) revalidatePath(routes.profile);

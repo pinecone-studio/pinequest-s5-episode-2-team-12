@@ -6,6 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { routes } from '@/lib/routes';
 import { getDb } from '@/lib/supabase/server';
 import { getAdminDb } from '@/server/db';
+import { recordMistakes } from '@/server/mistakes';
 import { awardBadges, awardXp } from '@/server/xp';
 import { ROADMAP } from './config';
 import { progressRow, stopRow } from './lib/db-map';
@@ -76,6 +77,11 @@ async function saveAttempts(
       hint_used: a.hintUsed,
       at: new Date(a.at).toISOString(),
     })),
+  );
+  await recordMistakes(
+    userId,
+    attempts.flatMap((a, i) => (a.correct ? [] : [{ qid: a.qid, chosen: answers[i]?.answer ?? '' }])),
+    context,
   );
   return error;
 }

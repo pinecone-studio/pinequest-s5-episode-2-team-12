@@ -16,3 +16,14 @@ export function getAdminDb(): SupabaseClient | null {
   }
   return admin;
 }
+
+/**
+ * Client for reading the question bank (migration 0009 hides it from students). Service role when set,
+ * otherwise the request's client (admins can still read); null without Supabase. Callers filter `reviewed`.
+ */
+export async function getQuestionsDb(): Promise<SupabaseClient | null> {
+  const admin = getAdminDb();
+  if (admin) return admin;
+  const { getDb } = await import('@/lib/supabase/server');
+  return getDb();
+}
