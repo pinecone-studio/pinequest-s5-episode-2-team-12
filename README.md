@@ -91,3 +91,4 @@ Branch шинэчлэх: `git checkout main && git pull && git checkout <branch>
 - Хуудас хооронд линк зөвхөн `routes`-оор: `routes.lesson(id)`, `routes.deck(id)`.
 - API түлхүүр (Gemini, Supabase service role) хэзээ ч браузерт байхгүй: зөвхөн `.env.local` ба `src/server`.
 - Цаг/өдрийн хил `Asia/Ulaanbaatar` (`src/lib/time.ts`).
+# SuPrep
