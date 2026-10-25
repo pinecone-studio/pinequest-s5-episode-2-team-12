@@ -4,6 +4,9 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useId, useMemo, useState } from 'react';
 import { CatHead } from '@/components/brand';
 import { Button } from '@/components/ui/Button';
+import { itemById } from '@/features/shop/catalog';
+import { useWallet } from '@/features/shop/lib/use-wallet';
+import type { ServerWallet } from '@/features/shop/queries';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
 import { SAMPLE_AVAILABLE, sampleState } from '../lib/sample';
@@ -90,14 +93,19 @@ export function RoadmapView({
   demo,
   server,
   sample = false,
+  wallet = null,
 }: {
   demo: boolean;
   server: RoadmapState | null;
   sample?: boolean;
+  /** For the equipped map skin (shop). */
+  wallet?: ServerWallet | null;
 }) {
   const t = useT('roadmap');
   const router = useRouter();
   const loaded = useRoadmapState(demo, server);
+  const { equipped } = useWallet(demo, wallet);
+  const skin = equipped.skin ? itemById(equipped.skin)?.look : undefined;
   const state = useMemo(() => (sample ? sampleState() : loaded.state), [sample, loaded.state]);
   const open = isOpen(state);
   const views = useMemo(() => {
@@ -144,6 +152,7 @@ export function RoadmapView({
         frontierNo={fr ?? (sample ? 5 : null)}
         onOpen={setSelected}
         selectedNo={selected}
+        skin={skin}
         className="h-full w-full"
         fullBleed
       />

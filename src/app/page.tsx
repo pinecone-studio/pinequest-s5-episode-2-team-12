@@ -58,7 +58,7 @@ export default async function HomePage({
   return (
     <AppShell {...shell} variant="map">
       <h1 className="sr-only">{getT('roadmap')('pages.roadmap.title')}</h1>
-      <RoadmapView demo={!userId} server={server} sample={sp.demo === 'states'} />
+      <RoadmapView demo={!userId} server={server} sample={sp.demo === 'states'} wallet={shell.wallet} />
     </AppShell>
   );
 }

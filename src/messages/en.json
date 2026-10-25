@@ -83,6 +83,7 @@
       "save": "Save",
       "saved": "Date saved",
       "passed": "This date has passed. Pick your next test."
-    }
+    },
+    "gems": "gems"
   }
 }

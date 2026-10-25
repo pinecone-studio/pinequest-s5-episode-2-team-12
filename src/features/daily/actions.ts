@@ -4,9 +4,11 @@
 import { mockBank } from '@/features/exam/engine';
 import { type PublicQuestion, toPublic } from '@/features/exam/lib/mock';
 import { correctAnswerText } from '@/features/roadmap/lib/grade';
+import { EARN } from '@/features/shop/catalog';
 import { getDb } from '@/lib/supabase/server';
 import { dayKey } from '@/lib/time';
 import { getAdminDb } from '@/server/db';
+import { afterStudy, awardGems } from '@/server/gems';
 import { recordMistakes } from '@/server/mistakes';
 import { awardXp } from '@/server/xp';
 import { answerDaily as answerStep, type DailyAttempt, startDaily as startStep } from './lib/daily';
@@ -150,7 +152,50 @@ export async function answerDaily(input: {
       .eq('day', day);
     if (!r.last.correct && r.last.answer)
       await recordMistakes(s.userId, [{ qid: r.last.qid, chosen: r.last.answer }], 'daily');
-    if (a.finishedAt && !a.flagged) await awardXp(s.userId, XP_FOR_DAILY, 'quest', `daily:${day}`);
+    if (a.finishedAt && !a.flagged) {
+      await awardXp(s.userId, XP_FOR_DAILY, 'quest', `daily:${day}`);
+      await awardGems(s.userId, EARN.daily, 'daily', `daily:${day}`);
+      await afterStudy(s.userId);
+    }
   }
   return stepOf(r.attempt, !s, last);
+}
+
+/** Spends one hint token (shop «3 сэжүүр») on the current question. Demo: the browser already spent it. */
+export async function dailyHint(input: {
+  attempt?: DailyAttempt;
+}): Promise<{ ok: true; hint: string } | { ok: false; reason: string }> {
+  const day = dayKey();
+  const s = await session();
+  const { bank } = mockBank();
+  let current: DailyAttempt | null = null;
+  if (s) {
+    const { data } = await s.admin
+      .from('daily_attempts')
+      .select('*')
+      .eq('user_id', s.userId)
+      .eq('day', day)
+      .maybeSingle();
+    current = data ? fromRow(day, data as Row) : null;
+  } else current = input.attempt?.day === day ? input.attempt : null;
+  if (!current || current.finishedAt) return { ok: false, reason: 'not_found' };
+  const q = bank.get(current.ids[current.answers.length]);
+  if (!q?.hint) return { ok: false, reason: 'no_hint' };
+  if (s) {
+    const { data: inv } = await s.admin
+      .from('inventory')
+      .select('qty')
+      .eq('user_id', s.userId)
+      .eq('item_id', 'hints-3')
+      .maybeSingle();
+    if (!inv || inv.qty < 1) return { ok: false, reason: 'no_tokens' };
+    const { error } = await s.admin
+      .from('inventory')
+      .update({ qty: inv.qty - 1 })
+      .eq('user_id', s.userId)
+      .eq('item_id', 'hints-3')
+      .eq('qty', inv.qty); // only if nobody spent it in between
+    if (error) return { ok: false, reason: 'database_error' };
+  }
+  return { ok: true, hint: q.hint };
 }

@@ -271,6 +271,7 @@ export function RoadmapMap({
   fullBleed = false,
   cluster = true,
   selectedNo = null,
+  skin,
 }: {
   views: StopView[];
   /** Current position; null when every stop is done. */
@@ -283,6 +284,8 @@ export function RoadmapMap({
   cluster?: boolean;
   /** The stop whose panel is open: the camera flies to it and its label is highlighted. */
   selectedNo?: number | null;
+  /** Shop map skin: 'winter' | 'night'. */
+  skin?: string;
 }) {
   const t = useT('roadmap');
   const helpId = useId();
@@ -555,6 +558,7 @@ export function RoadmapMap({
         tabIndex={0}
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
+        data-skin={skin}
         className={cn(
           'roadmap-stage relative h-full w-full overflow-clip',
           !fullBleed && 'rounded-[26px] border border-line',
