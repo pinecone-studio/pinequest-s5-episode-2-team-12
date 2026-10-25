@@ -39,6 +39,13 @@ export const ROADMAP = {
 
   xp: { placement: 30, stopPass: 40, perStar: 10, testOut: 20, attempt: 5, region: 50, final: 100 },
 
+  /** Typical minutes per problem by difficulty, for the stop panel's time estimate. */
+  minutesPer: { easy: 1.2, medium: 1.8, hard: 2.6 } satisfies Record<Difficulty, number>,
+  /** Attempted at least once with this best share or lower → the panel shows the topic as weak. */
+  weakBest: 0.5,
+  /** Best share at or above this → strong, whatever the placement said. */
+  strongBest: 0.9,
+
   /** Serve unreviewed questions. Always on in development/tests; production needs reviewed: true. */
   allowUnreviewed: process.env.NODE_ENV !== 'production' || process.env.ROADMAP_ALLOW_UNREVIEWED === '1',
 } as const;

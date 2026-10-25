@@ -88,7 +88,10 @@ prototype/                prototype-ийн код, зөвхөн лавлагаа
   Биомын өнгө, сүүдэр: `scripts/roadmap/terrain.ts`. Чимэглэл (мод, гэр): `features/roadmap/props.ts`.
 - DB: `supabase/migrations/0006_roadmap.sql`. Бичилт Server Action → service role (`src/server/db.ts`).
   Админ: `profiles.role = 'admin'` (зөвхөн service role/админ өөрчилнө) → `/admin/questions`.
-- `/roadmap?demo=states` — картын бүх төлөвийг харуулна.
+- Зогсоолын самбар (пин дарахад): газрын нэг мөр `features/roadmap/content/places.ts`, сэдвийн тайлбар, сурах
+  зүйлс, томьёо, холбоос (флэш карт, Desmos, хичээл) `features/roadmap/content/guides.ts`. **Бүгд `reviewed: false`
+  ноорог — багш хянаж `true` болгоно.** Тест: `content/details.test.ts` (холбоос бүр, KaTeX томьёо бүр шалгагдана).
+- `/?demo=states` — картын бүх төлөвийг харуулна (`/roadmap` → `/` руу шилжинэ).
 
 ## GitHub: Issue → Branch → Тест → Код → Commit → PR
 

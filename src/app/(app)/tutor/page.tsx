@@ -3,7 +3,7 @@ import { getContext } from '@/features/tutor/queries';
 import { getT } from '@/lib/i18n';
 import type { TutorContextKind } from '@/types';
 
-const KINDS: TutorContextKind[] = ['lesson', 'desmos', 'question', 'mistake', 'general'];
+const KINDS: TutorContextKind[] = ['lesson', 'desmos', 'question', 'mistake', 'topic', 'general'];
 
 // Section G · G4 · G5 — /tutor?kind=question&id=a1 opens a chat about that problem; no params = free chat.
 export default async function TutorPage({

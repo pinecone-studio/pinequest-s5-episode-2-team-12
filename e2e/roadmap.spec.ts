@@ -90,7 +90,41 @@ test('the map is keyboard reachable and opens a stop sheet', async ({ page }) =>
   const pin = page.getByRole('button', { name: /^5-р зогсоол, Улиастай/ });
   await pin.focus();
   await page.keyboard.press('Enter');
-  await expect(page.getByRole('dialog', { name: 'Улиастай' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: '5-р зогсоол, Улиастай' })).toBeVisible();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.getByRole('dialog', { name: '6-р зогсоол, Мөрөн' })).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).toHaveCount(0);
+});
+
+test('map → pin → stop panel → start the stop', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await page.getByRole('button', { name: 'Алгасах', exact: true }).click();
+  await expect(page.getByRole('application', { name: /газрын зураг/i })).toBeVisible();
+  await page.getByRole('button', { name: /^1-р зогсоол, Өлгий/ }).click();
+  const panel = page.getByRole('dialog', { name: '1-р зогсоол, Өлгий' });
+  await expect(panel.getByText(/казах соёл/)).toBeVisible();
+  await expect(panel.getByText('Гол томьёо')).toBeVisible();
+  await expect(panel.getByRole('link', { name: 'Суугаас асуух' })).toHaveAttribute(
+    'href',
+    '/tutor?kind=topic&id=1',
+  );
+  await panel.getByRole('link', { name: 'Эхлэх' }).click();
+  await expect(page).toHaveURL(/\/roadmap\/stop\/1$/);
+  await expect(page.getByText(/Бодлого 1 \/ \d+/).first()).toBeVisible();
+});
+
+test('a locked stop shows what unlocks it and can be previewed', async ({ page }) => {
+  await page.goto('/?demo=states');
+  // the current pin bobs, so open it from the keyboard (Playwright waits for a still target to click)
+  await page.getByRole('button', { name: /^5-р зогсоол, Улиастай/ }).focus();
+  await page.keyboard.press('Enter');
+  for (let i = 0; i < 4; i++) await page.keyboard.press('ArrowRight');
+  const panel = page.getByRole('dialog', { name: '9-р зогсоол, Хархорин' });
+  await expect(panel.getByText(/дуусгавал нээгдэнэ/)).toBeVisible();
+  await expect(panel.getByRole('link', { name: /^(Эхлэх|Үргэлжлүүлэх)$/ })).toHaveCount(0);
+  await panel.getByRole('button', { name: 'Урьдчилж харах' }).click();
+  await expect(panel.getByText('Гол томьёо')).toBeVisible();
 });

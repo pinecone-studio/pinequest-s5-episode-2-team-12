@@ -43,9 +43,12 @@ export function StopPlayer({
   demo,
   server,
   serverHistory,
+  forceIntro = false,
 }: {
   no: number;
   testOut: boolean;
+  /** Start with the intro screens whatever the mastery (from «Товч хичээл үзэх»). */
+  forceIntro?: boolean;
   pool: Question[];
   intro: IntroScreen[];
   demo: boolean;
@@ -92,7 +95,9 @@ export function StopPlayer({
       }),
     );
     setPhase(
-      round === 0 && !testOut && intro.length && ROADMAP.autoIntro.includes(mastery) ? 'intro' : 'play',
+      round === 0 && !testOut && intro.length && (forceIntro || ROADMAP.autoIntro.includes(mastery))
+        ? 'intro'
+        : 'play',
     );
     setI(0);
     setValue('');

@@ -1,19 +1,18 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useId, useMemo, useState } from 'react';
+import { useCallback, useId, useMemo, useState } from 'react';
 import { CatHead } from '@/components/brand';
 import { Button } from '@/components/ui/Button';
-import { Sheet } from '@/components/ui/Sheet';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
 import { SAMPLE_AVAILABLE, sampleState } from '../lib/sample';
-import { isOpen, masteryAt } from '../lib/state';
+import { isOpen } from '../lib/state';
 import { canRetake, frontier } from '../lib/unlock';
-import { type StopView, stopViews } from '../lib/view';
+import { stopViews } from '../lib/view';
 import type { RoadmapState } from '../types';
 import { RoadmapMap } from './RoadmapMap';
-import { StopCard } from './StopCard';
+import { StopPanel } from './StopPanel';
 import { skip, useRoadmapState } from './store';
 
 const ctaClass =
@@ -23,63 +22,6 @@ const lime = {
   '--edge': 'var(--c-lime-2)',
   color: 'var(--c-on-lime)',
 } as React.CSSProperties;
-const soft = {
-  '--face': 'var(--c-sage)',
-  '--edge': 'var(--c-sage-2)',
-  color: 'var(--c-leaf-ink)',
-} as React.CSSProperties;
-
-function SheetBody({ v, state, open }: { v: StopView; state: RoadmapState; open: boolean }) {
-  const t = useT('roadmap');
-  const mastery = masteryAt(state, v.stop.no);
-  const done = v.status === 'completed' || v.status === 'tested-out';
-  return (
-    <div className="flex flex-col gap-4">
-      <StopCard v={v} size="full" className="border-0 p-0" />
-      <dl className="grid grid-cols-2 gap-2 text-[13px]">
-        {[
-          [t('sheet.masteryLabel'), t(`mastery.${mastery}`)],
-          [t('sheet.setLabel'), t('sheet.set', { n: v.ring.total })],
-          ...(v.progress.attempts > 0
-            ? [
-                [t('sheet.bestLabel'), `${Math.round(v.progress.best * 100)}%`],
-                [t('sheet.attemptsLabel'), String(v.progress.attempts)],
-              ]
-            : []),
-        ].map(([k, val]) => (
-          <div key={k} className="rounded-2xl bg-paper-2 px-3 py-2">
-            <dt className="text-ink-3">{k}</dt>
-            <dd className="font-bold text-ink tnum">{val}</dd>
-          </div>
-        ))}
-      </dl>
-
-      {!open ? (
-        <p className="rounded-2xl bg-amber-soft px-4 py-3 text-sm font-semibold text-amber">
-          {t('sheet.closedRoadmap')}
-        </p>
-      ) : v.status === 'locked' ? (
-        <p className="rounded-2xl bg-paper-2 px-4 py-3 text-sm font-semibold text-ink-2">
-          {t('sheet.locked')}
-        </p>
-      ) : (
-        <div className="flex flex-col gap-2">
-          <Link href={routes.roadmapStop(v.stop.no)} className={ctaClass} style={done ? soft : lime}>
-            {done ? t('sheet.replay') : v.status === 'current' ? t('sheet.continue') : t('sheet.start')}
-          </Link>
-          {!done && mastery === 'strong' && (
-            <>
-              <Link href={routes.roadmapStop(v.stop.no, { testOut: true })} className={ctaClass} style={soft}>
-                {t('sheet.testOut')}
-              </Link>
-              <p className="text-[12.5px] text-ink-3">{t('sheet.testOutHint')}</p>
-            </>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
 
 /** One compact card floating over the map: the most important message for this student, or nothing. */
 function MapPrompt({
@@ -185,6 +127,8 @@ export function RoadmapView({
               ? 'retake'
               : null;
 
+  const closePanel = useCallback(() => setSelected(null), []);
+
   const onSkip = async () => {
     setBusy(true);
     await skip(demo);
@@ -199,6 +143,7 @@ export function RoadmapView({
         views={views}
         frontierNo={fr ?? (sample ? 5 : null)}
         onOpen={setSelected}
+        selectedNo={selected}
         className="h-full w-full"
         fullBleed
       />
@@ -245,9 +190,16 @@ export function RoadmapView({
         {t('trip.chip', { done, total: views.length })}
       </p>
 
-      <Sheet open={sel !== undefined} onClose={() => setSelected(null)} label={sel ? sel.stop.place : ''}>
-        {sel && <SheetBody v={sel} state={state} open={open || sample} />}
-      </Sheet>
+      <StopPanel
+        v={sel}
+        views={views}
+        state={state}
+        open={open || sample}
+        demo={demo}
+        history={loaded.history}
+        onClose={closePanel}
+        onMove={setSelected}
+      />
     </div>
   );
 }

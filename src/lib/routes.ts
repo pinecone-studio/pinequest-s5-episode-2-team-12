@@ -31,8 +31,8 @@ export const routes = {
   lesson: (id: string) => `/lesson/${seg(id)}`,
 
   // A · roadmap («Монголын аялал»); the map itself is `home`
-  roadmapStop: (no: number, opts: { testOut?: boolean } = {}) =>
-    `/roadmap/stop/${no}${qs({ testout: opts.testOut })}`,
+  roadmapStop: (no: number, opts: { testOut?: boolean; intro?: boolean } = {}) =>
+    `/roadmap/stop/${no}${qs({ testout: opts.testOut, intro: opts.intro })}`,
   placement: '/roadmap/placement',
   placementResults: '/roadmap/placement/results',
   adminQuestions: '/admin/questions',

@@ -63,6 +63,8 @@ const TERRAIN_SRCSET = [1024, 2048, 3072].map((w) => `/map/terrain-${w}.webp ${w
 const CLUSTER_ZOOM = 1.35;
 const LABEL_ZOOM = 1.4;
 const CLUSTER_RADIUS = 30;
+/** Pins closer than this would overlap as tap targets, so they cluster at any zoom. */
+const OVERLAP_RADIUS = 22;
 const FLY_MS = 650;
 
 /** Shadow under the country and the layered soil/rock edge. */
@@ -268,6 +270,7 @@ export function RoadmapMap({
   className,
   fullBleed = false,
   cluster = true,
+  selectedNo = null,
 }: {
   views: StopView[];
   /** Current position; null when every stop is done. */
@@ -278,6 +281,8 @@ export function RoadmapMap({
   fullBleed?: boolean;
   /** Merge crowded pins into clusters when zoomed out. */
   cluster?: boolean;
+  /** The stop whose panel is open: the camera flies to it and its label is highlighted. */
+  selectedNo?: number | null;
 }) {
   const t = useT('roadmap');
   const helpId = useId();
@@ -324,6 +329,15 @@ export function RoadmapMap({
     },
     [],
   );
+
+  // a panel opened: zoom toward the stop, keeping it clear of the side panel (desktop) or the sheet (phone)
+  useEffect(() => {
+    if (selectedNo === null || !box || !fit) return;
+    const [x, y] = POINTS[selectedNo];
+    const scale = Math.max(viewRef.current.scale, fit.scale * LABEL_ZOOM * 1.15);
+    const target = narrow ? { x: box.w / 2, y: box.h * 0.27 } : { x: (box.w - 440) / 2, y: box.h / 2 };
+    fly({ scale, x: target.x - x * scale, y: target.y - y * scale });
+  }, [selectedNo, box, fit, narrow, fly]);
 
   const locate = useCallback(() => {
     if (!box || !fit) return;
@@ -467,7 +481,7 @@ export function RoadmapMap({
 
   const frontierIndex = frontierNo ?? 27;
   // the hover card covers too much of a phone screen; there the ring + red label mark the current stop
-  const floatNo = narrow ? null : (hover ?? frontierNo);
+  const floatNo = narrow || selectedNo !== null ? null : (hover ?? frontierNo);
   const zoom = fit ? view.scale / fit.scale : 1;
 
   // in layer px (scale applied, offset not): priority = current stop, then route order
@@ -475,9 +489,11 @@ export function RoadmapMap({
     () =>
       [...views].sort(
         (a, b) =>
-          Number(b.stop.no === frontierNo) - Number(a.stop.no === frontierNo) || a.stop.no - b.stop.no,
+          Number(b.stop.no === selectedNo) - Number(a.stop.no === selectedNo) ||
+          Number(b.stop.no === frontierNo) - Number(a.stop.no === frontierNo) ||
+          a.stop.no - b.stop.no,
       ),
-    [views, frontierNo],
+    [views, frontierNo, selectedNo],
   );
   const screen = useCallback(
     (no: number) => ({ id: no, x: POINTS[no][0] * view.scale, y: POINTS[no][1] * view.scale }),
@@ -486,10 +502,11 @@ export function RoadmapMap({
 
   const { singles, clusters } = useMemo(() => {
     const pins = order.map((v) => screen(v.stop.no));
-    if (!cluster || zoom >= CLUSTER_ZOOM) return { singles: pins.map((p) => p.id), clusters: [] };
-    const keep = new Set(frontierNo ? [frontierNo] : []);
-    return clusterPins(pins, CLUSTER_RADIUS, keep);
-  }, [order, screen, cluster, zoom, frontierNo]);
+    if (!cluster) return { singles: pins.map((p) => p.id), clusters: [] };
+    const keep = new Set([frontierNo, selectedNo].filter((n): n is number => n !== null));
+    // zoomed out: merge neighbours; zoomed in: merge only pins that would sit on top of each other
+    return clusterPins(pins, zoom < CLUSTER_ZOOM ? CLUSTER_RADIUS : OVERLAP_RADIUS, keep);
+  }, [order, screen, cluster, zoom, frontierNo, selectedNo]);
   const visible = useMemo(() => new Set(singles), [singles]);
 
   // labels: all of them when zoomed in, otherwise only the current / hovered stop; callouts when crowded
@@ -497,9 +514,10 @@ export function RoadmapMap({
     if (flying) return new Map();
     const want = order.filter(
       (v) =>
-        visible.has(v.stop.no) && (zoom >= LABEL_ZOOM || v.stop.no === frontierNo || v.stop.no === hover),
+        visible.has(v.stop.no) &&
+        (zoom >= LABEL_ZOOM || v.stop.no === frontierNo || v.stop.no === hover || v.stop.no === selectedNo),
     );
-    const force = new Set([frontierNo, hover].filter((n): n is number => n !== null));
+    const force = new Set([selectedNo, frontierNo, hover].filter((n): n is number => n !== null));
     const chips = views
       .filter(
         (v) =>
@@ -521,7 +539,7 @@ export function RoadmapMap({
       chips,
       !narrow,
     );
-  }, [order, views, visible, zoom, frontierNo, hover, singles, screen, flying, floatNo, narrow]);
+  }, [order, views, visible, zoom, frontierNo, hover, singles, screen, flying, floatNo, narrow, selectedNo]);
 
   const placeName = (no: number) => STOPS.find((s) => s.no === no)?.place ?? '';
 
@@ -538,7 +556,7 @@ export function RoadmapMap({
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
         className={cn(
-          'roadmap-stage relative h-full w-full overflow-hidden',
+          'roadmap-stage relative h-full w-full overflow-clip',
           !fullBleed && 'rounded-[26px] border border-line',
           dragging && 'is-dragging',
         )}
@@ -588,7 +606,11 @@ export function RoadmapMap({
                     key={v.stop.no}
                     className="roadmap-pin"
                     data-status={v.status}
-                    style={{ left: x, top: y, zIndex: floatNo === v.stop.no ? 30 : isFrontier ? 20 : 10 }}
+                    style={{
+                      left: x,
+                      top: y,
+                      zIndex: selectedNo === v.stop.no || floatNo === v.stop.no ? 30 : isFrontier ? 20 : 10,
+                    }}
                   >
                     <span className="roadmap-shadow" aria-hidden="true" />
                     {isFrontier && <span className="roadmap-ring" aria-hidden="true" />}
@@ -699,6 +721,7 @@ export function RoadmapMap({
                     className={cn(
                       'roadmap-label',
                       l.id === frontierNo && 'is-current',
+                      l.id === selectedNo && 'is-selected',
                       l.leader && 'is-callout',
                     )}
                     data-status={v?.status}

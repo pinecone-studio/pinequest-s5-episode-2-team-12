@@ -22,7 +22,7 @@ export type Profile = {
 };
 
 export type TutorMode = 'hint' | 'explain' | 'desmos' | 'similar' | 'translate';
-export type TutorContextKind = 'lesson' | 'desmos' | 'question' | 'mistake' | 'general';
+export type TutorContextKind = 'lesson' | 'desmos' | 'question' | 'mistake' | 'topic' | 'general';
 export type TutorContext = {
   kind: TutorContextKind;
   id?: string;
