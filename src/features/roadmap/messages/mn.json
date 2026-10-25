@@ -41,7 +41,7 @@
     "zoomOut": "Жижигрүүлэх",
     "fit": "Бүтэн газрын зураг",
     "locate": "Одоогийн байрлал",
-    "attribution": "Хил: Natural Earth (нийтийн өмч)",
+    "attribution": "Хил, нуур: Natural Earth (нийтийн өмч) · Өндөршил: AWS Terrain Tiles (SRTM, GMTED, ETOPO)",
     "role": "газрын зураг"
   },
   "sheet": {
@@ -184,5 +184,9 @@
   "trip": {
     "chip": "{done} / {total} зогсоол",
     "label": "Аяллын явц: {total}-аас {done} зогсоол дууссан"
+  },
+  "pin": {
+    "passed": "Давсан",
+    "cluster": "{n} зогсоол: {names}. Дарж томруулна."
   }
 }

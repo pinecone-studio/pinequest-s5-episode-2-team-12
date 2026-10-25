@@ -83,6 +83,9 @@ prototype/                prototype-ийн код, зөвхөн лавлагаа
   Board-оос зөвхөн ангилал (domain/skill/difficulty/format) авсан. Production-д зөвхөн `reviewed: true` гарна.
 - `bun run roadmap:check-answers` — хариуг тоогоор шалгана · `bun run roadmap:import [-- file.csv] [--dry-run]`
   — JSON/CSV-г шалгаад Supabase руу · `bun run roadmap:map` — газрын зургийг Natural Earth-оос дахин үүсгэнэ.
+- Газрын зургийн рельеф: `bun run roadmap:terrain` — AWS Terrain Tiles (өндөршил) ба Natural Earth (нуур)-ыг татаж
+  (`scripts/roadmap/.cache`, git-д орохгүй), `public/map/terrain-{1024,2048,3072}.webp`-г дахин bake хийнэ.
+  Биомын өнгө, сүүдэр: `scripts/roadmap/terrain.ts`. Чимэглэл (мод, гэр): `features/roadmap/props.ts`.
 - DB: `supabase/migrations/0006_roadmap.sql`. Бичилт Server Action → service role (`src/server/db.ts`).
   Админ: `profiles.role = 'admin'` (зөвхөн service role/админ өөрчилнө) → `/admin/questions`.
 - `/roadmap?demo=states` — картын бүх төлөвийг харуулна.

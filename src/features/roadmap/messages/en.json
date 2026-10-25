@@ -41,7 +41,7 @@
     "zoomOut": "Zoom out",
     "fit": "Whole map",
     "locate": "Current position",
-    "attribution": "Borders: Natural Earth (public domain)",
+    "attribution": "Borders, lakes: Natural Earth (public domain) · Elevation: AWS Terrain Tiles (SRTM, GMTED, ETOPO)",
     "role": "map"
   },
   "sheet": {
@@ -184,5 +184,9 @@
   "trip": {
     "chip": "{done} / {total} stops",
     "label": "Trip progress: {done} of {total} stops done"
+  },
+  "pin": {
+    "passed": "Passed",
+    "cluster": "{n} stops: {names}. Click to zoom in."
   }
 }

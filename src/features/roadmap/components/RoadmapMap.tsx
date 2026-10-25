@@ -1,7 +1,9 @@
 'use client';
-// Isometric map of Mongolia with the 26 stops. The flat projected map (map/mongolia.generated.ts) is tilted
-// with one affine matrix; pins and cards are HTML buttons positioned with the same matrix so they stay upright,
-// crisp and keyboard-focusable. Pan: drag / arrows. Zoom: wheel / pinch / + −. No map library.
+// Map of Mongolia with the 26 stops. The terrain is a baked image (scripts/roadmap/build-terrain.ts: real relief
+// from a DEM, biome colors, lakes) in the same projection as the borders and points (map/mongolia.generated.ts);
+// one affine matrix tilts both, and a stack of offset outlines makes the soil-and-rock slab edge. Pins, clusters
+// and labels are HTML so they stay upright, crisp and keyboard-focusable. Pan: drag / arrows. Zoom: wheel /
+// pinch / + −. No map library, no WebGL.
 import {
   memo,
   type PointerEvent as ReactPointerEvent,
@@ -17,7 +19,6 @@ import { useT } from '@/lib/i18n-client';
 import {
   centerOn,
   clampView,
-  declutter,
   fitView,
   isoMatrix,
   type Pt,
@@ -30,41 +31,43 @@ import {
   ZOOM,
   zoomAt,
 } from '../lib/iso';
+import { CHIP, clusterPins, FLOAT, labelWidth, placeLabels } from '../lib/labels';
 import { type StopView, stopAriaLabel } from '../lib/view';
 import { MAP } from '../map/mongolia.generated';
 import { STOPS } from '../stops';
-import type { StopStatus } from '../types';
 import { StopCard } from './StopCard';
-import { CheckIcon, LockIcon } from './TopicIcon';
+import { CheckIcon, LockIcon, StarRow } from './TopicIcon';
 
 const ISO = isoMatrix(MAP.width, MAP.height);
 const MATRIX = svgMatrix(ISO);
+const CSS_MATRIX = `matrix(${[ISO.a, ISO.b, ISO.c, ISO.d, ISO.e, ISO.f].map((n) => +n.toFixed(5)).join(',')})`;
 const CONTENT: Size = { w: ISO.width, h: ISO.height };
 const POINTS: Record<number, Pt> = Object.fromEntries(
   STOPS.map((s) => [s.no, toScreen(ISO, MAP.points[s.no])]),
 );
 const SEGMENTS = routeSegments(STOPS.map((s) => POINTS[s.no]));
-const EXTRUDE = Array.from({ length: Math.ceil(TILT.depth / 2) }, (_, i) => TILT.depth - i * 2);
+const TREES = MAP.props.trees.map((p) => toScreen(ISO, p));
+const GERS = MAP.props.gers.map((p) => toScreen(ISO, p));
 
-const TILE: Record<StopStatus, string> = {
-  locked: 'var(--c-line-2)',
-  available: 'var(--c-lime)',
-  current: 'var(--c-lime)',
-  completed: 'var(--c-leaf)',
-  'tested-out': 'var(--c-leaf)',
-};
+/** Slab edge, top to bottom: grass lip, topsoil, subsoil, rock, bedrock (1.5px steps). */
+const STRATA = Array.from({ length: Math.ceil(TILT.depth / 1.5) }, (_, i) => {
+  const dy = TILT.depth - i * 1.5;
+  const f = dy / TILT.depth;
+  const layer = f < 0.12 ? 'lip' : f < 0.4 ? 'soil' : f < 0.62 ? 'subsoil' : f < 0.86 ? 'rock' : 'bed';
+  return { dy, layer };
+});
 
-/** Decorative SVG: extruded country, glowing aimag borders, route, a tile under every stop. */
-const MapArt = memo(function MapArt({
-  statuses,
-  frontierIndex,
-}: {
-  statuses: string;
-  frontierIndex: number;
-}) {
-  const st = statuses.split(',') as StopStatus[];
+const TERRAIN_SRCSET = [1024, 2048, 3072].map((w) => `/map/terrain-${w}.webp ${w}w`).join(', ');
+
+/** Below this zoom (× the fit scale) nearby pins merge into clusters; above LABEL_ZOOM every label shows. */
+const CLUSTER_ZOOM = 1.35;
+const LABEL_ZOOM = 1.4;
+const CLUSTER_RADIUS = 30;
+const FLY_MS = 650;
+
+/** Shadow under the country and the layered soil/rock edge. */
+const MapBase = memo(function MapBase() {
   const uid = useId().replace(/:/g, '');
-  const id = (n: string) => `${uid}-${n}`;
   return (
     <svg
       width={CONTENT.w}
@@ -73,50 +76,84 @@ const MapArt = memo(function MapArt({
       aria-hidden="true"
     >
       <defs>
-        <linearGradient id={id('top')} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" style={{ stopColor: 'var(--rm-top-1)' }} />
-          <stop offset="1" style={{ stopColor: 'var(--rm-top-2)' }} />
-        </linearGradient>
-        <filter id={id('glow')} x="-10%" y="-10%" width="120%" height="120%">
-          <feGaussianBlur stdDeviation="2.6" result="b" />
+        <filter id={`${uid}-shadow`} x="-10%" y="-30%" width="120%" height="160%">
+          <feGaussianBlur stdDeviation="16" />
+        </filter>
+      </defs>
+      <g transform={`translate(0 ${TILT.depth + 14})`} opacity="0.45" filter={`url(#${uid}-shadow)`}>
+        <path d={MAP.outline} transform={MATRIX} style={{ fill: 'var(--rm-shadow)' }} />
+      </g>
+      {STRATA.map(({ dy, layer }) => (
+        <g key={dy} transform={`translate(0 ${dy})`}>
+          <path d={MAP.outline} transform={MATRIX} style={{ fill: `var(--rm-${layer})` }} />
+        </g>
+      ))}
+    </svg>
+  );
+});
+
+/** Draped aimag borders, the route, trees and gers — over the terrain image. */
+const MapOverlay = memo(function MapOverlay({ frontierIndex }: { frontierIndex: number }) {
+  const uid = useId().replace(/:/g, '');
+  return (
+    <svg
+      width={CONTENT.w}
+      height={CONTENT.h}
+      className="absolute inset-0 overflow-visible"
+      aria-hidden="true"
+    >
+      <defs>
+        <filter id={`${uid}-glow`} x="-10%" y="-10%" width="120%" height="120%">
+          <feGaussianBlur stdDeviation="2.4" result="b" />
           <feMerge>
             <feMergeNode in="b" />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
-        <filter id={id('shadow')} x="-10%" y="-30%" width="120%" height="160%">
-          <feGaussianBlur stdDeviation="14" />
-        </filter>
+        <symbol id={`${uid}-tree`} viewBox="0 0 24 24">
+          <path d="M12 2 5 13h4l-4 6h14l-4-6h4z" style={{ fill: 'var(--rm-tree)' }} />
+          <rect x="11" y="19" width="2" height="3" style={{ fill: 'var(--rm-bed)' }} />
+        </symbol>
+        <symbol id={`${uid}-ger`} viewBox="0 0 24 24">
+          <path d="M3 14c2-5 5-7 9-7s7 2 9 7z" style={{ fill: 'var(--rm-ger)' }} />
+          <rect x="4" y="14" width="16" height="6" rx="1" style={{ fill: 'var(--rm-ger)' }} />
+          <rect x="10.5" y="15" width="3" height="5" style={{ fill: 'var(--rm-ger-door)' }} />
+          <path d="M3 14h18" style={{ stroke: 'var(--rm-ger-door)' }} strokeWidth="1" />
+        </symbol>
       </defs>
 
-      <g transform={`translate(0 ${TILT.depth + 10})`} opacity="0.35" filter={`url(#${id('shadow')})`}>
-        <path d={MAP.outline} transform={MATRIX} style={{ fill: 'var(--c-forest)' }} />
+      <g transform={MATRIX} fill="none">
+        <path
+          d={MAP.outline}
+          style={{ stroke: 'var(--rm-edge)' }}
+          strokeWidth={1.2}
+          vectorEffect="non-scaling-stroke"
+        />
+        <g style={{ stroke: 'var(--rm-border-shadow)' }} strokeWidth={2.2}>
+          {MAP.aimags.map((a) => (
+            <path key={a.iso} d={a.d} vectorEffect="non-scaling-stroke" />
+          ))}
+        </g>
+        <g style={{ stroke: 'var(--rm-border)' }} strokeWidth={1.1}>
+          {MAP.aimags.map((a) => (
+            <path key={a.iso} d={a.d} vectorEffect="non-scaling-stroke" />
+          ))}
+        </g>
       </g>
-      {EXTRUDE.map((k) => (
-        <g key={k} transform={`translate(0 ${k})`}>
-          <path d={MAP.outline} transform={MATRIX} style={{ fill: 'var(--rm-side)' }} />
+
+      {TREES.map(([x, y], i) => (
+        <g key={`t${i}`} opacity="0.9">
+          <use href={`#${uid}-tree`} x={x - 13} y={y - 16} width="14" height="14" />
+          <use href={`#${uid}-tree`} x={x - 3} y={y - 19} width="16" height="16" />
+          <use href={`#${uid}-tree`} x={x + 6} y={y - 13} width="12" height="12" />
         </g>
       ))}
-      <path
-        d={MAP.outline}
-        transform={MATRIX}
-        fill={`url(#${id('top')})`}
-        style={{ stroke: 'var(--c-leaf)' }}
-        strokeWidth={1.6}
-        vectorEffect="non-scaling-stroke"
-      />
-      <g transform={MATRIX} fill="none" vectorEffect="non-scaling-stroke">
-        <g filter={`url(#${id('glow')})`} style={{ stroke: 'var(--rm-glow)' }} strokeWidth={1.8}>
-          {MAP.aimags.map((a) => (
-            <path key={a.iso} d={a.d} vectorEffect="non-scaling-stroke" />
-          ))}
+      {GERS.map(([x, y], i) => (
+        <g key={`g${i}`}>
+          <use href={`#${uid}-ger`} x={x - 14} y={y - 12} width="12" height="12" />
+          <use href={`#${uid}-ger`} x={x - 2} y={y - 10} width="10" height="10" />
         </g>
-        <g style={{ stroke: 'var(--rm-border)' }} strokeWidth={0.8}>
-          {MAP.aimags.map((a) => (
-            <path key={a.iso} d={a.d} vectorEffect="non-scaling-stroke" />
-          ))}
-        </g>
-      </g>
+      ))}
 
       <g fill="none" strokeLinecap="round">
         {SEGMENTS.map((d, i) => {
@@ -126,9 +163,9 @@ const MapArt = memo(function MapArt({
               <path
                 key={i}
                 d={d}
-                style={{ stroke: 'var(--c-lime)' }}
+                style={{ stroke: 'var(--rm-route-done)' }}
                 strokeWidth={3.5}
-                filter={`url(#${id('glow')})`}
+                filter={`url(#${uid}-glow)`}
               />
             );
           if (i + 1 === frontierIndex)
@@ -137,8 +174,9 @@ const MapArt = memo(function MapArt({
                 key={i}
                 d={d}
                 className="roadmap-dash"
-                style={{ stroke: 'var(--c-lime)' }}
+                style={{ stroke: 'var(--rm-route-next)' }}
                 strokeWidth={3}
+                filter={`url(#${uid}-glow)`}
               />
             );
           return (
@@ -152,26 +190,75 @@ const MapArt = memo(function MapArt({
           );
         })}
       </g>
-
-      {STOPS.map((s, i) => {
-        const [x, y] = POINTS[s.no];
-        const rh = (dy: number) =>
-          `${x},${y - 7 + dy} ${x + 13},${y + dy} ${x},${y + 7 + dy} ${x - 13},${y + dy}`;
-        return (
-          <g key={s.no}>
-            <polygon points={rh(4)} style={{ fill: 'var(--rm-side)' }} />
-            <polygon points={rh(0)} style={{ fill: TILE[st[i]], stroke: 'var(--c-paper)' }} strokeWidth={1} />
-          </g>
-        );
-      })}
     </svg>
   );
 });
 
-function CoinGlyph({ v }: { v: StopView }) {
-  if (v.status === 'locked') return <LockIcon size={17} />;
-  if (v.status === 'completed' || v.status === 'tested-out') return <CheckIcon size={18} />;
-  return <span className="tnum">{v.stop.no}</span>;
+/** Slowly drifting clouds over the terrain (static with reduced motion). */
+const Clouds = memo(function Clouds() {
+  const clouds = [
+    { x: 0.34, y: 0.3, w: 120, d: 0 },
+    { x: 0.68, y: 0.22, w: 90, d: -18 },
+    { x: 0.52, y: 0.62, w: 140, d: -34 },
+  ];
+  return (
+    <>
+      {clouds.map((c) => (
+        <span
+          key={c.x}
+          className="roadmap-cloud"
+          aria-hidden="true"
+          style={{
+            left: c.x * CONTENT.w,
+            top: c.y * CONTENT.h,
+            width: c.w,
+            height: c.w * 0.45,
+            animationDelay: `${c.d}s`,
+          }}
+        />
+      ))}
+    </>
+  );
+});
+
+/** The classic red map pin with the stop's glyph in its white head. */
+function PinGlyph({ v }: { v: StopView }) {
+  const done = v.status === 'completed' || v.status === 'tested-out';
+  return (
+    <>
+      <svg width="30" height="42" viewBox="0 0 30 42" className="roadmap-pin-svg" aria-hidden="true">
+        <path
+          d="M15 41.2S2 25.9 2 15.2a13 13 0 0 1 26 0C28 25.9 15 41.2 15 41.2z"
+          className="roadmap-pin-body"
+        />
+        <path d="M15 4.2a11 11 0 0 1 10.2 6.9" className="roadmap-pin-shine" />
+        <circle cx="15" cy="15" r="8.6" className="roadmap-pin-head" />
+      </svg>
+      <span className="roadmap-pin-glyph" aria-hidden="true">
+        {v.status === 'locked' ? (
+          <LockIcon size={12} />
+        ) : done ? (
+          <CheckIcon size={13} />
+        ) : (
+          <span className="tnum">{v.stop.no}</span>
+        )}
+      </span>
+    </>
+  );
+}
+
+/** Pick the smallest terrain image that is sharp at this zoom (device pixels capped at 2×; 1× on Save-Data). */
+function useTerrainSizes(scale: number): string {
+  const [dpr, setDpr] = useState(1);
+  useEffect(() => {
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+    const device = window.devicePixelRatio || 1;
+    // the browser multiplies `sizes` by the device ratio; this factor caps the result
+    setDpr((saveData ? 1 : Math.min(2, device)) / device);
+  }, []);
+  // css px the image needs, bucketed so the attribute changes rarely
+  const need = Math.ceil((MAP.width * scale * dpr) / 128) * 128;
+  return `${Math.max(128, need)}px`;
 }
 
 export function RoadmapMap({
@@ -180,6 +267,7 @@ export function RoadmapMap({
   onOpen,
   className,
   fullBleed = false,
+  cluster = true,
 }: {
   views: StopView[];
   /** Current position; null when every stop is done. */
@@ -188,6 +276,8 @@ export function RoadmapMap({
   className?: string;
   /** Edge to edge under the floating top bar (the home screen): no frame, controls clear the safe area. */
   fullBleed?: boolean;
+  /** Merge crowded pins into clusters when zoomed out. */
+  cluster?: boolean;
 }) {
   const t = useT('roadmap');
   const helpId = useId();
@@ -196,6 +286,8 @@ export function RoadmapMap({
   const [view, setView] = useState<View>({ scale: 1, x: 0, y: 0 });
   const [hover, setHover] = useState<number | null>(null);
   const [dragging, setDragging] = useState(false);
+  const [flying, setFlying] = useState(false);
+  const flyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const viewRef = useRef(view);
   viewRef.current = view;
   const moved = useRef(false);
@@ -206,6 +298,7 @@ export function RoadmapMap({
   const minScale = (fit?.scale ?? 1) * ZOOM.min;
   const maxScale = (fit?.scale ?? 1) * ZOOM.max;
   const narrow = (box?.w ?? 1000) < 768;
+  const sizes = useTerrainSizes(view.scale);
 
   const apply = useCallback(
     (v: View) => {
@@ -215,17 +308,36 @@ export function RoadmapMap({
     [box],
   );
 
+  /** Animated camera move (locate, cluster zoom, fit). */
+  const fly = useCallback(
+    (v: View) => {
+      if (flyTimer.current) clearTimeout(flyTimer.current);
+      setFlying(true);
+      apply(v);
+      flyTimer.current = setTimeout(() => setFlying(false), FLY_MS);
+    },
+    [apply],
+  );
+  useEffect(
+    () => () => {
+      if (flyTimer.current) clearTimeout(flyTimer.current);
+    },
+    [],
+  );
+
   const locate = useCallback(() => {
     if (!box || !fit) return;
     const no = frontierNo ?? 26;
-    const scale = Math.max(viewRef.current.scale, fit.scale * (narrow ? 2.4 : 1.8));
-    // leave room above the pin for the floating card
+    const scale = Math.max(viewRef.current.scale, fit.scale * (narrow ? 2.4 : 1.9));
+    // wide screens leave room above the pin for the floating card; phones have none
     const [x, y] = POINTS[no];
-    apply(centerOn([x, y - 70 / scale], box, scale));
-  }, [apply, box, fit, frontierNo, narrow]);
+    fly(centerOn([x, narrow ? y : y - 70 / scale], box, scale));
+  }, [fly, box, fit, frontierNo, narrow]);
 
   // measure the box; first layout: fly to the current stop (the whole map once every stop is done)
   const placed = useRef(false);
+  // the terrain loads only once the first view is set, so `sizes` never asks for the zoom-1 (oversized) image
+  const [laidOut, setLaidOut] = useState(false);
   useEffect(() => {
     const el = boxRef.current;
     if (!el) return;
@@ -239,8 +351,9 @@ export function RoadmapMap({
   useEffect(() => {
     if (!box || !fit || placed.current) return;
     placed.current = true;
-    if (frontierNo !== null) locate();
-    else setView(fit);
+    setView(fit);
+    setLaidOut(true);
+    if (frontierNo !== null) requestAnimationFrame(() => locate());
   }, [box, fit, locate, frontierNo]);
 
   // wheel zoom needs a non-passive listener to stop the page from scrolling
@@ -321,7 +434,7 @@ export function RoadmapMap({
     }
   };
 
-  const zoomBy = (f: number) => box && apply(zoomAt(view, f, box.w / 2, box.h / 2, minScale, maxScale));
+  const zoomBy = (f: number) => box && fly(zoomAt(view, f, box.w / 2, box.h / 2, minScale, maxScale));
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.altKey || e.metaKey || e.ctrlKey) return;
@@ -335,7 +448,7 @@ export function RoadmapMap({
       '+': () => zoomBy(ZOOM.step),
       '=': () => zoomBy(ZOOM.step),
       '-': () => zoomBy(1 / ZOOM.step),
-      '0': () => fit && setView(fit),
+      '0': () => fit && fly(fit),
     };
     const fn = keys[e.key.toLowerCase()];
     if (!fn) return;
@@ -352,29 +465,65 @@ export function RoadmapMap({
     if (sx < 40 || sx > box.w - 40 || sy < 80 || sy > box.h - 30) apply(centerOn([x, y], box, view.scale));
   };
 
-  const statuses = views.map((v) => v.status).join(',');
   const frontierIndex = frontierNo ?? 27;
-  const floatNo = hover ?? frontierNo;
+  // the hover card covers too much of a phone screen; there the ring + red label mark the current stop
+  const floatNo = narrow ? null : (hover ?? frontierNo);
+  const zoom = fit ? view.scale / fit.scale : 1;
 
-  // labels in screen px; the current stop and earlier stops win, crowded ones appear when zoomed in
+  // in layer px (scale applied, offset not): priority = current stop, then route order
+  const order = useMemo(
+    () =>
+      [...views].sort(
+        (a, b) =>
+          Number(b.stop.no === frontierNo) - Number(a.stop.no === frontierNo) || a.stop.no - b.stop.no,
+      ),
+    [views, frontierNo],
+  );
+  const screen = useCallback(
+    (no: number) => ({ id: no, x: POINTS[no][0] * view.scale, y: POINTS[no][1] * view.scale }),
+    [view.scale],
+  );
+
+  const { singles, clusters } = useMemo(() => {
+    const pins = order.map((v) => screen(v.stop.no));
+    if (!cluster || zoom >= CLUSTER_ZOOM) return { singles: pins.map((p) => p.id), clusters: [] };
+    const keep = new Set(frontierNo ? [frontierNo] : []);
+    return clusterPins(pins, CLUSTER_RADIUS, keep);
+  }, [order, screen, cluster, zoom, frontierNo]);
+  const visible = useMemo(() => new Set(singles), [singles]);
+
+  // labels: all of them when zoomed in, otherwise only the current / hovered stop; callouts when crowded
   const labels = useMemo(() => {
-    const order = [...views].sort(
-      (a, b) => Number(b.stop.no === frontierNo) - Number(a.stop.no === frontierNo) || a.stop.no - b.stop.no,
+    if (flying) return new Map();
+    const want = order.filter(
+      (v) =>
+        visible.has(v.stop.no) && (zoom >= LABEL_ZOOM || v.stop.no === frontierNo || v.stop.no === hover),
     );
-    return declutter(
-      order.map((v) => {
-        const [x, y] = POINTS[v.stop.no];
-        const [ox, oy] = v.stop.offset ?? [0, 0];
-        return {
-          id: v.stop.no,
-          x: x * view.scale + ox,
-          y: y * view.scale + 6 + oy,
-          w: v.stop.place.length * 7.2 + 18,
-          h: 19,
-        };
-      }),
+    const force = new Set([frontierNo, hover].filter((n): n is number => n !== null));
+    const chips = views
+      .filter(
+        (v) =>
+          visible.has(v.stop.no) &&
+          (v.status === 'tested-out' || (v.status === 'completed' && v.progress.stars > 0)),
+      )
+      .map((v) => {
+        const p = screen(v.stop.no);
+        return { x: p.x + CHIP.x, y: p.y + CHIP.y, w: CHIP.w, h: CHIP.h };
+      });
+    if (floatNo !== null && visible.has(floatNo) && zoom >= 1) {
+      const p = screen(floatNo);
+      chips.push({ x: p.x + FLOAT.x, y: p.y + FLOAT.y, w: FLOAT.w, h: FLOAT.h });
+    }
+    return placeLabels(
+      want.map((v) => ({ ...screen(v.stop.no), w: labelWidth(v.stop.place) })),
+      singles.map(screen),
+      force,
+      chips,
+      !narrow,
     );
-  }, [views, frontierNo, view.scale]);
+  }, [order, views, visible, zoom, frontierNo, hover, singles, screen, flying, floatNo, narrow]);
+
+  const placeName = (no: number) => STOPS.find((s) => s.no === no)?.place ?? '';
 
   return (
     <div className={cn('relative', className)}>
@@ -398,66 +547,169 @@ export function RoadmapMap({
           {t('map.help')}
         </p>
         {box && (
-          <div
-            className="roadmap-layer absolute left-0 top-0"
-            style={
-              {
-                width: CONTENT.w,
-                height: CONTENT.h,
-                transform: `translate(${view.x}px, ${view.y}px) scale(${view.scale})`,
-                '--inv': 1 / view.scale,
-              } as React.CSSProperties
-            }
-          >
-            <MapArt statuses={statuses} frontierIndex={frontierIndex} />
-            {views.map((v) => {
-              const [x, y] = POINTS[v.stop.no];
-              const [ox, oy] = v.stop.offset ?? [0, 0];
-              const isFrontier = v.stop.no === frontierNo;
-              const label = labels.has(v.stop.no) || hover === v.stop.no;
-              return (
-                <div
-                  key={v.stop.no}
-                  className="roadmap-pin"
-                  data-status={v.status}
-                  style={{ left: x, top: y, zIndex: floatNo === v.stop.no ? 30 : isFrontier ? 20 : 10 }}
-                >
-                  <span className="roadmap-stem" aria-hidden="true" />
-                  {floatNo === v.stop.no && (
-                    <div className="roadmap-float" aria-hidden="true">
-                      <StopCard v={v} />
-                    </div>
-                  )}
-                  <button
-                    type="button"
-                    className="roadmap-coin"
+          <>
+            <div
+              className={cn('roadmap-layer absolute left-0 top-0', flying && 'is-flying')}
+              style={
+                {
+                  width: CONTENT.w,
+                  height: CONTENT.h,
+                  transform: `translate(${view.x}px, ${view.y}px) scale(${view.scale})`,
+                  '--inv': 1 / view.scale,
+                } as React.CSSProperties
+              }
+            >
+              <MapBase />
+              {laidOut && (
+                // biome-ignore lint/performance/noImgElement: baked terrain needs srcset under a CSS matrix; next/image can't transform
+                <img
+                  src="/map/terrain-1024.webp"
+                  srcSet={TERRAIN_SRCSET}
+                  sizes={sizes}
+                  alt=""
+                  width={MAP.width}
+                  height={MAP.height}
+                  draggable={false}
+                  fetchPriority="high"
+                  decoding="async"
+                  className="roadmap-terrain"
+                  style={{ width: MAP.width, height: MAP.height, transform: CSS_MATRIX }}
+                />
+              )}
+              <MapOverlay frontierIndex={frontierIndex} />
+              <Clouds />
+              {views.map((v) => {
+                if (!visible.has(v.stop.no)) return null;
+                const [x, y] = POINTS[v.stop.no];
+                const isFrontier = v.stop.no === frontierNo;
+                const done = v.status === 'completed' || v.status === 'tested-out';
+                return (
+                  <div
+                    key={v.stop.no}
+                    className="roadmap-pin"
                     data-status={v.status}
-                    aria-label={stopAriaLabel(v, t)}
-                    aria-haspopup="dialog"
-                    style={ox || oy ? { translate: `${ox}px ${oy}px` } : undefined}
-                    onClick={() => {
-                      if (moved.current) return;
-                      onOpen(v.stop.no);
-                    }}
-                    onPointerEnter={(e) => e.pointerType === 'mouse' && setHover(v.stop.no)}
-                    onPointerLeave={() => setHover((h) => (h === v.stop.no ? null : h))}
-                    onFocus={() => {
-                      setHover(v.stop.no);
-                      reveal(v.stop.no);
-                    }}
-                    onBlur={() => setHover((h) => (h === v.stop.no ? null : h))}
+                    style={{ left: x, top: y, zIndex: floatNo === v.stop.no ? 30 : isFrontier ? 20 : 10 }}
                   >
-                    <CoinGlyph v={v} />
-                  </button>
-                  {label && (
-                    <span className="roadmap-label" style={{ left: ox, marginTop: oy }} aria-hidden="true">
-                      {v.stop.place}
-                    </span>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                    <span className="roadmap-shadow" aria-hidden="true" />
+                    {isFrontier && <span className="roadmap-ring" aria-hidden="true" />}
+                    {floatNo === v.stop.no && zoom >= 1 && (
+                      <div className="roadmap-float" aria-hidden="true">
+                        <StopCard v={v} />
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      className="roadmap-coin"
+                      data-status={v.status}
+                      aria-label={stopAriaLabel(v, t)}
+                      aria-haspopup="dialog"
+                      onClick={() => {
+                        if (moved.current) return;
+                        onOpen(v.stop.no);
+                      }}
+                      onPointerEnter={(e) => e.pointerType === 'mouse' && setHover(v.stop.no)}
+                      onPointerLeave={() => setHover((h) => (h === v.stop.no ? null : h))}
+                      onFocus={() => {
+                        setHover(v.stop.no);
+                        reveal(v.stop.no);
+                      }}
+                      onBlur={() => setHover((h) => (h === v.stop.no ? null : h))}
+                    >
+                      <PinGlyph v={v} />
+                    </button>
+                    {done && v.status === 'completed' && v.progress.stars > 0 && (
+                      <span className="roadmap-stars" aria-hidden="true">
+                        <StarRow stars={v.progress.stars} size={11} />
+                      </span>
+                    )}
+                    {v.status === 'tested-out' && (
+                      <span className="roadmap-passed" aria-hidden="true">
+                        {t('pin.passed')}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+              {clusters.map((c) => {
+                const names = c.ids.map(placeName);
+                return (
+                  <div
+                    key={c.ids.join('-')}
+                    className="roadmap-pin"
+                    style={{ left: c.x / view.scale, top: c.y / view.scale, zIndex: 15 }}
+                  >
+                    <span className="roadmap-shadow" aria-hidden="true" />
+                    <button
+                      type="button"
+                      className="roadmap-cluster"
+                      aria-label={t('pin.cluster', { n: c.ids.length, names: names.join(', ') })}
+                      onClick={() => {
+                        if (moved.current || !box) return;
+                        const pts = c.ids.map((no) => POINTS[no]);
+                        const xs = pts.map((p) => p[0]);
+                        const ys = pts.map((p) => p[1]);
+                        const span = Math.max(
+                          Math.max(...xs) - Math.min(...xs),
+                          Math.max(...ys) - Math.min(...ys),
+                          1,
+                        );
+                        const fitScale = fit?.scale ?? view.scale;
+                        const scale = Math.min(
+                          maxScale,
+                          Math.max(fitScale * LABEL_ZOOM * 1.05, Math.min(box.w, box.h) / (span * 3.2)),
+                        );
+                        fly(
+                          centerOn(
+                            [xs.reduce((a, b) => a + b) / xs.length, ys.reduce((a, b) => a + b) / ys.length],
+                            box,
+                            scale,
+                          ),
+                        );
+                      }}
+                    >
+                      <span className="tnum">{c.ids.length}</span>
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* labels and leader lines in screen px, so text stays crisp at any zoom */}
+            <div
+              className="pointer-events-none absolute left-0 top-0"
+              style={{ transform: `translate(${view.x}px, ${view.y}px)` }}
+              aria-hidden="true"
+            >
+              <svg className="absolute left-0 top-0 overflow-visible" width="1" height="1">
+                {[...labels.values()].map(
+                  (l) =>
+                    l.leader && (
+                      <g key={l.id} className="roadmap-leader">
+                        <line x1={l.leader.x1} y1={l.leader.y1} x2={l.leader.x2} y2={l.leader.y2} />
+                        <circle cx={l.leader.x2} cy={l.leader.y2} r="2.5" />
+                      </g>
+                    ),
+                )}
+              </svg>
+              {[...labels.values()].map((l) => {
+                const v = views.find((x) => x.stop.no === l.id);
+                return (
+                  <span
+                    key={l.id}
+                    className={cn(
+                      'roadmap-label',
+                      l.id === frontierNo && 'is-current',
+                      l.leader && 'is-callout',
+                    )}
+                    data-status={v?.status}
+                    style={{ left: l.box.x, top: l.box.y, width: l.box.w }}
+                  >
+                    {placeName(l.id)}
+                  </span>
+                );
+              })}
+            </div>
+          </>
         )}
       </div>
 
@@ -492,7 +744,7 @@ export function RoadmapMap({
             { k: 'zoomOut', f: () => zoomBy(1 / ZOOM.step), g: <path d="M6 12h12" /> },
             {
               k: 'fit',
-              f: () => fit && setView(fit),
+              f: () => fit && fly(fit),
               g: <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />,
             },
             { k: 'zoomIn', f: () => zoomBy(ZOOM.step), g: <path d="M6 12h12M12 6v12" /> },
@@ -521,7 +773,12 @@ export function RoadmapMap({
           ))}
         </div>
       </div>
-      <p className="pointer-events-none absolute bottom-2 left-4 text-[10.5px] text-ink-3">
+      <p
+        className={cn(
+          'pointer-events-none absolute left-4 max-w-[60%] text-[10.5px] leading-tight text-ink-3',
+          fullBleed ? 'bottom-[max(4px,env(safe-area-inset-bottom))] max-sm:hidden' : 'bottom-2',
+        )}
+      >
         {t('map.attribution')}
       </p>
     </div>

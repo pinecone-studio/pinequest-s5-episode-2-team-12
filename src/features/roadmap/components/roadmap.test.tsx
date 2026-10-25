@@ -56,7 +56,7 @@ describe('StopCard', () => {
 describe('RoadmapMap', () => {
   test('every stop is a keyboard-focusable button with a descriptive label', () => {
     const views = stopViews(sampleState(), true);
-    render(<RoadmapMap views={views} frontierNo={5} onOpen={() => {}} />);
+    render(<RoadmapMap views={views} frontierNo={5} onOpen={() => {}} cluster={false} />);
     const map = screen.getByRole('application');
     const pins = within(map).getAllByRole('button');
     expect(pins).toHaveLength(26);
@@ -64,6 +64,22 @@ describe('RoadmapMap', () => {
       screen.getByRole('button', { name: '6-р зогсоол, Мөрөн, Шугаман тэнцэтгэл биш, түгжээтэй' }),
     ).toBeTruthy();
     expect(screen.getByRole('button', { name: /^1-р зогсоол, Өлгий, .*дууссан, 3 од$/ })).toBeTruthy();
+  });
+
+  test('zoomed out, crowded pins merge into clusters that zoom in on click', async () => {
+    const views = stopViews(sampleState(), true);
+    render(<RoadmapMap views={views} frontierNo={null} onOpen={() => {}} />);
+    const clusters = screen.getAllByRole('button', { name: /зогсоол: .*Дарж томруулна\.$/ });
+    expect(clusters.length).toBeGreaterThan(0);
+    // every stop is either its own pin or named in exactly one cluster
+    const pins = screen.getAllByRole('button', { name: /^\d+-р зогсоол, / }).length;
+    const inClusters = clusters
+      .map((c) => Number(/^(\d+) зогсоол/.exec(c.getAttribute('aria-label') ?? '')?.[1]))
+      .reduce((a, b) => a + b, 0);
+    expect(pins + inClusters).toBe(26);
+    expect(clusters.some((c) => c.getAttribute('aria-label')?.includes('Улаанбаатар'))).toBe(true);
+    fireEvent.click(clusters[0]);
+    await waitFor(() => expect(screen.getAllByRole('button', { name: /^\d+-р зогсоол, / })).toHaveLength(26));
   });
 
   test('clicking a pin opens it; the controls are labelled', () => {

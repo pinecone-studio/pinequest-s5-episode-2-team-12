@@ -15,3 +15,6 @@ check-log.txt
 
 # Student feedback (personal data) — never commit. Only reviewed rows go to ai/data/tuning/feedback.jsonl
 ai/data/feedback/
+
+# baked-map source data (bun scripts/roadmap/fetch-terrain.ts)
+scripts/roadmap/.cache/
