@@ -180,7 +180,7 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
         {visibleQuestions.length === 0 && (
           <div className="rounded-[2rem] border border-dashed border-line-2 bg-paper p-10 text-center">
             <p className="font-bold text-ink">No questions found</p>
-            <p className="mt-1 text-sm text-ink-3">Try changing your filters or search terms.</p>
+            <p className="mt-1 text-sm text-ink-3">Try changing your filters or search terms</p>
           </div>
         )}
       </section>
