@@ -1,7 +1,7 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from 'bun:test';
 
-describe("Progress Server Actions (F2 & F6)", () => {
-  it("should calculate idempotent XP properly for F2", () => {
+describe('Progress Server Actions (F2 & F6)', () => {
+  it('should calculate idempotent XP properly for F2', () => {
     const initialXp = 50;
     const rewardXp = 10;
     const newXp = initialXp + rewardXp;
@@ -9,7 +9,7 @@ describe("Progress Server Actions (F2 & F6)", () => {
     expect(newXp).toBe(60);
   });
 
-  it("should validate getProgressData payload structure for F6 UI integration", () => {
+  it('should validate getProgressData payload structure for F6 UI integration', () => {
     const mockProgressPayload = {
       levelInfo: {
         level: 2,
@@ -19,12 +19,19 @@ describe("Progress Server Actions (F2 & F6)", () => {
       },
       streak: 5,
       quests: [
-        { id: "vocab_5", title: "5 үг цээжлэх", target: 5, rewardXp: 10, current: 5, completed: true },
-        { id: "desmos_1", title: "1 Desmos график байгуулах", target: 1, rewardXp: 10, current: 0, completed: false },
+        { id: 'vocab_5', title: '5 үг цээжлэх', target: 5, rewardXp: 10, current: 5, completed: true },
+        {
+          id: 'desmos_1',
+          title: '1 Desmos график байгуулах',
+          target: 1,
+          rewardXp: 10,
+          current: 0,
+          completed: false,
+        },
       ],
       badges: [
-        { id: "streak_7", name: "7 хоногийн хэмнэл", unlocked: false },
-        { id: "first_eq", name: "Анхны тэгшитгэл", unlocked: true },
+        { id: 'streak_7', name: '7 хоногийн хэмнэл', unlocked: false },
+        { id: 'first_eq', name: 'Анхны тэгшитгэл', unlocked: true },
       ],
     };
 
@@ -37,6 +44,6 @@ describe("Progress Server Actions (F2 & F6)", () => {
     expect(mockProgressPayload.quests[0].completed).toBe(true);
 
     // Badges бүтэц шалгах
-    expect(mockProgressPayload.badges.find((b) => b.id === "first_eq")?.unlocked).toBe(true);
+    expect(mockProgressPayload.badges.find((b) => b.id === 'first_eq')?.unlocked).toBe(true);
   });
 });

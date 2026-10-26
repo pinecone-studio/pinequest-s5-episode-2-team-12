@@ -1,7 +1,7 @@
 // Section C · reads.
 import { getDb } from '@/lib/supabase/server';
-import { getQuestionsDb } from '@/server/db';
 import { QUESTIONS } from '@/mocks/questions';
+import { getQuestionsDb } from '@/server/db';
 import type { Question, QuestionFilter } from '@/types';
 import { filterQuestions } from './lib/filter-questions';
 

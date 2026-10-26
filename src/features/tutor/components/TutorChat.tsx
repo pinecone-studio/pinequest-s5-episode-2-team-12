@@ -63,12 +63,10 @@ function Starter({ text }: { text: string }) {
     <span>
       {parts.map((p, i) =>
         i % 2 ? (
-          // biome-ignore lint/suspicious/noArrayIndexKey: static split of one string
           <strong key={i} className="font-semibold text-ink">
             {p}
           </strong>
         ) : (
-          // biome-ignore lint/suspicious/noArrayIndexKey: static split of one string
           <span key={i}>{p}</span>
         ),
       )}

@@ -563,7 +563,6 @@ export function RoadmapMap({
         aria-roledescription={t('map.role')}
         aria-label={t('map.label')}
         aria-describedby={fullBleed ? undefined : helpId}
-        // biome-ignore lint/a11y/noNoninteractiveTabindex: the map takes focus itself so arrow keys pan and + / − zoom
         tabIndex={fullBleed ? undefined : 0}
         onKeyDown={fullBleed ? undefined : onKeyDown}
         onPointerDown={fullBleed ? undefined : onPointerDown}

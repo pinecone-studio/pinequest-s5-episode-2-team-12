@@ -3,10 +3,10 @@
 // questions (lib/submit.ts), then writes with the service-role client: progress, attempts, XP, badges.
 // Demo mode (no Supabase) returns { ok: false, reason: 'demo_mode' } and the client stores locally.
 import { revalidatePath } from 'next/cache';
+import { EARN } from '@/features/shop/catalog';
 import { routes } from '@/lib/routes';
 import { getDb } from '@/lib/supabase/server';
 import { getAdminDb } from '@/server/db';
-import { EARN } from '@/features/shop/catalog';
 import { afterStudy, awardGems } from '@/server/gems';
 import { recordMistakes } from '@/server/mistakes';
 import { awardBadges, awardXp } from '@/server/xp';
@@ -215,7 +215,8 @@ export async function submitStop(input: {
   if (graded.result.passed)
     await awardGems(s.userId, EARN.stopPass + EARN.perStar * graded.result.stars, 'stop', `stop:${input.no}`);
   for (const b of badges)
-    if (b.startsWith('roadmap-') && b !== 'roadmap-final') await awardGems(s.userId, EARN.region, 'region', `region:${b}`);
+    if (b.startsWith('roadmap-') && b !== 'roadmap-final')
+      await awardGems(s.userId, EARN.region, 'region', `region:${b}`);
   await afterStudy(s.userId);
   revalidatePath(routes.home);
   return {

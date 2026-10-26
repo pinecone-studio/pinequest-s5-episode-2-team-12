@@ -1,6 +1,4 @@
-"use client";
-
-import React from "react";
+'use client';
 
 interface LevelUpModalProps {
   level: number;
@@ -21,6 +19,7 @@ export function LevelUpModal({ level, title, isOpen, onClose }: LevelUpModalProp
           Та амжилттай дэвшиж <span className="font-bold text-primary">{title}</span> (Түвшин {level}) боллоо!
         </p>
         <button
+          type="button"
           onClick={onClose}
           className="w-full py-2.5 bg-primary text-primary-foreground font-semibold rounded-xl hover:opacity-90 transition"
         >

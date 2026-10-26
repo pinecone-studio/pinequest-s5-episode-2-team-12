@@ -1,4 +1,3 @@
-
 import { describe, expect, test } from 'bun:test';
 import type { Question } from '@/types';
 import { filterQuestions } from './filter-questions';
@@ -61,10 +60,7 @@ describe('filterQuestions', () => {
   });
 
   test('filters Desmos-supported questions', () => {
-    expect(filterQuestions(questions, { desmosOnly: true }).map((q) => q.id)).toEqual([
-      'q1',
-      'q3',
-    ]);
+    expect(filterQuestions(questions, { desmosOnly: true }).map((q) => q.id)).toEqual(['q1', 'q3']);
   });
 
   test('filters saved questions', () => {
