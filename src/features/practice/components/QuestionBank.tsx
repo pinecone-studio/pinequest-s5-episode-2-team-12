@@ -19,6 +19,16 @@ const domains: { id: Domain | 'all'; label: string }[] = [
   { id: 'geo', label: 'Geometry' },
 ];
 
+/* ───────── Shared look: tokens from globals.css (--c-*, .card) ───────── */
+
+const card = 'card rounded-[2rem] p-7';
+const fieldLabel = 'eyebrow text-ink-3';
+const field =
+  'w-full rounded-2xl border border-line bg-paper-2 px-4 py-3 text-ink placeholder:text-sm placeholder:text-ink-3';
+const chipBase = 'rounded-xl border px-4 py-2 text-xs font-bold transition';
+const chipIdle = 'border-line bg-paper-2 text-ink-3 hover:border-leaf hover:text-ink';
+const chipActive = 'border-leaf bg-leaf/10 text-leaf-2';
+
 export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Props) {
   const [domain, setDomain] = useState<Domain | 'all'>('all');
   const [difficulty, setDifficulty] = useState<1 | 2 | 3 | 'all'>(hardOnly ? 3 : 'all');
@@ -40,111 +50,126 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
   );
 
   return (
-    <main className="mx-auto w-full max-w-5xl space-y-6 p-6">
+    <main className="mx-auto w-full max-w-5xl space-y-5 p-6 text-ink">
       {!hardOnly && (
         <header className="space-y-2">
-          <p className="text-sm font-medium text-blue-600">SAT MATH</p>
-          <h1 className="text-3xl font-bold">Question Bank</h1>
-          <p className="text-sm text-gray-500">Browse, search, and filter SAT Math questions.</p>
+          <h1 className="font-display text-3xl font-bold tracking-tight md:text-4xl">Question Bank</h1>
+          <p className="text-ink-2">Browse, search, and filter SAT Math questions.</p>
         </header>
       )}
 
-      <nav className="flex flex-wrap gap-2" aria-label="Question domains">
-        {domains.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => setDomain(item.id)}
-            aria-pressed={domain === item.id}
-            className={`rounded-full border px-4 py-2 text-sm ${
-              domain === item.id
-                ? 'border-blue-600 bg-blue-600 text-white'
-                : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            {item.label}
-          </button>
-        ))}
-      </nav>
+      {/* Filters */}
+      <section className={`${card} space-y-5`}>
+        <div className="space-y-2.5">
+          <h2 className={fieldLabel}>Domain</h2>
 
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <label className="space-y-1 text-sm">
-          <span className="font-medium">Search</span>
-          <input
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search questions or skills..."
-            className="w-full rounded-lg border border-gray-300 px-3 py-2"
-          />
-        </label>
+          <nav className="flex flex-wrap gap-2" aria-label="Question domains">
+            {domains.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setDomain(item.id)}
+                aria-pressed={domain === item.id}
+                className={`${chipBase} ${domain === item.id ? chipActive : chipIdle}`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+        </div>
 
-        {!hardOnly && (
-          <label className="space-y-1 text-sm">
-            <span className="font-medium">Difficulty</span>
-            <select
-              value={difficulty}
-              onChange={(event) =>
-                setDifficulty(
-                  event.target.value === 'all' ? 'all' : (Number(event.target.value) as 1 | 2 | 3),
-                )
-              }
-              className="w-full rounded-lg border border-gray-300 px-3 py-2"
-            >
-              <option value="all">All difficulties</option>
-              <option value="1">1 — Easy</option>
-              <option value="2">2 — Medium</option>
-              <option value="3">3 — Hard</option>
-            </select>
-          </label>
-        )}
-
-        <div className="flex flex-col justify-end gap-3 pb-2 text-sm">
-          <label className="flex items-center gap-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <label className="space-y-2">
+            <span className={fieldLabel}>Search</span>
             <input
-              type="checkbox"
-              checked={desmosOnly}
-              onChange={(event) => setDesmosOnly(event.target.checked)}
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search questions or skills..."
+              className={field}
             />
-            Desmos-supported only
           </label>
 
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={savedOnly}
-              onChange={(event) => setSavedOnly(event.target.checked)}
-            />
-            Saved questions only
-          </label>
+          {!hardOnly && (
+            <label className="space-y-2">
+              <span className={fieldLabel}>Difficulty</span>
+              <select
+                value={difficulty}
+                onChange={(event) =>
+                  setDifficulty(
+                    event.target.value === 'all' ? 'all' : (Number(event.target.value) as 1 | 2 | 3),
+                  )
+                }
+                className={field}
+              >
+                <option value="all">All difficulties</option>
+                <option value="1">1 — Easy</option>
+                <option value="2">2 — Medium</option>
+                <option value="3">3 — Hard</option>
+              </select>
+            </label>
+          )}
+
+          <div className="flex flex-col justify-end gap-3 pb-2 text-sm text-ink-2">
+            <label className="flex cursor-pointer items-center gap-2.5">
+              <input
+                type="checkbox"
+                checked={desmosOnly}
+                onChange={(event) => setDesmosOnly(event.target.checked)}
+                className="h-4 w-4 accent-(--c-leaf)"
+              />
+              Desmos-supported only
+            </label>
+
+            <label className="flex cursor-pointer items-center gap-2.5">
+              <input
+                type="checkbox"
+                checked={savedOnly}
+                onChange={(event) => setSavedOnly(event.target.checked)}
+                className="h-4 w-4 accent-(--c-leaf)"
+              />
+              Saved questions only
+            </label>
+          </div>
         </div>
       </section>
 
-      <p className="text-sm text-gray-500" aria-live="polite">
+      <p className="px-1 text-sm text-ink-3" aria-live="polite">
         {visibleQuestions.length} questions found
       </p>
 
+      {/* Questions */}
       <section className="space-y-3">
         {visibleQuestions.map((question) => (
-          <article key={question.id} className="space-y-3 rounded-xl border border-gray-200 p-5">
-            <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
-              <span>{question.skill}</span>
-              <span>•</span>
-              <span>Difficulty {question.difficulty}</span>
+          <article key={question.id} className={`${card} space-y-4`}>
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-sm font-bold text-ink">{question.skill}</h2>
+
+              <span className="rounded-full bg-paper-2 px-3 py-1 text-xs font-bold text-ink-3">
+                Difficulty {question.difficulty}
+              </span>
 
               {question.desmos && (
-                <span className="rounded-full bg-blue-50 px-2 py-1 text-blue-700">Desmos</span>
+                <span className="rounded-full bg-teal-soft px-3 py-1 text-xs font-bold text-teal">Desmos</span>
               )}
             </div>
 
-            <div className="whitespace-pre-wrap font-medium">
+            <div className="whitespace-pre-wrap text-[17px] font-medium leading-relaxed text-ink">
               <Rich text={question.prompt} />
             </div>
 
             {question.choices && (
-              <ol className="list-inside list-[upper-alpha] space-y-1 text-sm">
+              <ol className="grid gap-2.5">
                 {question.choices.map((choice, index) => (
-                  <li key={`${question.id}-${index}`}>
-                    <Rich text={choice} />
+                  <li
+                    key={`${question.id}-${index}`}
+                    className="flex items-center gap-3.5 rounded-2xl border border-line bg-paper-2 p-3.5 text-[15px] text-ink"
+                  >
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-line bg-paper text-xs font-bold text-ink-3">
+                      {String.fromCharCode(65 + index)}
+                    </span>
+                    <div className="flex-1">
+                      <Rich text={choice} />
+                    </div>
                   </li>
                 ))}
               </ol>
@@ -153,9 +178,9 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
         ))}
 
         {visibleQuestions.length === 0 && (
-          <div className="rounded-xl border border-dashed border-gray-300 p-8 text-center">
-            <p className="font-medium">No questions found</p>
-            <p className="mt-1 text-sm text-gray-500">Try changing your filters or search terms.</p>
+          <div className="rounded-[2rem] border border-dashed border-line-2 bg-paper p-10 text-center">
+            <p className="font-bold text-ink">No questions found</p>
+            <p className="mt-1 text-sm text-ink-3">Try changing your filters or search terms.</p>
           </div>
         )}
       </section>
