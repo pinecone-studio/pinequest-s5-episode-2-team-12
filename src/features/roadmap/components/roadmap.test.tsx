@@ -12,6 +12,7 @@ const { sampleState } = await import('../lib/sample');
 const { initialState, withPlacement } = await import('../lib/state');
 const { stopViews } = await import('../lib/view');
 const { RoadmapMap } = await import('./RoadmapMap');
+const { RoadmapView } = await import('./RoadmapView');
 const { StopCard } = await import('./StopCard');
 const { StopPlayer } = await import('./StopPlayer');
 
@@ -53,6 +54,23 @@ describe('StopCard', () => {
   });
 });
 
+describe('RoadmapView', () => {
+  test('returning from unfinished placement still shows the first topic and placement prompt', () => {
+    localStorage.clear();
+    const { container, unmount } = render(<RoadmapView demo server={null} />);
+    expect(container.querySelector('.roadmap-featured-topic h2')?.textContent).toBe(
+      'Нэг хувьсагчтай шугаман тэгшитгэл',
+    );
+    expect(screen.getByRole('region', { name: 'Аялал эхлэхийн өмнө' })).toBeTruthy();
+    unmount();
+    const returned = render(<RoadmapView demo server={null} />);
+    expect(returned.container.querySelector('.roadmap-featured-topic h2')?.textContent).toBe(
+      'Нэг хувьсагчтай шугаман тэгшитгэл',
+    );
+    expect(screen.getByRole('region', { name: 'Аялал эхлэхийн өмнө' })).toBeTruthy();
+  });
+});
+
 describe('RoadmapMap', () => {
   test('every stop is a keyboard-focusable button with a descriptive label', () => {
     const views = stopViews(sampleState(), true);
@@ -64,6 +82,64 @@ describe('RoadmapMap', () => {
       screen.getByRole('button', { name: '6-р зогсоол, Мөрөн, Шугаман тэнцэтгэл биш, түгжээтэй' }),
     ).toBeTruthy();
     expect(screen.getByRole('button', { name: /^1-р зогсоол, Өлгий, .*дууссан, 3 од$/ })).toBeTruthy();
+  });
+
+  test('home map stays fixed while pins remain clickable', () => {
+    const opened: number[] = [];
+    const props = {
+      views: stopViews(sampleState(), true),
+      frontierNo: 5,
+      onOpen: (n: number) => opened.push(n),
+      fullBleed: true,
+    };
+    const { container, rerender } = render(<RoadmapMap {...props} />);
+    const stage = screen.getByRole('application');
+    const layer = container.querySelector<HTMLElement>('.roadmap-layer')!;
+    const transform = layer.style.transform;
+    expect(screen.getAllByRole('button', { name: /^\d+-р зогсоол, / })).toHaveLength(26);
+    expect(screen.queryByRole('button', { name: 'Одоогийн байрлал' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Томруулах' })).toBeNull();
+    fireEvent.wheel(stage, { deltaY: -500 });
+    fireEvent.keyDown(stage, { key: '+' });
+    fireEvent.pointerDown(stage, { button: 0, pointerId: 1, clientX: 100, clientY: 100 });
+    fireEvent.pointerMove(window, { pointerId: 1, clientX: 200, clientY: 200 });
+    fireEvent.pointerUp(window, { pointerId: 1 });
+    fireEvent.click(screen.getByRole('button', { name: /^5-р зогсоол/ }));
+    rerender(<RoadmapMap {...props} selectedNo={5} />);
+    expect(layer.style.transform).toBe(transform);
+    expect(opened).toEqual([5]);
+  });
+
+  test('home topic stays on the current stop while other pins show hover cards', () => {
+    const views = stopViews(sampleState(), true);
+    const { container } = render(<RoadmapMap views={views} frontierNo={5} onOpen={() => {}} fullBleed />);
+    const heading = container.querySelector('.roadmap-featured-topic h2')!;
+    const title = views.find((v) => v.stop.no === 5)!.topic.title;
+    expect(heading.textContent).toBe(title);
+    const other = screen.getByRole('button', { name: /^6-р зогсоол/ });
+    fireEvent.focus(other);
+    expect(container.querySelector('.roadmap-float')?.textContent).toContain(
+      views.find((v) => v.stop.no === 6)!.stop.place,
+    );
+    expect(heading.textContent).toBe(title);
+    fireEvent.blur(other);
+    expect(container.querySelector('.roadmap-float')).toBeNull();
+  });
+
+  test('only the current pin is enlarged and the emphasis follows progress', () => {
+    const props = { views: stopViews(sampleState(), true), onOpen: () => {}, fullBleed: true };
+    const { container, rerender } = render(<RoadmapMap {...props} frontierNo={1} />);
+    const first = screen.getByRole('button', { name: /^1-р зогсоол/ });
+    const second = screen.getByRole('button', { name: /^2-р зогсоол/ });
+    expect(first.getAttribute('data-current')).toBe('true');
+    expect(second.hasAttribute('data-current')).toBe(false);
+    rerender(<RoadmapMap {...props} frontierNo={2} />);
+    expect(first.hasAttribute('data-current')).toBe(false);
+    expect(second.getAttribute('data-current')).toBe('true');
+    expect(second.getAttribute('aria-current')).toBe('step');
+    expect(container.querySelectorAll('.roadmap-coin[data-current="true"]')).toHaveLength(1);
+    rerender(<RoadmapMap {...props} frontierNo={null} />);
+    expect(container.querySelectorAll('.roadmap-coin[data-current="true"]')).toHaveLength(0);
   });
 
   test('zoomed out, crowded pins merge into clusters that zoom in on click', async () => {

@@ -32,6 +32,7 @@
 .roadmap-layer.is-flying { transition: transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1); }
 .roadmap-stage.is-dragging { cursor: grabbing; }
 .roadmap-stage:not(.is-dragging) { cursor: grab; }
+.roadmap-stage.is-fixed { cursor: default; touch-action: auto; }
 .roadmap-stage button { cursor: pointer; }
 .roadmap-terrain { position: absolute; left: 0; top: 0; max-width: none; transform-origin: 0 0; pointer-events: none; }
 
@@ -54,8 +55,9 @@
   font: 800 11.5px/1 var(--font-sans);
   filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.35));
   transform-origin: 50% 100%;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, scale 0.2s ease;
 }
+.roadmap-coin[data-current="true"] { scale: 1.5; }
 .roadmap-coin:hover, .roadmap-coin:focus-visible { transform: translateY(-3px) scale(1.08); }
 .roadmap-coin:focus-visible { outline: 3px solid var(--c-paper); outline-offset: 2px; border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%; }
 .roadmap-pin-svg { position: absolute; inset: 0; overflow: visible; }
@@ -89,7 +91,7 @@
   position: absolute; left: -17px; top: -40px; width: 34px; height: 34px; border-radius: 999px;
   display: grid; place-items: center; font: 800 13px var(--font-sans); color: #ffffff;
   background: var(--rm-pin); border: 3px solid #ffffff; box-shadow: 0 0 0 3px color-mix(in srgb, var(--rm-pin) 35%, transparent), 0 6px 10px -4px rgba(0, 0, 0, 0.5);
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, scale 0.2s ease;
 }
 .roadmap-cluster:hover, .roadmap-cluster:focus-visible { transform: scale(1.1); }
 .roadmap-cluster::after { content: ""; position: absolute; left: 50%; bottom: -9px; width: 2px; height: 8px; margin-left: -1px; background: #ffffff; }
