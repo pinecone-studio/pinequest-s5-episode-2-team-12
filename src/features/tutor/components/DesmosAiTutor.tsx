@@ -1,13 +1,14 @@
 'use client';
-// Pitch demo · /desmos/ai — ask Суу a question and it teaches it on a live Desmos graph, one step at a time.
-// Uses the six hand-written lessons in ../lib/desmos-lessons.ts (labelled «Жишээ хичээл») until the
-// fine-tuned model writes lessons live. The official Desmos API is loaded from desmos.com.
+// /desmos/ai — ask Суу a question and it teaches it on a live Desmos graph, one step at a time.
+// POST /api/desmos/lesson: the six pitch questions get their hand-written sample (labelled «Жишээ хичээл»);
+// any other question is written live by the fine-tuned model (labelled «AI хичээл») after the server checks it
+// (lib/desmos-lesson-parse.ts). The official Desmos API is loaded from desmos.com.
 import { type FormEvent, useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Pill } from '@/components/ui/Pill';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
-import { DESMOS_AI_LESSONS, type DesmosAiLesson, findLesson } from '../lib/desmos-lessons';
+import { DESMOS_AI_LESSONS, type DesmosAiLesson } from '../lib/desmos-lessons';
 
 // Demo API key from the Desmos docs (development only). A product release needs our own key.
 const DESMOS_KEY = 'dcb31709b452b1cf9dc26972add0fda6';
@@ -87,19 +88,34 @@ export function drawLesson(calc: Calc, lesson: DesmosAiLesson, upTo: number) {
   if (bounds) calc.setMathBounds(bounds);
 }
 
-export function DesmosAiTutor({ initial }: { initial?: string }) {
+/** What /api/desmos/lesson returns (see src/app/api/desmos/lesson/route.ts). */
+type LessonReply =
+  | { lesson: DesmosAiLesson; source: 'sample' | 'model'; answerFrom?: 'student' | 'model' }
+  | { lesson: null; source: 'none'; reason: 'off' | 'failed' };
+
+/** Why there is no lesson: model off (demo), model couldn't write a checked lesson, or the request failed. */
+type Miss = 'off' | 'failed' | 'error';
+
+export function DesmosAiTutor({ initial, fetchImpl }: { initial?: string; fetchImpl?: typeof fetch }) {
   const t = useT('tutor');
   const inputId = useId();
+  const answerId = useId();
   const [draft, setDraft] = useState('');
+  const [answerDraft, setAnswerDraft] = useState('');
   const [asked, setAsked] = useState<string | null>(null);
   const [lesson, setLesson] = useState<DesmosAiLesson | null>(null);
+  const [source, setSource] = useState<'sample' | 'model' | null>(null);
+  const [answerByModel, setAnswerByModel] = useState(false);
   const [thinking, setThinking] = useState(false);
-  const [notFound, setNotFound] = useState(false);
+  const [miss, setMiss] = useState<Miss | null>(null);
   const [cur, setCur] = useState(0);
   const [graph, setGraph] = useState<'loading' | 'ready' | 'failed'>('loading');
   const box = useRef<HTMLDivElement>(null);
   const calc = useRef<Calc | null>(null);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pending = useRef<AbortController | null>(null);
+  const doFetch = fetchImpl ?? ((...args: Parameters<typeof fetch>) => fetch(...args));
+  const fetchRef = useRef(doFetch);
+  fetchRef.current = doFetch;
 
   useEffect(() => {
     let alive = true;
@@ -117,26 +133,50 @@ export function DesmosAiTutor({ initial }: { initial?: string }) {
       alive = false;
       calc.current?.destroy();
       calc.current = null;
-      if (timer.current) clearTimeout(timer.current);
+      pending.current?.abort();
     };
   }, []);
 
-  const ask = useCallback((question: string) => {
+  const ask = useCallback(async (question: string, answer = '') => {
     const q = question.trim();
     if (!q) return;
+    pending.current?.abort();
+    const ctrl = new AbortController();
+    pending.current = ctrl;
     setAsked(q);
     setDraft('');
-    setNotFound(false);
+    setAnswerDraft('');
+    setMiss(null);
     setLesson(null);
+    setSource(null);
+    setAnswerByModel(false);
     setThinking(true);
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      const found = findLesson(q);
-      setThinking(false);
+    try {
+      const res = await fetchRef.current('/api/desmos/lesson', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(answer.trim() ? { question: q, answer: answer.trim() } : { question: q }),
+        signal: ctrl.signal,
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      const data = (await res.json()) as LessonReply;
+      if (ctrl.signal.aborted) return;
       setCur(0);
-      setLesson(found);
-      setNotFound(!found);
-    }, 1100);
+      if (data.lesson) {
+        setLesson(data.lesson);
+        setSource(data.source);
+        setAnswerByModel(data.answerFrom === 'model');
+      } else {
+        setMiss(data.reason);
+      }
+    } catch {
+      if (!ctrl.signal.aborted) setMiss('error');
+    } finally {
+      if (pending.current === ctrl) {
+        pending.current = null;
+        setThinking(false);
+      }
+    }
   }, []);
 
   // open a lesson from the tutor chat link (/desmos/ai?l=slider)
@@ -165,7 +205,7 @@ export function DesmosAiTutor({ initial }: { initial?: string }) {
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
-    ask(draft);
+    ask(draft, answerDraft);
   }
 
   const last = lesson ? cur === lesson.steps.length - 1 : false;
@@ -194,6 +234,17 @@ export function DesmosAiTutor({ initial }: { initial?: string }) {
           placeholder={t('desmosAi.placeholder')}
           maxLength={400}
           className="min-w-0 flex-1 bg-transparent py-2 text-[15.5px] text-ink outline-none"
+        />
+        <label htmlFor={answerId} className="sr-only">
+          {t('desmosAi.answerLabel')}
+        </label>
+        <input
+          id={answerId}
+          value={answerDraft}
+          onChange={(e) => setAnswerDraft(e.target.value)}
+          placeholder={t('desmosAi.answerPlaceholder')}
+          maxLength={40}
+          className="w-24 sm:w-32 shrink-0 rounded-xl border border-line bg-paper px-2.5 py-2 text-[14px] text-ink outline-none focus:border-leaf"
         />
         <Button type="submit" size="md" disabled={thinking || !draft.trim()}>
           {t('desmosAi.ask')}
@@ -237,17 +288,31 @@ export function DesmosAiTutor({ initial }: { initial?: string }) {
             </p>
           )}
 
-          {notFound && <p className="text-[15px] text-ink-2">{t('desmosAi.notFound')}</p>}
+          {miss && (
+            <p className="text-[15px] text-ink-2" role="status">
+              {miss === 'off'
+                ? t('desmosAi.notFound')
+                : miss === 'failed'
+                  ? t('desmosAi.modelFailed')
+                  : t('desmosAi.error')}
+            </p>
+          )}
 
           {lesson && (
             <div className="grid gap-3">
               <div className="flex flex-wrap items-center gap-2">
                 <Pill tone="leaf">{lesson.title}</Pill>
-                <Pill tone="amber">{t('desmosAi.sample')}</Pill>
+                {source === 'model' ? (
+                  <Pill tone="teal">{t('desmosAi.live')}</Pill>
+                ) : (
+                  <Pill tone="amber">{t('desmosAi.sample')}</Pill>
+                )}
               </div>
+              {answerByModel && <p className="text-[13.5px] text-ink-3">{t('desmosAi.answerByModel')}</p>}
               <ol className="grid gap-1.5" aria-label={t('desmosAi.steps')}>
                 {lesson.steps.map((s, i) => (
-                  <li key={s.text}>
+                  // model lessons may repeat a sentence, so the step number is part of the key
+                  <li key={`${i}-${s.text}`}>
                     <button
                       type="button"
                       onClick={() => setCur(i)}

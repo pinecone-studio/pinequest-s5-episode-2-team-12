@@ -68,6 +68,12 @@
     "check": "Check",
     "answer": "Answer",
     "loading": "Loading Desmos…",
-    "failed": "Desmos didn't load. Check the internet connection and reload the page."
+    "failed": "Desmos didn't load. Check the internet connection and reload the page.",
+    "answerLabel": "Correct answer (if you know it)",
+    "answerPlaceholder": "Answer (optional)",
+    "live": "AI lesson",
+    "answerByModel": "Suu worked out the answer itself — double-check it.",
+    "modelFailed": "Suu couldn't write a Desmos lesson that passes the checks for this question. Add the correct answer and ask again, or pick an example above.",
+    "error": "Connection lost. Please try again."
   }
 }

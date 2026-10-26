@@ -315,12 +315,20 @@ export const DESMOS_AI_LESSONS: DesmosAiLesson[] = [
 
 const squash = (s: string) => s.toLowerCase().replace(/\s+/g, '').replaceAll('−', '-');
 
-/** The lesson for a typed question, or null when it isn't one of the demo questions. */
-export function findLesson(question: string): DesmosAiLesson | null {
+/**
+ * The sample lesson for a typed question, or null when it isn't one of the demo questions.
+ * `exact`: only the sample's own question counts. Used when the model is on, because keyword matches
+ * ("height", "mean", "slope") would answer a *different* question with a sample about another one.
+ */
+export function findLesson(
+  question: string,
+  { exact = false }: { exact?: boolean } = {},
+): DesmosAiLesson | null {
   const q = squash(question);
   if (!q) return null;
   return (
-    DESMOS_AI_LESSONS.find((l) => squash(l.question) === q || l.match.some((m) => q.includes(squash(m)))) ??
-    null
+    DESMOS_AI_LESSONS.find(
+      (l) => squash(l.question) === q || (!exact && l.match.some((m) => q.includes(squash(m)))),
+    ) ?? null
   );
 }
