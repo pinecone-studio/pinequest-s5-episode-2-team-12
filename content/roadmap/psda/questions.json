@@ -9,12 +9,7 @@
     "pool": "stop",
     "prompt": "A recipe for buuz dough uses $3$ cups of flour for every $2$ cups of water. How many cups of flour are needed if $8$ cups of water are used?",
     "mn": "Бууз хийх гурилан зуурмагийн жоронд $2$ аяга усанд $3$ аяга гурил ордог. $8$ аяга ус хэрэглэвэл хэдэн аяга гурил хэрэгтэй вэ?",
-    "choices": [
-      "$10$",
-      "$16$",
-      "$12$",
-      "$6$"
-    ],
+    "choices": ["$10$", "$16$", "$12$", "$6$"],
     "answer": 2,
     "explain": "Харьцаа $3:2$. Ус $8 = 2\\cdot 4$ тул гурил $3\\cdot 4 = 12$ аяга.",
     "hint": "Ус хэдэн дахин нэмэгдсэн бэ? Гурилыг мөн адил дахин нэмэгдүүл.",
@@ -25,10 +20,7 @@
     "verify": {
       "value": "3/2*8"
     },
-    "vocab": [
-      "for every",
-      "cups"
-    ],
+    "vocab": ["for every", "cups"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -44,18 +36,13 @@
     "pool": "stop",
     "prompt": "A truck travels $168$ kilometers in $3$ hours at a constant speed. At this rate, how many kilometers will the truck travel in $5$ hours?",
     "mn": "Ачааны машин тогтмол хурдтай $3$ цагт $168$ км явдаг. Энэ хурдаар $5$ цагт хэдэн км явах вэ?",
-    "answer": [
-      "280"
-    ],
+    "answer": ["280"],
     "explain": "Хурд $168\\div 3 = 56$ км/цаг. $5$ цагт $56\\cdot 5 = 280$ км.",
     "hint": "Эхлээд 1 цагт хэдэн км явахыг ол.",
     "verify": {
       "value": "168/3*5"
     },
-    "vocab": [
-      "constant speed",
-      "at this rate"
-    ],
+    "vocab": ["constant speed", "at this rate"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -71,12 +58,7 @@
     "pool": "stop",
     "prompt": "On a farm in Arkhangai, the ratio of sheep to goats is $7:4$. If the farm has a total of $132$ sheep and goats, how many goats are on the farm?",
     "mn": "Архангайн нэгэн малчны хонь ба ямааны харьцаа $7:4$. Хонь, ямаа нийт $132$ бол ямаа хэд вэ?",
-    "choices": [
-      "$48$",
-      "$84$",
-      "$33$",
-      "$44$"
-    ],
+    "choices": ["$48$", "$84$", "$33$", "$44$"],
     "answer": 0,
     "explain": "Нийт хэсэг $7+4 = 11$. Нэг хэсэг $132\\div 11 = 12$. Ямаа $4\\cdot 12 = 48$.",
     "hint": "Харьцааны хэсгүүдийг нэмээд нийт тоог хуваа.",
@@ -87,10 +69,7 @@
     "verify": {
       "value": "132/11*4"
     },
-    "vocab": [
-      "ratio",
-      "total"
-    ],
+    "vocab": ["ratio", "total"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -106,18 +85,13 @@
     "pool": "stop",
     "prompt": "Printer A prints $45$ pages per minute and printer B prints $30$ pages per minute. If both printers work at the same time, how many minutes will it take them to print $1,500$ pages?",
     "mn": "A принтер минутад $45$, B принтер минутад $30$ хуудас хэвлэдэг. Хоёулаа зэрэг ажиллавал $1,500$ хуудсыг хэдэн минутад хэвлэх вэ?",
-    "answer": [
-      "20"
-    ],
+    "answer": ["20"],
     "explain": "Хамтын хурд $45+30 = 75$ хуудас/минут. Хугацаа $1500\\div 75 = 20$ минут.",
     "hint": "Зэрэг ажиллахад хурднууд нэмэгдэнэ.",
     "verify": {
       "value": "1500/(45+30)"
     },
-    "vocab": [
-      "pages per minute",
-      "at the same time"
-    ],
+    "vocab": ["pages per minute", "at the same time"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -133,12 +107,7 @@
     "pool": "stop",
     "prompt": "The ratio of $a$ to $b$ is $3:5$, and the ratio of $b$ to $c$ is $2:7$. What is the value of $\\frac{a}{c}$?",
     "mn": "$a$ ба $b$-ийн харьцаа $3:5$, $b$ ба $c$-ийн харьцаа $2:7$. $\\frac{a}{c}$-ийн утга хэд вэ?",
-    "choices": [
-      "$\\frac{3}{7}$",
-      "$\\frac{5}{14}$",
-      "$\\frac{21}{10}$",
-      "$\\frac{6}{35}$"
-    ],
+    "choices": ["$\\frac{3}{7}$", "$\\frac{5}{14}$", "$\\frac{21}{10}$", "$\\frac{6}{35}$"],
     "answer": 3,
     "explain": "$\\frac{a}{c} = \\frac{a}{b}\\cdot\\frac{b}{c} = \\frac{3}{5}\\cdot\\frac{2}{7} = \\frac{6}{35}$.",
     "hint": "$\\frac{a}{b}$ ба $\\frac{b}{c}$-г үржүүлбэл $b$ хураагдана.",
@@ -163,25 +132,17 @@
     "pool": "stop",
     "prompt": "Pipe P alone can fill a water tank in $6$ hours, and pipe Q alone can fill the same tank in $10$ hours. If both pipes are opened at the same time, how many hours will it take to fill the empty tank?",
     "mn": "P хоолой ганцаараа савыг $6$ цагт, Q хоолой $10$ цагт дүүргэдэг. Хоёуланг нь зэрэг нээвэл хоосон савыг хэдэн цагт дүүргэх вэ?",
-    "answer": [
-      "3.75",
-      "15/4"
-    ],
+    "answer": ["3.75", "15/4"],
     "explain": "Цагийн хурд: P нь $\\frac{1}{6}$, Q нь $\\frac{1}{10}$ сав. Нийт $\\frac{1}{6}+\\frac{1}{10} = \\frac{8}{30} = \\frac{4}{15}$ сав/цаг. Хугацаа $\\frac{15}{4} = 3.75$ цаг.",
     "hint": "Хоолой бүр 1 цагт савны хэдэн хэсгийг дүүргэх вэ?",
     "desmos": {
-      "rows": [
-        "1/(1/6+1/10)"
-      ],
+      "rows": ["1/(1/6+1/10)"],
       "tip": "Desmos-д бутархайг шууд бичээд хариуг аравтын бутархайгаар харна."
     },
     "verify": {
       "value": "1/(1/6+1/10)"
     },
-    "vocab": [
-      "alone",
-      "fill"
-    ],
+    "vocab": ["alone", "fill"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -197,12 +158,7 @@
     "pool": "stop",
     "prompt": "A runner's average speed is $5$ meters per second. What is this speed in kilometers per hour? ($1$ kilometer $= 1,000$ meters)",
     "mn": "Гүйгчийн дундаж хурд секундэд $5$ метр. Энэ хурд цагт хэдэн км вэ? ($1$ км $= 1,000$ м)",
-    "choices": [
-      "$300$",
-      "$18$",
-      "$30$",
-      "$1.8$"
-    ],
+    "choices": ["$300$", "$18$", "$30$", "$1.8$"],
     "answer": 1,
     "explain": "$1$ цагт $3600$ секунд. $5\\cdot 3600 = 18000$ м $= 18$ км. Тиймээс $18$ км/цаг.",
     "hint": "Нэг цагт хэдэн секунд байдаг вэ?",
@@ -212,10 +168,7 @@
     "verify": {
       "value": "5*3600/1000"
     },
-    "vocab": [
-      "meters per second",
-      "kilometers per hour"
-    ],
+    "vocab": ["meters per second", "kilometers per hour"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -231,18 +184,13 @@
     "pool": "stop",
     "prompt": "Suppose $1$ US dollar is worth ₮$3,450$. How many US dollars are equal to ₮$69,000$?",
     "mn": "$1$ ам.доллар ₮$3,450$ гэж үзье. ₮$69,000$ нь хэдэн ам.доллартай тэнцэх вэ?",
-    "answer": [
-      "20"
-    ],
+    "answer": ["20"],
     "explain": "$69000\\div 3450 = 20$ доллар.",
     "hint": "Төгрөгийг нэг долларын ханшид хуваа.",
     "verify": {
       "value": "69000/3450"
     },
-    "vocab": [
-      "is worth",
-      "exchange rate"
-    ],
+    "vocab": ["is worth", "exchange rate"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -258,12 +206,7 @@
     "pool": "stop",
     "prompt": "A rectangular poster is $2.4$ meters long and $1.5$ meters wide. What is the area of the poster, in square centimeters? ($1$ meter $= 100$ centimeters)",
     "mn": "Тэгш өнцөгт зурагт хуудас $2.4$ м урт, $1.5$ м өргөн. Талбай нь хэдэн квадрат сантиметр вэ? ($1$ м $= 100$ см)",
-    "choices": [
-      "$360$",
-      "$3,600$",
-      "$36,000$",
-      "$360,000$"
-    ],
+    "choices": ["$360$", "$3,600$", "$36,000$", "$360,000$"],
     "answer": 2,
     "explain": "Сантиметрт шилжүүлбэл $240$ см ба $150$ см. Талбай $240\\cdot 150 = 36000$ см$^2$.",
     "hint": "Хэмжээсүүдийг эхлээд сантиметрт шилжүүлээд дараа нь үржүүл.",
@@ -274,9 +217,7 @@
     "verify": {
       "value": "(2.4*100)*(1.5*100)"
     },
-    "vocab": [
-      "square centimeters"
-    ],
+    "vocab": ["square centimeters"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -292,18 +233,13 @@
     "pool": "stop",
     "prompt": "A car uses $7.5$ liters of fuel for every $100$ kilometers driven. Fuel costs ₮$2,500$ per liter. A driver leaving Ulaanbaatar has ₮$75,000$ to spend on fuel. How many kilometers can the driver travel with this amount of fuel?",
     "mn": "Машин $100$ км тутамд $7.5$ литр шатахуун зарцуулдаг. Шатахуун литр нь ₮$2,500$. Улаанбаатараас гарч буй жолооч шатахуунд ₮$75,000$ зарцуулах боломжтой. Энэ шатахуунаар хэдэн км явах вэ?",
-    "answer": [
-      "400"
-    ],
+    "answer": ["400"],
     "explain": "Литр: $75000\\div 2500 = 30$ л. Километр: $30\\div 7.5 = 4$ удаа $100$ км, өөрөөр хэлбэл $400$ км.",
     "hint": "Мөнгө → литр → километр гэсэн дарааллаар хөрвүүл.",
     "verify": {
       "value": "75000/2500/7.5*100"
     },
-    "vocab": [
-      "fuel",
-      "per liter"
-    ],
+    "vocab": ["fuel", "per liter"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -319,12 +255,7 @@
     "pool": "stop",
     "prompt": "An empty water tank in the shape of a rectangular prism is $1.8$ meters long, $1.2$ meters wide, and $1$ meter tall. A pump fills the tank at a rate of $12$ liters per minute. How many hours will it take to fill the tank completely? ($1$ cubic meter $= 1,000$ liters)",
     "mn": "Тэгш өнцөгт параллелепипед хэлбэрийн хоосон усны сав $1.8$ м урт, $1.2$ м өргөн, $1$ м өндөр. Насос минутад $12$ литр ус шахдаг. Савыг бүрэн дүүргэхэд хэдэн цаг шаардлагатай вэ? ($1$ м$^3 = 1,000$ литр)",
-    "choices": [
-      "$3$",
-      "$180$",
-      "$18$",
-      "$0.3$"
-    ],
+    "choices": ["$3$", "$180$", "$18$", "$0.3$"],
     "answer": 0,
     "explain": "Эзлэхүүн $1.8\\cdot 1.2\\cdot 1 = 2.16$ м$^3 = 2160$ л. Минут: $2160\\div 12 = 180$. Цаг: $180\\div 60 = 3$.",
     "hint": "Эзлэхүүн → литр → минут → цаг.",
@@ -334,10 +265,7 @@
     "verify": {
       "value": "1.8*1.2*1*1000/12/60"
     },
-    "vocab": [
-      "rectangular prism",
-      "rate"
-    ],
+    "vocab": ["rectangular prism", "rate"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -353,18 +281,13 @@
     "pool": "stop",
     "prompt": "The density of a certain metal is $7.8$ grams per cubic centimeter. What is the density of this metal, in kilograms per cubic meter? ($1$ kilogram $= 1,000$ grams and $1$ meter $= 100$ centimeters)",
     "mn": "Нэгэн металлын нягт $7.8$ г/см$^3$. Энэ металлын нягт хэдэн кг/м$^3$ вэ? ($1$ кг $= 1,000$ г, $1$ м $= 100$ см)",
-    "answer": [
-      "7800"
-    ],
+    "answer": ["7800"],
     "explain": "$1$ м$^3 = 100^3 = 1,000,000$ см$^3$. Тиймээс $1$ м$^3$-д $7.8\\cdot 1,000,000 = 7,800,000$ г $= 7800$ кг. Нягт $7800$ кг/м$^3$.",
     "hint": "Нэг куб метрт хэдэн куб сантиметр багтах вэ? $100$ биш!",
     "verify": {
       "value": "7.8*100^3/1000"
     },
-    "vocab": [
-      "density",
-      "cubic meter"
-    ],
+    "vocab": ["density", "cubic meter"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -380,17 +303,13 @@
     "pool": "stop",
     "prompt": "A school in Darkhan has $640$ students. Of these students, $35\\%$ walk to school. How many students walk to school?",
     "mn": "Дарханы нэгэн сургууль $640$ сурагчтай. Тэдний $35\\%$ нь сургуульдаа явганаар ирдэг. Хэдэн сурагч явганаар ирдэг вэ?",
-    "answer": [
-      "224"
-    ],
+    "answer": ["224"],
     "explain": "$35\\% = 0.35$. $0.35\\cdot 640 = 224$.",
     "hint": "Хувийг аравтын бутархай болгоод тоогоор үржүүл.",
     "verify": {
       "value": "0.35*640"
     },
-    "vocab": [
-      "of these"
-    ],
+    "vocab": ["of these"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -406,12 +325,7 @@
     "pool": "stop",
     "prompt": "The number $18$ is $p\\%$ of $72$. What is the value of $p$?",
     "mn": "$18$ нь $72$-ын $p\\%$ юм. $p$-ийн утга хэд вэ?",
-    "choices": [
-      "$4$",
-      "$40$",
-      "$54$",
-      "$25$"
-    ],
+    "choices": ["$4$", "$40$", "$54$", "$25$"],
     "answer": 3,
     "explain": "$\\frac{18}{72} = 0.25$, тиймээс $p = 25$.",
     "hint": "Хэсгийг бүхэлд нь хувааж, $100$-аар үржүүл.",
@@ -436,12 +350,7 @@
     "pool": "stop",
     "prompt": "The price of a phone was ₮$800,000$. The price was increased by $10\\%$, and then the new price was decreased by $10\\%$. What is the final price of the phone, in tugriks?",
     "mn": "Утасны үнэ ₮$800,000$ байв. Үнийг $10\\%$-иар өсгөөд, дараа нь шинэ үнийг $10\\%$-иар бууруулжээ. Утасны эцсийн үнэ хэдэн төгрөг вэ?",
-    "choices": [
-      "$800,000$",
-      "$792,000$",
-      "$720,000$",
-      "$880,000$"
-    ],
+    "choices": ["$800,000$", "$792,000$", "$720,000$", "$880,000$"],
     "answer": 1,
     "explain": "$800000\\cdot 1.1 = 880000$, дараа нь $880000\\cdot 0.9 = 792000$. Хоёр хувийн өөрчлөлт өөр өөр суурьтай тул бие биенээ хүчингүй болгодоггүй.",
     "hint": "Хоёр дахь $10\\%$ нь аль үнээс тооцогдох вэ?",
@@ -451,10 +360,7 @@
     "verify": {
       "value": "800000*1.1*0.9"
     },
-    "vocab": [
-      "increased by",
-      "decreased by"
-    ],
+    "vocab": ["increased by", "decreased by"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -470,17 +376,13 @@
     "pool": "stop",
     "prompt": "A herder had $450$ goats in 2024 and $513$ goats in 2025. The number of goats increased by $p\\%$ from 2024 to 2025. What is the value of $p$?",
     "mn": "Малчин 2024 онд $450$, 2025 онд $513$ ямаатай байв. 2024-өөс 2025 онд ямааны тоо $p\\%$-иар өссөн. $p$-ийн утга хэд вэ?",
-    "answer": [
-      "14"
-    ],
+    "answer": ["14"],
     "explain": "Өсөлт $513-450 = 63$. $\\frac{63}{450} = 0.14$, тиймээс $p = 14$.",
     "hint": "Хувийн өсөлт $= \\frac{\\text{өөрчлөлт}}{\\text{анхны утга}}\\cdot 100$.",
     "verify": {
       "value": "(513-450)/450*100"
     },
-    "vocab": [
-      "increased by"
-    ],
+    "vocab": ["increased by"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -496,19 +398,12 @@
     "pool": "stop",
     "prompt": "A coat was on sale for $25\\%$ off its original price. A sales tax of $8\\%$ was then applied to the sale price, and the total amount paid was \\$$81$. What was the original price of the coat, in dollars?",
     "mn": "Хүрэм анхны үнээсээ $25\\%$-ийн хямдралтай зарагдаж байв. Хямдралтай үнэ дээр $8\\%$-ийн татвар нэмэгдэж, нийт \\$$81$ төлсөн. Хүрмний анхны үнэ хэдэн доллар байсан бэ?",
-    "choices": [
-      "$108$",
-      "$81$",
-      "$100$",
-      "$92$"
-    ],
+    "choices": ["$108$", "$81$", "$100$", "$92$"],
     "answer": 2,
     "explain": "Анхны үнэ $x$ бол $x\\cdot 0.75\\cdot 1.08 = 81$, өөрөөр хэлбэл $0.81x = 81$, $x = 100$.",
     "hint": "Төлсөн үнийг анхны үнээр илэрхийлж, тэгшитгэл зохио.",
     "desmos": {
-      "rows": [
-        "0.75*1.08x=81"
-      ],
+      "rows": ["0.75*1.08x=81"],
       "tip": "Desmos-д тэгшитгэлийг бичвэл $x$-ийн утгыг шууд гаргана."
     },
     "why": {
@@ -518,10 +413,7 @@
     "verify": {
       "value": "81/(0.75*1.08)"
     },
-    "vocab": [
-      "sales tax",
-      "original price"
-    ],
+    "vocab": ["sales tax", "original price"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -537,18 +429,13 @@
     "pool": "stop",
     "prompt": "The number $a$ is $40\\%$ greater than the number $b$, and $b$ is $25\\%$ less than the positive number $c$. The number $a$ is what percent of $c$?",
     "mn": "$a$ тоо $b$-ээс $40\\%$-иар их, $b$ нь эерэг $c$ тооноос $25\\%$-иар бага. $a$ нь $c$-ийн хэдэн хувь вэ?",
-    "answer": [
-      "105"
-    ],
+    "answer": ["105"],
     "explain": "$b = 0.75c$, $a = 1.4b = 1.4\\cdot 0.75c = 1.05c$. Тиймээс $a$ нь $c$-ийн $105\\%$.",
     "hint": "$c = 100$ гэж аваад туршиж үз.",
     "verify": {
       "value": "1.4*0.75*100"
     },
-    "vocab": [
-      "greater than",
-      "less than"
-    ],
+    "vocab": ["greater than", "less than"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -564,19 +451,12 @@
     "pool": "stop",
     "prompt": "The list shows the number of books read last month by $5$ students: $4, 7, 7, 9, 13$. What is the mean number of books read?",
     "mn": "Жагсаалтад $5$ сурагчийн өнгөрсөн сард уншсан номын тоо байна: $4, 7, 7, 9, 13$. Уншсан номын дундаж хэд вэ?",
-    "choices": [
-      "$7$",
-      "$8$",
-      "$9$",
-      "$40$"
-    ],
+    "choices": ["$7$", "$8$", "$9$", "$40$"],
     "answer": 1,
     "explain": "Нийлбэр $4+7+7+9+13 = 40$. Дундаж $40\\div 5 = 8$.",
     "hint": "Бүх утгыг нэмээд тоонд нь хуваа.",
     "desmos": {
-      "rows": [
-        "mean([4,7,7,9,13])"
-      ],
+      "rows": ["mean([4,7,7,9,13])"],
       "tip": "Desmos-д mean([...]) гэж бичвэл дунджийг шууд бодно."
     },
     "why": {
@@ -586,9 +466,7 @@
     "verify": {
       "value": "(4+7+7+9+13)/5"
     },
-    "vocab": [
-      "mean"
-    ],
+    "vocab": ["mean"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -604,25 +482,17 @@
     "pool": "stop",
     "prompt": "What is the median of the data set $12, 5, 9, 15, 6, 10$?",
     "mn": "$12, 5, 9, 15, 6, 10$ өгөгдлийн медиан хэд вэ?",
-    "answer": [
-      "9.5",
-      "19/2"
-    ],
+    "answer": ["9.5", "19/2"],
     "explain": "Эрэмбэлбэл $5, 6, 9, 10, 12, 15$. Тэгш тооны утгатай тул дунд хоёрын дундаж: $\\frac{9+10}{2} = 9.5$.",
     "hint": "Эхлээд өсөх дарааллаар эрэмбэл.",
     "desmos": {
-      "rows": [
-        "median([12,5,9,15,6,10])"
-      ],
+      "rows": ["median([12,5,9,15,6,10])"],
       "tip": "median([...]) функц эрэмбэлэхийг өөрөө хийнэ."
     },
     "verify": {
       "value": "(9+10)/2"
     },
-    "vocab": [
-      "median",
-      "data set"
-    ],
+    "vocab": ["median", "data set"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -638,12 +508,7 @@
     "pool": "stop",
     "prompt": "The mean of $6$ numbers is $14$. When a seventh number is added to the list, the mean of the $7$ numbers is $15$. What is the seventh number?",
     "mn": "$6$ тооны дундаж $14$. Жагсаалтад долоо дахь тоог нэмэхэд $7$ тооны дундаж $15$ болсон. Долоо дахь тоо хэд вэ?",
-    "choices": [
-      "$15$",
-      "$16$",
-      "$29$",
-      "$21$"
-    ],
+    "choices": ["$15$", "$16$", "$29$", "$21$"],
     "answer": 3,
     "explain": "Анхны нийлбэр $6\\cdot 14 = 84$. Шинэ нийлбэр $7\\cdot 15 = 105$. Долоо дахь тоо $105-84 = 21$.",
     "hint": "Дунджийг нийлбэр рүү хөрвүүл: нийлбэр $=$ дундаж $\\times$ тоо.",
@@ -653,10 +518,7 @@
     "verify": {
       "value": "7*15-6*14"
     },
-    "vocab": [
-      "mean",
-      "added"
-    ],
+    "vocab": ["mean", "added"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -672,27 +534,17 @@
     "pool": "stop",
     "prompt": "In a quiz, each of $20$ students earned a score of $1, 2, 3,$ or $4$. The frequency table shows the results. Score $1$: $3$ students; score $2$: $5$ students; score $3$: $8$ students; score $4$: $4$ students. What is the mean score of the $20$ students?",
     "mn": "Шалгалтад $20$ сурагч тус бүр $1, 2, 3$ эсвэл $4$ оноо авсан. Давтамжийн хүснэгт: $1$ оноо — $3$ сурагч; $2$ оноо — $5$; $3$ оноо — $8$; $4$ оноо — $4$. $20$ сурагчийн дундаж оноо хэд вэ?",
-    "answer": [
-      "2.65",
-      "53/20"
-    ],
+    "answer": ["2.65", "53/20"],
     "explain": "Нийт оноо $1\\cdot 3 + 2\\cdot 5 + 3\\cdot 8 + 4\\cdot 4 = 3+10+24+16 = 53$. Дундаж $53\\div 20 = 2.65$.",
     "hint": "Оноо бүрийг давтамжаар нь үржүүлээд нэм.",
     "desmos": {
-      "rows": [
-        "x_1=[1,2,3,4]",
-        "f=[3,5,8,4]",
-        "total(x_1 f)/total(f)"
-      ],
+      "rows": ["x_1=[1,2,3,4]", "f=[3,5,8,4]", "total(x_1 f)/total(f)"],
       "tip": "Хүснэгтийн утгуудыг жагсаалт болгон бичээд total() ашигла."
     },
     "verify": {
       "value": "(1*3+2*5+3*8+4*4)/20"
     },
-    "vocab": [
-      "frequency table",
-      "score"
-    ],
+    "vocab": ["frequency table", "score"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -708,12 +560,7 @@
     "pool": "stop",
     "prompt": "A data set of $10$ numbers has a mean of $18$ and a median of $17$. The greatest number in the data set, $30$, is replaced with $50$. What is the mean of the new data set?",
     "mn": "$10$ тооноос бүрдэх өгөгдлийн дундаж $18$, медиан $17$. Хамгийн их тоо болох $30$-ыг $50$-аар сольжээ. Шинэ өгөгдлийн дундаж хэд вэ?",
-    "choices": [
-      "$20$",
-      "$18$",
-      "$19$",
-      "$38$"
-    ],
+    "choices": ["$20$", "$18$", "$19$", "$38$"],
     "answer": 0,
     "explain": "Нийлбэр $10\\cdot 18 = 180$. Солисны дараа $180-30+50 = 200$. Дундаж $200\\div 10 = 20$. Медиан харин өөрчлөгдөхгүй ($17$) — хамгийн их утга медианд нөлөөлдөггүй.",
     "hint": "Нийлбэр хэдээр өөрчлөгдсөн бэ?",
@@ -724,10 +571,7 @@
     "verify": {
       "value": "(10*18-30+50)/10"
     },
-    "vocab": [
-      "replaced",
-      "greatest"
-    ],
+    "vocab": ["replaced", "greatest"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -743,9 +587,7 @@
     "pool": "stop",
     "prompt": "A data set consists of the five numbers $2, 6, 9, 11,$ and $x$, where $x > 11$. The mean of the data set is $3$ greater than the median of the data set. What is the value of $x$?",
     "mn": "Өгөгдөл $2, 6, 9, 11$ ба $x$ гэсэн таван тооноос бүрдэнэ ($x > 11$). Өгөгдлийн дундаж нь медианаасаа $3$-аар их. $x$-ийн утга хэд вэ?",
-    "answer": [
-      "32"
-    ],
+    "answer": ["32"],
     "explain": "$x > 11$ тул медиан $9$. Дундаж $9+3 = 12$, нийлбэр $5\\cdot 12 = 60$. $2+6+9+11 = 28$ тул $x = 60-28 = 32$.",
     "hint": "$x$ хамгийн их тул медиан аль тоо вэ?",
     "verify": {
@@ -754,10 +596,7 @@
         "eq": "(2+6+9+11+x)/5 = 9+3"
       }
     },
-    "vocab": [
-      "consists of",
-      "greater than"
-    ],
+    "vocab": ["consists of", "greater than"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -773,12 +612,7 @@
     "pool": "stop",
     "prompt": "A scatterplot shows the number of visitors $y$, in hundreds, at a museum in Ulaanbaatar and the number of days $x$ since an exhibit opened. The line of best fit is $y = 2.5x + 40$. According to the line of best fit, what is the predicted number of visitors, in hundreds, on day $12$?",
     "mn": "Цэгэн график нь Улаанбаатарын нэгэн музейн зочдын тоо $y$ (зуугаар) ба үзэсгэлэн нээгдсэнээс хойших өдрийн тоо $x$-ийг харуулна. Хамгийн тохиромжтой шулуун $y = 2.5x + 40$. Энэ шулуунаар $12$ дахь өдрийн зочдын тоо (зуугаар) хэд гэж таамаглагдах вэ?",
-    "choices": [
-      "$30$",
-      "$52$",
-      "$70$",
-      "$82$"
-    ],
+    "choices": ["$30$", "$52$", "$70$", "$82$"],
     "answer": 2,
     "explain": "$x = 12$ орлуулбал $y = 2.5\\cdot 12 + 40 = 30 + 40 = 70$.",
     "hint": "$x$-ийн оронд $12$-ыг орлуул.",
@@ -788,10 +622,7 @@
     "verify": {
       "value": "2.5*12+40"
     },
-    "vocab": [
-      "line of best fit",
-      "predicted"
-    ],
+    "vocab": ["line of best fit", "predicted"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -807,18 +638,13 @@
     "pool": "stop",
     "prompt": "The line of best fit for a scatterplot is $y = -3.2x + 96$, where $y$ is the predicted percent of battery remaining on a phone and $x$ is the number of hours of use. What is the predicted percent of battery remaining after $5$ hours of use?",
     "mn": "Цэгэн графикийн хамгийн тохиромжтой шулуун $y = -3.2x + 96$. Энд $y$ нь утасны батарейны үлдсэн хувь (таамаг), $x$ нь ашигласан цаг. $5$ цаг ашигласны дараа батарейны үлдэх хувь хэд гэж таамаглагдах вэ?",
-    "answer": [
-      "80"
-    ],
+    "answer": ["80"],
     "explain": "$y = -3.2\\cdot 5 + 96 = -16 + 96 = 80$.",
     "hint": "$x = 5$-ыг орлуул.",
     "verify": {
       "value": "-3.2*5+96"
     },
-    "vocab": [
-      "remaining",
-      "hours of use"
-    ],
+    "vocab": ["remaining", "hours of use"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -847,10 +673,7 @@
       "0": "Төрөх үеийн жин нь сул гишүүн $3.5$.",
       "1": "Хувьсагчдын үүргийг сольсон."
     },
-    "vocab": [
-      "interpretation",
-      "in this context"
-    ],
+    "vocab": ["interpretation", "in this context"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -866,19 +689,13 @@
     "pool": "stop",
     "prompt": "The line of best fit for a data set is $y = 1.5x + 4$. One data point in the set is $(6, 15)$. What is the residual for this data point? (residual $=$ actual value $-$ predicted value)",
     "mn": "Өгөгдлийн хамгийн тохиромжтой шулуун $y = 1.5x + 4$. Нэг цэг нь $(6, 15)$. Энэ цэгийн үлдэгдэл хэд вэ? (үлдэгдэл $=$ бодит утга $-$ таамагласан утга)",
-    "answer": [
-      "2"
-    ],
+    "answer": ["2"],
     "explain": "Таамагласан утга $1.5\\cdot 6 + 4 = 13$. Үлдэгдэл $15 - 13 = 2$.",
     "hint": "Эхлээд $x = 6$ үеийн таамагласан $y$-г ол.",
     "verify": {
       "value": "15-(1.5*6+4)"
     },
-    "vocab": [
-      "residual",
-      "actual",
-      "predicted"
-    ],
+    "vocab": ["residual", "actual", "predicted"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -894,21 +711,12 @@
     "pool": "stop",
     "prompt": "A line of best fit for a scatterplot passes through the points $(2, 31)$ and $(10, 79)$. Based on this line, what is the predicted value of $y$ when $x = 15$?",
     "mn": "Цэгэн графикийн хамгийн тохиромжтой шулуун $(2, 31)$ ба $(10, 79)$ цэгүүдийг дайрна. Энэ шулуунаар $x = 15$ үед $y$-ийн таамагласан утга хэд вэ?",
-    "choices": [
-      "$94$",
-      "$109$",
-      "$115$",
-      "$103$"
-    ],
+    "choices": ["$94$", "$109$", "$115$", "$103$"],
     "answer": 1,
     "explain": "Налалт $\\frac{79-31}{10-2} = \\frac{48}{8} = 6$. $y = 6x + b$: $31 = 12 + b$, $b = 19$. $x = 15$ үед $y = 90 + 19 = 109$.",
     "hint": "Хоёр цэгээр налалт, дараа нь сул гишүүнийг ол.",
     "desmos": {
-      "rows": [
-        "(2,31)",
-        "(10,79)",
-        "y=6x+19"
-      ],
+      "rows": ["(2,31)", "(10,79)", "y=6x+19"],
       "tip": "Хоёр цэгийг хүснэгтэд оруулаад y_1~mx_1+b гэж регресс хийвэл шулуун шууд гарна."
     },
     "why": {
@@ -918,9 +726,7 @@
     "verify": {
       "value": "6*15+19"
     },
-    "vocab": [
-      "passes through"
-    ],
+    "vocab": ["passes through"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -936,25 +742,17 @@
     "pool": "stop",
     "prompt": "The population $y$ of a town $t$ years after 2020 is modeled by the exponential function $y = 8,000(1.05)^t$, which fits the data in a scatterplot well. According to the model, by how many people does the population increase from $t = 2$ to $t = 3$?",
     "mn": "2020 оноос хойш $t$ жилийн дараах хотын хүн ам $y$-г $y = 8,000(1.05)^t$ илтгэгч функцээр загварчилсан бөгөөд энэ нь цэгэн графикийн өгөгдөлд сайн тохирно. Загвараар $t = 2$-оос $t = 3$ хүртэл хүн ам хэдэн хүнээр өсөх вэ?",
-    "answer": [
-      "441"
-    ],
+    "answer": ["441"],
     "explain": "$t=2$: $8000\\cdot 1.05^2 = 8820$. $t=3$: $8820\\cdot 1.05 = 9261$. Өсөлт $9261-8820 = 441$.",
     "hint": "Жил бүр $5\\%$-иар өсдөг ч суурь нь жил бүр өөр.",
     "desmos": {
-      "rows": [
-        "f(t)=8000(1.05)^t",
-        "f(3)-f(2)"
-      ],
+      "rows": ["f(t)=8000(1.05)^t", "f(3)-f(2)"],
       "tip": "Функцийг тодорхойлоод f(3)-f(2) гэж бичвэл зөрүүг шууд гаргана."
     },
     "verify": {
       "value": "8000*1.05^3-8000*1.05^2"
     },
-    "vocab": [
-      "exponential",
-      "modeled"
-    ],
+    "vocab": ["exponential", "modeled"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -970,12 +768,7 @@
     "pool": "stop",
     "prompt": "A bag contains $5$ red, $7$ blue, and $8$ green marbles. If one marble is selected at random, what is the probability that it is blue?",
     "mn": "Уутанд $5$ улаан, $7$ цэнхэр, $8$ ногоон бөмбөлөг байна. Санамсаргүйгээр нэг бөмбөлөг авбал цэнхэр байх магадлал хэд вэ?",
-    "choices": [
-      "$\\frac{7}{20}$",
-      "$\\frac{7}{13}$",
-      "$\\frac{1}{3}$",
-      "$\\frac{13}{20}$"
-    ],
+    "choices": ["$\\frac{7}{20}$", "$\\frac{7}{13}$", "$\\frac{1}{3}$", "$\\frac{13}{20}$"],
     "answer": 0,
     "explain": "Нийт $5+7+8 = 20$. $P(\\text{цэнхэр}) = \\frac{7}{20}$.",
     "hint": "Тохиромжтой үр дүн $\\div$ нийт үр дүн.",
@@ -986,10 +779,7 @@
     "verify": {
       "value": "7/20"
     },
-    "vocab": [
-      "at random",
-      "probability"
-    ],
+    "vocab": ["at random", "probability"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1005,20 +795,13 @@
     "pool": "stop",
     "prompt": "A spinner is divided into $8$ equal sections numbered $1$ through $8$. If the spinner is spun once, what is the probability that it lands on a number greater than $5$?",
     "mn": "Эргүүлэгч $1$-ээс $8$ хүртэл дугаарласан $8$ тэнцүү хэсэгт хуваагдсан. Нэг удаа эргүүлэхэд $5$-аас их тоон дээр зогсох магадлал хэд вэ?",
-    "answer": [
-      "3/8",
-      ".375",
-      "0.375"
-    ],
+    "answer": ["3/8", ".375", "0.375"],
     "explain": "$5$-аас их тоо: $6, 7, 8$ — $3$ ширхэг. Магадлал $\\frac{3}{8}$.",
     "hint": "\\\"$5$-аас их\\\" гэдэгт $5$ орохгүй.",
     "verify": {
       "value": "3/8"
     },
-    "vocab": [
-      "spinner",
-      "greater than"
-    ],
+    "vocab": ["spinner", "greater than"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1034,12 +817,7 @@
     "pool": "stop",
     "prompt": "In a survey, $200$ students were asked whether they plan to watch the Naadam horse races. Of the $100$ students in grade 10, $48$ answered yes and $52$ answered no. Of the $100$ students in grade 11, $66$ answered yes and $34$ answered no. If one of the students who answered yes is selected at random, what is the probability that the student is in grade 11?",
     "mn": "Судалгаагаар $200$ сурагчаас Наадмын морин уралдааныг үзэх эсэхийг асуужээ. 10-р ангийн $100$ сурагчаас $48$ нь тийм, $52$ нь үгүй гэсэн. 11-р ангийн $100$ сурагчаас $66$ нь тийм, $34$ нь үгүй гэсэн. \\\"Тийм\\\" гэж хариулсан сурагчдаас санамсаргүйгээр нэгийг сонгоход 11-р ангийнх байх магадлал хэд вэ?",
-    "choices": [
-      "$\\frac{33}{50}$",
-      "$\\frac{33}{100}$",
-      "$\\frac{11}{19}$",
-      "$\\frac{57}{100}$"
-    ],
+    "choices": ["$\\frac{33}{50}$", "$\\frac{33}{100}$", "$\\frac{11}{19}$", "$\\frac{57}{100}$"],
     "answer": 2,
     "explain": "\\\"Тийм\\\" гэсэн нийт $48+66 = 114$. Тэдний $66$ нь 11-р анги. $\\frac{66}{114} = \\frac{11}{19}$.",
     "hint": "Нөхцөл (\\\"тийм\\\" гэсэн) нь хуваарийг тодорхойлно.",
@@ -1051,10 +829,7 @@
     "verify": {
       "value": "66/114"
     },
-    "vocab": [
-      "at random",
-      "selected"
-    ],
+    "vocab": ["at random", "selected"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1070,20 +845,13 @@
     "pool": "stop",
     "prompt": "In a soum, $200$ households were surveyed. Of these, $120$ own horses, $70$ own camels, and $40$ own both horses and camels. If one of the $200$ households is selected at random, what is the probability that it owns horses or camels or both?",
     "mn": "Нэгэн суманд $200$ өрхөөс судалгаа авчээ. Тэдний $120$ нь адуутай, $70$ нь тэмээтэй, $40$ нь адуу, тэмээ хоёуланг нь эзэмшдэг. $200$ өрхөөс санамсаргүй нэгийг сонгоход адуу, тэмээний аль нэг эсвэл хоёуланг нь эзэмшдэг байх магадлал хэд вэ?",
-    "answer": [
-      "3/4",
-      ".75",
-      "0.75"
-    ],
+    "answer": ["3/4", ".75", "0.75"],
     "explain": "Хоёуланг нь эзэмшдэг өрхийг хоёр удаа тоолохгүйн тулд: $120+70-40 = 150$. Магадлал $\\frac{150}{200} = \\frac{3}{4}$.",
     "hint": "Хоёуланг нь эзэмшдэг $40$ өрх хоёр удаа тоологдсон байна.",
     "verify": {
       "value": "(120+70-40)/200"
     },
-    "vocab": [
-      "own",
-      "both"
-    ],
+    "vocab": ["own", "both"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1099,12 +867,7 @@
     "pool": "stop",
     "prompt": "A study of $400$ visitors at a Naadam festival recorded the event each visitor watched most and whether the visitor was domestic or foreign. Domestic visitors: wrestling $110$, archery $50$, horse racing $80$. Foreign visitors: wrestling $70$, archery $40$, horse racing $50$. If a visitor who did NOT mainly watch wrestling is selected at random, what is the probability that the visitor is foreign?",
     "mn": "Наадмын $400$ зочноос хамгийн их үзсэн төрөл ба дотоодын эсвэл гадаадын эсэхийг бүртгэжээ. Дотоодын: бөх $110$, сур харваа $50$, морин уралдаан $80$. Гадаадын: бөх $70$, сур харваа $40$, морин уралдаан $50$. Бөхийг голчлон үзээгүй зочдоос санамсаргүй нэгийг сонгоход гадаадын зочин байх магадлал хэд вэ?",
-    "choices": [
-      "$\\frac{9}{40}$",
-      "$\\frac{9}{16}$",
-      "$\\frac{13}{22}$",
-      "$\\frac{9}{22}$"
-    ],
+    "choices": ["$\\frac{9}{40}$", "$\\frac{9}{16}$", "$\\frac{13}{22}$", "$\\frac{9}{22}$"],
     "answer": 3,
     "explain": "Бөх үзээгүй: дотоодын $50+80 = 130$, гадаадын $40+50 = 90$, нийт $220$. Магадлал $\\frac{90}{220} = \\frac{9}{22}$.",
     "hint": "Зөвхөн бөх үзээгүй зочдыг хуваарьт ав.",
@@ -1116,10 +879,7 @@
     "verify": {
       "value": "90/220"
     },
-    "vocab": [
-      "domestic",
-      "foreign"
-    ],
+    "vocab": ["domestic", "foreign"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1135,20 +895,13 @@
     "pool": "stop",
     "prompt": "At a school, $40\\%$ of the students are seniors. Of the seniors, $45\\%$ ride the bus to school, and of the students who are not seniors, $20\\%$ ride the bus to school. If a student who rides the bus is selected at random, what is the probability that the student is a senior?",
     "mn": "Сургуулийн сурагчдын $40\\%$ нь төгсөх ангийнх. Төгсөх ангийнхны $45\\%$, бусад сурагчдын $20\\%$ нь автобусаар ирдэг. Автобусаар ирдэг сурагчдаас санамсаргүй нэгийг сонгоход төгсөх ангийнх байх магадлал хэд вэ?",
-    "answer": [
-      "3/5",
-      ".6",
-      "0.6"
-    ],
+    "answer": ["3/5", ".6", "0.6"],
     "explain": "$100$ сурагч гэж үзье. Төгсөх анги $40$, тэдний $0.45\\cdot 40 = 18$ нь автобусаар. Бусад $60$, тэдний $0.2\\cdot 60 = 12$ нь автобусаар. Автобусаар нийт $30$, тэдний $18$ нь төгсөх анги: $\\frac{18}{30} = \\frac{3}{5}$.",
     "hint": "$100$ сурагчтай гэж үзээд хоёр талт хүснэгт зохио.",
     "verify": {
       "value": "0.4*0.45/(0.4*0.45+0.6*0.2)"
     },
-    "vocab": [
-      "seniors",
-      "ride the bus"
-    ],
+    "vocab": ["seniors", "ride the bus"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1164,12 +917,7 @@
     "pool": "stop",
     "prompt": "In a random sample of $400$ households in Darkhan, $28\\%$ own a car. There are $25,000$ households in Darkhan. Based on the sample, which of the following is the best estimate of the number of households in Darkhan that own a car?",
     "mn": "Дарханы $400$ өрхийн санамсаргүй түүврийн $28\\%$ нь машинтай. Дарханд $25,000$ өрх бий. Түүвэрт тулгуурлавал Дарханы машинтай өрхийн тооны хамгийн сайн үнэлгээ аль вэ?",
-    "choices": [
-      "$112$",
-      "$7,000$",
-      "$2,800$",
-      "$18,000$"
-    ],
+    "choices": ["$112$", "$7,000$", "$2,800$", "$18,000$"],
     "answer": 1,
     "explain": "Түүврийн хувийг бүх өрхөд хэрэглэнэ: $0.28\\cdot 25000 = 7000$.",
     "hint": "Санамсаргүй түүврийн хувь нь нийт олонлогийн хувийн үнэлгээ болно.",
@@ -1180,10 +928,7 @@
     "verify": {
       "value": "0.28*25000"
     },
-    "vocab": [
-      "random sample",
-      "estimate"
-    ],
+    "vocab": ["random sample", "estimate"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1199,18 +944,13 @@
     "pool": "stop",
     "prompt": "A poll of randomly selected voters estimated that $62\\%$ of all voters support a new park, with a margin of error of $4$ percentage points. Based on this result, what is the greatest plausible value, in percent, for the percent of all voters who support the new park?",
     "mn": "Санамсаргүй сонгосон сонгогчдын санал асуулгаар бүх сонгогчдын $62\\%$ нь шинэ цэцэрлэгт хүрээлэнг дэмждэг гэж үнэлсэн, алдааны хязгаар $4$ хувийн нэгж. Энэ үр дүнгээр бүх сонгогчдын дэмжлэгийн хувийн хамгийн их боломжит утга хэд вэ?",
-    "answer": [
-      "66"
-    ],
+    "answer": ["66"],
     "explain": "Боломжит муж $62-4 = 58$-аас $62+4 = 66$ хүртэл. Хамгийн их нь $66$.",
     "hint": "Үнэлгээ $\\pm$ алдааны хязгаар.",
     "verify": {
       "value": "62+4"
     },
-    "vocab": [
-      "margin of error",
-      "plausible"
-    ],
+    "vocab": ["margin of error", "plausible"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1239,10 +979,7 @@
       "0": "Түүвэр багасвал алдааны хязгаар ихэснэ.",
       "1": "Санамсаргүй бус түүвэр хазайлттай."
     },
-    "vocab": [
-      "margin of error",
-      "randomly selected"
-    ],
+    "vocab": ["margin of error", "randomly selected"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1258,18 +995,13 @@
     "pool": "stop",
     "prompt": "A cooperative has $1,200$ sheep. A random sample of $80$ of these sheep was weighed, and $12$ of the sheep in the sample were underweight. Based on the sample, how many of the $1,200$ sheep are expected to be underweight?",
     "mn": "Хоршоо $1,200$ хоньтой. Тэдгээрээс санамсаргүй сонгосон $80$ хонийг жинлэхэд $12$ нь жин дутуу байв. Түүвэрт тулгуурлавал $1,200$ хонины хэд нь жин дутуу байх төлөвтэй вэ?",
-    "answer": [
-      "180"
-    ],
+    "answer": ["180"],
     "explain": "Түүврийн хувь $\\frac{12}{80} = 0.15$. $0.15\\cdot 1200 = 180$.",
     "hint": "Түүвэр дэх хувийг бүх хонинд хэрэглэ.",
     "verify": {
       "value": "12/80*1200"
     },
-    "vocab": [
-      "underweight",
-      "expected"
-    ],
+    "vocab": ["underweight", "expected"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1298,10 +1030,7 @@
       "1": "Итгэх интервал нь дунджийн тухай, оюутнуудын $95\\%$-ийн тухай биш.",
       "3": "Түүврийн дундаж нь олонлогийн дунджийн үнэлгээ л юм."
     },
-    "vocab": [
-      "confidence level",
-      "plausible"
-    ],
+    "vocab": ["confidence level", "plausible"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1331,10 +1060,7 @@
       "1": "Б хотын муж $53\\%$ хүртэл тул хагасаас их байж болно.",
       "3": "Алдааны хязгаар их байх нь хазайлт биш — түүвэр бага байж болно."
     },
-    "vocab": [
-      "independent",
-      "supported by"
-    ],
+    "vocab": ["independent", "supported by"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1363,10 +1089,7 @@
       "0": "Туршилтад судлаач эмчилгээг оноодог.",
       "3": "Тооллого гэдэг нь бүх олонлогийг хамарна."
     },
-    "vocab": [
-      "observational study",
-      "treatment"
-    ],
+    "vocab": ["observational study", "treatment"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1382,18 +1105,13 @@
     "pool": "stop",
     "prompt": "In an experiment, $120$ volunteers with mild back pain were randomly assigned to two groups of $60$. The first group did a daily stretching program, and $42$ of them reported less pain after one month. The second group did not stretch, and $27$ of them reported less pain. By how many percentage points was the percent of the stretching group who reported less pain greater than that of the other group?",
     "mn": "Туршилтад нурууны бага зэргийн өвдөлттэй $120$ сайн дурынхныг санамсаргүйгээр $60$, $60$ хоёр бүлэгт хуваасан. Эхний бүлэг өдөр бүр сунгалтын дасгал хийж, $42$ нь сарын дараа өвдөлт багассан гэж мэдээлсэн. Хоёр дахь бүлэг дасгал хийгээгүй, $27$ нь өвдөлт багассан гэсэн. Сунгалтын бүлгийн өвдөлт багассан хувь нөгөө бүлгийнхээс хэдэн хувийн нэгжээр их вэ?",
-    "answer": [
-      "25"
-    ],
+    "answer": ["25"],
     "explain": "$\\frac{42}{60} = 70\\%$, $\\frac{27}{60} = 45\\%$. Зөрүү $70-45 = 25$ хувийн нэгж.",
     "hint": "Бүлэг тус бүрийн хувийг олоод хас.",
     "verify": {
       "value": "(42-27)/60*100"
     },
-    "vocab": [
-      "randomly assigned",
-      "percentage points"
-    ],
+    "vocab": ["randomly assigned", "percentage points"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1422,10 +1140,7 @@
       "1": "Ажиглалтын судалгаагаар шалтгаан тогтоох боломжгүй.",
       "3": "Санамсаргүй түүвэр тул хамаарлын дүгнэлт хийж болно."
     },
-    "vocab": [
-      "associated with",
-      "causes"
-    ],
+    "vocab": ["associated with", "causes"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1454,10 +1169,7 @@
       "1": "Эрдэнэтийн бусад сургуулиас түүвэр аваагүй.",
       "3": "Санамсаргүй түүвэр тул сонгогдсон олонлогт ерөнхийлж болно."
     },
-    "vocab": [
-      "at random",
-      "applied to"
-    ],
+    "vocab": ["at random", "applied to"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1486,10 +1198,7 @@
       "0": "Талбайг бүх Монголоос санамсаргүй сонгоогүй.",
       "1": "Санамсаргүй оноолттой туршилт шалтгааныг тогтоож чадна."
     },
-    "vocab": [
-      "randomly assigned",
-      "yield"
-    ],
+    "vocab": ["randomly assigned", "yield"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1518,10 +1227,7 @@
       "0": "Сайн дурынхан бүх насанд хүрэгчдийг төлөөлөхгүй.",
       "2": "Сайн дурынхан байсан ч санамсаргүй оноолт шалтгааныг тогтооно."
     },
-    "vocab": [
-      "volunteers",
-      "generalized"
-    ],
+    "vocab": ["volunteers", "generalized"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
