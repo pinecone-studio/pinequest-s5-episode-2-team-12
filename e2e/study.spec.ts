@@ -44,7 +44,7 @@ test('mistake notebook: wrong mock answers are saved and can be reviewed', async
   await page.goto('/mock');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
-  await page.getByRole('button', { name: 'Тест эхлэх' }).click();
+  await page.getByRole('button', { name: 'Mock тест эхлэх' }).click();
   // answer the first three with a likely-wrong value, then finish both modules
   for (let i = 1; i <= 3; i++) {
     await expect(page.getByText(`Бодлого ${i} / 22`, { exact: true }).first()).toBeVisible();

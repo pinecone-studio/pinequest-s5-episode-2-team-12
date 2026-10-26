@@ -1,5 +1,6 @@
 // Brand ornaments lifted from the deck: green brush blob, hand-drawn stars & birds, thin scribble lines.
 import type { CSSProperties } from 'react';
+import { MascotArt } from './MascotArt';
 
 export function Blob({
   className = '',
@@ -85,15 +86,7 @@ export function Logo({
 }) {
   return (
     <div className="flex items-center gap-3 select-none">
-      {/* biome-ignore lint/performance/noImgElement: tiny static brand mark, no optimisation needed */}
-      <img
-        src="/brand/logo-cat.png"
-        alt=""
-        width={compact ? 28 : 34}
-        height={compact ? 36 : 43}
-        className="logo-cat shrink-0"
-        style={{ width: compact ? 28 : 34, height: 'auto' }}
-      />
+      <MascotArt size={compact ? 28 : 34} className="logo-cat shrink-0" />
       {!compact && (
         <span className="grid leading-none">
           <span

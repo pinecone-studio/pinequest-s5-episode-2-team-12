@@ -1,11 +1,11 @@
 import { redirect } from 'next/navigation';
-import { MockIntro } from '@/features/exam/components/MockIntro';
 import { getT } from '@/lib/i18n';
 import { getSession } from '@/lib/session';
+import { MockExam as MockIntro } from './MockExam';
 
 export const metadata = { title: getT('exam')('pages.mock.title') };
 
-// «Бүтэн тест» intro: lives inside the app shell (nav + profile).
+// «Mock тест» intro: lives inside the app shell (nav + profile).
 // The exam itself runs at /mock/run (no nav). Old group-mock links /mock?attempt=… still work.
 export default async function MockPage({
   searchParams,

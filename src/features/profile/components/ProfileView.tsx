@@ -513,7 +513,7 @@ export function ProfileView({
   );
 
   return (
-    <div className="mx-auto grid w-full max-w-6xl gap-4">
+    <div className="workspace-page max-w-6xl">
       <Header
         user={user}
         demo={demo}

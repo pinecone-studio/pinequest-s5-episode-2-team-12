@@ -15,7 +15,12 @@
     "rule1": "No pausing inside a module — the clock keeps running.",
     "rule2": "A 10-minute break between modules (you can skip it).",
     "rule3": "Flag questions (🚩) to come back to them.",
-    "rule4": "Answers and explanations appear only after the test."
+    "rule4": "Answers and explanations appear only after the test.",
+    "summary": {
+      "modules": "Modules",
+      "questions": "Questions",
+      "minutes": "Working minutes"
+    }
   },
   "module": {
     "title": "Module {n} of 2",

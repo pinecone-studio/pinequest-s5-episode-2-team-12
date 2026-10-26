@@ -6,7 +6,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
 
 /** [face, extruded edge, text] — all tokens, so dark/light switch automatically. */
 const FACE: Record<Exclude<ButtonVariant, 'ghost'>, [string, string, string]> = {
-  primary: ['var(--c-leaf)', 'var(--c-leaf-2)', 'var(--c-on-leaf)'],
+  primary: ['var(--c-lime)', 'var(--c-lime-2)', 'var(--c-on-lime)'],
   secondary: ['var(--c-paper)', 'var(--c-line-2)', 'var(--c-ink)'],
   dark: ['var(--c-forest-2)', 'var(--c-edge)', 'var(--c-on-forest)'],
   soft: ['var(--c-sage)', 'var(--c-sage-2)', 'var(--c-leaf-ink)'],

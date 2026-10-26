@@ -4,7 +4,7 @@ import { getSession } from '@/lib/session';
 
 export const metadata = { title: getT('exam')('pages.mock.title') };
 
-// Section D · full mock exam («Бүтэн тест»): two adaptive modules, graded on the server.
+// Section D · full mock exam («Mock тест»): two adaptive modules, graded on the server.
 export default async function MockPage({
   searchParams,
 }: {

@@ -9,5 +9,31 @@
     "practice": {
       "title": "Practice"
     }
+  },
+  "bank": {
+    "lead": "Find your next challenge. Browse SAT Math questions by topic and difficulty.",
+    "domain": "Topic",
+    "domainsLabel": "Question domains",
+    "search": "Search",
+    "searchPlaceholder": "Search questions or skills…",
+    "difficulty": "Difficulty",
+    "allDifficulties": "All difficulties",
+    "easy": "1 — Easy",
+    "medium": "2 — Medium",
+    "hard": "3 — Hard",
+    "desmosOnly": "Desmos-supported only",
+    "savedOnly": "Saved questions only",
+    "found": "{n} questions found",
+    "available": "questions",
+    "empty": "No questions found",
+    "emptyBody": "Try changing your filters or search terms.",
+    "difficultyBadge": "Difficulty {n}",
+    "domains": {
+      "all": "All",
+      "alg": "Algebra",
+      "adv": "Advanced Math",
+      "psda": "PSDA",
+      "geo": "Geometry"
+    }
   }
 }

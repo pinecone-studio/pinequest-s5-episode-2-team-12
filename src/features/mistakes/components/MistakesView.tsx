@@ -1,11 +1,12 @@
 'use client';
-// /mistakes: every wrong answer, grouped by topic, with an SM-2 review session (answer again → server
-// grades → explanation → the note moves later or comes back). Demo mode builds the notebook from the
-// roadmap history and mocks in localStorage.
 import Link from 'next/link';
 import { useEffect, useId, useMemo, useState } from 'react';
 import { Rich } from '@/components/math';
 import { Button } from '@/components/ui/Button';
+// /mistakes: every wrong answer, grouped by topic, with an SM-2 review session (answer again → server
+// grades → explanation → the note moves later or comes back). Demo mode builds the notebook from the
+// roadmap history and mocks in localStorage.
+import { PageHeader } from '@/components/ui/PageHeader';
 import { Pill } from '@/components/ui/Pill';
 import { loadLocalMocks } from '@/features/exam/lib/local-mocks';
 import { QuestionView } from '@/features/roadmap/components/QuestionView';
@@ -182,20 +183,17 @@ export function MistakesView({
   }
 
   return (
-    <div className="mx-auto grid w-full max-w-4xl gap-5">
-      <header className="grid gap-1">
-        <h1 className="font-display text-3xl font-bold text-ink">{t('pages.mistakes.title')}</h1>
-        <p className="text-[14px] text-ink-2">{t('lead')}</p>
-      </header>
+    <div className="workspace-page max-w-5xl">
+      <PageHeader title={t('pages.mistakes.title')} description={t('lead')} icon="mistakes" />
       <dl className="grid grid-cols-3 gap-2">
         {(['due', 'total', 'resolved'] as const).map((k) => (
-          <div key={k} className="soft-card px-4 py-3">
+          <div key={k} className="stat-card">
             <dt className="text-[12px] text-ink-3">{t(`stats.${k}`)}</dt>
             <dd className="font-display text-2xl font-bold text-ink tnum">{stats[k]}</dd>
           </div>
         ))}
       </dl>
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="filter-panel flex flex-wrap items-center gap-3">
         <label className="sr-only" htmlFor={topicFieldId}>
           {t('filter')}
         </label>
@@ -217,7 +215,9 @@ export function MistakesView({
         </Button>
       </div>
       {shown.length === 0 ? (
-        <p className="soft-card p-6 text-[14px] text-ink-2">{t('empty')}</p>
+        <p className="soft-card border-dashed p-10 text-center text-[14px] leading-relaxed text-ink-2">
+          {t('empty')}
+        </p>
       ) : (
         <section aria-label={t('list')}>
           {due.length === 0 && <p className="mb-3 text-[14px] font-semibold text-leaf-2">{t('allDone')}</p>}

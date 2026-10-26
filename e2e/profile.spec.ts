@@ -5,7 +5,7 @@ import { expect, type Page, test } from '@playwright/test';
 
 async function takeMock(page: Page, answerFirst: number) {
   await page.goto('/mock');
-  await page.getByRole('button', { name: 'Тест эхлэх' }).click();
+  await page.getByRole('button', { name: 'Mock тест эхлэх' }).click();
   for (const mod of [1, 2]) {
     await expect(page.getByRole('heading', { name: `Модуль ${mod} / 2` })).toBeVisible();
     await expect(page.getByRole('timer')).toBeVisible();
@@ -26,7 +26,7 @@ async function takeMock(page: Page, answerFirst: number) {
     }
   }
   await expect(page).toHaveURL(/\/profile\/mock\/local-/);
-  await expect(page.getByRole('heading', { name: 'Бүтэн тестийн дүн' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Mock тестийн дүн' })).toBeVisible();
 }
 
 test('mock → profile → result → compare', async ({ page }) => {
@@ -45,7 +45,7 @@ test('mock → profile → result → compare', async ({ page }) => {
   // avatar in the top bar → profile
   await page.getByRole('link', { name: 'Профайл', exact: true }).click();
   await expect(page).toHaveURL(/\/profile$/);
-  await expect(page.getByRole('heading', { name: 'Бүтэн тестүүд' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Mock тестүүд' })).toBeVisible();
   await expect(page.getByRole('img', { name: 'Тооцоолсон оноо цаг хугацаагаар' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Чадварын зураглал' })).toBeVisible();
 
@@ -54,7 +54,7 @@ test('mock → profile → result → compare', async ({ page }) => {
     .getByRole('link', { name: /Тооцоолсон оноо/ })
     .first()
     .click();
-  await expect(page.getByRole('heading', { name: 'Бүтэн тестийн дүн' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Mock тестийн дүн' })).toBeVisible();
   await page.getByRole('link', { name: 'Өмнөхтэй харьцуулах' }).click();
   await expect(page).toHaveURL(/\/compare\?with=local-/);
   await expect(page.getByRole('heading', { name: 'Өмнөхтэй харьцуулах' })).toBeVisible();

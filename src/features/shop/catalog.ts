@@ -11,6 +11,8 @@ export type ShopItem = {
   qty?: number;
   /** Cosmetic look: a CSS color/gradient (frames, banners), an emoji (outfits), a map-skin key. */
   look?: string;
+  /** Display window into the supplied outfit artwork; x, y, width, height. */
+  art?: readonly [number, number, number, number];
 };
 
 export const ITEMS: ShopItem[] = [
@@ -20,6 +22,27 @@ export const ITEMS: ShopItem[] = [
   { id: 'frame-gold', kind: 'frame', price: 80, look: 'linear-gradient(135deg, #fde68a, #d97706)' },
   { id: 'frame-lime', kind: 'frame', price: 80, look: 'linear-gradient(135deg, #bef264, #16a34a)' },
   { id: 'frame-sky', kind: 'frame', price: 80, look: 'linear-gradient(135deg, #7dd3fc, #4f46e5)' },
+
+  { id: 'outfit-school-suit', kind: 'outfit', price: 120, art: [40, 0, 250, 300] },
+  { id: 'outfit-school-bow', kind: 'outfit', price: 120, art: [300, 0, 270, 300] },
+  { id: 'outfit-deel-blue', kind: 'outfit', price: 180, art: [585, 0, 245, 300] },
+  { id: 'outfit-deel-red', kind: 'outfit', price: 180, art: [850, 0, 255, 300] },
+  { id: 'outfit-deel-green', kind: 'outfit', price: 220, art: [1120, 0, 282, 300] },
+  { id: 'outfit-deel-gold', kind: 'outfit', price: 180, art: [40, 300, 250, 292] },
+  { id: 'outfit-knit-glasses', kind: 'outfit', price: 140, art: [300, 300, 270, 292] },
+  { id: 'outfit-scholar', kind: 'outfit', price: 140, art: [585, 300, 245, 292] },
+  { id: 'outfit-beret', kind: 'outfit', price: 140, art: [850, 300, 255, 292] },
+  { id: 'outfit-varsity', kind: 'outfit', price: 140, art: [1120, 300, 282, 292] },
+  { id: 'outfit-winter-knit', kind: 'outfit', price: 140, art: [40, 592, 250, 280] },
+  { id: 'outfit-gardener', kind: 'outfit', price: 160, art: [300, 592, 270, 280] },
+  { id: 'outfit-graduate', kind: 'outfit', price: 220, art: [585, 592, 245, 280] },
+  { id: 'outfit-summer', kind: 'outfit', price: 160, art: [850, 592, 255, 280] },
+  { id: 'outfit-mint-hoodie', kind: 'outfit', price: 120, art: [1120, 592, 282, 280] },
+  { id: 'outfit-denim', kind: 'outfit', price: 120, art: [40, 872, 250, 250] },
+  { id: 'outfit-heart', kind: 'outfit', price: 120, art: [300, 872, 270, 250] },
+  { id: 'outfit-stripes', kind: 'outfit', price: 120, art: [585, 872, 245, 250] },
+  { id: 'outfit-sherpa', kind: 'outfit', price: 140, art: [850, 872, 255, 250] },
+  { id: 'outfit-tracksuit', kind: 'outfit', price: 140, art: [1120, 872, 282, 250] },
 
   { id: 'outfit-hat', kind: 'outfit', price: 120, look: '🎩' },
   { id: 'outfit-scarf', kind: 'outfit', price: 120, look: '🧣' },

@@ -1,4 +1,4 @@
-// Full mock exam («Бүтэн тест») tunables. Shaped like the digital SAT Math section: two 22-question,
+// Full mock exam («Mock тест») tunables. Shaped like the digital SAT Math section: two 22-question,
 // 35-minute modules, the second one adaptive. Logic in lib/ reads only from here.
 import type { Domain } from '@/types';
 
