@@ -19,20 +19,18 @@ test('every nav item has a unique key and href', () => {
   expect(new Set(items.map((i) => i.href)).size).toBe(items.length);
 });
 
-test('drawer order follows the spec; only Материал folds', () => {
+test('drawer keeps Question Bank directly accessible without the Materials group', () => {
   expect(NAV[0].items.map((i) => i.key)).toEqual([
     'map',
-    'practicePlayer',
+    'bank',
     'mock',
     'tutor',
     'flashcards',
     'mistakes',
-    'daily',
     'friends',
-    'leaderboard',
     'shop',
-    'planner',
   ]);
-  expect(NAV.filter((g) => g.collapsible).map((g) => g.key)).toEqual(['materials']);
-  expect(NAV.at(-1)?.items.map((i) => i.key)).toEqual(['achievements', 'settings']);
+  expect(NAV.map((g) => g.key)).toEqual(['main', 'me']);
+  expect(NAV[0].items.find((i) => i.key === 'bank')?.href).toBe('/bank');
+  expect(NAV.at(-1)?.items.map((i) => i.key)).toEqual(['settings']);
 });

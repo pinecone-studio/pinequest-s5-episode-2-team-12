@@ -484,6 +484,7 @@ export function ProfileView({
   meta: QuestionMeta;
   rank: { rank: number; of: number } | null;
 }) {
+  const common = useT('common');
   const [user, setUser] = useState(initialUser);
   const w = useWallet(demo, wallet);
   const [data, setData] = useState<ProfileServer>(server ?? { mocks: [], answers: [], regionsDone: [] });
@@ -520,6 +521,21 @@ export function ProfileView({
         gems={w.balance}
         look={{ frame: w.equipped.frame, outfit: w.equipped.outfit, banner: w.equipped.banner }}
       />
+      <nav aria-label={common('shell.profile')} className="grid gap-3 sm:grid-cols-2">
+        {[
+          { href: routes.achievements, label: common('nav.achievements') },
+          { href: routes.planner, label: common('nav.planner') },
+        ].map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="soft-card flex items-center justify-between gap-3 p-5 font-bold text-leaf-2 transition-colors hover:bg-sage"
+          >
+            <span>{item.label}</span>
+            <span aria-hidden="true">→</span>
+          </Link>
+        ))}
+      </nav>
       <div className="grid gap-4 md:grid-cols-2">
         <SkillRadar
           answers={[...data.answers, ...mockAnswers]}
