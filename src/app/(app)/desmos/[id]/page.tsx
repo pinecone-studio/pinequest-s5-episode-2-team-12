@@ -1,9 +1,12 @@
-import { ComingSoon } from '@/components/ComingSoon';
-import { getT } from '@/lib/i18n';
+import { notFound } from 'next/navigation';
+import { LessonRunner } from '@/features/desmos/components/lesson-runner';
+import { getDesmosLesson, listDesmosLessons } from '@/features/desmos/queries';
 
-// Section B · B3 · B4 · B5
 export default async function DesmosLessonPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const t = getT('desmos');
-  return <ComingSoon section="B" title={t('pages.desmosLesson.title')} tasks="B3 · B4 · B5" detail={id} />;
+  const lesson = await getDesmosLesson(id);
+  if (!lesson) notFound();
+  const lessons = await listDesmosLessons();
+  const next = lessons.find((item) => item.no === lesson.no + 1);
+  return <LessonRunner key={id} lesson={lesson} next={next} />;
 }

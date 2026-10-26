@@ -1,0 +1,45 @@
+{
+  "id": "d7",
+  "no": 7,
+  "title": "SAT → Desmos",
+  "en": "Translate a word problem into graphs",
+  "skill": "Translation",
+  "minutes": 6,
+  "xp": 40,
+  "question": "$3x+2y=16$ and $x-y=2$. If $(x, y)$ is the solution to the system, what is the value of $x+y$?",
+  "intro": "Энэ SAT-ын жинхэнэ хэлбэр. Desmos-д тэгшитгэлийг **y-ээр бодох шаардлагагүй** — яг байгаагаар нь бичнэ.",
+  "initial": [""],
+  "steps": [
+    {
+      "type": "enter",
+      "say": "Эхний тэгшитгэлийг яг байгаагаар нь бич: $3x+2y=16$",
+      "target": "3x+2y=16",
+      "hint": "3x+2y=16",
+      "demo": "3x+2y=16"
+    },
+    {
+      "type": "enter",
+      "say": "Хоёр дахь: $x-y=2$",
+      "target": "x-y=2",
+      "hint": "x-y=2",
+      "demo": "x-y=2"
+    },
+    {
+      "type": "select",
+      "say": "Огтлолцлын цэгийг сонго.",
+      "kind": "intersection",
+      "at": [4, 2],
+      "hint": "Хоёр шулуун уулзах цэг.",
+      "wrong": "Энэ {kind}. Огтлолцлыг ол."
+    },
+    {
+      "type": "answer",
+      "say": "Цэг $(4, 2)$. Гэхдээ анхаар: асуулт **$x+y$**-ийг асууж байна!",
+      "prompt": "$x+y$ = ?",
+      "accept": ["6"],
+      "hint": "$4+2$",
+      "explain": "$x=4$, $y=2$ → $x+y=6$. SAT-ын түгээмэл занга: зөвхөн $x$ гэж хариулах."
+    }
+  ],
+  "outro": "Desmos-оор шийдээ олоод, **асуулт юуг асууж байгааг** дахин уншаарай. Энэ бол SuuPrep-ийн дүрэм: эхлээд асуултаа, дараа нь бодлогоо."
+}
