@@ -15,6 +15,36 @@ type Props = {
   questions: Question[];
 };
 
+/* ───────── Shared look: uses the tokens from globals.css (--c-*, .card, .btn3d) ───────── */
+
+// Big rounded card with the extruded edge.
+const card = 'card rounded-[2rem] p-7';
+
+// Disabled 3D buttons turn flat grey (the variables must be re-set because utilities beat .btn3d:disabled).
+const btnDisabled = 'disabled:[--face:var(--c-line)] disabled:[--edge:var(--c-line-2)] disabled:text-ink-3';
+
+// Green 3D press button.
+const btnPrimary = `btn3d [--face:var(--c-leaf)] [--edge:var(--c-leaf-2)] rounded-2xl px-6 py-3 text-sm font-bold text-white ${btnDisabled}`;
+
+// Dark 3D press button.
+const btnSecondary = `btn3d [--face:var(--c-paper-2)] [--edge:var(--c-edge)] rounded-2xl border border-line px-5 py-2.5 text-sm font-bold text-ink ${btnDisabled}`;
+
+// Small selectable chip (like the "5 / 10" picker).
+const chipBase =
+  'rounded-xl border px-3 py-2 text-xs font-bold transition disabled:cursor-not-allowed disabled:opacity-50';
+const chipIdle = 'border-line bg-paper-2 text-ink-3 hover:border-leaf hover:text-ink';
+const chipActive = 'border-leaf bg-leaf/10 text-leaf-2';
+const chipMarked = 'border-amber bg-amber-soft text-amber';
+
+// Small uppercase mono label (like "ИРСЭН ХҮСЭЛТ").
+const sectionLabel = 'eyebrow text-ink-3';
+
+// Rounded row (like a friend row).
+const row = 'rounded-2xl border border-line bg-paper';
+
+// Teal info pill (like the "Демо горим" banner).
+const infoPill = 'rounded-full bg-teal-soft px-6 py-3 text-sm font-semibold text-teal';
+
 function isCorrect(question: Question, value: string): boolean {
   if (typeof question.answer === 'number') {
     return value === String(question.answer);
@@ -131,9 +161,9 @@ export function PracticePlayer({ questions }: Props) {
 
   if (questions.length === 0) {
     return (
-      <main className="mx-auto max-w-3xl p-6">
-        <h1 className="text-2xl font-bold">Дасгал</h1>
-        <p className="mt-3 text-gray-500">Одоогоор асуулт алга байна.</p>
+      <main className="mx-auto w-full max-w-3xl space-y-3 p-6 text-ink">
+        <h1 className="font-display text-3xl font-bold tracking-tight">Дасгал</h1>
+        <p className="text-ink-2">Одоогоор асуулт алга байна.</p>
       </main>
     );
   }
@@ -147,66 +177,60 @@ export function PracticePlayer({ questions }: Props) {
     }).length;
 
     return (
-      <main className="mx-auto w-full max-w-3xl space-y-6 p-6">
+      <main className="mx-auto w-full max-w-3xl space-y-6 p-6 text-ink">
         <header className="space-y-2">
-          <p className="text-sm font-semibold text-blue-600">SAT MATH · TIMED PRACTICE</p>
-          <h1 className="text-3xl font-bold">Сорил дууслаа!</h1>
-          <p className="text-gray-600">
+          <h1 className="font-display text-3xl font-bold tracking-tight">Сорил дууслаа!</h1>
+          <p className="text-ink-2">
             {session.remainingSeconds === 0
               ? 'Хугацаа дууссан тул сорил автоматаар дууслаа.'
               : 'Та сорилоо дуусгалаа.'}
           </p>
         </header>
 
-        <section role="status" className="space-y-4 rounded-2xl border border-gray-200 p-6">
-          <div className="text-center">
-            <p className="text-sm text-gray-500">Зөв хариулт</p>
-            <p className="mt-2 text-4xl font-bold">
-              {correctCount} / {activeQuestions.length}
+        <section role="status" className={`${card} space-y-6`}>
+          <div className="space-y-2">
+            <h2 className="text-base font-bold">Зөв хариулт</h2>
+            <p className="font-display text-5xl font-bold text-leaf-2">
+              {correctCount} <span className="text-2xl font-semibold text-ink-3">/ {activeQuestions.length}</span>
             </p>
-            <p className="mt-2 text-gray-600">
+            <p className="text-sm text-ink-3">
               {activeQuestions.length > 0
                 ? `${Math.round((correctCount / activeQuestions.length) * 100)}% зөв`
                 : 'Үр дүн байхгүй'}
             </p>
           </div>
 
-          <div className="space-y-2">
-            <h2 className="font-bold">Асуултын үр дүн</h2>
+          <div className="space-y-3">
+            <h2 className={sectionLabel}>Асуултын үр дүн</h2>
 
-            {activeQuestions.map((item, i) => {
-              const submittedAnswer = sessionAnswers[item.id];
-              const answeredCorrectly = submittedAnswer !== undefined && isCorrect(item, submittedAnswer);
+            <div className="scroll-thin max-h-72 space-y-2.5 overflow-y-auto pr-1">
+              {activeQuestions.map((item, i) => {
+                const submittedAnswer = sessionAnswers[item.id];
+                const answeredCorrectly = submittedAnswer !== undefined && isCorrect(item, submittedAnswer);
 
-              return (
-                <div
-                  key={item.id}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 p-3"
-                >
-                  <span>Асуулт {i + 1}</span>
-                  <span
-                    className={
-                      submittedAnswer === undefined
-                        ? 'text-gray-500'
-                        : answeredCorrectly
-                          ? 'font-semibold text-green-700'
-                          : 'font-semibold text-red-700'
-                    }
-                  >
-                    {submittedAnswer === undefined ? 'Хариулаагүй' : answeredCorrectly ? 'Зөв' : 'Буруу'}
-                  </span>
-                </div>
-              );
-            })}
+                return (
+                  <div key={item.id} className={`${row} flex items-center justify-between gap-3 px-5 py-3.5`}>
+                    <span className="text-sm font-bold text-ink">Асуулт {i + 1}</span>
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-bold ${
+                        submittedAnswer === undefined
+                          ? 'bg-paper-2 text-ink-3'
+                          : answeredCorrectly
+                            ? 'bg-sage text-leaf-2'
+                            : 'bg-danger-soft text-danger'
+                      }`}
+                    >
+                      {submittedAnswer === undefined ? 'Хариулаагүй' : answeredCorrectly ? 'Зөв' : 'Буруу'}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </section>
 
         <div className="flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={startTimedMode}
-            className="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white"
-          >
+          <button type="button" onClick={startTimedMode} className={btnPrimary}>
             Дахин эхлүүлэх
           </button>
 
@@ -220,7 +244,7 @@ export function PracticePlayer({ questions }: Props) {
               resetQuestionState();
               finalizedRef.current = false;
             }}
-            className="rounded-xl border border-gray-300 px-5 py-3 font-semibold"
+            className={btnSecondary}
           >
             Энгийн дасгал руу буцах
           </button>
@@ -231,9 +255,9 @@ export function PracticePlayer({ questions }: Props) {
 
   if (!question) {
     return (
-      <main className="mx-auto max-w-3xl p-6">
-        <h1 className="text-2xl font-bold">Дасгал</h1>
-        <p className="mt-3 text-gray-500">Одоогоор асуулт алга байна.</p>
+      <main className="mx-auto w-full max-w-3xl space-y-3 p-6 text-ink">
+        <h1 className="font-display text-3xl font-bold tracking-tight">Дасгал</h1>
+        <p className="text-ink-2">Одоогоор асуулт алга байна.</p>
       </main>
     );
   }
@@ -243,46 +267,52 @@ export function PracticePlayer({ questions }: Props) {
   const timedSessionRunning = !timedMode || session.status === 'running';
 
   return (
-    <main className="mx-auto w-full max-w-3xl space-y-6 p-6">
-      <header className="space-y-3">
-        <p className="text-sm font-semibold text-blue-600">SAT MATH · PRACTICE</p>
+    <main className="mx-auto w-full max-w-3xl space-y-5 p-6 text-ink">
+      {/* Page header */}
+      <header className="space-y-2">
+        <h1 className="font-display flex items-center gap-3 text-3xl font-bold tracking-tight md:text-4xl">
+          <span>🐈‍⬛</span> Дасгал
+        </h1>
+        <p className="text-ink-2">
+          SAT Math асуултуудыг бод, XP цуглуул. {index + 1} / {activeQuestions.length}
+        </p>
+      </header>
 
-        <div className="flex items-center justify-between gap-3">
-          <h1 className="text-2xl font-bold">Дасгал</h1>
-          <span className="text-sm text-gray-500">
-            {index + 1} / {activeQuestions.length}
+      {/* Timed mode banner (teal info pill) */}
+      {timedMode ? (
+        <div className={`${infoPill} flex flex-wrap items-center justify-between gap-3`}>
+          <span>Timed Mode</span>
+
+          <span role="timer" aria-live="off" className="tnum font-mono text-xl font-bold tracking-wider text-leaf-2">
+            {formatTime(session.remainingSeconds)}
           </span>
-        </div>
 
-        {!timedMode && (
+          <button
+            type="button"
+            onClick={finishTimedMode}
+            disabled={session.status !== 'running'}
+            className={`${btnSecondary} !px-4 !py-1.5 !text-xs`}
+          >
+            Дуусгах
+          </button>
+        </div>
+      ) : (
+        <div className={`${infoPill} flex flex-wrap items-center justify-between gap-3`}>
+          <span>Хугацаатай сорил: 5 асуулт, 6 минут</span>
           <button
             type="button"
             onClick={startTimedMode}
             disabled={questions.length < 5}
-            className="rounded-xl bg-indigo-600 px-4 py-2 font-semibold text-white disabled:opacity-50"
+            className={`${btnPrimary} !px-4 !py-1.5 !text-xs`}
           >
-            6 минутын сорил эхлүүлэх
+            ⚡ Эхлүүлэх
           </button>
-        )}
+        </div>
+      )}
 
-        {timedMode && (
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-indigo-50 p-4 text-indigo-950">
-            <span className="font-semibold">Timed Mode</span>
-
-            <span role="timer" aria-live="off" className="font-mono text-xl font-bold">
-              {formatTime(session.remainingSeconds)}
-            </span>
-
-            <button
-              type="button"
-              onClick={finishTimedMode}
-              disabled={session.status !== 'running'}
-              className="rounded-lg border border-indigo-300 px-3 py-2 text-sm disabled:opacity-50"
-            >
-              Дуусгах
-            </button>
-          </div>
-        )}
+      {/* Question picker */}
+      <section className={`${card} space-y-4`}>
+        <h2 className={sectionLabel}>Асуулт сонгох</h2>
 
         <nav className="flex flex-wrap gap-2" aria-label="Асуулт сонгох">
           {activeQuestions.map((item, i) => (
@@ -293,48 +323,55 @@ export function PracticePlayer({ questions }: Props) {
               disabled={!timedSessionRunning}
               aria-label={`${i + 1}-р асуулт`}
               aria-current={i === index ? 'step' : undefined}
-              className={`h-10 min-w-10 rounded-lg border px-3 text-sm font-semibold ${
-                i === index
-                  ? 'border-blue-600 bg-blue-600 text-white'
-                  : marked.includes(item.id)
-                    ? 'border-amber-500 bg-amber-50 text-amber-800'
-                    : 'border-gray-300'
+              className={`${chipBase} flex h-10 min-w-12 items-center justify-center gap-1 ${
+                i === index ? chipActive : marked.includes(item.id) ? chipMarked : chipIdle
               }`}
             >
-              {marked.includes(item.id) ? '⚑' : i + 1}
+              {marked.includes(item.id) ? (
+                <span>⚑ {i + 1}</span>
+              ) : (
+                <span className="flex items-center gap-0.5">
+                  {i % 2 === 0 ? '🐈' : '🐈‍⬛'} {i + 1}
+                </span>
+              )}
             </button>
           ))}
         </nav>
-      </header>
+      </section>
 
-      <section className="space-y-4 rounded-2xl border border-gray-200 p-5">
-        <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-gray-500">
-          <span>{question.skill}</span>
-          <span>Difficulty {question.difficulty}</span>
+      {/* Question card */}
+      <section className={`${card} space-y-5`}>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-base font-bold text-ink">{question.skill}</h2>
+          <span className="rounded-full bg-teal-soft px-3 py-1 text-xs font-bold text-teal">
+            Difficulty {question.difficulty}
+          </span>
         </div>
 
-        <div className="text-lg font-medium leading-relaxed">
+        <div className="text-[17px] font-medium leading-relaxed text-ink">
           <Rich text={question.prompt} />
         </div>
 
-        <button
-          type="button"
-          onClick={() =>
-            setMarked((previous) =>
-              previous.includes(question.id)
-                ? previous.filter((id) => id !== question.id)
-                : [...previous, question.id],
-            )
-          }
-          disabled={!timedSessionRunning}
-          aria-pressed={marked.includes(question.id)}
-          className="rounded-lg border border-gray-300 px-3 py-2 text-sm disabled:opacity-50"
-        >
-          {marked.includes(question.id) ? '⚑ Тэмдэглэгээг авах' : '⚑ Асуултыг тэмдэглэх'}
-        </button>
+        <div>
+          <button
+            type="button"
+            onClick={() =>
+              setMarked((previous) =>
+                previous.includes(question.id)
+                  ? previous.filter((id) => id !== question.id)
+                  : [...previous, question.id],
+              )
+            }
+            disabled={!timedSessionRunning}
+            aria-pressed={marked.includes(question.id)}
+            className={`${chipBase} px-4 ${marked.includes(question.id) ? chipMarked : chipIdle}`}
+          >
+            {marked.includes(question.id) ? '⚑ Тэмдэглэгээг авах' : '⚑ Асуултыг тэмдэглэх'}
+          </button>
+        </div>
 
         {question.choices ? (
-          <div className="grid gap-2">
+          <div className="grid gap-3">
             {question.choices.map((choice, i) => {
               const isSelected = answer === String(i);
               const isRight = question.answer === i;
@@ -345,22 +382,39 @@ export function PracticePlayer({ questions }: Props) {
                   type="button"
                   disabled={submitted || !timedSessionRunning}
                   onClick={() => submitAnswer(String(i))}
-                  className={`rounded-xl border-2 p-3 text-left ${
+                  className={`flex items-center gap-3.5 rounded-2xl border p-4 text-left transition ${
                     submitted && isRight
-                      ? 'border-green-600 bg-green-50'
+                      ? 'border-leaf bg-sage text-leaf-2'
                       : submitted && isSelected
-                        ? 'border-red-500 bg-red-50'
-                        : 'border-gray-300 hover:border-blue-500'
+                        ? 'border-danger bg-danger-soft text-danger'
+                        : isSelected
+                          ? 'border-leaf bg-leaf/10 text-ink'
+                          : 'border-line bg-paper-2 text-ink hover:border-leaf'
                   }`}
                 >
-                  <Rich text={choice} />
+                  <span
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-xs font-bold ${
+                      submitted && isRight
+                        ? 'bg-leaf text-white'
+                        : submitted && isSelected
+                          ? 'bg-danger text-white'
+                          : isSelected
+                            ? 'bg-leaf text-white'
+                            : 'border border-line bg-paper text-ink-3'
+                    }`}
+                  >
+                    {String.fromCharCode(65 + i)}
+                  </span>
+                  <div className="flex-1 text-[15px]">
+                    <Rich text={choice} />
+                  </div>
                 </button>
               );
             })}
           </div>
         ) : (
           <form
-            className="flex flex-wrap gap-2"
+            className="flex flex-wrap gap-3"
             onSubmit={(event) => {
               event.preventDefault();
 
@@ -375,29 +429,25 @@ export function PracticePlayer({ questions }: Props) {
               disabled={submitted || !timedSessionRunning}
               aria-label="Хариулт"
               placeholder="Хариултаа бичнэ үү"
-              className="min-w-0 flex-1 rounded-xl border border-gray-300 px-4 py-3"
+              className="min-w-0 flex-1 rounded-2xl border border-line bg-paper-2 px-5 py-3.5 font-mono text-lg text-ink placeholder:text-sm placeholder:uppercase placeholder:tracking-[0.15em] disabled:opacity-60"
             />
 
             {!submitted && (
-              <button
-                type="submit"
-                disabled={!answer.trim() || !timedSessionRunning}
-                className="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white disabled:opacity-50"
-              >
+              <button type="submit" disabled={!answer.trim() || !timedSessionRunning} className={btnPrimary}>
                 Шалгах
               </button>
             )}
           </form>
         )}
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2.5">
           <button
             type="button"
             onClick={() => setHintVisible((visible) => !visible)}
             disabled={!timedSessionRunning}
-            className="rounded-lg border border-gray-300 px-3 py-2 text-sm disabled:opacity-50"
+            className={btnSecondary}
           >
-            {hintVisible ? 'Сэжүүр нуух' : 'Hint · Сэжүүр'}
+            {hintVisible ? 'Сэжүүр нуух' : '🐈 Hint · Сэжүүр'}
           </button>
 
           {question.desmos && (
@@ -405,29 +455,34 @@ export function PracticePlayer({ questions }: Props) {
               type="button"
               onClick={() => setShowDesmos((visible) => !visible)}
               disabled={!timedSessionRunning}
-              className="rounded-lg border border-gray-300 px-3 py-2 text-sm disabled:opacity-50"
+              className={btnSecondary}
             >
-              {showDesmos ? 'Desmos нуух' : 'Desmos арга → Тооцоолуурт харуулах'}
+              {showDesmos ? 'Desmos нуух' : '📈 Desmos арга'}
             </button>
           )}
         </div>
 
         {hintVisible && (
-          <aside className="rounded-xl bg-amber-50 p-4 text-sm text-amber-950">
-            <p className="mb-1 font-bold">Hint</p>
+          <aside className="rounded-2xl border border-amber/40 bg-amber-soft p-4 text-sm text-amber">
+            <p className="mb-1 flex items-center gap-1.5 font-bold">
+              <span>🐈‍⬛</span> Hint
+            </p>
             <Rich text={question.hint} />
           </aside>
         )}
 
         {showDesmos && question.desmos && (
-          <aside className="space-y-3 rounded-xl bg-blue-50 p-4 text-sm text-blue-950">
-            <p className="font-bold">Desmos арга</p>
-            <p>{question.desmos.tip}</p>
+          <aside className="space-y-3 rounded-2xl border border-leaf/40 bg-sage p-4 text-sm text-ink">
+            <p className="font-bold text-leaf-2">Desmos арга</p>
+            <p className="text-ink-2">{question.desmos.tip}</p>
 
-            <ol className="list-inside list-decimal space-y-1">
-              {question.desmos.rows.map((row, i) => (
-                <li key={`${question.id}-row-${i}`} className="font-mono">
-                  {row}
+            <ol className="list-inside list-decimal space-y-2 text-ink">
+              {question.desmos.rows.map((desmosRow, i) => (
+                <li
+                  key={`${question.id}-row-${i}`}
+                  className="rounded-xl border border-line bg-paper-2 p-2.5 font-mono"
+                >
+                  {desmosRow}
                 </li>
               ))}
             </ol>
@@ -436,9 +491,9 @@ export function PracticePlayer({ questions }: Props) {
               href="https://www.desmos.com/calculator?lang=mn"
               target="_blank"
               rel="noreferrer"
-              className="inline-block font-semibold underline"
+              className="inline-block pt-1 font-semibold text-leaf-2 underline hover:brightness-110"
             >
-              Desmos тооцоолуур нээх
+              Desmos тооцоолуур нээх ↗
             </a>
           </aside>
         )}
@@ -446,40 +501,46 @@ export function PracticePlayer({ questions }: Props) {
         {submitted && (
           <section
             role="status"
-            className={`space-y-2 rounded-xl p-4 ${
-              correct ? 'bg-green-50 text-green-900' : 'bg-red-50 text-red-900'
+            className={`space-y-3 rounded-2xl border p-5 ${
+              correct ? 'border-leaf bg-sage text-leaf-2' : 'border-danger bg-danger-soft text-danger'
             }`}
           >
-            <h2 className="font-bold">{correct ? 'Зөв хариулт! +5 XP' : 'Буруу хариулт'}</h2>
+            <h2 className="flex items-center gap-2 text-base font-bold">
+              <span>{correct ? '✨ Зөв хариулт! +5 XP' : '❌ Буруу хариулт'}</span>
+            </h2>
 
             {!correct && (
-              <div>
+              <div className="space-y-1.5 text-sm">
                 <p className="font-bold">Яагаад?</p>
-                <Rich
-                  text={
-                    question.choices && question.why?.[Number(answer)]
-                      ? question.why[Number(answer)]
-                      : question.explain
-                  }
-                />
+                <div className="text-ink">
+                  <Rich
+                    text={
+                      question.choices && question.why?.[Number(answer)]
+                        ? question.why[Number(answer)]
+                        : question.explain
+                    }
+                  />
+                </div>
               </div>
             )}
 
             {correct && (
-              <div>
+              <div className="space-y-1.5 text-sm">
                 <p className="font-bold">Тайлбар</p>
-                <Rich text={question.explain} />
+                <div className="text-ink">
+                  <Rich text={question.explain} />
+                </div>
               </div>
             )}
           </section>
         )}
 
-        <footer className="flex items-center justify-between gap-3 border-t border-gray-200 pt-4">
+        <footer className="flex items-center justify-between gap-3 border-t border-line pt-5">
           <button
             type="button"
             disabled={index === 0 || !timedSessionRunning}
             onClick={() => goTo(index - 1)}
-            className="rounded-xl border border-gray-300 px-4 py-2 disabled:opacity-40"
+            className={btnSecondary}
           >
             Өмнөх
           </button>
@@ -488,9 +549,9 @@ export function PracticePlayer({ questions }: Props) {
             type="button"
             disabled={last || !timedSessionRunning}
             onClick={() => goTo(index + 1)}
-            className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white disabled:opacity-40"
+            className={btnPrimary}
           >
-            Дараагийн асуулт
+            Дараагийн асуулт 🐾
           </button>
         </footer>
       </section>
