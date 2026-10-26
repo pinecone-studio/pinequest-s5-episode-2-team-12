@@ -36,6 +36,8 @@ import settings_en from '@/features/settings/messages/en.json';
 import settings_mn from '@/features/settings/messages/mn.json';
 import shop_en from '@/features/shop/messages/en.json';
 import shop_mn from '@/features/shop/messages/mn.json';
+import social_en from '@/features/social/messages/en.json';
+import social_mn from '@/features/social/messages/mn.json';
 import tutor_en from '@/features/tutor/messages/en.json';
 import tutor_mn from '@/features/tutor/messages/mn.json';
 import type { Messages } from '@/lib/i18n';
@@ -62,6 +64,7 @@ const mn: Messages = {
   roadmap: roadmap_mn,
   settings: settings_mn,
   shop: shop_mn,
+  social: social_mn,
   tutor: tutor_mn,
 };
 
@@ -85,6 +88,7 @@ const en: Messages = {
   roadmap: roadmap_en,
   settings: settings_en,
   shop: shop_en,
+  social: social_en,
   tutor: tutor_en,
 };
 

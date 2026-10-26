@@ -1,9 +1,17 @@
-import { ComingSoon } from '@/components/ComingSoon';
+import { headers } from 'next/headers';
+import { FriendsView } from '@/features/social/components/FriendsView';
+import { socialOverview } from '@/features/social/queries';
 import { getT } from '@/lib/i18n';
+import { getSession } from '@/lib/session';
 
-export const metadata = { title: getT('common')('nav.friends') };
+export const metadata = { title: getT('social')('friends.title') };
 
-// Placeholder until phase 8 of docs/plans/2026-10-25-map-home-plan.md
-export default function Page() {
-  return <ComingSoon section="F" title={getT('common')('nav.friends')} tasks="8-р үе шат" />;
+export default async function FriendsPage() {
+  const session = await getSession().catch(() => null);
+  const userId = session?.kind === 'user' ? session.userId : null;
+  const h = await headers();
+  const host = h.get('x-forwarded-host') ?? h.get('host') ?? 'localhost:3001';
+  const origin = `${h.get('x-forwarded-proto') ?? (host.startsWith('localhost') ? 'http' : 'https')}://${host}`;
+  const server = userId ? await socialOverview(userId).catch(() => null) : null;
+  return <FriendsView demo={!userId} server={server} origin={origin} />;
 }

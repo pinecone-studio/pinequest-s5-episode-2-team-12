@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { preload } from 'react-dom';
 import { Logo } from '@/components/brand';
 import { AppShell } from '@/components/shell/AppShell';
 import { loadShell } from '@/components/shell/load-shell';
@@ -49,6 +50,8 @@ export default async function HomePage({
 }) {
   const session = await getSession().catch(() => null);
   if (!session) return <EntryScreen />;
+  // the map poster is the LCP element: start the 78 KB terrain image with the HTML
+  preload('/map/terrain-1024.webp', { as: 'image', fetchPriority: 'high' });
   const sp = await searchParams;
   const userId = await currentUserId();
   const [shell, server] = await Promise.all([

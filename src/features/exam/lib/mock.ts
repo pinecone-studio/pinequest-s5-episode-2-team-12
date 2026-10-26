@@ -31,6 +31,8 @@ export type MockAttempt = {
   timeUsedSec: number;
   /** Impossible timing (answers faster than a person can read); hidden from leaderboards. */
   flagged: boolean;
+  /** Group mock session: a fixed form and a clock everyone shares (no adaptive module 2). */
+  groupId?: string;
 };
 
 /** What the browser gets during the exam: no answer, explanation, hint or Desmos solution. */
