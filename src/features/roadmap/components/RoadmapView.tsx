@@ -85,7 +85,7 @@ function MapPrompt({
   );
 }
 
-/** The home screen: the map fills the viewport; prompts and the trip chip float over it. */
+/** The home screen: the map fills the viewport; prompts float over it. */
 export function RoadmapView({
   demo,
   server,
@@ -106,13 +106,13 @@ export function RoadmapView({
       ? vs.map((v) => (v.stop.no === SAMPLE_AVAILABLE ? { ...v, status: 'available' as const } : v))
       : vs;
   }, [state, open, sample]);
-  const fr = open ? frontier(state.stops) : null;
+  // The first unfinished stop stays visible even before placement is completed.
+  const fr = frontier(state.stops);
   const [selected, setSelected] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const sel = views.find((v) => v.stop.no === selected);
   const finished = open && fr === null;
-  const done = views.filter((v) => v.status === 'completed' || v.status === 'tested-out').length;
 
   const prompt =
     sample || !loaded.ready
@@ -148,7 +148,7 @@ export function RoadmapView({
         fullBleed
       />
 
-      <div className="pointer-events-none absolute inset-x-0 top-[72px] grid justify-items-center gap-2 gutter sm:justify-items-start">
+      <div className="pointer-events-none absolute inset-x-0 top-[72px] z-10 grid justify-items-center gap-2 gutter sm:justify-items-start">
         {sample && (
           <p className="pointer-events-auto rounded-2xl bg-teal-soft px-4 py-2 text-sm font-semibold text-teal">
             {t('demoStates')}
@@ -181,14 +181,6 @@ export function RoadmapView({
           </div>
         )}
       </div>
-
-      <p
-        role="status"
-        aria-label={t('trip.label', { done, total: views.length })}
-        className="pointer-events-none absolute bottom-[max(16px,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 rounded-full border border-line bg-paper/90 px-4 py-2 text-[13px] font-bold text-ink shadow-[var(--shadow-card)] backdrop-blur tnum max-sm:left-4 max-sm:translate-x-0"
-      >
-        {t('trip.chip', { done, total: views.length })}
-      </p>
 
       <StopPanel
         v={sel}

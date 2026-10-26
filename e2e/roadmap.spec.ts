@@ -128,3 +128,23 @@ test('a locked stop shows what unlocks it and can be previewed', async ({ page }
   await panel.getByRole('button', { name: 'Урьдчилж харах' }).click();
   await expect(panel.getByText('Гол томьёо')).toBeVisible();
 });
+
+test('exiting placement restores the topic and a fully visible prompt', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  const prompt = page.getByRole('region', { name: 'Аялал эхлэхийн өмнө' });
+  await prompt.getByRole('link', { name: 'Түвшин тогтоох тест өгөх' }).click();
+  await expect(page).toHaveURL(/\/roadmap\/placement$/);
+  await page.goBack();
+  await expect(page.locator('.roadmap-featured-topic h2')).toHaveText('Нэг хувьсагчтай шугаман тэгшитгэл');
+  await expect(prompt).toBeVisible();
+  // A shadow alone can look visible: verify the prompt is actually above the map background.
+  await expect(async () => {
+    const onTop = await prompt.evaluate((el) => {
+      const box = el.getBoundingClientRect();
+      return el.contains(document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2));
+    });
+    expect(onTop).toBe(true);
+  }).toPass();
+});

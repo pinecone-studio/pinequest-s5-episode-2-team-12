@@ -36,7 +36,7 @@ import { type StopView, stopAriaLabel } from '../lib/view';
 import { MAP } from '../map/mongolia.generated';
 import { STOPS } from '../stops';
 import { StopCard } from './StopCard';
-import { CheckIcon, LockIcon, StarRow } from './TopicIcon';
+import { StarRow } from './TopicIcon';
 
 const ISO = isoMatrix(MAP.width, MAP.height);
 const MATRIX = svgMatrix(ISO);
@@ -225,7 +225,6 @@ const Clouds = memo(function Clouds() {
 
 /** The classic red map pin with the stop's glyph in its white head. */
 function PinGlyph({ v }: { v: StopView }) {
-  const done = v.status === 'completed' || v.status === 'tested-out';
   return (
     <>
       <svg width="30" height="42" viewBox="0 0 30 42" className="roadmap-pin-svg" aria-hidden="true">
@@ -237,13 +236,7 @@ function PinGlyph({ v }: { v: StopView }) {
         <circle cx="15" cy="15" r="8.6" className="roadmap-pin-head" />
       </svg>
       <span className="roadmap-pin-glyph" aria-hidden="true">
-        {v.status === 'locked' ? (
-          <LockIcon size={12} />
-        ) : done ? (
-          <CheckIcon size={13} />
-        ) : (
-          <span className="tnum">{v.stop.no}</span>
-        )}
+        <span className="tnum">{v.stop.no}</span>
       </span>
     </>
   );
@@ -277,18 +270,22 @@ export function RoadmapMap({
   frontierNo: number | null;
   onOpen: (no: number) => void;
   className?: string;
-  /** Edge to edge under the floating top bar (the home screen): no frame, controls clear the safe area. */
+  /** Edge to edge under the floating top bar (the home screen): fixed at the bottom, without camera controls. */
   fullBleed?: boolean;
   /** Merge crowded pins into clusters when zoomed out. */
   cluster?: boolean;
-  /** The stop whose panel is open: the camera flies to it and its label is highlighted. */
+  /** The stop whose panel is open: its label is highlighted. Framed maps also fly to it. */
   selectedNo?: number | null;
 }) {
   const t = useT('roadmap');
   const helpId = useId();
   const boxRef = useRef<HTMLDivElement>(null);
   const [box, setBox] = useState<Size | null>(null);
-  const [view, setView] = useState<View>({ scale: 1, x: 0, y: 0 });
+  const [camera, setView] = useState<View>({ scale: 1, x: 0, y: 0 });
+  // The home map stays fitted and anchored to the bottom, including after a resize.
+  const fixedView = box ? fitView(box, CONTENT) : null;
+  const view =
+    fullBleed && box && fixedView ? { ...fixedView, y: box.h - CONTENT.h * fixedView.scale + 28 } : camera;
   const [hover, setHover] = useState<number | null>(null);
   const [dragging, setDragging] = useState(false);
   const [flying, setFlying] = useState(false);
@@ -307,10 +304,10 @@ export function RoadmapMap({
 
   const apply = useCallback(
     (v: View) => {
-      if (!box) return;
+      if (!box || fullBleed) return;
       setView(clampView(v, box, CONTENT));
     },
-    [box],
+    [box, fullBleed],
   );
 
   /** Animated camera move (locate, cluster zoom, fit). */
@@ -332,12 +329,12 @@ export function RoadmapMap({
 
   // a panel opened: zoom toward the stop, keeping it clear of the side panel (desktop) or the sheet (phone)
   useEffect(() => {
-    if (selectedNo === null || !box || !fit) return;
+    if (fullBleed || selectedNo === null || !box || !fit) return;
     const [x, y] = POINTS[selectedNo];
     const scale = Math.max(viewRef.current.scale, fit.scale * LABEL_ZOOM * 1.15);
     const target = narrow ? { x: box.w / 2, y: box.h * 0.27 } : { x: (box.w - 440) / 2, y: box.h / 2 };
     fly({ scale, x: target.x - x * scale, y: target.y - y * scale });
-  }, [selectedNo, box, fit, narrow, fly]);
+  }, [selectedNo, box, fit, narrow, fly, fullBleed]);
 
   const locate = useCallback(() => {
     if (!box || !fit) return;
@@ -367,13 +364,13 @@ export function RoadmapMap({
     placed.current = true;
     setView(fit);
     setLaidOut(true);
-    if (frontierNo !== null) requestAnimationFrame(() => locate());
-  }, [box, fit, locate, frontierNo]);
+    if (!fullBleed && frontierNo !== null) requestAnimationFrame(() => locate());
+  }, [box, fit, locate, frontierNo, fullBleed]);
 
   // wheel zoom needs a non-passive listener to stop the page from scrolling
   useEffect(() => {
     const el = boxRef.current;
-    if (!el || !box) return;
+    if (!el || !box || fullBleed) return;
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       const r = el.getBoundingClientRect();
@@ -390,7 +387,7 @@ export function RoadmapMap({
     };
     el.addEventListener('wheel', onWheel, { passive: false });
     return () => el.removeEventListener('wheel', onWheel);
-  }, [apply, box, minScale, maxScale]);
+  }, [apply, box, minScale, maxScale, fullBleed]);
 
   const local = (e: { clientX: number; clientY: number }): Pt => {
     const r = boxRef.current!.getBoundingClientRect();
@@ -481,7 +478,14 @@ export function RoadmapMap({
 
   const frontierIndex = frontierNo ?? 27;
   // the hover card covers too much of a phone screen; there the ring + red label mark the current stop
-  const floatNo = narrow || selectedNo !== null ? null : (hover ?? frontierNo);
+  const floatNo =
+    narrow || selectedNo !== null
+      ? null
+      : fullBleed
+        ? hover !== frontierNo
+          ? hover
+          : null
+        : (hover ?? frontierNo);
   const zoom = fit ? view.scale / fit.scale : 1;
 
   // in layer px (scale applied, offset not): priority = current stop, then route order
@@ -502,11 +506,11 @@ export function RoadmapMap({
 
   const { singles, clusters } = useMemo(() => {
     const pins = order.map((v) => screen(v.stop.no));
-    if (!cluster) return { singles: pins.map((p) => p.id), clusters: [] };
+    if (fullBleed || !cluster) return { singles: pins.map((p) => p.id), clusters: [] };
     const keep = new Set([frontierNo, selectedNo].filter((n): n is number => n !== null));
     // zoomed out: merge neighbours; zoomed in: merge only pins that would sit on top of each other
     return clusterPins(pins, zoom < CLUSTER_ZOOM ? CLUSTER_RADIUS : OVERLAP_RADIUS, keep);
-  }, [order, screen, cluster, zoom, frontierNo, selectedNo]);
+  }, [order, screen, cluster, zoom, frontierNo, selectedNo, fullBleed]);
   const visible = useMemo(() => new Set(singles), [singles]);
 
   // labels: all of them when zoomed in, otherwise only the current / hovered stop; callouts when crowded
@@ -544,30 +548,36 @@ export function RoadmapMap({
   const placeName = (no: number) => STOPS.find((s) => s.no === no)?.place ?? '';
 
   return (
-    <div className={cn('relative', className)}>
+    <div className={cn('relative isolate', className)}>
       <div
         ref={boxRef}
         role="application"
         aria-roledescription={t('map.role')}
         aria-label={t('map.label')}
-        aria-describedby={helpId}
-        // biome-ignore lint/a11y/noNoninteractiveTabindex: the map takes focus itself so arrow keys pan and + / − zoom
-        tabIndex={0}
-        onKeyDown={onKeyDown}
-        onPointerDown={onPointerDown}
+        aria-describedby={fullBleed ? undefined : helpId}
+        tabIndex={fullBleed ? undefined : 0}
+        onKeyDown={fullBleed ? undefined : onKeyDown}
+        onPointerDown={fullBleed ? undefined : onPointerDown}
         className={cn(
           'roadmap-stage relative h-full w-full overflow-clip',
           !fullBleed && 'rounded-[26px] border border-line',
           dragging && 'is-dragging',
+          fullBleed && 'is-fixed',
         )}
       >
-        <p id={helpId} className="sr-only">
-          {t('map.help')}
-        </p>
+        {!fullBleed && (
+          <p id={helpId} className="sr-only">
+            {t('map.help')}
+          </p>
+        )}
         {box && (
           <>
             <div
-              className={cn('roadmap-layer absolute left-0 top-0', flying && 'is-flying')}
+              className={cn(
+                'roadmap-layer absolute left-0 top-0',
+                flying && 'is-flying',
+                fullBleed && 'z-40',
+              )}
               style={
                 {
                   width: CONTENT.w,
@@ -622,6 +632,8 @@ export function RoadmapMap({
                     <button
                       type="button"
                       className="roadmap-coin"
+                      data-current={isFrontier ? 'true' : undefined}
+                      aria-current={isFrontier ? 'step' : undefined}
                       data-status={v.status}
                       aria-label={stopAriaLabel(v, t)}
                       aria-haspopup="dialog"
@@ -633,7 +645,7 @@ export function RoadmapMap({
                       onPointerLeave={() => setHover((h) => (h === v.stop.no ? null : h))}
                       onFocus={() => {
                         setHover(v.stop.no);
-                        reveal(v.stop.no);
+                        if (!fullBleed) reveal(v.stop.no);
                       }}
                       onBlur={() => setHover((h) => (h === v.stop.no ? null : h))}
                     >
@@ -736,66 +748,88 @@ export function RoadmapMap({
         )}
       </div>
 
-      <div
-        className={cn(
-          'absolute right-3 flex flex-col items-end gap-2',
-          fullBleed ? 'bottom-[max(16px,env(safe-area-inset-bottom))]' : 'bottom-3',
-        )}
-      >
-        <button
-          type="button"
-          onClick={locate}
-          className="flex h-11 items-center gap-2 rounded-2xl border border-line bg-paper px-3.5 text-[13px] font-bold text-ink shadow-[var(--shadow-card)]"
-        >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            aria-hidden="true"
-          >
-            <circle cx="12" cy="12" r="7" />
-            <circle cx="12" cy="12" r="2.5" fill="currentColor" />
-            <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
-          </svg>
-          {t('map.locate')}
-        </button>
-        <div className="flex overflow-hidden rounded-2xl border border-line bg-paper shadow-[var(--shadow-card)]">
-          {[
-            { k: 'zoomOut', f: () => zoomBy(1 / ZOOM.step), g: <path d="M6 12h12" /> },
-            {
-              k: 'fit',
-              f: () => fit && fly(fit),
-              g: <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />,
-            },
-            { k: 'zoomIn', f: () => zoomBy(ZOOM.step), g: <path d="M6 12h12M12 6v12" /> },
-          ].map((b) => (
-            <button
-              key={b.k}
-              type="button"
-              onClick={b.f}
-              aria-label={t(`map.${b.k}`)}
-              title={t(`map.${b.k}`)}
-              className="grid size-11 place-items-center text-ink-2 hover:bg-paper-2 hover:text-ink"
+      {fullBleed &&
+        frontierNo !== null &&
+        (() => {
+          const current = views.find((v) => v.stop.no === frontierNo);
+          return current ? (
+            <div
+              className="roadmap-featured-topic pointer-events-none absolute left-1/2 top-[clamp(96px,12vh,160px)] z-30 w-[620px] max-w-[calc(100%-48px)] -translate-x-1/2 text-center"
+              aria-hidden="true"
             >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2.2}
-                strokeLinecap="round"
-                aria-hidden="true"
+              <p className="eyebrow text-leaf-2">{t('stopNo', { n: current.stop.no })}</p>
+              <h2 className="mt-3 font-display text-[clamp(30px,3.5vw,52px)] font-bold leading-[1.12] tracking-tight text-ink">
+                {current.topic.title}
+              </h2>
+              <p className="mt-4 text-base text-ink-3">
+                {current.stop.place} · {current.stop.aimag}
+              </p>
+            </div>
+          ) : null;
+        })()}
+
+      {!fullBleed && (
+        <div
+          className={cn(
+            'absolute right-3 flex flex-col items-end gap-2',
+            fullBleed ? 'bottom-[max(16px,env(safe-area-inset-bottom))]' : 'bottom-3',
+          )}
+        >
+          <button
+            type="button"
+            onClick={locate}
+            className="flex h-11 items-center gap-2 rounded-2xl border border-line bg-paper px-3.5 text-[13px] font-bold text-ink shadow-[var(--shadow-card)]"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="7" />
+              <circle cx="12" cy="12" r="2.5" fill="currentColor" />
+              <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+            </svg>
+            {t('map.locate')}
+          </button>
+          <div className="flex overflow-hidden rounded-2xl border border-line bg-paper shadow-[var(--shadow-card)]">
+            {[
+              { k: 'zoomOut', f: () => zoomBy(1 / ZOOM.step), g: <path d="M6 12h12" /> },
+              {
+                k: 'fit',
+                f: () => fit && fly(fit),
+                g: <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />,
+              },
+              { k: 'zoomIn', f: () => zoomBy(ZOOM.step), g: <path d="M6 12h12M12 6v12" /> },
+            ].map((b) => (
+              <button
+                key={b.k}
+                type="button"
+                onClick={b.f}
+                aria-label={t(`map.${b.k}`)}
+                title={t(`map.${b.k}`)}
+                className="grid size-11 place-items-center text-ink-2 hover:bg-paper-2 hover:text-ink"
               >
-                {b.g}
-              </svg>
-            </button>
-          ))}
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2.2}
+                  strokeLinecap="round"
+                  aria-hidden="true"
+                >
+                  {b.g}
+                </svg>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       <p
         className={cn(
           'pointer-events-none absolute left-4 max-w-[60%] text-[10.5px] leading-tight text-ink-3',

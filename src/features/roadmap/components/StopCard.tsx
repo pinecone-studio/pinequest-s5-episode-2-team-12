@@ -63,7 +63,7 @@ export function StopCard({
       className={cn(
         'relative rounded-[20px] border-[1.5px] bg-paper text-left',
         full ? 'p-5' : 'w-[200px] p-3',
-        locked ? 'border-line opacity-70' : 'border-line',
+        'border-line',
         v.status === 'available' && 'border-sage-2',
         v.status === 'current' && 'border-[var(--c-lime-2)] roadmap-pulse',
         !full && 'shadow-pop',
