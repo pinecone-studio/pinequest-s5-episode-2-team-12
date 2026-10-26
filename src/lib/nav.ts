@@ -17,7 +17,7 @@ export const NAV: NavGroup[] = [
       { key: 'practicePlayer', href: routes.practice(), section: 'C' },
       { key: 'mock', href: routes.mock, section: 'D' },
       { key: 'tutor', href: routes.tutor(), section: 'G' },
-      { key: 'flashcards', href: routes.flashcards, section: 'E' },
+      { key: 'flashcards', href: routes.flashcards(), section: 'E' },
       { key: 'mistakes', href: routes.mistakes, section: 'D' },
       { key: 'daily', href: routes.daily, section: 'C' },
       { key: 'friends', href: routes.friends, section: 'F' },

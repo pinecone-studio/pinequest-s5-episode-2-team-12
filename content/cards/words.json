@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "decks": [
     {
       "id": "ops",
@@ -16,7 +17,8 @@
           "back": "нийлбэр",
           "hook": "«Сам»-наад бүгдийг нэг дор цуглуул — бүгдийг нийлүүлбэл нийлбэр.",
           "ex": "the **sum** of $x$ and $4$ → $x+4$",
-          "art": "merge"
+          "art": "merge",
+          "reviewed": false
         },
         {
           "id": "difference",
@@ -26,7 +28,8 @@
           "back": "ялгавар",
           "hook": "«Different» = өөр. Хоёр тоо хэр өөр вэ гэдэг нь ялгавар.",
           "ex": "the **difference** of $12$ and $x$ → $12-x$",
-          "art": "split"
+          "art": "split",
+          "reviewed": false
         },
         {
           "id": "product",
@@ -36,7 +39,8 @@
           "back": "үржвэр",
           "hook": "Үйлдвэр «product» гаргадаг шиг үржүүлэхэд үржвэр гарна.",
           "ex": "the **product** of $5$ and $x$ → $5x$",
-          "art": "grid"
+          "art": "grid",
+          "reviewed": false
         },
         {
           "id": "quotient",
@@ -46,7 +50,8 @@
           "back": "ноогдвор",
           "hook": "«Квот» = хуваарилсан хэсэг. Хуваахад ногдох хэсэг нь ноогдвор.",
           "ex": "the **quotient** of $x$ and $3$ → $\\frac{x}{3}$",
-          "art": "pie"
+          "art": "pie",
+          "reviewed": false
         },
         {
           "id": "remainder",
@@ -56,7 +61,8 @@
           "back": "үлдэгдэл",
           "hook": "«Remain» = үлдэх. Хуваасны дараа үлдсэн нь үлдэгдэл.",
           "ex": "$17\\div 5=3$, **remainder** $2$",
-          "art": "remainder"
+          "art": "remainder",
+          "reviewed": false
         },
         {
           "id": "twice",
@@ -67,7 +73,8 @@
           "hook": "«Two»-оос гаралтай: хоёр удаа.",
           "ex": "**twice** a number → $2x$",
           "art": "grid",
-          "v": "2"
+          "v": "2",
+          "reviewed": false
         },
         {
           "id": "increased",
@@ -77,7 +84,8 @@
           "back": "…-аар нэмэгдсэн",
           "hook": "«In-crease» — дотогшоо нэмж хийх.",
           "ex": "$x$ **increased by** $9$ → $x+9$",
-          "art": "merge"
+          "art": "merge",
+          "reviewed": false
         },
         {
           "id": "decreased",
@@ -87,7 +95,8 @@
           "back": "…-аар хорогдсон",
           "hook": "«De-» = доош. Тоо доошоо буурна.",
           "ex": "$x$ **decreased by** $9$ → $x-9$",
-          "art": "split"
+          "art": "split",
+          "reviewed": false
         }
       ]
     },
@@ -108,7 +117,8 @@
           "hook": "«Least» = хамгийн бага. Хамгийн багадаа энэ, түүнээс дээш: $\\ge$.",
           "ex": "the score is **at least** $90$ → $s\\ge 90$",
           "art": "numberline",
-          "v": "ge"
+          "v": "ge",
+          "reviewed": false
         },
         {
           "id": "atmost",
@@ -119,7 +129,8 @@
           "hook": "«Most» = хамгийн их. Хамгийн ихдээ энэ, түүнээс доош: $\\le$.",
           "ex": "cost is **at most** $25$ → $c\\le 25$",
           "art": "numberline",
-          "v": "le"
+          "v": "le",
+          "reviewed": false
         },
         {
           "id": "greatest",
@@ -130,7 +141,8 @@
           "hook": "«Great» = агуу → хамгийн том нь.",
           "ex": "$x\\le 5$ үед **greatest** $x$ нь $5$",
           "art": "numberline",
-          "v": "max"
+          "v": "max",
+          "reviewed": false
         },
         {
           "id": "inequality",
@@ -141,7 +153,8 @@
           "hook": "«In-» = үгүй, «equal» = тэнцүү → тэнцүү биш.",
           "ex": "$2x+1<7$ нь **inequality**",
           "art": "numberline",
-          "v": "lt"
+          "v": "lt",
+          "reviewed": false
         },
         {
           "id": "distinct",
@@ -152,7 +165,8 @@
           "hook": "«Distinguish» — ялгаж салгах. Давхардалгүй өөр өөр.",
           "ex": "two **distinct** solutions → хоёр өөр шийд",
           "art": "parabola",
-          "v": "two"
+          "v": "two",
+          "reviewed": false
         },
         {
           "id": "consecutive",
@@ -163,7 +177,8 @@
           "hook": "«Second» дараа нь «third» — дараалан ирнэ.",
           "ex": "**consecutive** integers $n,\\ n+1,\\ n+2$",
           "art": "numberline",
-          "v": "seq"
+          "v": "seq",
+          "reviewed": false
         },
         {
           "id": "integer",
@@ -174,7 +189,8 @@
           "hook": "«Intact» = бүтэн. Бутаргүй бүтэн тоо.",
           "ex": "$\\dots,-2,-1,0,1,2,\\dots$",
           "art": "numberline",
-          "v": "int"
+          "v": "int",
+          "reviewed": false
         },
         {
           "id": "equivalent",
@@ -185,7 +201,8 @@
           "hook": "«Equi-» = тэнцүү, «valent» = үнэ цэнэ → ижил үнэ цэнэтэй.",
           "ex": "$2(x+3)$ is **equivalent** to $2x+6$",
           "art": "power",
-          "v": "eq"
+          "v": "eq",
+          "reviewed": false
         }
       ]
     },
@@ -206,7 +223,8 @@
           "hook": "Цанын «слоуп» буюу налуу — хэр эгц вэ.",
           "ex": "$y=3x-2$-ийн **slope** $=3$",
           "art": "line",
-          "v": "slope"
+          "v": "slope",
+          "reviewed": false
         },
         {
           "id": "intercept",
@@ -217,7 +235,8 @@
           "hook": "«Inter-» = дунд нь, «cept» = барих → тэнхлэгийг замд нь барьж авах.",
           "ex": "$y=2x+1$-ийн y-**intercept** $(0,1)$",
           "art": "line",
-          "v": "icept"
+          "v": "icept",
+          "reviewed": false
         },
         {
           "id": "coefficient",
@@ -228,7 +247,8 @@
           "hook": "«Co-» = хамт. Хувьсагчтай хамт явдаг тоо.",
           "ex": "$7x$-ийн **coefficient** $7$",
           "art": "line",
-          "v": "coef"
+          "v": "coef",
+          "reviewed": false
         },
         {
           "id": "constant",
@@ -239,7 +259,8 @@
           "hook": "«Constant» = үргэлж ижил. Өөрчлөгддөггүй тоо.",
           "ex": "$2x+5$-ийн **constant** $5$",
           "art": "line",
-          "v": "const"
+          "v": "const",
+          "reviewed": false
         },
         {
           "id": "vertex",
@@ -250,7 +271,8 @@
           "hook": "«Vertical» — хамгийн өндөр/нам цэг.",
           "ex": "$y=(x-2)^2+3$-ийн **vertex** $(2,3)$",
           "art": "parabola",
-          "v": "vertex"
+          "v": "vertex",
+          "reviewed": false
         },
         {
           "id": "quadratic",
@@ -260,7 +282,8 @@
           "back": "квадрат",
           "hook": "«Quad» = дөрвөлжин → $x^2$ буюу квадрат.",
           "ex": "$x^2-5x+6=0$ is **quadratic**",
-          "art": "parabola"
+          "art": "parabola",
+          "reviewed": false
         },
         {
           "id": "solution",
@@ -270,7 +293,8 @@
           "back": "шийд",
           "hook": "«Solve» = бодох. Бодсоны үр дүн.",
           "ex": "$2x=10$-ийн **solution** $x=5$",
-          "art": "cross"
+          "art": "cross",
+          "reviewed": false
         },
         {
           "id": "intersect",
@@ -280,7 +304,8 @@
           "back": "огтлолцох",
           "hook": "«Inter-» = хооронд, «sect» = огтлох → хооронд нь огтлолцоно.",
           "ex": "lines **intersect** at $(2,5)$",
-          "art": "cross"
+          "art": "cross",
+          "reviewed": false
         },
         {
           "id": "exponent",
@@ -290,7 +315,8 @@
           "back": "илтгэгч",
           "hook": "«Expo» — үзэсгэлэн шиг дээр гарч харагдана: дээд жижиг тоо.",
           "ex": "$2^5$-ийн **exponent** $5$",
-          "art": "power"
+          "art": "power",
+          "reviewed": false
         },
         {
           "id": "proportional",
@@ -301,7 +327,8 @@
           "hook": "«Portion» = хувь хэсэг — хамтдаа ижил хувиар өснө: $y=kx$.",
           "ex": "$y$ is **proportional** to $x$ → $y=kx$",
           "art": "line",
-          "v": "prop"
+          "v": "prop",
+          "reviewed": false
         }
       ]
     },
@@ -322,7 +349,8 @@
           "hook": "«Ray» = туяа. Төвөөс гарах туяа.",
           "ex": "diameter $10$ → **radius** $5$",
           "art": "circle",
-          "v": "r"
+          "v": "r",
+          "reviewed": false
         },
         {
           "id": "circumference",
@@ -333,7 +361,8 @@
           "hook": "«Circum-» = эргэн тойрон. Тойрог дагуу нэг тойрох зам.",
           "ex": "**circumference** $C=2\\pi r$",
           "art": "circle",
-          "v": "c"
+          "v": "c",
+          "reviewed": false
         },
         {
           "id": "hypotenuse",
@@ -343,7 +372,8 @@
           "back": "гипотенуз",
           "hook": "«Хайп» хамгийн их — хамгийн урт тал, тэгш өнцгийн эсрэг.",
           "ex": "legs $6,8$ → **hypotenuse** $10$",
-          "art": "triangle"
+          "art": "triangle",
+          "reviewed": false
         },
         {
           "id": "perpendicular",
@@ -353,7 +383,8 @@
           "back": "перпендикуляр",
           "hook": "«Перпендикуляр» — монголд ч ижил. $90^\\circ$-аар огтлолцоно.",
           "ex": "slopes $2$ and $-\\tfrac12$ are **perpendicular**",
-          "art": "perp"
+          "art": "perp",
+          "reviewed": false
         },
         {
           "id": "mean",
@@ -364,7 +395,8 @@
           "hook": "«Mean» = утга. Бүгдийн дундаж утга.",
           "ex": "**mean** of $2,4,9$ → $5$",
           "art": "bars",
-          "v": "mean"
+          "v": "mean",
+          "reviewed": false
         },
         {
           "id": "median",
@@ -375,7 +407,8 @@
           "hook": "«Media» = дунд. Эрэмбэлсэн жагсаалтын яг голын тоо.",
           "ex": "**median** of $3,7,8,12,15$ → $8$",
           "art": "bars",
-          "v": "median"
+          "v": "median",
+          "reviewed": false
         },
         {
           "id": "ratio",
@@ -386,7 +419,8 @@
           "hook": "«Rate» = хэмжээ. Хоёр хэмжээг харьцуулна: $a:b$.",
           "ex": "$3$ boys to $2$ girls → **ratio** $3:2$",
           "art": "pie",
-          "v": "ratio"
+          "v": "ratio",
+          "reviewed": false
         },
         {
           "id": "percent",
@@ -397,7 +431,8 @@
           "hook": "«Cent» = 100 (цент). 100-гийн хэдэн хэсэг.",
           "ex": "$25\\%$ of $80$ → $20$",
           "art": "pie",
-          "v": "pct"
+          "v": "pct",
+          "reviewed": false
         },
         {
           "id": "probability",
@@ -407,7 +442,8 @@
           "back": "магадлал",
           "hook": "«Probably» = магадгүй → болох магадлал.",
           "ex": "**probability** of green $=\\frac{5}{15}$",
-          "art": "dice"
+          "art": "dice",
+          "reviewed": false
         },
         {
           "id": "radian",
@@ -417,7 +453,8 @@
           "back": "радиан",
           "hook": "Радиусын урттай нум = 1 радиан.",
           "ex": "$\\pi$ **radians** $=180^\\circ$",
-          "art": "angle"
+          "art": "angle",
+          "reviewed": false
         }
       ]
     }

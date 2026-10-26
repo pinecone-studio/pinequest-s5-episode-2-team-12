@@ -52,7 +52,7 @@ export function FeedbackButtons({ mode, prompt, reply, context, fetchImpl = fetc
           {t('feedback.betterLabel')}
         </label>
         <textarea
-          id="suu-correction"
+          id={boxId}
           className="min-h-20 rounded-xl border border-line bg-paper p-3 text-[14px]"
           maxLength={2000}
           placeholder={t('feedback.betterPlaceholder')}

@@ -55,3 +55,13 @@ export function countdown(
   const mins = Math.floor(ms / 60000);
   return { d: Math.floor(mins / 1440), h: Math.floor((mins % 1440) / 60), m: mins % 60 };
 }
+
+/** ISO week id (2026-W43) of a YYYY-MM-DD day, the weekly league's key. */
+export function isoWeekId(day: string = dayKey()): string {
+  const d = new Date(`${day}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 3 - ((d.getUTCDay() + 6) % 7));
+  const jan4 = new Date(Date.UTC(d.getUTCFullYear(), 0, 4));
+  const w =
+    1 + Math.round((d.getTime() - jan4.getTime()) / DAY_MS / 7 - (3 - ((jan4.getUTCDay() + 6) % 7)) / 7);
+  return `${d.getUTCFullYear()}-W${String(w).padStart(2, '0')}`;
+}

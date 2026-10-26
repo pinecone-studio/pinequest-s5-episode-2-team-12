@@ -1,0 +1,90 @@
+{
+  "title": "Shop",
+  "lead": "Spend the gems (💎) you earn by studying. Nothing here costs real money.",
+  "balance": "Your 💎",
+  "earn": {
+    "title": "How to earn 💎",
+    "stop": "Pass a stop: {n} (+{s} per star)",
+    "region": "Region badge: {n}",
+    "daily": "Daily challenge: {n}",
+    "mock": "Full test: {n}",
+    "streak": "7-day streak: {a} · 30 days: {b}"
+  },
+  "groups": {
+    "consumable": "Consumables",
+    "frame": "Avatar frames",
+    "outfit": "Outfits for Suu",
+    "skin": "Map skins",
+    "banner": "Profile banners"
+  },
+  "buy": "Buy",
+  "confirm": "Spend {price} 💎 on {name}?",
+  "yes": "Yes, buy",
+  "no": "Cancel",
+  "owned": "Owned",
+  "qty": "{n} left",
+  "equip": "Equip",
+  "unequip": "Unequip",
+  "equipped": "Equipped",
+  "insufficient": "Not enough 💎",
+  "bought": "Bought!",
+  "failed": "Purchase failed",
+  "items": {
+    "streak-freeze": {
+      "name": "Streak freeze",
+      "desc": "Miss a day without losing your streak."
+    },
+    "hints-3": {
+      "name": "3 hints",
+      "desc": "Use them for hints in the daily challenge."
+    },
+    "frame-gold": {
+      "name": "Gold frame",
+      "desc": "A gold avatar frame."
+    },
+    "frame-lime": {
+      "name": "Meadow frame",
+      "desc": "A green frame."
+    },
+    "frame-sky": {
+      "name": "Sky frame",
+      "desc": "A blue frame."
+    },
+    "outfit-hat": {
+      "name": "Top hat",
+      "desc": "Suu dresses up."
+    },
+    "outfit-scarf": {
+      "name": "Scarf",
+      "desc": "A warm winter scarf."
+    },
+    "outfit-glasses": {
+      "name": "Glasses",
+      "desc": "Suu looks extra clever."
+    },
+    "outfit-crown": {
+      "name": "Crown",
+      "desc": "Ruler of the journey."
+    },
+    "skin-winter": {
+      "name": "Winter map",
+      "desc": "Snow-covered Mongolia."
+    },
+    "skin-night": {
+      "name": "Night map",
+      "desc": "The steppe under the stars."
+    },
+    "banner-steppe": {
+      "name": "Steppe banner",
+      "desc": "Green steppe colors."
+    },
+    "banner-sunset": {
+      "name": "Sunset banner",
+      "desc": "Orange and pink."
+    },
+    "banner-night": {
+      "name": "Night banner",
+      "desc": "Deep blue."
+    }
+  }
+}

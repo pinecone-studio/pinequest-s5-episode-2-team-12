@@ -5,9 +5,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
 import { Logo } from '@/components/brand';
+import { Avatar } from '@/components/brand/Avatar';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { useDialog } from '@/components/ui/useDialog';
 import type { StudentSettings } from '@/features/settings/use-settings';
+import { useWallet } from '@/features/shop/lib/use-wallet';
+import type { ServerWallet } from '@/features/shop/queries';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { isActive, NAV, type NavGroup, type NavItem } from '@/lib/nav';
@@ -15,7 +18,8 @@ import { routes } from '@/lib/routes';
 import { ExamChip } from './ExamChip';
 import { Flame, Icon } from './icons';
 
-export type ShellUser = { name: string; level: number; xp: number; streak: number };
+export type ShellUser = { name: string; level: number; xp: number; streak: number; avatarId?: string };
+export { Avatar };
 
 function NavLink({ item, pathname }: { item: NavItem; pathname: string }) {
   const t = useT('common');
@@ -34,23 +38,6 @@ function NavLink({ item, pathname }: { item: NavItem; pathname: string }) {
       <Icon name={item.key} size={21} className={on ? 'text-leaf-2' : 'text-ink-3'} />
       <span className="truncate">{t(`nav.${item.key}`)}</span>
     </Link>
-  );
-}
-
-export function Avatar({ name, size = 42 }: { name: string; size?: number }) {
-  return (
-    <span
-      className="grid place-items-center rounded-full font-bold text-[var(--c-on-leaf)] shrink-0"
-      style={{
-        width: size,
-        height: size,
-        fontSize: size * 0.4,
-        background: 'linear-gradient(135deg, var(--c-leaf), var(--c-leaf-2))',
-      }}
-      aria-hidden="true"
-    >
-      {(name.trim()[0] ?? 'S').toUpperCase()}
-    </span>
   );
 }
 
@@ -97,12 +84,16 @@ function NavDrawer({
   onClose,
   user,
   pathname,
+  gems,
+  look,
 }: {
   id: string;
   open: boolean;
   onClose: () => void;
   user: ShellUser;
   pathname: string;
+  gems: number;
+  look: { frame?: string; outfit?: string };
 }) {
   const t = useT('common');
   const ref = useRef<HTMLDivElement>(null);
@@ -164,10 +155,13 @@ function NavDrawer({
             href={routes.profile}
             className="flex items-center gap-3 rounded-3xl border border-line bg-paper p-3 hover:border-leaf"
           >
-            <Avatar name={name} />
+            <Avatar name={name} avatarId={user.avatarId} {...look} />
             <span className="min-w-0 flex-1">
               <span className="block font-bold text-ink truncate">{name}</span>
-              <span className="block text-[13px] text-ink-3">{t('shell.level', { n: user.level })}</span>
+              <span className="block text-[13px] text-ink-3">
+                {t('shell.level', { n: user.level })} · 💎 <span className="tnum">{gems}</span>
+                <span className="sr-only"> {t('shell.gems')}</span>
+              </span>
             </span>
             <span
               className="flex items-center gap-1 font-bold text-ink tnum"
@@ -190,12 +184,14 @@ export function AppShell({
   user,
   settings,
   demo,
+  wallet = null,
   variant = 'page',
 }: {
   children: ReactNode;
   user?: ShellUser;
   settings: StudentSettings;
   demo: boolean;
+  wallet?: ServerWallet | null;
   variant?: 'map' | 'page';
 }) {
   const t = useT('common');
@@ -204,6 +200,8 @@ export function AppShell({
   const drawerId = useId();
   const me: ShellUser = user ?? { name: '', level: 1, xp: 0, streak: 0 };
   const map = variant === 'map';
+  const w = useWallet(demo, wallet);
+  const look = { frame: w.equipped.frame, outfit: w.equipped.outfit };
 
   // navigating closes the drawer
   // biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger
@@ -241,17 +239,27 @@ export function AppShell({
         </Link>
         <div className="ml-auto flex items-center gap-2.5">
           <ExamChip initial={settings} demo={demo} />
+          {/* no viewport prefetch: on the map home its bytes would compete with the first paint */}
           <Link
             href={routes.profile}
+            prefetch={false}
             aria-label={t('shell.profile')}
             className="rounded-full ring-2 ring-paper/80 hover:ring-leaf"
           >
-            <Avatar name={me.name || t('shell.guest')} size={40} />
+            <Avatar name={me.name || t('shell.guest')} avatarId={me.avatarId} size={40} {...look} />
           </Link>
         </div>
       </header>
 
-      <NavDrawer id={drawerId} open={open} onClose={() => setOpen(false)} user={me} pathname={pathname} />
+      <NavDrawer
+        id={drawerId}
+        open={open}
+        onClose={() => setOpen(false)}
+        user={me}
+        pathname={pathname}
+        gems={w.balance}
+        look={look}
+      />
 
       {/* biome-ignore lint/correctness/useUniqueElementIds: the app shell renders once; #main is the skip-link target */}
       <main

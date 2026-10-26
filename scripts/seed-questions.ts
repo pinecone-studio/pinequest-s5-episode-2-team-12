@@ -18,7 +18,9 @@ function getSeedConfig() {
   // Writes need the server-only secret key; the public key can only read.
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) {
-    throw new Error('NEXT_PUBLIC_SUPABASE_URL болон SUPABASE_SERVICE_ROLE_KEY тохируулаагүй байна (.env.local).');
+    throw new Error(
+      'NEXT_PUBLIC_SUPABASE_URL болон SUPABASE_SERVICE_ROLE_KEY тохируулаагүй байна (.env.local).',
+    );
   }
   return { url, key };
 }
@@ -46,7 +48,9 @@ async function seedQuestions() {
   const { error } = await db.from('questions').upsert(rows, { onConflict: 'id' });
   if (error) throw new Error(`Questions seed алдаа: ${error.message}`);
 
-  const { count, error: countError } = await db.from('questions').select('id', { count: 'exact', head: true });
+  const { count, error: countError } = await db
+    .from('questions')
+    .select('id', { count: 'exact', head: true });
   if (countError) throw new Error(`Тоолж чадсангүй: ${countError.message}`);
   console.log(`Questions seed амжилттай! Supabase дээр одоо ${count} асуулт байна.`);
 }

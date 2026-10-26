@@ -9,12 +9,7 @@
     "pool": "placement",
     "prompt": "On a map, $2$ centimeters represent $45$ kilometers. The distance between two towns on the map is $9$ centimeters. What is the actual distance between the towns, in kilometers?",
     "mn": "Газрын зураг дээр $2$ см нь $45$ км-ийг илэрхийлнэ. Хоёр хотын хоорондох зай зураг дээр $9$ см. Бодит зай хэдэн км вэ?",
-    "choices": [
-      "$90$",
-      "$405$",
-      "$202.5$",
-      "$22.5$"
-    ],
+    "choices": ["$90$", "$405$", "$202.5$", "$22.5$"],
     "answer": 2,
     "explain": "$1$ см $= 22.5$ км. $9\\cdot 22.5 = 202.5$ км.",
     "hint": "Пропорц зохио: $\\frac{2}{45} = \\frac{9}{x}$.",
@@ -25,10 +20,7 @@
     "verify": {
       "value": "9*45/2"
     },
-    "vocab": [
-      "represent",
-      "actual distance"
-    ],
+    "vocab": ["represent", "actual distance"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -44,18 +36,13 @@
     "pool": "placement",
     "prompt": "After a $20\\%$ increase, the price of a backpack is \\$$54$. What was the price of the backpack, in dollars, before the increase?",
     "mn": "$20\\%$-иар өссөний дараа үүргэвчийн үнэ \\$$54$ болжээ. Өсөхөөс өмнө үүргэвч хэдэн доллар байсан бэ?",
-    "answer": [
-      "45"
-    ],
+    "answer": ["45"],
     "explain": "Анхны үнэ $x$: $1.2x = 54$, $x = 45$.",
     "hint": "$54$-өөс $20\\%$-ийг хасах нь буруу — $54$ нь анхны үнийн $120\\%$.",
     "verify": {
       "value": "54/1.2"
     },
-    "vocab": [
-      "increase",
-      "before"
-    ],
+    "vocab": ["increase", "before"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -71,12 +58,7 @@
     "pool": "placement",
     "prompt": "A scatterplot shows the average daily temperature $y$, in degrees Celsius, and the number of days $x$ after March 1 in Khovd. The line of best fit is $y = -1.4x + 63$. According to the line of best fit, what is the predicted temperature, in degrees Celsius, on day $15$?",
     "mn": "Цэгэн график нь Ховдод 3-р сарын 1-ээс хойших өдрийн тоо $x$ ба өдрийн дундаж температур $y$ (°C)-ийг харуулна. Хамгийн тохиромжтой шулуун $y = -1.4x + 63$. Шулуунаар $15$ дахь өдрийн температур хэд гэж таамаглагдах вэ?",
-    "choices": [
-      "$42$",
-      "$84$",
-      "$48$",
-      "$21$"
-    ],
+    "choices": ["$42$", "$84$", "$48$", "$21$"],
     "answer": 0,
     "explain": "$y = -1.4\\cdot 15 + 63 = -21 + 63 = 42$.",
     "hint": "$x = 15$-ыг орлуулж, тэмдгийг анхаар.",
@@ -86,10 +68,7 @@
     "verify": {
       "value": "-1.4*15+63"
     },
-    "vocab": [
-      "line of best fit",
-      "predicted"
-    ],
+    "vocab": ["line of best fit", "predicted"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -105,12 +84,7 @@
     "pool": "placement",
     "prompt": "A random sample of $250$ of the $6,000$ voters in a district was surveyed, and $90$ of the voters in the sample support a proposal. Based on the sample, which of the following is the best estimate of the number of voters in the district who support the proposal?",
     "mn": "Тойргийн $6,000$ сонгогчоос $250$-ийг санамсаргүйгээр сонгож асуухад $90$ нь саналыг дэмжсэн. Түүвэрт тулгуурлавал тойргийн саналыг дэмжигч сонгогчдын тооны хамгийн сайн үнэлгээ аль вэ?",
-    "choices": [
-      "$90$",
-      "$2,160$",
-      "$3,840$",
-      "$1,500$"
-    ],
+    "choices": ["$90$", "$2,160$", "$3,840$", "$1,500$"],
     "answer": 1,
     "explain": "Түүврийн хувь $\\frac{90}{250} = 0.36$. $0.36\\cdot 6000 = 2160$.",
     "hint": "Түүврийн хувийг нийт сонгогчдод хэрэглэ.",
@@ -121,10 +95,7 @@
     "verify": {
       "value": "90/250*6000"
     },
-    "vocab": [
-      "random sample",
-      "estimate"
-    ],
+    "vocab": ["random sample", "estimate"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -140,18 +111,13 @@
     "pool": "placement",
     "prompt": "A bag of flour weighs $2.5$ kilograms. How many $125$-gram portions of flour are in the bag? ($1$ kilogram $= 1,000$ grams)",
     "mn": "Гурилын уут $2.5$ кг жинтэй. Уутанд $125$ граммын хэдэн хэсэг гурил байх вэ? ($1$ кг $= 1,000$ г)",
-    "answer": [
-      "20"
-    ],
+    "answer": ["20"],
     "explain": "$2.5$ кг $= 2500$ г. $2500\\div 125 = 20$.",
     "hint": "Эхлээд нэгжийг ижил болго.",
     "verify": {
       "value": "2.5*1000/125"
     },
-    "vocab": [
-      "portions",
-      "weighs"
-    ],
+    "vocab": ["portions", "weighs"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -167,12 +133,7 @@
     "pool": "placement",
     "prompt": "A car's fuel efficiency is $40$ miles per gallon. Assume that $1$ mile $= 1.6$ kilometers and $1$ gallon $= 4$ liters. What is the car's fuel efficiency, in kilometers per liter?",
     "mn": "Машины шатахууны үр ашиг галлон тутамд $40$ миль. $1$ миль $= 1.6$ км, $1$ галлон $= 4$ литр гэж үзье. Машины шатахууны үр ашиг литр тутамд хэдэн км вэ?",
-    "choices": [
-      "$100$",
-      "$256$",
-      "$25.6$",
-      "$16$"
-    ],
+    "choices": ["$100$", "$256$", "$25.6$", "$16$"],
     "answer": 3,
     "explain": "$40$ миль $= 64$ км. $1$ галлон $= 4$ литр тул $64\\div 4 = 16$ км/литр.",
     "hint": "Хүртвэрийг км, хуваарийг литрт шилжүүл.",
@@ -183,10 +144,7 @@
     "verify": {
       "value": "40*1.6/4"
     },
-    "vocab": [
-      "fuel efficiency",
-      "miles per gallon"
-    ],
+    "vocab": ["fuel efficiency", "miles per gallon"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -202,12 +160,7 @@
     "pool": "placement",
     "prompt": "What is the range of the data set $14, 9, 21, 17, 6, 12$?",
     "mn": "$14, 9, 21, 17, 6, 12$ өгөгдлийн далайц (range) хэд вэ?",
-    "choices": [
-      "$13$",
-      "$21$",
-      "$15$",
-      "$6$"
-    ],
+    "choices": ["$13$", "$21$", "$15$", "$6$"],
     "answer": 2,
     "explain": "Далайц $=$ хамгийн их $-$ хамгийн бага $= 21 - 6 = 15$.",
     "hint": "Хамгийн их ба хамгийн бага утгыг ол.",
@@ -217,9 +170,7 @@
     "verify": {
       "value": "21-6"
     },
-    "vocab": [
-      "range"
-    ],
+    "vocab": ["range"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -235,18 +186,13 @@
     "pool": "placement",
     "prompt": "A class of $20$ students had a mean test score of $72$. When the scores of these students are combined with the scores of another class of $30$ students, the mean score of all $50$ students is $78$. What is the mean test score of the class of $30$ students?",
     "mn": "$20$ сурагчтай ангийн шалгалтын дундаж оноо $72$. Эдгээрийг $30$ сурагчтай өөр ангийн оноотой нэгтгэхэд $50$ сурагчийн дундаж $78$ болсон. $30$ сурагчтай ангийн дундаж оноо хэд вэ?",
-    "answer": [
-      "82"
-    ],
+    "answer": ["82"],
     "explain": "Нийт оноо $50\\cdot 78 = 3900$. Эхний анги $20\\cdot 72 = 1440$. Хоёр дахь анги $3900-1440 = 2460$, дундаж $2460\\div 30 = 82$.",
     "hint": "Дунджуудыг шууд дундажлах боломжгүй — нийлбэр ашигла.",
     "verify": {
       "value": "(50*78-20*72)/30"
     },
-    "vocab": [
-      "combined",
-      "mean score"
-    ],
+    "vocab": ["combined", "mean score"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -262,20 +208,13 @@
     "pool": "placement",
     "prompt": "A jar contains $12$ marbles, and $3$ of them are white. If one marble is selected at random, what is the probability that it is NOT white?",
     "mn": "Саванд $12$ бөмбөлөг байгаагаас $3$ нь цагаан. Санамсаргүй нэгийг авахад цагаан БИШ байх магадлал хэд вэ?",
-    "answer": [
-      "3/4",
-      ".75",
-      "0.75"
-    ],
+    "answer": ["3/4", ".75", "0.75"],
     "explain": "Цагаан биш $12-3 = 9$. $\\frac{9}{12} = \\frac{3}{4}$.",
     "hint": "Цагаан бишийн тоог нийтэд хуваа.",
     "verify": {
       "value": "(12-3)/12"
     },
-    "vocab": [
-      "at random",
-      "NOT"
-    ],
+    "vocab": ["at random", "NOT"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -291,12 +230,7 @@
     "pool": "placement",
     "prompt": "A survey of $300$ people recorded age group and preferred phone brand. Under age $30$: Brand A $90$, Brand B $60$. Age $30$ or older: Brand A $70$, Brand B $80$. If a person who prefers Brand B is selected at random, what is the probability that the person is under age $30$?",
     "mn": "$300$ хүнээс насны бүлэг ба илүүд үздэг утасны брэндийг асуужээ. $30$-аас доош насны: A брэнд $90$, B брэнд $60$. $30$ ба түүнээс дээш: A брэнд $70$, B брэнд $80$. B брэндийг илүүд үздэг хүнээс санамсаргүй нэгийг сонгоход $30$-аас доош настай байх магадлал хэд вэ?",
-    "choices": [
-      "$\\frac{3}{7}$",
-      "$\\frac{2}{5}$",
-      "$\\frac{1}{5}$",
-      "$\\frac{4}{7}$"
-    ],
+    "choices": ["$\\frac{3}{7}$", "$\\frac{2}{5}$", "$\\frac{1}{5}$", "$\\frac{4}{7}$"],
     "answer": 0,
     "explain": "B брэнд нийт $60+80 = 140$. Тэдний $60$ нь $30$-аас доош. $\\frac{60}{140} = \\frac{3}{7}$.",
     "hint": "B брэндийг илүүд үздэг хүмүүс л хуваарьт орно.",
@@ -307,10 +241,7 @@
     "verify": {
       "value": "60/140"
     },
-    "vocab": [
-      "preferred",
-      "under age"
-    ],
+    "vocab": ["preferred", "under age"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -338,10 +269,7 @@
     "why": {
       "0": "Энэ нь санамсаргүй ТҮҮВРИЙН зорилго."
     },
-    "vocab": [
-      "random assignment",
-      "control group"
-    ],
+    "vocab": ["random assignment", "control group"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -370,10 +298,7 @@
       "0": "Ажиглалтын судалгаа тул шалтгааны дүгнэлт хийхгүй.",
       "2": "Санамсаргүй түүвэр тул олонлогт ерөнхийлж болно."
     },
-    "vocab": [
-      "associated with",
-      "random sample"
-    ],
+    "vocab": ["associated with", "random sample"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",

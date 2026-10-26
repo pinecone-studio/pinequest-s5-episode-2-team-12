@@ -1,9 +1,12 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCallback, useId, useMemo, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import { CatHead } from '@/components/brand';
 import { Button } from '@/components/ui/Button';
+import { itemById } from '@/features/shop/catalog';
+import { useWallet } from '@/features/shop/lib/use-wallet';
+import type { ServerWallet } from '@/features/shop/queries';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
 import { SAMPLE_AVAILABLE, sampleState } from '../lib/sample';
@@ -12,7 +15,9 @@ import { canRetake, frontier } from '../lib/unlock';
 import { stopViews } from '../lib/view';
 import type { RoadmapState } from '../types';
 import { RoadmapMap } from './RoadmapMap';
-import { StopPanel } from './StopPanel';
+
+type Panel = typeof import('./StopPanel').StopPanel;
+
 import { skip, useRoadmapState } from './store';
 
 const ctaClass =
@@ -66,11 +71,12 @@ function MapPrompt({
         <p className="text-[13px] leading-snug text-ink-2">{body}</p>
         <div className="flex flex-wrap items-center gap-1">
           {kind === 'finished' ? (
-            <Link href={routes.mock} className={ctaClass} style={lime}>
+            // no viewport prefetch: the test pages carry KaTeX, which would compete with the map's first paint
+            <Link href={routes.mock} prefetch={false} className={ctaClass} style={lime}>
               {t('celebrate.mock')}
             </Link>
           ) : (
-            <Link href={routes.placement} className={ctaClass} style={lime}>
+            <Link href={routes.placement} prefetch={false} className={ctaClass} style={lime}>
               {kind === 'retake' ? t('gate.retake') : t('gate.prompt')}
             </Link>
           )}
@@ -90,14 +96,19 @@ export function RoadmapView({
   demo,
   server,
   sample = false,
+  wallet = null,
 }: {
   demo: boolean;
   server: RoadmapState | null;
   sample?: boolean;
+  /** For the equipped map skin (shop). */
+  wallet?: ServerWallet | null;
 }) {
   const t = useT('roadmap');
   const router = useRouter();
   const loaded = useRoadmapState(demo, server);
+  const { equipped } = useWallet(demo, wallet);
+  const skin = equipped.skin ? itemById(equipped.skin)?.look : undefined;
   const state = useMemo(() => (sample ? sampleState() : loaded.state), [sample, loaded.state]);
   const open = isOpen(state);
   const views = useMemo(() => {
@@ -128,6 +139,20 @@ export function RoadmapView({
               : null;
 
   const closePanel = useCallback(() => setSelected(null), []);
+  // the panel (KaTeX, content) stays off the map's first paint: it loads when the browser goes idle, or on the first pin click
+  const [StopPanel, setStopPanel] = useState<Panel | null>(null);
+  useEffect(() => {
+    if (StopPanel) return;
+    const load = () => import('./StopPanel').then((m) => setStopPanel(() => m.StopPanel));
+    if (selected !== null) {
+      load();
+      return;
+    }
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 2000));
+    const cancel = window.cancelIdleCallback ?? window.clearTimeout;
+    const id = idle(load, { timeout: 4000 });
+    return () => cancel(id);
+  }, [selected, StopPanel]);
 
   const onSkip = async () => {
     setBusy(true);
@@ -144,6 +169,7 @@ export function RoadmapView({
         frontierNo={fr ?? (sample ? 5 : null)}
         onOpen={setSelected}
         selectedNo={selected}
+        skin={skin}
         className="h-full w-full"
         fullBleed
       />
@@ -182,16 +208,18 @@ export function RoadmapView({
         )}
       </div>
 
-      <StopPanel
-        v={sel}
-        views={views}
-        state={state}
-        open={open || sample}
-        demo={demo}
-        history={loaded.history}
-        onClose={closePanel}
-        onMove={setSelected}
-      />
+      {sel && StopPanel && (
+        <StopPanel
+          v={sel}
+          views={views}
+          state={state}
+          open={open || sample}
+          demo={demo}
+          history={loaded.history}
+          onClose={closePanel}
+          onMove={setSelected}
+        />
+      )}
     </div>
   );
 }

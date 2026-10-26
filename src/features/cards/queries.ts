@@ -1,6 +1,6 @@
-import { getDb } from "@/lib/supabase/server";
-import { DECKS } from "@/mocks/decks";
-import type { Card, CardState, Deck, DeckKind } from "@/types";
+import { getDb } from '@/lib/supabase/server';
+import { DECKS } from '@/mocks/decks';
+import type { Card, CardState, Deck, DeckKind } from '@/types';
 import {
   countsByKind,
   type DeckSummary,
@@ -8,18 +8,18 @@ import {
   dueCards,
   type StatusCounts,
   summarizeDecks,
-} from "./deck-hub";
-import { demoUser } from "./lib/demo-store";
-import { MY_DECK_ID, reviewDeckId } from "./my-deck";
+} from './deck-hub';
+import { demoUser } from './lib/demo-store';
+import { MY_DECK_ID, reviewDeckId } from './my-deck';
 
 export { MY_DECK_ID };
 
-export const DEMO_USER_ID = "u-demo";
+export const DEMO_USER_ID = 'u-demo';
 
 const REVIEW_TITLE: Record<DeckKind, string> = {
-  word: "Өнөөдрийн давталт · Үгс",
-  formula: "Өнөөдрийн давталт · Томьёо",
-  mine: "Өнөөдрийн давталт · Миний багц",
+  word: 'Өнөөдрийн давталт · Үгс',
+  formula: 'Өнөөдрийн давталт · Томьёо',
+  mine: 'Өнөөдрийн давталт · Миний багц',
 };
 
 type StateRow = {
@@ -52,7 +52,7 @@ export function toMyCard(r: MyCardRow): Card {
     back: r.back,
     hook: r.hook || undefined,
     ex: r.ex || undefined,
-    art: "merge",
+    art: 'merge',
   };
 }
 
@@ -60,10 +60,10 @@ export async function listMyCards(userId: string): Promise<Card[]> {
   const db = await getDb();
   if (!db) return [...demoUser(userId).mine];
   const { data, error } = await db
-    .from("my_cards")
-    .select("id, front, back, hook, ex")
-    .eq("user_id", userId)
-    .order("created_at");
+    .from('my_cards')
+    .select('id, front, back, hook, ex')
+    .eq('user_id', userId)
+    .order('created_at');
   if (error || !data) return [];
   return (data as MyCardRow[]).map(toMyCard);
 }
@@ -71,11 +71,11 @@ export async function listMyCards(userId: string): Promise<Card[]> {
 export function myDeck(cards: Card[]): Deck {
   return {
     id: MY_DECK_ID,
-    kind: "mine",
-    title: "Миний багц",
-    sub: "Өөрөө нэмсэн карт",
-    color: "var(--c-forest-2)",
-    edge: "var(--c-edge)",
+    kind: 'mine',
+    title: 'Миний багц',
+    sub: 'Өөрөө нэмсэн карт',
+    color: 'var(--c-forest-2)',
+    edge: 'var(--c-edge)',
     cards,
   };
 }
@@ -86,39 +86,31 @@ export async function listDecks(userId?: string): Promise<Deck[]> {
   return mine.length ? [...DECKS, myDeck(mine)] : DECKS;
 }
 
-export async function getDeck(
-  id: string,
-  userId?: string,
-): Promise<Deck | null> {
-  if (id === MY_DECK_ID)
-    return userId ? myDeck(await listMyCards(userId)) : null;
-  const kind = (["word", "formula", "mine"] as DeckKind[]).find(
-    (k) => reviewDeckId(k) === id,
-  );
+export async function getDeck(id: string, userId?: string): Promise<Deck | null> {
+  if (id === MY_DECK_ID) return userId ? myDeck(await listMyCards(userId)) : null;
+  const kind = (['word', 'formula', 'mine'] as DeckKind[]).find((k) => reviewDeckId(k) === id);
   if (kind) {
     const decks = await listDecks(userId);
     return {
       id,
       kind,
       title: REVIEW_TITLE[kind],
-      sub: "",
-      color: "var(--c-leaf)",
-      edge: "var(--c-leaf-2)",
+      sub: '',
+      color: 'var(--c-leaf)',
+      edge: 'var(--c-leaf-2)',
       cards: decks.filter((d) => d.kind === kind).flatMap((d) => d.cards),
     };
   }
   return DECKS.find((d) => d.id === id) ?? null;
 }
 
-export async function listCardStates(
-  userId: string,
-): Promise<Record<string, CardState>> {
+export async function listCardStates(userId: string): Promise<Record<string, CardState>> {
   const db = await getDb();
   if (!db) return { ...demoUser(userId).states };
   const { data, error } = await db
-    .from("card_states")
-    .select("card_id, box, due_at, seen, ok")
-    .eq("user_id", userId);
+    .from('card_states')
+    .select('card_id, box, due_at, seen, ok')
+    .eq('user_id', userId);
   if (error || !data) return {};
   return Object.fromEntries(
     (data as StateRow[]).map((r) => [
@@ -128,30 +120,17 @@ export async function listCardStates(
   );
 }
 
-export async function listDueCards(
-  userId: string,
-  now: number = Date.now(),
-): Promise<DueCard[]> {
-  const [decks, states] = await Promise.all([
-    listDecks(userId),
-    listCardStates(userId),
-  ]);
+export async function listDueCards(userId: string, now: number = Date.now()): Promise<DueCard[]> {
+  const [decks, states] = await Promise.all([listDecks(userId), listCardStates(userId)]);
   return dueCards(decks, states, now);
 }
 
-export async function listNotes(
-  userId: string,
-): Promise<Record<string, string>> {
+export async function listNotes(userId: string): Promise<Record<string, string>> {
   const db = await getDb();
   if (!db) return { ...demoUser(userId).notes };
-  const { data, error } = await db
-    .from("card_notes")
-    .select("card_id, text")
-    .eq("user_id", userId);
+  const { data, error } = await db.from('card_notes').select('card_id, text').eq('user_id', userId);
   if (error || !data) return {};
-  return Object.fromEntries(
-    (data as NoteRow[]).map((r) => [r.card_id, r.text]),
-  );
+  return Object.fromEntries((data as NoteRow[]).map((r) => [r.card_id, r.text]));
 }
 
 export type HubData = {
