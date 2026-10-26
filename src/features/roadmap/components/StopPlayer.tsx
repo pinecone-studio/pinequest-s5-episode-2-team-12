@@ -43,9 +43,12 @@ export function StopPlayer({
   demo,
   server,
   serverHistory,
+  forceIntro = false,
 }: {
   no: number;
   testOut: boolean;
+  /** Start with the intro screens whatever the mastery (from «Товч хичээл үзэх»). */
+  forceIntro?: boolean;
   pool: Question[];
   intro: IntroScreen[];
   demo: boolean;
@@ -92,7 +95,9 @@ export function StopPlayer({
       }),
     );
     setPhase(
-      round === 0 && !testOut && intro.length && ROADMAP.autoIntro.includes(mastery) ? 'intro' : 'play',
+      round === 0 && !testOut && intro.length && (forceIntro || ROADMAP.autoIntro.includes(mastery))
+        ? 'intro'
+        : 'play',
     );
     setI(0);
     setValue('');
@@ -120,7 +125,7 @@ export function StopPlayer({
         <h1 className="font-display text-2xl font-bold text-ink">{t('stop.lockedTitle')}</h1>
         <p className="text-ink-2">{isOpen(state) ? t('sheet.locked') : t('sheet.closedRoadmap')}</p>
         <Link
-          href={isOpen(state) ? routes.roadmap : routes.placement}
+          href={isOpen(state) ? routes.home : routes.placement}
           className="font-bold text-leaf-2 underline"
         >
           {isOpen(state) ? t('stop.toMap') : t('gate.take')}
@@ -278,7 +283,7 @@ export function StopPlayer({
                   </Button>
                 )}
                 <Link
-                  href={routes.roadmap}
+                  href={routes.home}
                   className="inline-flex h-11 items-center rounded-2xl px-4 font-bold text-ink-2 hover:bg-paper-2"
                 >
                   {t('stop.toMap')}

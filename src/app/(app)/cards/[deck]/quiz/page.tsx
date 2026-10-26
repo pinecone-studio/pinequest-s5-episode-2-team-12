@@ -15,12 +15,15 @@ export default async function DeckQuizPage({
   if (!deck) notFound();
   const decks = await listDecks(userId);
   return (
-    <StudySession
+    <>
+      <h1 className="sr-only">{deck.title}</h1>
+      <StudySession
       deck={{ id: deck.id, title: deck.title, color: deck.color }}
       cards={deck.cards}
       pool={decks.flatMap((d) => d.cards)}
       notes={{}}
       mode="quiz"
     />
+    </>
   );
 }

@@ -17,20 +17,22 @@ export function qs(query: Query = {}): string {
 const seg = (id: string) => encodeURIComponent(id);
 
 export const routes = {
-  landing: '/',
+  /** The map («Монголын аялал») for students; the entry screen for signed-out visitors. */
+  home: '/',
+  login: (next?: string) => `/login${qs({ next })}`,
   onboarding: '/onboarding',
-  dashboard: '/dashboard',
   planner: '/planner',
   help: '/help',
+  settings: '/settings',
+  profile: '/profile',
 
   // A · journey
   journey: '/journey',
   lesson: (id: string) => `/lesson/${seg(id)}`,
 
-  // A · roadmap («Монголын аялал»)
-  roadmap: '/roadmap',
-  roadmapStop: (no: number, opts: { testOut?: boolean } = {}) =>
-    `/roadmap/stop/${no}${qs({ testout: opts.testOut })}`,
+  // A · roadmap («Монголын аялал»); the map itself is `home`
+  roadmapStop: (no: number, opts: { testOut?: boolean; intro?: boolean } = {}) =>
+    `/roadmap/stop/${no}${qs({ testout: opts.testOut, intro: opts.intro })}`,
   placement: '/roadmap/placement',
   placementResults: '/roadmap/placement/results',
   adminQuestions: '/admin/questions',
@@ -49,17 +51,21 @@ export const routes = {
   // D · exam & mistakes
   mock: '/mock',
   mistakes: '/mistakes',
+  daily: '/daily',
 
   // E · cards
   cards: '/cards',
   deck: (id: string) => `/cards/${seg(id)}`,
   deckQuiz: (id: string) => `/cards/${seg(id)}/quiz`,
   myCards: '/cards/mine',
+  flashcards: '/flashcards',
 
   // F · progress
   progress: '/progress',
   achievements: '/achievements',
-  league: '/league',
+  leaderboard: '/leaderboard',
+  shop: '/shop',
+  friends: '/friends',
 
   // G · tutor
   tutor: (ctx: { kind?: TutorContextKind; id?: string; chosen?: string } = {}) =>

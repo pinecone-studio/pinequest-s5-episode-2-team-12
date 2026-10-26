@@ -141,7 +141,7 @@ export function PlacementResults({
 
       <div className="flex flex-wrap items-center gap-3">
         <Link
-          href={routes.roadmap}
+          href={routes.home}
           className="btn3d mb-[5px] inline-flex h-[52px] items-center rounded-2xl px-7 font-bold"
           style={lime}
         >

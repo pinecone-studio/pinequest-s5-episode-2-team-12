@@ -104,7 +104,7 @@ export async function skipPlacement(): Promise<{ ok: true; result: PlacementResu
   if (error || (await saveState(s.admin, s.userId, withPlacement(state, result)))) {
     return { ok: false, reason: 'database_error' };
   }
-  revalidatePath(routes.roadmap);
+  revalidatePath(routes.home);
   return { ok: true, result };
 }
 
@@ -144,7 +144,7 @@ export async function submitPlacement(input: {
     return { ok: false, reason: 'database_error' };
   }
   const xp = await awardXp(s.userId, ROADMAP.xp.placement, 'placement', `placement:${row.id}`);
-  revalidatePath(routes.roadmap);
+  revalidatePath(routes.home);
   return { ok: true, result: graded.result, xp: xp.ok && xp.awarded ? ROADMAP.xp.placement : 0 };
 }
 
@@ -203,8 +203,7 @@ export async function submitStop(input: {
   const key = `roadmap:stop:${input.no}:${stop.attempts}`;
   const xp = await awardXp(s.userId, out.xp, 'roadmap', key);
   const badges = await awardBadges(s.userId, out.badges);
-  revalidatePath(routes.roadmap);
-  revalidatePath(routes.dashboard);
+  revalidatePath(routes.home);
   return {
     ok: true,
     outcome: {

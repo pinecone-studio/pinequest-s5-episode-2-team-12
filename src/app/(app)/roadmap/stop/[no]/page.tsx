@@ -7,7 +7,8 @@ import { getT } from '@/lib/i18n';
 
 export const metadata = { title: getT('roadmap')('pages.stop.title') };
 
-// Section A · one roadmap stop. ?testout=1 starts «Шалгалтаар давах» (strong mastery only).
+// Section A · one roadmap stop. ?testout=1 starts «Шалгалтаар давах» (strong mastery only); ?intro=1 opens
+// the short lesson first («Товч хичээл үзэх» on the stop panel).
 export default async function StopPage({
   params,
   searchParams,
@@ -28,6 +29,7 @@ export default async function StopPage({
     <StopPlayer
       no={no}
       testOut={sp.testout === '1'}
+      forceIntro={sp.intro === '1'}
       pool={pool}
       intro={INTROS[no] ?? []}
       demo={!userId}

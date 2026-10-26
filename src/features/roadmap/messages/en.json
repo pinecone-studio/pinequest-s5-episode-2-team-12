@@ -34,13 +34,6 @@
     "mid": "Medium",
     "strong": "Strong"
   },
-  "header": {
-    "xp": "Total XP",
-    "nextRegion": "Next region: {region}",
-    "regionProgress": "{done} / {total} stops",
-    "finished": "Every region done!",
-    "stopsDone": "{done}/26 stops"
-  },
   "map": {
     "label": "Map of Mongolia: a journey with 26 stops",
     "help": "Drag to move, pinch or scroll to zoom. Arrow keys move, + / − zoom.",
@@ -48,7 +41,7 @@
     "zoomOut": "Zoom out",
     "fit": "Whole map",
     "locate": "Current position",
-    "attribution": "Borders: Natural Earth (public domain)",
+    "attribution": "Borders, lakes: Natural Earth (public domain) · Elevation: AWS Terrain Tiles (SRTM, GMTED, ETOPO)",
     "role": "map"
   },
   "sheet": {
@@ -74,7 +67,10 @@
     "skippedTitle": "You have not taken the placement test",
     "skippedBody": "You are on the Medium level for now. Take the test so the problems fit you better.",
     "retake": "Retake the test",
-    "retakeBody": "The new result updates the stops you have not finished."
+    "retakeBody": "The new result updates the stops you have not finished.",
+    "prompt": "Take the placement test",
+    "skipShort": "Skip",
+    "skippedShort": "Take the test so the problems fit you better."
   },
   "demoStates": "Sample: every card state",
   "placement": {
@@ -184,5 +180,57 @@
     "weak": "Weak",
     "ok": "Medium",
     "strong": "Strong"
+  },
+  "trip": {
+    "chip": "{done} / {total} stops",
+    "label": "Trip progress: {done} of {total} stops done"
+  },
+  "pin": {
+    "passed": "Passed",
+    "cluster": "{n} stops: {names}. Click to zoom in."
+  },
+  "panel": {
+    "stopNo": "Stop {n}",
+    "topic": "Topic",
+    "learn": "What you will learn",
+    "inside": "What's inside",
+    "goals": "Goals",
+    "formulas": "Key formulas",
+    "example": "Worked example",
+    "forYou": "For you",
+    "mastery": "Your level",
+    "source": {
+      "placement": "from the placement test",
+      "attempts": "from your attempts",
+      "default": "no test yet, so Medium"
+    },
+    "best": "Best score",
+    "noBest": "Not started",
+    "set": "Problems",
+    "problems": "{n} problems",
+    "mix": "Easy {e} · Medium {m} · Hard {h}",
+    "time": "Time",
+    "minutes": "≈ {n} min",
+    "reward": "Reward",
+    "xp": "+{pass}–{max} XP",
+    "related": "Related",
+    "cards": "Flashcards",
+    "desmos": "Desmos tip",
+    "lessons": "Short lessons",
+    "mistakes": "Mistake notebook",
+    "mistakeCount": "{n} questions missed on this topic",
+    "noMistakes": "No mistakes on this topic",
+    "lesson": "Watch the short lesson",
+    "ask": "Ask Suu",
+    "lockedBy": "Finish stop {n} {place} first to unlock it.",
+    "preview": "Preview",
+    "hidePreview": "Hide preview",
+    "prev": "Previous stop",
+    "next": "Next stop",
+    "keys": "← → switch stops · Esc close",
+    "draft": "Draft — not yet reviewed by a teacher",
+    "loading": "Loading…",
+    "failed": "Could not load the content.",
+    "close": "Close"
   }
 }

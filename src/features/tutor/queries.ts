@@ -38,6 +38,13 @@ export async function getContext(kind: TutorContextKind = 'general', id?: string
     const d = DESMOS.find((x) => x.id === id);
     return d ? { kind, id, title: d.title, problem: d.question } : general;
   }
+  if (kind === 'topic') {
+    // a roadmap stop: Суу knows which SAT topic the student is looking at
+    const topic = topicById(Number(id));
+    return topic
+      ? { kind, id, title: topic.title, problem: `${topic.cbDomain} · ${topic.cbSkill}` }
+      : general;
+  }
   if (kind === 'lesson') {
     const n = ALL_NODES.find((x) => x.id === id);
     return n ? { kind, id, title: n.title } : general;

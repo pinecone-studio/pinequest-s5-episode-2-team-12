@@ -10,3 +10,10 @@ test('context lookup with general fallback', async () => {
   expect(await getContext('question', 'missing')).toEqual({ kind: 'general', title: 'SAT Math' });
   expect(await listMessages('t1')).toEqual([]);
 });
+
+test('topic context from a roadmap stop', async () => {
+  const c = await getContext('topic', '9');
+  expect(c).toMatchObject({ kind: 'topic', id: '9', title: 'Хувь' });
+  expect(c.problem).toContain('Percentages');
+  expect((await getContext('topic', '99')).kind).toBe('general');
+});

@@ -8,14 +8,31 @@ test('isActive matches the item and its children only', () => {
   expect(isActive('/bank', '/bank?domain=alg')).toBe(true);
 });
 
-test('every nav item has a unique key and at most 4 mobile tabs', () => {
-  const items = NAV.flatMap((g) => g.items);
-  expect(new Set(items.map((i) => i.key)).size).toBe(items.length);
-  expect(items.filter((i) => i.mobile).length).toBeLessThanOrEqual(4);
+test('home is active only on the map itself', () => {
+  expect(isActive('/', '/')).toBe(true);
+  expect(isActive('/profile', '/')).toBe(false);
 });
 
-test('practice and materials fold; home, journey, roadmap, tutor, planner and me stay open', () => {
-  const open = NAV.filter((g) => !g.collapsible).flatMap((g) => g.items.map((i) => i.key));
-  expect(open).toEqual(['dashboard', 'journey', 'roadmap', 'tutor', 'planner', 'progress', 'achievements']);
-  expect(NAV.filter((g) => g.collapsible).map((g) => g.key)).toEqual(['practice', 'materials']);
+test('every nav item has a unique key and href', () => {
+  const items = NAV.flatMap((g) => g.items);
+  expect(new Set(items.map((i) => i.key)).size).toBe(items.length);
+  expect(new Set(items.map((i) => i.href)).size).toBe(items.length);
+});
+
+test('drawer order follows the spec; only Материал folds', () => {
+  expect(NAV[0].items.map((i) => i.key)).toEqual([
+    'map',
+    'practicePlayer',
+    'mock',
+    'tutor',
+    'flashcards',
+    'mistakes',
+    'daily',
+    'friends',
+    'leaderboard',
+    'shop',
+    'planner',
+  ]);
+  expect(NAV.filter((g) => g.collapsible).map((g) => g.key)).toEqual(['materials']);
+  expect(NAV.at(-1)?.items.map((i) => i.key)).toEqual(['achievements', 'settings']);
 });

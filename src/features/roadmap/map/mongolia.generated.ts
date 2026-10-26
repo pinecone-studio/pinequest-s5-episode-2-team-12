@@ -147,4 +147,20 @@ export const MAP = {
     '25': [593, 217.3],
     '26': [582.5, 210.8],
   } as Record<number, [number, number]>,
+  /** Decorative props (src/features/roadmap/props.ts), projected. */
+  props: {
+    trees: [
+      [379.2, 86.5],
+      [426.3, 125.6],
+      [389.6, 197.9],
+      [436.5, 221.1],
+      [590.4, 144.7],
+      [639.1, 177.1],
+      [681.7, 191.3],
+    ],
+    gers: [
+      [565.4, 239.1],
+      [452.8, 234.5],
+    ],
+  } as { trees: [number, number][]; gers: [number, number][] },
 } as const;

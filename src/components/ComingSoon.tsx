@@ -36,7 +36,7 @@ export function ComingSoon({
           <a className="text-leaf-2 underline" href={PROTOTYPE_URL} target="_blank" rel="noreferrer">
             {t('placeholder.prototype')}
           </a>
-          <Link className="text-ink-2 underline" href={routes.dashboard}>
+          <Link className="text-ink-2 underline" href={routes.home}>
             {t('placeholder.back')}
           </Link>
         </div>

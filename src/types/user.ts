@@ -13,10 +13,16 @@ export type Profile = {
   /** YYYY-MM-DD */
   examDate: string;
   start?: StartPoint;
+  /** IANA zone for countdowns; Asia/Ulaanbaatar by default. */
+  tz: string;
+  /** Leave the national and aimag leaderboards. */
+  hidePublic: boolean;
+  /** Only friends see this student. */
+  friendsOnly: boolean;
 };
 
 export type TutorMode = 'hint' | 'explain' | 'desmos' | 'similar' | 'translate';
-export type TutorContextKind = 'lesson' | 'desmos' | 'question' | 'mistake' | 'general';
+export type TutorContextKind = 'lesson' | 'desmos' | 'question' | 'mistake' | 'topic' | 'general';
 export type TutorContext = {
   kind: TutorContextKind;
   id?: string;

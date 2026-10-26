@@ -13,6 +13,9 @@ export const student: Profile = {
   target: 700,
   examDate: '2026-12-05',
   start: 'english',
+  tz: 'Asia/Ulaanbaatar',
+  hidePublic: false,
+  friendsOnly: false,
 };
 
 export const mcq: Question = {

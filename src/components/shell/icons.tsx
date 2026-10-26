@@ -131,14 +131,38 @@ const PATHS: Record<string, ReactNode> = {
       <path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z" />
     </>
   ),
+  daily: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <circle cx="12" cy="12" r="4.5" />
+      <circle cx="12" cy="12" r="1" fill="currentColor" />
+    </>
+  ),
+  friends: (
+    <>
+      <circle cx="9" cy="8.5" r="3.5" />
+      <path d="M3 20c.6-3.4 3-5.5 6-5.5s5.4 2.1 6 5.5M15.5 5.3a3.5 3.5 0 0 1 0 6.4M17.5 14.8c1.8.7 3 2.6 3.5 5.2" />
+    </>
+  ),
+  shop: (
+    <>
+      <path d="M5 8h14l-1.2 12.5H6.2z" />
+      <path d="M9 10.5V7a3 3 0 0 1 6 0v3.5" />
+    </>
+  ),
+  menu: <path d="M4 6.5h16M4 12h16M4 17.5h16" />,
+  close: <path d="m6 6 12 12M18 6 6 18" />,
   arrow: <path d="M5 12h14m-5-5 5 5-5 5" />,
   play: <path d="M8 5.5v13l10-6.5z" fill="currentColor" />,
   chevron: <path d="m9 6 6 6-6 6" />,
   check: <path d="m5 12.5 4.5 4.5L19 7.5" />,
 };
 
+/** Nav keys that reuse another glyph. */
+const ALIAS: Record<string, string> = { map: 'roadmap', flashcards: 'cards', leaderboard: 'league' };
+
 export function Icon({ name, ...rest }: P & { name: string }) {
-  return <Svg {...rest}>{PATHS[name] ?? PATHS.dashboard}</Svg>;
+  return <Svg {...rest}>{PATHS[ALIAS[name] ?? name] ?? PATHS.dashboard}</Svg>;
 }
 
 /** Filled flame for the streak counter. */

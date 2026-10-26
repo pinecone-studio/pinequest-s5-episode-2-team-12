@@ -122,7 +122,7 @@ export function PlacementFlow({ items, demo }: { items: Question[]; demo: boolea
       <section className="soft-card mx-auto max-w-xl p-8 text-center">
         <h1 className="font-display text-2xl font-bold text-ink">{t('placement.intro.title')}</h1>
         <p className="mt-3 text-ink-2">{t('stop.noQuestions')}</p>
-        <a href={routes.roadmap} className="mt-4 inline-block font-bold text-leaf-2 underline">
+        <a href={routes.home} className="mt-4 inline-block font-bold text-leaf-2 underline">
           {t('placement.intro.back')}
         </a>
       </section>
@@ -152,7 +152,7 @@ export function PlacementFlow({ items, demo }: { items: Question[]; demo: boolea
           ))}
         </ul>
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <a href={routes.roadmap} className="inline-flex h-11 items-center px-2 font-bold text-ink-2">
+          <a href={routes.home} className="inline-flex h-11 items-center px-2 font-bold text-ink-2">
             {t('placement.intro.back')}
           </a>
           <Button
