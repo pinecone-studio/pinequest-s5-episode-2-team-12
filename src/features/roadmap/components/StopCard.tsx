@@ -92,17 +92,17 @@ export function StopCard({
           full ? 'mt-1 text-2xl' : 'mt-0.5 text-[15px]',
         )}
       >
-        {v.stop.place}
+        {v.topic.title}
       </p>
-      <p className={cn('text-ink-3', full ? 'text-sm' : 'text-[11.5px]')}>{v.stop.aimag}</p>
       <p
         className={cn(
           'mt-1.5 font-semibold text-ink-2',
           full ? 'text-[15px]' : 'line-clamp-2 text-[12.5px] leading-snug',
         )}
       >
-        {v.topic.title}
+        {v.stop.place}
       </p>
+      <p className={cn('text-ink-3', full ? 'text-sm' : 'text-[11.5px]')}>{v.stop.aimag}</p>
 
       {(v.status === 'completed' || v.status === 'tested-out') && (
         <div className="mt-2 flex flex-wrap items-center gap-1.5">

@@ -21,41 +21,41 @@ describe('skill radar', () => {
   });
 
   test('too few answers → no value; a prior keeps a perfect streak below 100%', () => {
-    expect(clusterRadar([a(1, true), a(2, true)], NOW)[0]).toEqual({ id: 'linEq', n: 2, value: null });
-    const v = clusterRadar([a(1, true), a(2, true), a(6, true)], NOW)[0].value!;
+    expect(clusterRadar([a(3, true), a(6, true)], NOW)[0]).toEqual({ id: 'linEq', n: 2, value: null });
+    const v = clusterRadar([a(3, true), a(6, true), a(14, true)], NOW)[0].value!;
     expect(v).toBeGreaterThan(0.7);
     expect(v).toBeLessThan(1);
   });
 
   test('recent answers count more than old ones', () => {
     const improving = [
-      a(3, false, 60),
-      a(3, false, 60),
-      a(3, false, 60),
-      a(3, true, 0),
-      a(3, true, 0),
-      a(3, true, 0),
+      a(7, false, 60),
+      a(7, false, 60),
+      a(7, false, 60),
+      a(7, true, 0),
+      a(7, true, 0),
+      a(7, true, 0),
     ];
     const declining = [
-      a(3, true, 60),
-      a(3, true, 60),
-      a(3, true, 60),
-      a(3, false, 0),
-      a(3, false, 0),
-      a(3, false, 0),
+      a(7, true, 60),
+      a(7, true, 60),
+      a(7, true, 60),
+      a(7, false, 0),
+      a(7, false, 0),
+      a(7, false, 0),
     ];
     expect(clusterRadar(improving, NOW)[1].value!).toBeGreaterThan(0.6);
     expect(clusterRadar(declining, NOW)[1].value!).toBeLessThan(0.4);
   });
 
   test('harder correct answers weigh more', () => {
-    const hardRight = [a(22, true, 0, 3), a(23, false, 0, 1), a(24, true, 0, 3), a(25, false, 0, 1)];
-    const easyRight = [a(22, true, 0, 1), a(23, false, 0, 3), a(24, true, 0, 1), a(25, false, 0, 3)];
+    const hardRight = [a(17, true, 0, 3), a(18, false, 0, 1), a(19, true, 0, 3), a(20, false, 0, 1)];
+    const easyRight = [a(17, true, 0, 1), a(18, false, 0, 3), a(19, true, 0, 1), a(20, false, 0, 3)];
     expect(clusterRadar(hardRight, NOW)[7].value!).toBeGreaterThan(clusterRadar(easyRight, NOW)[7].value!);
   });
 
   test('the 4-domain view rolls clusters up', () => {
-    const answers = [a(15, true), a(19, true), a(20, false), a(10, true), a(13, false), a(14, false)];
+    const answers = [a(15, true), a(16, true), a(9, false), a(10, true), a(24, false), a(26, false)];
     const d = domainRadar(answers, NOW);
     expect(d.map((x) => x.id)).toEqual(DOMAIN_AXES);
     expect(d.find((x) => x.id === 'adv')).toMatchObject({ n: 3 });

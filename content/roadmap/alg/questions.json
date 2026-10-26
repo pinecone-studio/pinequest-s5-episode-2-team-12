@@ -1,7 +1,7 @@
 [
   {
     "id": "rm01-e1",
-    "topicId": 1,
+    "topicId": 3,
     "domain": "alg",
     "skill": "Linear equations in one variable",
     "difficulty": 1,
@@ -9,12 +9,20 @@
     "pool": "stop",
     "prompt": "If $4x + 9 = 33$, what is the value of $x$?",
     "mn": "Хэрэв $4x + 9 = 33$ бол $x$-ийн утга хэд вэ?",
-    "choices": ["$24$", "$\\frac{21}{2}$", "$6$", "$\\frac{9}{4}$"],
+    "choices": [
+      "$24$",
+      "$\\frac{21}{2}$",
+      "$6$",
+      "$\\frac{9}{4}$"
+    ],
     "answer": 2,
     "explain": "Хоёр талаас $9$-ийг хасвал $4x = 24$. Хоёр талыг $4$-т хуваавал $x = 6$.",
     "hint": "Эхлээд $+9$-ийг хоёр талаас хас.",
     "desmos": {
-      "rows": ["y=4x+9", "y=33"],
+      "rows": [
+        "y=4x+9",
+        "y=33"
+      ],
       "tip": "Хоёр шулууны огтлолцлын цэгийг дарж $x$-ийг уншина: $x=6$."
     },
     "verify": {
@@ -27,7 +35,9 @@
       "0": "$24$ бол $4x$-ийн утга. $4$-т хуваахаа мартжээ.",
       "1": "$9$-ийг хасах ёстой байхад нэмсэн: $(33+9)/4$."
     },
-    "vocab": ["value"],
+    "vocab": [
+      "value"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -35,7 +45,7 @@
   },
   {
     "id": "rm01-e2",
-    "topicId": 1,
+    "topicId": 3,
     "domain": "alg",
     "skill": "Linear equations in one variable",
     "difficulty": 1,
@@ -43,11 +53,16 @@
     "pool": "stop",
     "prompt": "If $\\frac{x}{3} - 2 = 5$, what is the value of $x$?",
     "mn": "Хэрэв $\\frac{x}{3} - 2 = 5$ бол $x$-ийн утга хэд вэ?",
-    "answer": ["21"],
+    "answer": [
+      "21"
+    ],
     "explain": "Хоёр талд $2$ нэмбэл $\\frac{x}{3} = 7$. Хоёр талыг $3$-аар үржүүлбэл $x = 21$.",
     "hint": "Бутархайг арилгахаас өмнө $-2$-ыг арилга.",
     "desmos": {
-      "rows": ["y=x/3-2", "y=5"],
+      "rows": [
+        "y=x/3-2",
+        "y=5"
+      ],
       "tip": "Огтлолцлын цэг $(21, 5)$ тул $x=21$."
     },
     "verify": {
@@ -63,7 +78,7 @@
   },
   {
     "id": "rm01-m1",
-    "topicId": 1,
+    "topicId": 3,
     "domain": "alg",
     "skill": "Linear equations in one variable",
     "difficulty": 2,
@@ -71,12 +86,20 @@
     "pool": "stop",
     "prompt": "What value of $x$ is the solution to the equation $5(x - 3) + 2x = 3x + 13$?",
     "mn": "$5(x - 3) + 2x = 3x + 13$ тэгшитгэлийн шийд болох $x$-ийн утга аль вэ?",
-    "choices": ["$4$", "$28$", "$\\frac{7}{2}$", "$7$"],
+    "choices": [
+      "$4$",
+      "$28$",
+      "$\\frac{7}{2}$",
+      "$7$"
+    ],
     "answer": 3,
     "explain": "Хаалтаа задалъя: $5x - 15 + 2x = 3x + 13$, өөрөөр хэлбэл $7x - 15 = 3x + 13$. Хоёр талаас $3x$-ийг хасвал $4x - 15 = 13$, $15$ нэмбэл $4x = 28$, тэгэхээр $x = 7$.",
     "hint": "$5$-ыг хаалт доторх **хоёр** гишүүнд үржүүл.",
     "desmos": {
-      "rows": ["y=5(x-3)+2x", "y=3x+13"],
+      "rows": [
+        "y=5(x-3)+2x",
+        "y=3x+13"
+      ],
       "tip": "Хоёр шулуун $x=7$ дээр огтлолцоно."
     },
     "verify": {
@@ -89,7 +112,9 @@
       "0": "$5(x-3)$-ийг $5x - 3$ гэж задалжээ. $-3$-ыг ч бас $5$-аар үржүүлнэ.",
       "1": "$28$ бол $4x$-ийн утга; $4$-т хуваах шаардлагатай."
     },
-    "vocab": ["solution"],
+    "vocab": [
+      "solution"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -97,7 +122,7 @@
   },
   {
     "id": "rm01-m2",
-    "topicId": 1,
+    "topicId": 11,
     "domain": "alg",
     "skill": "Linear equations in one variable",
     "difficulty": 2,
@@ -105,17 +130,25 @@
     "pool": "stop",
     "prompt": "A crew that assembles gers in Ulaanbaatar charges a fixed fee of ₮150,000 plus ₮40,000 for each hour of work. If a customer was charged a total of ₮430,000, for how many hours did the crew work?",
     "mn": "Улаанбаатарт гэр барьдаг баг тогтмол ₮150,000 дээр нэмээд ажилласан цаг тутамд ₮40,000 авдаг. Хэрэв нэг үйлчлүүлэгч нийт ₮430,000 төлсөн бол баг хэдэн цаг ажилласан бэ?",
-    "answer": ["7"],
+    "answer": [
+      "7"
+    ],
     "explain": "Цагийн тоог $h$ гэвэл $150{,}000 + 40{,}000h = 430{,}000$. Хоёр талаас $150{,}000$-ыг хасвал $40{,}000h = 280{,}000$, тэгэхээр $h = 7$.",
     "hint": "Тогтмол төлбөрийг нийт дүнгээс хасаад үлдсэнийг цагийн үнэд хуваа.",
     "desmos": {
-      "rows": ["y=150000+40000x", "y=430000"],
+      "rows": [
+        "y=150000+40000x",
+        "y=430000"
+      ],
       "tip": "Огтлолцлын цэгийн $x$ нь цагийн тоо: $x=7$."
     },
     "verify": {
       "value": "(430000 - 150000)/40000"
     },
-    "vocab": ["fixed fee", "charged"],
+    "vocab": [
+      "fixed fee",
+      "charged"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -123,7 +156,7 @@
   },
   {
     "id": "rm01-h1",
-    "topicId": 1,
+    "topicId": 3,
     "domain": "alg",
     "skill": "Linear equations in one variable",
     "difficulty": 3,
@@ -131,7 +164,12 @@
     "pool": "stop",
     "prompt": "In the equation $3(2x - k) = 6x + 12$, $k$ is a constant. If the equation has infinitely many solutions, what is the value of $k$?",
     "mn": "$3(2x - k) = 6x + 12$ тэгшитгэлд $k$ тогтмол тоо. Хэрэв тэгшитгэл хязгааргүй олон шийдтэй бол $k$-ийн утга хэд вэ?",
-    "choices": ["$-12$", "$-4$", "$4$", "$12$"],
+    "choices": [
+      "$-12$",
+      "$-4$",
+      "$4$",
+      "$12$"
+    ],
     "answer": 1,
     "explain": "Зүүн талыг задалбал $6x - 3k = 6x + 12$. $x$-ийн коэффициент хоёр талд ижил ($6$) тул хязгааргүй олон шийдтэй байхын тулд сул гишүүд тэнцүү байх ёстой: $-3k = 12$, тэгэхээр $k = -4$.",
     "hint": "Хязгааргүй олон шийд гэдэг нь хоёр тал яг ижил илэрхийлэл болно гэсэн үг.",
@@ -145,7 +183,10 @@
       "0": "$-3k = 12$ гэхийн оронд $-k = 12$ гэж бодсон; $3$-ыг $k$-д үржүүлэхээ мартжээ.",
       "2": "Тэмдгийн алдаа: $-3k = 12$ бол $k$ сөрөг байна."
     },
-    "vocab": ["constant", "infinitely many solutions"],
+    "vocab": [
+      "constant",
+      "infinitely many solutions"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -153,7 +194,7 @@
   },
   {
     "id": "rm01-h2",
-    "topicId": 1,
+    "topicId": 3,
     "domain": "alg",
     "skill": "Linear equations in one variable",
     "difficulty": 3,
@@ -161,12 +202,20 @@
     "pool": "stop",
     "prompt": "What is the solution to the equation $\\frac{2x + 1}{3} - \\frac{x - 4}{2} = 5$?",
     "mn": "$\\frac{2x + 1}{3} - \\frac{x - 4}{2} = 5$ тэгшитгэлийн шийд юу вэ?",
-    "choices": ["$-9$", "$4$", "$16$", "$40$"],
+    "choices": [
+      "$-9$",
+      "$4$",
+      "$16$",
+      "$40$"
+    ],
     "answer": 2,
     "explain": "Хоёр талыг $6$-аар үржүүлбэл $2(2x + 1) - 3(x - 4) = 30$. Задалбал $4x + 2 - 3x + 12 = 30$, өөрөөр хэлбэл $x + 14 = 30$, тэгэхээр $x = 16$.",
     "hint": "Хуваарийн хамгийн бага ерөнхий хуваагдагчаар ($6$) **бүх** гишүүнийг үржүүл.",
     "desmos": {
-      "rows": ["y=(2x+1)/3-(x-4)/2", "y=5"],
+      "rows": [
+        "y=(2x+1)/3-(x-4)/2",
+        "y=5"
+      ],
       "tip": "Огтлолцлын цэг $(16, 5)$."
     },
     "verify": {
@@ -186,7 +235,7 @@
   },
   {
     "id": "rm02-e1",
-    "topicId": 2,
+    "topicId": 6,
     "domain": "alg",
     "skill": "Linear equations in two variables",
     "difficulty": 1,
@@ -194,12 +243,21 @@
     "pool": "stop",
     "prompt": "A line in the $xy$-plane passes through the points $(2, 5)$ and $(6, 17)$. What is the slope of the line?",
     "mn": "$xy$ хавтгай дээрх шулуун $(2, 5)$ ба $(6, 17)$ цэгүүдийг дайрч өнгөрдөг. Шулууны налуу хэд вэ?",
-    "choices": ["$3$", "$\\frac{1}{3}$", "$4$", "$12$"],
+    "choices": [
+      "$3$",
+      "$\\frac{1}{3}$",
+      "$4$",
+      "$12$"
+    ],
     "answer": 0,
     "explain": "Налуу $m = \\frac{17 - 5}{6 - 2} = \\frac{12}{4} = 3$.",
     "hint": "Налуу $= \\frac{y_2 - y_1}{x_2 - x_1}$.",
     "desmos": {
-      "rows": ["(2,5)", "(6,17)", "y-5=m(x-2)"],
+      "rows": [
+        "(2,5)",
+        "(6,17)",
+        "y-5=m(x-2)"
+      ],
       "tip": "$m$ гулсуурыг шулуун хоёр цэгийг дайртал хөдөлгөнө: $m=3$."
     },
     "verify": {
@@ -209,7 +267,10 @@
       "1": "$x$-ийн өөрчлөлтийг $y$-ийн өөрчлөлтөд хуваажээ (урвуу).",
       "3": "$12$ бол зөвхөн $y$-ийн өөрчлөлт; $x$-ийн өөрчлөлтөд ($4$) хуваах хэрэгтэй."
     },
-    "vocab": ["slope", "passes through"],
+    "vocab": [
+      "slope",
+      "passes through"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -217,7 +278,7 @@
   },
   {
     "id": "rm02-e2",
-    "topicId": 2,
+    "topicId": 6,
     "domain": "alg",
     "skill": "Linear equations in two variables",
     "difficulty": 1,
@@ -225,11 +286,15 @@
     "pool": "stop",
     "prompt": "The graph of $2x + 5y = 30$ in the $xy$-plane crosses the $y$-axis at the point $(0, b)$. What is the value of $b$?",
     "mn": "$2x + 5y = 30$ тэгшитгэлийн график $y$ тэнхлэгийг $(0, b)$ цэгт огтолдог. $b$-ийн утга хэд вэ?",
-    "answer": ["6"],
+    "answer": [
+      "6"
+    ],
     "explain": "$y$ тэнхлэг дээр $x = 0$. Тэгвэл $5y = 30$, тэгэхээр $y = 6$, өөрөөр хэлбэл $b = 6$.",
     "hint": "$y$ тэнхлэг дээрх бүх цэгийн $x$-координат юутай тэнцүү вэ?",
     "desmos": {
-      "rows": ["2x+5y=30"],
+      "rows": [
+        "2x+5y=30"
+      ],
       "tip": "Шулууны $y$ тэнхлэгтэй огтлолцох цэгийг дарвал $(0, 6)$ гарна."
     },
     "verify": {
@@ -238,7 +303,10 @@
         "eq": "2(0) + 5y = 30"
       }
     },
-    "vocab": ["y-axis", "crosses"],
+    "vocab": [
+      "y-axis",
+      "crosses"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -246,7 +314,7 @@
   },
   {
     "id": "rm02-m1",
-    "topicId": 2,
+    "topicId": 6,
     "domain": "alg",
     "skill": "Linear equations in two variables",
     "difficulty": 2,
@@ -254,12 +322,20 @@
     "pool": "stop",
     "prompt": "A line has a slope of $-2$ and passes through the point $(3, 4)$. What is the $y$-coordinate of the $y$-intercept of the line?",
     "mn": "Шулуун $-2$ налуутай бөгөөд $(3, 4)$ цэгийг дайрдаг. Шулууны $y$-огтлолын $y$-координат хэд вэ?",
-    "choices": ["$-2$", "$5$", "$10$", "$11$"],
+    "choices": [
+      "$-2$",
+      "$5$",
+      "$10$",
+      "$11$"
+    ],
     "answer": 2,
     "explain": "$y = -2x + b$ хэлбэрт $(3, 4)$-ийг орлуулбал $4 = -6 + b$, тэгэхээр $b = 10$.",
     "hint": "$y = mx + b$-д өгөгдсөн цэг болон налууг орлуулж $b$-г ол.",
     "desmos": {
-      "rows": ["y=-2x+b", "(3,4)"],
+      "rows": [
+        "y=-2x+b",
+        "(3,4)"
+      ],
       "tip": "$b$ гулсуурыг шулуун $(3,4)$-ийг дайртал хөдөлгөвөл $b=10$."
     },
     "verify": {
@@ -271,7 +347,9 @@
     "why": {
       "0": "$4 = -6 + b$ дээр $6$-г нэмэхийн оронд хассан."
     },
-    "vocab": ["y-intercept"],
+    "vocab": [
+      "y-intercept"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -279,7 +357,7 @@
   },
   {
     "id": "rm02-m2",
-    "topicId": 2,
+    "topicId": 6,
     "domain": "alg",
     "skill": "Linear equations in two variables",
     "difficulty": 2,
@@ -287,11 +365,18 @@
     "pool": "stop",
     "prompt": "Line $\\ell$ in the $xy$-plane passes through the points $(-1, 7)$ and $(4, -3)$. What is the $x$-coordinate of the $x$-intercept of line $\\ell$?",
     "mn": "$xy$ хавтгай дээрх $\\ell$ шулуун $(-1, 7)$ ба $(4, -3)$ цэгүүдийг дайрдаг. $\\ell$ шулууны $x$-огтлолын $x$-координат хэд вэ?",
-    "answer": ["5/2", "2.5"],
+    "answer": [
+      "5/2",
+      "2.5"
+    ],
     "explain": "Налуу $\\frac{-3 - 7}{4 - (-1)} = \\frac{-10}{5} = -2$. Тэгшитгэл: $y - 7 = -2(x + 1)$, өөрөөр хэлбэл $y = -2x + 5$. $x$-огтлол дээр $y = 0$: $0 = -2x + 5$, $x = \\frac{5}{2}$.",
     "hint": "Эхлээд налуу ба тэгшитгэлийг ол, дараа нь $y = 0$ гэж тавь.",
     "desmos": {
-      "rows": ["(-1,7)", "(4,-3)", "y=-2x+5"],
+      "rows": [
+        "(-1,7)",
+        "(4,-3)",
+        "y=-2x+5"
+      ],
       "tip": "Шулуун $x$ тэнхлэгийг $(2.5, 0)$-д огтолно."
     },
     "verify": {
@@ -300,7 +385,9 @@
         "eq": "0 - 7 = ((-3 - 7)/(4 + 1))(x + 1)"
       }
     },
-    "vocab": ["x-intercept"],
+    "vocab": [
+      "x-intercept"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -308,7 +395,7 @@
   },
   {
     "id": "rm02-h1",
-    "topicId": 2,
+    "topicId": 6,
     "domain": "alg",
     "skill": "Linear equations in two variables",
     "difficulty": 3,
@@ -316,12 +403,20 @@
     "pool": "stop",
     "prompt": "In the $xy$-plane, the graph of $kx - 4y = 20$, where $k$ is a constant, is a line with a slope of $\\frac{3}{2}$. What is the value of $k$?",
     "mn": "$xy$ хавтгайд $kx - 4y = 20$ ($k$ тогтмол) тэгшитгэлийн график нь $\\frac{3}{2}$ налуутай шулуун. $k$-ийн утга хэд вэ?",
-    "choices": ["$-6$", "$\\frac{3}{8}$", "$6$", "$\\frac{8}{3}$"],
+    "choices": [
+      "$-6$",
+      "$\\frac{3}{8}$",
+      "$6$",
+      "$\\frac{8}{3}$"
+    ],
     "answer": 2,
     "explain": "$y$-ийг илэрхийлье: $-4y = -kx + 20$, $y = \\frac{k}{4}x - 5$. Налуу $\\frac{k}{4} = \\frac{3}{2}$ тул $k = 6$.",
     "hint": "Тэгшитгэлийг $y = mx + b$ хэлбэрт шилжүүл.",
     "desmos": {
-      "rows": ["kx-4y=20", "y=1.5x"],
+      "rows": [
+        "kx-4y=20",
+        "y=1.5x"
+      ],
       "tip": "$k$ гулсуураар шулууныг $y=1.5x$-тэй параллель болгоход $k=6$."
     },
     "verify": {
@@ -334,7 +429,10 @@
       "0": "$-4y$-ийн хасах тэмдгийг $k$-д шилжүүлэхдээ алдсан.",
       "1": "$\\frac{3}{2}$-ийг $4$-т хуваасан; харин $4$-өөр үржүүлэх ёстой."
     },
-    "vocab": ["constant", "slope"],
+    "vocab": [
+      "constant",
+      "slope"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -342,7 +440,7 @@
   },
   {
     "id": "rm02-h2",
-    "topicId": 2,
+    "topicId": 6,
     "domain": "alg",
     "skill": "Linear equations in two variables",
     "difficulty": 3,
@@ -350,12 +448,21 @@
     "pool": "stop",
     "prompt": "Line $p$ is defined by $y = \\frac{2}{5}x - 3$. Line $q$ is perpendicular to line $p$ and passes through the point $(4, 1)$. What is the $y$-coordinate of the $y$-intercept of line $q$?",
     "mn": "$p$ шулуун $y = \\frac{2}{5}x - 3$ тэгшитгэлтэй. $q$ шулуун $p$-д перпендикуляр бөгөөд $(4, 1)$ цэгийг дайрдаг. $q$ шулууны $y$-огтлолын $y$-координат хэд вэ?",
-    "choices": ["$-9$", "$-\\frac{3}{5}$", "$\\frac{13}{5}$", "$11$"],
+    "choices": [
+      "$-9$",
+      "$-\\frac{3}{5}$",
+      "$\\frac{13}{5}$",
+      "$11$"
+    ],
     "answer": 3,
     "explain": "Перпендикуляр шулууны налуу нь сөрөг урвуу: $-\\frac{5}{2}$. $y = -\\frac{5}{2}x + b$-д $(4, 1)$-ийг орлуулбал $1 = -10 + b$, $b = 11$.",
     "hint": "Перпендикуляр шулуунуудын налуунуудын үржвэр $-1$.",
     "desmos": {
-      "rows": ["y=2/5x-3", "y=-5/2x+b", "(4,1)"],
+      "rows": [
+        "y=2/5x-3",
+        "y=-5/2x+b",
+        "(4,1)"
+      ],
       "tip": "$b$ гулсуурыг шулуун $(4,1)$-ийг дайртал хөдөлгөнө: $b=11$."
     },
     "verify": {
@@ -369,38 +476,9 @@
       "1": "$p$-ийн налууг ($\\frac{2}{5}$) ашигласан нь параллель шулуун болно.",
       "2": "Тэмдгийг сольсон ч урвуулаагүй ($-\\frac{2}{5}$)."
     },
-    "vocab": ["perpendicular"],
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rm03-e1",
-    "topicId": 3,
-    "domain": "alg",
-    "skill": "Linear functions",
-    "difficulty": 1,
-    "format": "mcq",
-    "pool": "stop",
-    "prompt": "The function $f$ is defined by $f(x) = 7x - 4$. What is the value of $f(3)$?",
-    "mn": "$f$ функц $f(x) = 7x - 4$ гэж тодорхойлогдсон. $f(3)$-ын утга хэд вэ?",
-    "choices": ["$17$", "$3$", "$21$", "$25$"],
-    "answer": 0,
-    "explain": "$x = 3$-ыг орлуулбал $f(3) = 7(3) - 4 = 21 - 4 = 17$.",
-    "hint": "$x$-ийн оронд $3$-ыг тавь.",
-    "desmos": {
-      "rows": ["f(x)=7x-4", "f(3)"],
-      "tip": "Хоёр дахь мөрөнд $f(3)$ гэж бичихэд $17$ гарна."
-    },
-    "verify": {
-      "value": "7(3) - 4"
-    },
-    "why": {
-      "2": "$-4$-ийг хасахаа мартжээ.",
-      "3": "$4$-ийг хасах ёстой байхад нэмсэн."
-    },
-    "vocab": ["function", "defined"],
+    "vocab": [
+      "perpendicular"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -408,7 +486,7 @@
   },
   {
     "id": "rm03-e2",
-    "topicId": 3,
+    "topicId": 7,
     "domain": "alg",
     "skill": "Linear functions",
     "difficulty": 1,
@@ -429,33 +507,10 @@
       "0": "Километр тутмын үнэ нь $m$-ийн коэффициент $1{,}200$.",
       "3": "$1$ км-ийн нийт үнэ $1{,}200 + 3{,}000 = 4{,}200$ болно."
     },
-    "vocab": ["interpretation", "context"],
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rm03-m1",
-    "topicId": 3,
-    "domain": "alg",
-    "skill": "Linear functions",
-    "difficulty": 2,
-    "format": "spr",
-    "pool": "stop",
-    "prompt": "For the linear function $g$, $g(2) = 11$ and $g(6) = 23$. What is the value of $g(10)$?",
-    "mn": "$g$ шугаман функцийн хувьд $g(2) = 11$ ба $g(6) = 23$. $g(10)$-ын утга хэд вэ?",
-    "answer": ["35"],
-    "explain": "Налуу $\\frac{23 - 11}{6 - 2} = 3$. $x$ нь $6$-аас $10$ хүртэл $4$-өөр өсөхөд $g$ нь $3 \\cdot 4 = 12$-оор өснө: $g(10) = 23 + 12 = 35$.",
-    "hint": "Шугаман функц тогтмол хурдаар өөрчлөгддөг. Нэг нэгжид хэдээр өөрчлөгдөж байна?",
-    "desmos": {
-      "rows": ["(2,11)", "(6,23)", "y=mx+b"],
-      "tip": "$m$, $b$ гулсуурыг хоёр цэгийг дайртал тохируулбал $m=3$, $b=5$; тэгэхээр $g(10)=35$."
-    },
-    "verify": {
-      "value": "11 + (23 - 11)/(6 - 2)*(10 - 2)"
-    },
-    "vocab": ["linear function"],
+    "vocab": [
+      "interpretation",
+      "context"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -463,7 +518,7 @@
   },
   {
     "id": "rm03-m2",
-    "topicId": 3,
+    "topicId": 7,
     "domain": "alg",
     "skill": "Linear functions",
     "difficulty": 2,
@@ -471,12 +526,19 @@
     "pool": "stop",
     "prompt": "A water tank holds $480$ liters. Water drains from the tank at a constant rate, and after $5$ minutes the tank holds $380$ liters. At this rate, how many minutes after it began draining will the tank be empty?",
     "mn": "Усны саванд $480$ литр ус байна. Ус тогтмол хурдаар гоожиж, $5$ минутын дараа саванд $380$ литр үлджээ. Энэ хурдаар гоожвол гоожиж эхэлснээс хойш хэдэн минутын дараа сав хоосорно вэ?",
-    "choices": ["$19$", "$20$", "$24$", "$29$"],
+    "choices": [
+      "$19$",
+      "$20$",
+      "$24$",
+      "$29$"
+    ],
     "answer": 2,
     "explain": "$5$ минутад $100$ литр гоожсон тул хурд нь минутад $20$ литр. Загвар: $V(t) = 480 - 20t$. $V(t) = 0$ гэвэл $t = 24$.",
     "hint": "Эхлээд минут тутамд хэдэн литр гоожиж байгааг ол.",
     "desmos": {
-      "rows": ["y=480-20x"],
+      "rows": [
+        "y=480-20x"
+      ],
       "tip": "Шулууны $x$ тэнхлэгтэй огтлолцох цэг $(24, 0)$."
     },
     "verify": {
@@ -486,36 +548,10 @@
       "0": "$380 / 20$: үлдсэн усыг хоосрох хүртэлх хугацаа; эхний $5$ минутыг нэмээгүй.",
       "3": "Эхний $5$ минутыг давхар тооцсон."
     },
-    "vocab": ["constant rate", "drains"],
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rm03-h1",
-    "topicId": 3,
-    "domain": "alg",
-    "skill": "Linear functions",
-    "difficulty": 3,
-    "format": "spr",
-    "pool": "stop",
-    "prompt": "The function $f$ is linear, $f(-2) = 13$, and $f(4) = -5$. If $f(k) = 1$, what is the value of $k$?",
-    "mn": "$f$ шугаман функц, $f(-2) = 13$, $f(4) = -5$. Хэрэв $f(k) = 1$ бол $k$-ийн утга хэд вэ?",
-    "answer": ["2"],
-    "explain": "Налуу $\\frac{-5 - 13}{4 - (-2)} = \\frac{-18}{6} = -3$. $f(x) = -3x + b$, $13 = 6 + b$ тул $b = 7$. $-3k + 7 = 1$ гэвэл $k = 2$.",
-    "hint": "Эхлээд $f(x) = mx + b$ томьёог бүрэн ол.",
-    "desmos": {
-      "rows": ["f(x)=-3x+7", "y=1"],
-      "tip": "$y=1$ шулуунтай огтлолцох цэгийн $x$ нь $k=2$."
-    },
-    "verify": {
-      "sub": {
-        "var": "k",
-        "eq": "13 + ((-5 - 13)/(4 + 2))(k + 2) = 1"
-      }
-    },
-    "vocab": ["linear"],
+    "vocab": [
+      "constant rate",
+      "drains"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -523,7 +559,7 @@
   },
   {
     "id": "rm03-h2",
-    "topicId": 3,
+    "topicId": 7,
     "domain": "alg",
     "skill": "Linear functions",
     "difficulty": 3,
@@ -531,12 +567,21 @@
     "pool": "stop",
     "prompt": "The total cost $C(n)$, in thousands of tugriks, of printing $n$ posters is a linear function of $n$. Printing $40$ posters costs $260$ thousand tugriks, and printing $100$ posters costs $470$ thousand tugriks. What is the value of $C(0)$?",
     "mn": "$n$ ширхэг зурагт хуудас хэвлэх нийт зардал $C(n)$ (мянган төгрөгөөр) нь $n$-ээс хамаарсан шугаман функц. $40$ хуудас хэвлэхэд $260$ мянган төгрөг, $100$ хуудас хэвлэхэд $470$ мянган төгрөг болдог. $C(0)$-ын утга хэд вэ?",
-    "choices": ["$3.5$", "$120$", "$140$", "$6.5$"],
+    "choices": [
+      "$3.5$",
+      "$120$",
+      "$140$",
+      "$6.5$"
+    ],
     "answer": 1,
     "explain": "Налуу $\\frac{470 - 260}{100 - 40} = \\frac{210}{60} = 3.5$ — нэг хуудасны үнэ (мянган төгрөг). $C(0) = 260 - 40(3.5) = 260 - 140 = 120$. Энэ нь нэг ч хуудас хэвлээгүй байхад төлөх тогтмол зардал.",
     "hint": "Эхлээд нэг хуудас тутмын нэмэлт зардлыг (налуу) ол.",
     "desmos": {
-      "rows": ["(40,260)", "(100,470)", "y=3.5x+b"],
+      "rows": [
+        "(40,260)",
+        "(100,470)",
+        "y=3.5x+b"
+      ],
       "tip": "$b$ гулсуурыг хоёр цэгийг дайртал тохируулна: $b=120$."
     },
     "verify": {
@@ -547,7 +592,10 @@
       "2": "$140$ бол $40$ хуудасны хувьсах зардал; үүнийг $260$-аас хасах ёстой.",
       "3": "$260/40$ нь нэг хуудасны дундаж үнэ, тогтмол зардлыг тооцоогүй."
     },
-    "vocab": ["represent", "linear function"],
+    "vocab": [
+      "represent",
+      "linear function"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -555,7 +603,7 @@
   },
   {
     "id": "rm04-e1",
-    "topicId": 4,
+    "topicId": 13,
     "domain": "alg",
     "skill": "Systems of two linear equations in two variables",
     "difficulty": 1,
@@ -563,12 +611,20 @@
     "pool": "stop",
     "prompt": "$$x + y = 10$$ $$x - y = 4$$ If $(x, y)$ is the solution to the system of equations above, what is the value of $x$?",
     "mn": "$$x + y = 10$$ $$x - y = 4$$ Хэрэв $(x, y)$ нь дээрх тэгшитгэлийн системийн шийд бол $x$-ийн утга хэд вэ?",
-    "choices": ["$3$", "$6$", "$7$", "$14$"],
+    "choices": [
+      "$3$",
+      "$6$",
+      "$7$",
+      "$14$"
+    ],
     "answer": 2,
     "explain": "Хоёр тэгшитгэлийг нэмбэл $2x = 14$, тэгэхээр $x = 7$ (мөн $y = 3$).",
     "hint": "Тэгшитгэлүүдийг нэмэхэд $y$ устана.",
     "desmos": {
-      "rows": ["x+y=10", "x-y=4"],
+      "rows": [
+        "x+y=10",
+        "x-y=4"
+      ],
       "tip": "Огтлолцлын цэг $(7, 3)$."
     },
     "verify": {
@@ -578,7 +634,9 @@
       "0": "$3$ бол $y$-ийн утга.",
       "3": "$14$ бол $2x$; $2$-т хуваахаа мартжээ."
     },
-    "vocab": ["system of equations"],
+    "vocab": [
+      "system of equations"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -586,7 +644,7 @@
   },
   {
     "id": "rm04-e2",
-    "topicId": 4,
+    "topicId": 13,
     "domain": "alg",
     "skill": "Systems of two linear equations in two variables",
     "difficulty": 1,
@@ -594,11 +652,16 @@
     "pool": "stop",
     "prompt": "$$y = 2x$$ $$3x + y = 25$$ What is the value of $x$ in the solution to the system of equations above?",
     "mn": "$$y = 2x$$ $$3x + y = 25$$ Дээрх системийн шийдэд $x$-ийн утга хэд вэ?",
-    "answer": ["5"],
+    "answer": [
+      "5"
+    ],
     "explain": "$y = 2x$-ийг хоёр дахь тэгшитгэлд орлуулбал $3x + 2x = 25$, $5x = 25$, $x = 5$.",
     "hint": "Эхний тэгшитгэлээс $y$-ийг хоёр дахьд орлуул.",
     "desmos": {
-      "rows": ["y=2x", "3x+y=25"],
+      "rows": [
+        "y=2x",
+        "3x+y=25"
+      ],
       "tip": "Огтлолцлын цэг $(5, 10)$."
     },
     "verify": {
@@ -607,7 +670,9 @@
         "eq": "3x + 2x = 25"
       }
     },
-    "vocab": ["substitution"],
+    "vocab": [
+      "substitution"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -615,7 +680,7 @@
   },
   {
     "id": "rm04-m1",
-    "topicId": 4,
+    "topicId": 13,
     "domain": "alg",
     "skill": "Systems of two linear equations in two variables",
     "difficulty": 2,
@@ -623,12 +688,20 @@
     "pool": "stop",
     "prompt": "A museum in Ulaanbaatar sells adult tickets for ₮8,000 each and student tickets for ₮5,000 each. A group bought $30$ tickets and paid a total of ₮189,000. How many adult tickets did the group buy?",
     "mn": "Улаанбаатарын нэгэн музей том хүний тасалбарыг ₮8,000, оюутны тасалбарыг ₮5,000-аар зардаг. Нэг бүлэг $30$ тасалбар авч нийт ₮189,000 төлсөн. Тэд хэдэн том хүний тасалбар авсан бэ?",
-    "choices": ["$13$", "$15$", "$17$", "$23$"],
+    "choices": [
+      "$13$",
+      "$15$",
+      "$17$",
+      "$23$"
+    ],
     "answer": 0,
     "explain": "Том хүний тасалбарыг $a$, оюутных $s$ гэе: $a + s = 30$, $8{,}000a + 5{,}000s = 189{,}000$. $s = 30 - a$-г орлуулбал $8{,}000a + 150{,}000 - 5{,}000a = 189{,}000$, $3{,}000a = 39{,}000$, $a = 13$.",
     "hint": "Тасалбарын тоо болон нийт мөнгөний хувьд хоёр тэгшитгэл бич.",
     "desmos": {
-      "rows": ["x+y=30", "8000x+5000y=189000"],
+      "rows": [
+        "x+y=30",
+        "8000x+5000y=189000"
+      ],
       "tip": "Огтлолцлын цэг $(13, 17)$: $x$ нь том хүний тасалбар."
     },
     "verify": {
@@ -640,7 +713,9 @@
     "why": {
       "2": "$17$ бол оюутны тасалбарын тоо."
     },
-    "vocab": ["total"],
+    "vocab": [
+      "total"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -648,7 +723,7 @@
   },
   {
     "id": "rm04-m2",
-    "topicId": 4,
+    "topicId": 13,
     "domain": "alg",
     "skill": "Systems of two linear equations in two variables",
     "difficulty": 2,
@@ -656,12 +731,20 @@
     "pool": "stop",
     "prompt": "$$3x + 2y = 16$$ $$5x - 2y = 8$$ If $(x, y)$ is the solution to the system of equations above, what is the value of $x + y$?",
     "mn": "$$3x + 2y = 16$$ $$5x - 2y = 8$$ Хэрэв $(x, y)$ нь дээрх системийн шийд бол $x + y$-ийн утга хэд вэ?",
-    "choices": ["$3$", "$\\frac{7}{2}$", "$8$", "$\\frac{13}{2}$"],
+    "choices": [
+      "$3$",
+      "$\\frac{7}{2}$",
+      "$8$",
+      "$\\frac{13}{2}$"
+    ],
     "answer": 3,
     "explain": "Нэмбэл $8x = 24$, $x = 3$. Эхний тэгшитгэлд орлуулбал $9 + 2y = 16$, $y = \\frac{7}{2}$. Тэгэхээр $x + y = 3 + \\frac{7}{2} = \\frac{13}{2}$.",
     "hint": "$2y$ ба $-2y$ — нэмэхэд юу болох вэ?",
     "desmos": {
-      "rows": ["3x+2y=16", "5x-2y=8"],
+      "rows": [
+        "3x+2y=16",
+        "5x-2y=8"
+      ],
       "tip": "Огтлолцлын цэг $(3, 3.5)$; хоёр координатыг нэм."
     },
     "verify": {
@@ -678,7 +761,7 @@
   },
   {
     "id": "rm04-h1",
-    "topicId": 4,
+    "topicId": 13,
     "domain": "alg",
     "skill": "Systems of two linear equations in two variables",
     "difficulty": 3,
@@ -686,11 +769,16 @@
     "pool": "stop",
     "prompt": "$$2x + 3y = 7$$ $$4x - y = -7$$ The solution to the system of equations above is $(x, y)$. What is the value of $y - x$?",
     "mn": "$$2x + 3y = 7$$ $$4x - y = -7$$ Дээрх системийн шийд $(x, y)$. $y - x$-ийн утга хэд вэ?",
-    "answer": ["4"],
+    "answer": [
+      "4"
+    ],
     "explain": "Хоёр дахь тэгшитгэлээс $y = 4x + 7$. Эхнийд орлуулбал $2x + 12x + 21 = 7$, $14x = -14$, $x = -1$. Тэгвэл $y = 3$, $y - x = 3 - (-1) = 4$.",
     "hint": "$y$-ийг хоёр дахь тэгшитгэлээс илэрхийлэхэд хялбар.",
     "desmos": {
-      "rows": ["2x+3y=7", "4x-y=-7"],
+      "rows": [
+        "2x+3y=7",
+        "4x-y=-7"
+      ],
       "tip": "Огтлолцлын цэг $(-1, 3)$."
     },
     "verify": {
@@ -703,7 +791,7 @@
   },
   {
     "id": "rm04-h2",
-    "topicId": 4,
+    "topicId": 13,
     "domain": "alg",
     "skill": "Systems of two linear equations in two variables",
     "difficulty": 3,
@@ -711,12 +799,20 @@
     "pool": "stop",
     "prompt": "$$6x + 5y = 41$$ $$4x + 3y = 25$$ If $(x, y)$ satisfies the system of equations above, what is the value of $2x + 2y$?",
     "mn": "$$6x + 5y = 41$$ $$4x + 3y = 25$$ Хэрэв $(x, y)$ дээрх системийг хангадаг бол $2x + 2y$-ийн утга хэд вэ?",
-    "choices": ["$16$", "$8$", "$33$", "$66$"],
+    "choices": [
+      "$16$",
+      "$8$",
+      "$33$",
+      "$66$"
+    ],
     "answer": 0,
     "explain": "Эхний тэгшитгэлээс хоёр дахийг хасвал шууд $2x + 2y = 41 - 25 = 16$. (Шалгалт: $x = 1$, $y = 7$.)",
     "hint": "Системийг бүрэн бодолгүйгээр тэгшитгэлүүдийг хасаж үзээрэй.",
     "desmos": {
-      "rows": ["6x+5y=41", "4x+3y=25"],
+      "rows": [
+        "6x+5y=41",
+        "4x+3y=25"
+      ],
       "tip": "Огтлолцлын цэг $(1, 7)$, тэгэхээр $2(1)+2(7)=16$."
     },
     "verify": {
@@ -726,7 +822,9 @@
       "1": "$8$ бол $x + y$; асуулт $2x + 2y$-г асууж байна.",
       "3": "Тэгшитгэлүүдийг хасахын оронд нэмсэн."
     },
-    "vocab": ["satisfies"],
+    "vocab": [
+      "satisfies"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -734,7 +832,7 @@
   },
   {
     "id": "rm05-e1",
-    "topicId": 5,
+    "topicId": 13,
     "domain": "alg",
     "skill": "Systems of two linear equations in two variables",
     "difficulty": 1,
@@ -742,12 +840,20 @@
     "pool": "stop",
     "prompt": "$$y = 3x + 2$$ $$y = 3x - 5$$ How many solutions does the system of equations above have?",
     "mn": "$$y = 3x + 2$$ $$y = 3x - 5$$ Дээрх тэгшитгэлийн систем хэдэн шийдтэй вэ?",
-    "choices": ["Zero", "Exactly one", "Exactly two", "Infinitely many"],
+    "choices": [
+      "Zero",
+      "Exactly one",
+      "Exactly two",
+      "Infinitely many"
+    ],
     "answer": 0,
     "explain": "Хоёр шулуун ижил налуутай ($3$) ч өөр огтлолтой ($2$ ба $-5$) тул параллель — огтлолцохгүй. Систем шийдгүй.",
     "hint": "Налуу ба $y$-огтлолыг харьцуул.",
     "desmos": {
-      "rows": ["y=3x+2", "y=3x-5"],
+      "rows": [
+        "y=3x+2",
+        "y=3x-5"
+      ],
       "tip": "Хоёр шулуун параллель, огтлолцох цэг алга."
     },
     "why": {
@@ -755,7 +861,9 @@
       "2": "Хоёр шулуун хоёр цэгт огтлолцох боломжгүй.",
       "3": "Огтлол ч бас тэнцүү байсан бол хязгааргүй олон шийдтэй."
     },
-    "vocab": ["how many solutions"],
+    "vocab": [
+      "how many solutions"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -763,7 +871,7 @@
   },
   {
     "id": "rm05-e2",
-    "topicId": 5,
+    "topicId": 13,
     "domain": "alg",
     "skill": "Systems of two linear equations in two variables",
     "difficulty": 1,
@@ -771,12 +879,20 @@
     "pool": "stop",
     "prompt": "$$2x + y = 6$$ $$4x + 2y = c$$ In the system of equations above, $c$ is a constant. If the system has infinitely many solutions, what is the value of $c$?",
     "mn": "$$2x + y = 6$$ $$4x + 2y = c$$ Дээрх системд $c$ тогтмол. Хэрэв систем хязгааргүй олон шийдтэй бол $c$-ийн утга хэд вэ?",
-    "choices": ["$3$", "$6$", "$8$", "$12$"],
+    "choices": [
+      "$3$",
+      "$6$",
+      "$8$",
+      "$12$"
+    ],
     "answer": 3,
     "explain": "Хоёр дахь тэгшитгэлийн зүүн тал нь эхнийхийг $2$-оор үржүүлсэнтэй тэнцүү. Ижил шулуун болохын тулд $c = 2 \\cdot 6 = 12$.",
     "hint": "Хоёр дахь тэгшитгэл эхнийхээс хэд дахин их вэ?",
     "desmos": {
-      "rows": ["2x+y=6", "4x+2y=c"],
+      "rows": [
+        "2x+y=6",
+        "4x+2y=c"
+      ],
       "tip": "$c$ гулсуурыг хоёр шулуун давхцах хүртэл хөдөлгөнө: $c=12$."
     },
     "verify": {
@@ -789,7 +905,9 @@
       "0": "$6$-г үржүүлэхийн оронд $2$-т хуваасан.",
       "1": "$c = 6$ үед хоёр шулуун параллель — шийдгүй."
     },
-    "vocab": ["infinitely many"],
+    "vocab": [
+      "infinitely many"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -797,7 +915,7 @@
   },
   {
     "id": "rm05-m1",
-    "topicId": 5,
+    "topicId": 13,
     "domain": "alg",
     "skill": "Systems of two linear equations in two variables",
     "difficulty": 2,
@@ -805,11 +923,16 @@
     "pool": "stop",
     "prompt": "$$kx + 3y = 9$$ $$4x + 6y = 5$$ In the system of equations above, $k$ is a constant. If the system has no solution, what is the value of $k$?",
     "mn": "$$kx + 3y = 9$$ $$4x + 6y = 5$$ Дээрх системд $k$ тогтмол. Хэрэв систем шийдгүй бол $k$-ийн утга хэд вэ?",
-    "answer": ["2"],
+    "answer": [
+      "2"
+    ],
     "explain": "Шийдгүй бол шулуунууд параллель: коэффициентуудын харьцаа тэнцүү, $\\frac{k}{4} = \\frac{3}{6}$, тэгэхээр $k = 2$. Сул гишүүдийн харьцаа $\\frac{9}{5} \\ne \\frac{1}{2}$ тул шулуунууд давхцахгүй.",
     "hint": "Шийдгүй систем = ижил налуутай, өөр огтлолтой шулуунууд.",
     "desmos": {
-      "rows": ["kx+3y=9", "4x+6y=5"],
+      "rows": [
+        "kx+3y=9",
+        "4x+6y=5"
+      ],
       "tip": "$k$ гулсуурыг шулуунууд параллель болтол хөдөлгөнө: $k=2$."
     },
     "verify": {
@@ -818,7 +941,9 @@
         "eq": "k/4 = 3/6"
       }
     },
-    "vocab": ["no solution"],
+    "vocab": [
+      "no solution"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -826,7 +951,7 @@
   },
   {
     "id": "rm05-m2",
-    "topicId": 5,
+    "topicId": 13,
     "domain": "alg",
     "skill": "Systems of two linear equations in two variables",
     "difficulty": 2,
@@ -834,12 +959,20 @@
     "pool": "stop",
     "prompt": "$$2x - 5y = 10$$ $$6x + by = 30$$ In the system of equations above, $b$ is a constant. If the system has infinitely many solutions, what is the value of $b$?",
     "mn": "$$2x - 5y = 10$$ $$6x + by = 30$$ Дээрх системд $b$ тогтмол. Хэрэв систем хязгааргүй олон шийдтэй бол $b$-ийн утга хэд вэ?",
-    "choices": ["$-15$", "$15$", "$-5$", "$\\frac{5}{3}$"],
+    "choices": [
+      "$-15$",
+      "$15$",
+      "$-5$",
+      "$\\frac{5}{3}$"
+    ],
     "answer": 0,
     "explain": "Хоёр дахь тэгшитгэл эхнийхийг $3$-аар үржүүлсэн байх ёстой: $6x = 3 \\cdot 2x$, $30 = 3 \\cdot 10$. Тэгэхээр $b = 3 \\cdot (-5) = -15$.",
     "hint": "$x$-ийн коэффициент ба сул гишүүн хэд дахин өссөн бэ? $y$-ийн коэффициент ч мөн адил өсөх ёстой.",
     "desmos": {
-      "rows": ["2x-5y=10", "6x+by=30"],
+      "rows": [
+        "2x-5y=10",
+        "6x+by=30"
+      ],
       "tip": "$b=-15$ үед хоёр шулуун давхцана."
     },
     "verify": {
@@ -859,7 +992,7 @@
   },
   {
     "id": "rm05-h1",
-    "topicId": 5,
+    "topicId": 13,
     "domain": "alg",
     "skill": "Systems of two linear equations in two variables",
     "difficulty": 3,
@@ -867,12 +1000,20 @@
     "pool": "stop",
     "prompt": "$$kx + 2y = 6$$ $$8x + ky = 12$$ In the system of equations above, $k$ is a constant. For which value of $k$ does the system have infinitely many solutions?",
     "mn": "$$kx + 2y = 6$$ $$8x + ky = 12$$ Дээрх системд $k$ тогтмол. $k$-ийн ямар утгад систем хязгааргүй олон шийдтэй байх вэ?",
-    "choices": ["$-4$", "$2$", "$4$", "$16$"],
+    "choices": [
+      "$-4$",
+      "$2$",
+      "$4$",
+      "$16$"
+    ],
     "answer": 2,
     "explain": "Хязгааргүй олон шийдтэй бол бүх харьцаа тэнцүү: $\\frac{k}{8} = \\frac{2}{k} = \\frac{6}{12} = \\frac{1}{2}$. $\\frac{k}{8} = \\frac{1}{2}$-аас $k = 4$; шалгалт: $\\frac{2}{4} = \\frac{1}{2}$ ✓. $k = -4$ үед $\\frac{k}{8} = \\frac{2}{k} = -\\frac{1}{2}$ боловч $\\frac{6}{12} = \\frac{1}{2}$ тул шулуунууд параллель, шийдгүй.",
     "hint": "$k^2 = 16$ хоёр утга өгнө. Аль нь сул гишүүдийн харьцаатай тохирох вэ?",
     "desmos": {
-      "rows": ["kx+2y=6", "8x+ky=12"],
+      "rows": [
+        "kx+2y=6",
+        "8x+ky=12"
+      ],
       "tip": "$k$ гулсуурыг $4$ ба $-4$ дээр тавьж харьцуул: зөвхөн $k=4$-д давхцана."
     },
     "verify": {
@@ -892,7 +1033,7 @@
   },
   {
     "id": "rm05-h2",
-    "topicId": 5,
+    "topicId": 13,
     "domain": "alg",
     "skill": "Systems of two linear equations in two variables",
     "difficulty": 3,
@@ -900,11 +1041,16 @@
     "pool": "stop",
     "prompt": "$$3x - 7y = 12$$ $$6x + ay = b$$ In the system of equations above, $a$ and $b$ are constants. If the system has infinitely many solutions, what is the value of $a + b$?",
     "mn": "$$3x - 7y = 12$$ $$6x + ay = b$$ Дээрх системд $a$ ба $b$ тогтмол. Хэрэв систем хязгааргүй олон шийдтэй бол $a + b$-ийн утга хэд вэ?",
-    "answer": ["10"],
+    "answer": [
+      "10"
+    ],
     "explain": "$6x = 2 \\cdot 3x$ тул хоёр дахь тэгшитгэл нь эхнийхийг $2$-оор үржүүлсэн байх ёстой: $a = 2(-7) = -14$, $b = 2(12) = 24$. Тэгэхээр $a + b = 10$.",
     "hint": "Хоёр тэгшитгэл ижил шулууныг илэрхийлэх ёстой.",
     "desmos": {
-      "rows": ["3x-7y=12", "6x+ay=b"],
+      "rows": [
+        "3x-7y=12",
+        "6x+ay=b"
+      ],
       "tip": "$a=-14$, $b=24$ үед хоёр шулуун давхцана."
     },
     "verify": {
@@ -917,7 +1063,7 @@
   },
   {
     "id": "rm06-e1",
-    "topicId": 6,
+    "topicId": 14,
     "domain": "alg",
     "skill": "Linear inequalities in one or two variables",
     "difficulty": 1,
@@ -925,12 +1071,19 @@
     "pool": "stop",
     "prompt": "If $2x + 3 \\le 11$, what is the greatest possible value of $x$?",
     "mn": "Хэрэв $2x + 3 \\le 11$ бол $x$-ийн хамгийн их боломжит утга хэд вэ?",
-    "choices": ["$8$", "$\\frac{11}{2}$", "$7$", "$4$"],
+    "choices": [
+      "$8$",
+      "$\\frac{11}{2}$",
+      "$7$",
+      "$4$"
+    ],
     "answer": 3,
     "explain": "Хоёр талаас $3$-ыг хасвал $2x \\le 8$, $2$-т хуваавал $x \\le 4$. Хамгийн их утга $4$.",
     "hint": "Тэнцэтгэл бишийг тэгшитгэл шиг бод; эерэг тоонд хуваахад тэмдэг өөрчлөгдөхгүй.",
     "desmos": {
-      "rows": ["2x+3\\le11"],
+      "rows": [
+        "2x+3\\le11"
+      ],
       "tip": "Desmos муж будна; хил нь $x=4$."
     },
     "verify": {
@@ -940,7 +1093,9 @@
       "0": "$8$ бол $2x$-ийн хамгийн их утга.",
       "2": "$(11+3)/2$: $3$-ыг хасахын оронд нэмсэн."
     },
-    "vocab": ["greatest possible value"],
+    "vocab": [
+      "greatest possible value"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -948,7 +1103,7 @@
   },
   {
     "id": "rm06-e2",
-    "topicId": 6,
+    "topicId": 14,
     "domain": "alg",
     "skill": "Linear inequalities in one or two variables",
     "difficulty": 1,
@@ -956,17 +1111,24 @@
     "pool": "stop",
     "prompt": "What is the least integer value of $x$ that satisfies the inequality $3x - 5 > 16$?",
     "mn": "$3x - 5 > 16$ тэнцэтгэл бишийг хангах $x$-ийн хамгийн бага бүхэл утга хэд вэ?",
-    "answer": ["8"],
+    "answer": [
+      "8"
+    ],
     "explain": "$3x > 21$, тэгэхээр $x > 7$. $7$ өөрөө хангахгүй (хатуу тэнцэтгэл биш), тиймээс хамгийн бага бүхэл утга $8$.",
     "hint": "$>$ тэмдэг нь хил дээрх утгыг оруулахгүй.",
     "desmos": {
-      "rows": ["3x-5>16"],
+      "rows": [
+        "3x-5>16"
+      ],
       "tip": "Тасархай хил $x=7$ дээр; баруун талын эхний бүхэл тоо $8$."
     },
     "verify": {
       "value": "(16 + 5)/3 + 1"
     },
-    "vocab": ["least integer", "satisfies"],
+    "vocab": [
+      "least integer",
+      "satisfies"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -974,7 +1136,7 @@
   },
   {
     "id": "rm06-m1",
-    "topicId": 6,
+    "topicId": 14,
     "domain": "alg",
     "skill": "Linear inequalities in one or two variables",
     "difficulty": 2,
@@ -982,12 +1144,20 @@
     "pool": "stop",
     "prompt": "A truck carrying hay to herders can carry a total of at most $1{,}500$ kilograms of driver and cargo. The driver weighs $75$ kilograms, and each bale of hay weighs $25$ kilograms. What is the greatest number of bales the truck can carry?",
     "mn": "Малчдад өвс зөөж буй ачааны машин жолооч болон ачааны нийт жин $1{,}500$ кг-аас ихгүй байх ёстой. Жолооч $75$ кг, өвсний боодол бүр $25$ кг жинтэй. Машин хамгийн ихдээ хэдэн боодол өвс ачиж чадах вэ?",
-    "choices": ["$60$", "$63$", "$57$", "$56$"],
+    "choices": [
+      "$60$",
+      "$63$",
+      "$57$",
+      "$56$"
+    ],
     "answer": 2,
     "explain": "Боодлын тоог $b$ гэвэл $75 + 25b \\le 1{,}500$. $25b \\le 1{,}425$, $b \\le 57$. Хамгийн ихдээ $57$ боодол.",
     "hint": "Жолоочийн жинг мартаж болохгүй.",
     "desmos": {
-      "rows": ["y=75+25x", "y=1500"],
+      "rows": [
+        "y=75+25x",
+        "y=1500"
+      ],
       "tip": "Огтлолцлын цэг $x=57$; түүнээс зүүн тал зөвшөөрөгдөнө."
     },
     "verify": {
@@ -997,7 +1167,10 @@
       "0": "Жолоочийн жинг тооцоогүй: $1{,}500/25$.",
       "1": "Жолоочийн жинг хасахын оронд нэмсэн."
     },
-    "vocab": ["at most", "bale"],
+    "vocab": [
+      "at most",
+      "bale"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1005,7 +1178,7 @@
   },
   {
     "id": "rm06-m2",
-    "topicId": 6,
+    "topicId": 14,
     "domain": "alg",
     "skill": "Linear inequalities in one or two variables",
     "difficulty": 2,
@@ -1013,19 +1186,33 @@
     "pool": "stop",
     "prompt": "$$y > 2x - 3$$ $$x + y < 6$$ Which point $(x, y)$ is a solution to the system of inequalities above?",
     "mn": "$$y > 2x - 3$$ $$x + y < 6$$ Аль цэг $(x, y)$ дээрх тэнцэтгэл бишийн системийн шийд болох вэ?",
-    "choices": ["$(4, 3)$", "$(0, -4)$", "$(2, 5)$", "$(1, 2)$"],
+    "choices": [
+      "$(4, 3)$",
+      "$(0, -4)$",
+      "$(2, 5)$",
+      "$(1, 2)$"
+    ],
     "answer": 3,
     "explain": "$(1, 2)$: $2 > 2(1) - 3 = -1$ ✓, $1 + 2 = 3 < 6$ ✓. Бусад: $(4, 3)$: $3 > 5$ ✗; $(2, 5)$: $2 + 5 = 7 < 6$ ✗; $(0, -4)$: $-4 > -3$ ✗.",
     "hint": "Цэг бүрийг **хоёр** тэнцэтгэл бишид орлуулж шалга.",
     "desmos": {
-      "rows": ["y>2x-3", "x+y<6", "(4,3)", "(1,2)", "(2,5)", "(0,-4)"],
+      "rows": [
+        "y>2x-3",
+        "x+y<6",
+        "(4,3)",
+        "(1,2)",
+        "(2,5)",
+        "(0,-4)"
+      ],
       "tip": "Хоёр будагдсан муж давхцах хэсэгт байгаа цэг нь хариу."
     },
     "why": {
       "1": "$-4 > -3$ худал; сөрөг тоонуудыг харьцуулахдаа алдсан.",
       "2": "Зөвхөн эхний тэнцэтгэл бишийг шалгасан; $2 + 5 = 7$ нь $6$-аас бага биш."
     },
-    "vocab": ["system of inequalities"],
+    "vocab": [
+      "system of inequalities"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1033,7 +1220,7 @@
   },
   {
     "id": "rm06-h1",
-    "topicId": 6,
+    "topicId": 14,
     "domain": "alg",
     "skill": "Linear inequalities in one or two variables",
     "difficulty": 3,
@@ -1041,17 +1228,23 @@
     "pool": "stop",
     "prompt": "If $-7 < 3 - 2x \\le 5$, what is the least possible value of $x$?",
     "mn": "Хэрэв $-7 < 3 - 2x \\le 5$ бол $x$-ийн хамгийн бага боломжит утга хэд вэ?",
-    "answer": ["-1"],
+    "answer": [
+      "-1"
+    ],
     "explain": "Бүх хэсгээс $3$-ыг хасвал $-10 < -2x \\le 2$. $-2$-т хуваахад тэмдгүүд эргэнэ: $5 > x \\ge -1$, өөрөөр хэлбэл $-1 \\le x < 5$. Хамгийн бага утга $-1$.",
     "hint": "Сөрөг тоонд хуваахад тэнцэтгэл бишийн тэмдэг эргэнэ.",
     "desmos": {
-      "rows": ["-7<3-2x\\le5"],
+      "rows": [
+        "-7<3-2x\\le5"
+      ],
       "tip": "Будагдсан хэсэг $-1 \\le x < 5$; зүүн хил (бүтэн шугам) нь $x=-1$."
     },
     "verify": {
       "value": "(3 - 5)/2"
     },
-    "vocab": ["least possible value"],
+    "vocab": [
+      "least possible value"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -1059,7 +1252,7 @@
   },
   {
     "id": "rm06-h2",
-    "topicId": 6,
+    "topicId": 14,
     "domain": "alg",
     "skill": "Linear inequalities in one or two variables",
     "difficulty": 3,
@@ -1067,12 +1260,22 @@
     "pool": "stop",
     "prompt": "A herder sells small and large bags of dried curd (aaruul) at a market. She can bring at most $40$ bags in total. Each small bag sells for ₮3,000 and each large bag sells for ₮5,000. She wants to earn at least ₮170,000. If she sells every bag she brings, what is the minimum number of large bags she must bring?",
     "mn": "Нэгэн малчин зах дээр жижиг, том уутаар ааруул зардаг. Тэр нийт $40$-өөс ихгүй уут авчирч чадна. Жижиг уут ₮3,000, том уут ₮5,000-аар зарагддаг. Тэр дор хаяж ₮170,000 олохыг хүсч байна. Авчирсан бүх уутаа зарна гэвэл хамгийн багадаа хэдэн том уут авчрах ёстой вэ?",
-    "choices": ["$10$", "$25$", "$34$", "$15$"],
+    "choices": [
+      "$10$",
+      "$25$",
+      "$34$",
+      "$15$"
+    ],
     "answer": 1,
     "explain": "Жижиг уутыг $x$, томыг $y$ гэе: $x + y \\le 40$, $3{,}000x + 5{,}000y \\ge 170{,}000$. $y$-ийг хамгийн бага байлгахын тулд жижиг уутыг аль болох олон авна: $x = 40 - y$. Тэгвэл $3{,}000(40 - y) + 5{,}000y \\ge 170{,}000$, $120{,}000 + 2{,}000y \\ge 170{,}000$, $y \\ge 25$.",
     "hint": "Том уут цөөн байхын тулд нийт $40$ уутыг бүрэн ашиглах хэрэгтэй.",
     "desmos": {
-      "rows": ["x+y\\le40", "3000x+5000y\\ge170000", "x\\ge0", "y\\ge0"],
+      "rows": [
+        "x+y\\le40",
+        "3000x+5000y\\ge170000",
+        "x\\ge0",
+        "y\\ge0"
+      ],
       "tip": "Давхцсан мужийн хамгийн доод цэг $(15, 25)$."
     },
     "verify": {
@@ -1082,7 +1285,330 @@
       "2": "Бүгдийг том уутаар олно гэж бодсон ($170{,}000/5{,}000$), жижиг уутны орлогыг тооцоогүй.",
       "3": "$15$ бол жижиг уутны тоо."
     },
-    "vocab": ["at least", "at most", "minimum"],
+    "vocab": [
+      "at least",
+      "at most",
+      "minimum"
+    ],
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-03-2-1",
+    "topicId": 3,
+    "domain": "alg",
+    "skill": "Linear equations in one variable",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "If $3(x-3)+2x=2x+21$, what is $x$?",
+    "mn": "$3(x-3)+2x=2x+21$ бол $x$ хэд вэ?",
+    "answer": [
+      "10"
+    ],
+    "explain": "$5x-9=2x+21$, $3x=30$, тэгэхээр $x=10$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "(6*3+12)/3"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-07-1-1",
+    "topicId": 7,
+    "domain": "alg",
+    "skill": "Linear functions",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A tank contains $300$ liters. The model $V(t)=300-6t$ gives liters remaining after $t$ minutes. How many liters drain in 6 minutes?",
+    "mn": "Саванд $300$ литр ус байна. $V(t)=300-6t$ загварт $t$ нь минут. Эхний $6$ минутад хэдэн литр ус гоожих вэ?",
+    "answer": [
+      "36"
+    ],
+    "explain": "Налуу $-6$ тул минут тутам $6$ литрээр буурна. $6$ минутад $6\\cdot6=36$ литр гарна. Энэ нь үлдсэн ус биш, гарсан усны хэмжээ.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "6*(3+3)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-07-2-1",
+    "topicId": 7,
+    "domain": "alg",
+    "skill": "Linear functions",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A tank contains $300$ liters. The model $V(t)=300-6t$ gives liters remaining after $t$ minutes. How many liters drain in 6 minutes?",
+    "mn": "Саванд $300$ литр ус байна. $V(t)=300-6t$ загварт $t$ нь минут. Эхний $6$ минутад хэдэн литр ус гоожих вэ?",
+    "answer": [
+      "36"
+    ],
+    "explain": "Налуу $-6$ тул минут тутам $6$ литрээр буурна. $6$ минутад $6\\cdot6=36$ литр гарна. Энэ нь үлдсэн ус биш, гарсан усны хэмжээ.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "6*(3+3)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-07-3-1",
+    "topicId": 7,
+    "domain": "alg",
+    "skill": "Linear functions",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A tank contains $300$ liters. The model $V(t)=300-6t$ gives liters remaining after $t$ minutes. How many liters drain in 6 minutes?",
+    "mn": "Саванд $300$ литр ус байна. $V(t)=300-6t$ загварт $t$ нь минут. Эхний $6$ минутад хэдэн литр ус гоожих вэ?",
+    "answer": [
+      "36"
+    ],
+    "explain": "Налуу $-6$ тул минут тутам $6$ литрээр буурна. $6$ минутад $6\\cdot6=36$ литр гарна. Энэ нь үлдсэн ус биш, гарсан усны хэмжээ.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "6*(3+3)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-11-1-1",
+    "topicId": 11,
+    "domain": "alg",
+    "skill": "Linear equations in one variable",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A notebook costs 3 dollars. A student buys 4 notebooks and a pen for 3 dollars. What is the total cost in dollars?",
+    "mn": "Нэг дэвтэр $3$ доллар. $4$ дэвтэр, $3$ долларын үзэг авбал нийт хэдэн доллар төлөх вэ?",
+    "answer": [
+      "15"
+    ],
+    "explain": "Дэвтрийн нийт үнэ $4\\cdot3=12$. Үзгийн $3$ долларыг нэмбэл $15$ доллар.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "4*3+3"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-11-1-2",
+    "topicId": 11,
+    "domain": "alg",
+    "skill": "Linear equations in one variable",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A notebook costs 4 dollars. A student buys 4 notebooks and a pen for 3 dollars. What is the total cost in dollars?",
+    "mn": "Нэг дэвтэр $4$ доллар. $4$ дэвтэр, $3$ долларын үзэг авбал нийт хэдэн доллар төлөх вэ?",
+    "answer": [
+      "19"
+    ],
+    "explain": "Дэвтрийн нийт үнэ $4\\cdot4=16$. Үзгийн $3$ долларыг нэмбэл $19$ доллар.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "4*4+3"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-11-2-1",
+    "topicId": 11,
+    "domain": "alg",
+    "skill": "Linear equations in one variable",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A service charges a 30-dollar fixed fee and 12 dollars per hour. The total is 114 dollars. How many hours were billed?",
+    "mn": "Үйлчилгээний суурь хөлс $30$ доллар, цаг тутам $12$ доллар. Нийт $114$ доллар бол хэдэн цаг ажилласан бэ?",
+    "answer": [
+      "7"
+    ],
+    "explain": "Цагийг $h$ гэвэл $30+12h=114$. Суурь хөлсийг хасаад $12h=84$, $h=7$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "(114-30)/12"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-11-3-1",
+    "topicId": 11,
+    "domain": "alg",
+    "skill": "Linear equations in one variable",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A theater sells 15 tickets. Adult tickets cost 12 dollars and student tickets cost 8 dollars. The total is 136 dollars. How many adult tickets were sold?",
+    "mn": "Театр $15$ тасалбар заржээ. Том хүний тасалбар $12$, сурагчийнх $8$ доллар. Нийт $136$ доллар бол том хүний хэдэн тасалбар зарсан бэ?",
+    "answer": [
+      "4"
+    ],
+    "explain": "Том хүний тоог $x$ гэвэл сурагчийнх $15-x$. $12x+8(15-x)=136$, $4x=16$, $x=4$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "(136-8*15)/4"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-11-3-2",
+    "topicId": 11,
+    "domain": "alg",
+    "skill": "Linear equations in one variable",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A theater sells 20 tickets. Adult tickets cost 12 dollars and student tickets cost 8 dollars. The total is 180 dollars. How many adult tickets were sold?",
+    "mn": "Театр $20$ тасалбар заржээ. Том хүний тасалбар $12$, сурагчийнх $8$ доллар. Нийт $180$ доллар бол том хүний хэдэн тасалбар зарсан бэ?",
+    "answer": [
+      "5"
+    ],
+    "explain": "Том хүний тоог $x$ гэвэл сурагчийнх $20-x$. $12x+8(20-x)=180$, $4x=20$, $x=5$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "(180-8*20)/4"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rm03-e1",
+    "topicId": 5,
+    "domain": "alg",
+    "skill": "Linear functions",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "The function $f$ is defined by $f(x) = 7x - 4$. What is the value of $f(3)$?",
+    "mn": "$f$ функц $f(x) = 7x - 4$ гэж тодорхойлогдсон. $f(3)$-ын утга хэд вэ?",
+    "choices": [
+      "$17$",
+      "$3$",
+      "$21$",
+      "$25$"
+    ],
+    "answer": 0,
+    "explain": "$x = 3$-ыг орлуулбал $f(3) = 7(3) - 4 = 21 - 4 = 17$.",
+    "hint": "$x$-ийн оронд $3$-ыг тавь.",
+    "desmos": {
+      "rows": [
+        "f(x)=7x-4",
+        "f(3)"
+      ],
+      "tip": "Хоёр дахь мөрөнд $f(3)$ гэж бичихэд $17$ гарна."
+    },
+    "verify": {
+      "value": "7(3) - 4"
+    },
+    "why": {
+      "2": "$-4$-ийг хасахаа мартжээ.",
+      "3": "$4$-ийг хасах ёстой байхад нэмсэн."
+    },
+    "vocab": [
+      "function",
+      "defined"
+    ],
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rm03-m1",
+    "topicId": 5,
+    "domain": "alg",
+    "skill": "Linear functions",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "For the linear function $g$, $g(2) = 11$ and $g(6) = 23$. What is the value of $g(10)$?",
+    "mn": "$g$ шугаман функцийн хувьд $g(2) = 11$ ба $g(6) = 23$. $g(10)$-ын утга хэд вэ?",
+    "answer": [
+      "35"
+    ],
+    "explain": "Налуу $\\frac{23 - 11}{6 - 2} = 3$. $x$ нь $6$-аас $10$ хүртэл $4$-өөр өсөхөд $g$ нь $3 \\cdot 4 = 12$-оор өснө: $g(10) = 23 + 12 = 35$.",
+    "hint": "Шугаман функц тогтмол хурдаар өөрчлөгддөг. Нэг нэгжид хэдээр өөрчлөгдөж байна?",
+    "desmos": {
+      "rows": [
+        "(2,11)",
+        "(6,23)",
+        "y=mx+b"
+      ],
+      "tip": "$m$, $b$ гулсуурыг хоёр цэгийг дайртал тохируулбал $m=3$, $b=5$; тэгэхээр $g(10)=35$."
+    },
+    "verify": {
+      "value": "11 + (23 - 11)/(6 - 2)*(10 - 2)"
+    },
+    "vocab": [
+      "linear function"
+    ],
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rm03-h1",
+    "topicId": 5,
+    "domain": "alg",
+    "skill": "Linear functions",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The function $f$ is linear, $f(-2) = 13$, and $f(4) = -5$. If $f(k) = 1$, what is the value of $k$?",
+    "mn": "$f$ шугаман функц, $f(-2) = 13$, $f(4) = -5$. Хэрэв $f(k) = 1$ бол $k$-ийн утга хэд вэ?",
+    "answer": [
+      "2"
+    ],
+    "explain": "Налуу $\\frac{-5 - 13}{4 - (-2)} = \\frac{-18}{6} = -3$. $f(x) = -3x + b$, $13 = 6 + b$ тул $b = 7$. $-3k + 7 = 1$ гэвэл $k = 2$.",
+    "hint": "Эхлээд $f(x) = mx + b$ томьёог бүрэн ол.",
+    "desmos": {
+      "rows": [
+        "f(x)=-3x+7",
+        "y=1"
+      ],
+      "tip": "$y=1$ шулуунтай огтлолцох цэгийн $x$ нь $k=2$."
+    },
+    "verify": {
+      "sub": {
+        "var": "k",
+        "eq": "13 + ((-5 - 13)/(4 + 2))(k + 2) = 1"
+      }
+    },
+    "vocab": [
+      "linear"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",

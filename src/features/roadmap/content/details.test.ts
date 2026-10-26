@@ -45,7 +45,7 @@ describe('stop panel content', () => {
     const d = stopDetail(9);
     expect(d.place?.fact).toContain('Хархорин');
     expect(d.intros.length).toBeGreaterThan(0);
-    expect(stopDetail(1).lessons.map((l) => l.id)).toContain('s2-l2');
+    expect(stopDetail(3).lessons.map((l) => l.id)).toContain('s2-l2');
     expect(stopDetail(25).cards.length).toBeGreaterThan(0);
   });
 });

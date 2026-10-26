@@ -1,7 +1,7 @@
 [
   {
     "id": "rm22-e1",
-    "topicId": 22,
+    "topicId": 17,
     "domain": "geo",
     "skill": "Lines, angles, and triangles",
     "difficulty": 1,
@@ -9,11 +9,18 @@
     "pool": "stop",
     "prompt": "Parallel lines $\\ell$ and $m$ are intersected by a transversal $t$. One of the angles formed where $t$ intersects line $\\ell$ measures $118^\\circ$. Which of the following could be the measure of an angle formed where $t$ intersects line $m$?",
     "mn": "Параллель $\\ell$ ба $m$ шулуунуудыг $t$ огтлогч огтолжээ. $t$ ба $\\ell$ огтлолцох цэг дээр үүссэн нэг өнцөг $118^\\circ$. $t$ ба $m$ огтлолцох цэг дээр үүссэн өнцөг аль нь байж болох вэ?",
-    "choices": ["$28^\\circ$", "$62^\\circ$", "$72^\\circ$", "$152^\\circ$"],
+    "choices": [
+      "$28^\\circ$",
+      "$62^\\circ$",
+      "$72^\\circ$",
+      "$152^\\circ$"
+    ],
     "answer": 1,
     "explain": "Параллель шулуунуудыг огтлогч огтлоход хоёр огтлолцол дээр ижил өнцгүүд үүснэ: $118^\\circ$ ба түүний гүйцээлт $180^\\circ-118^\\circ=62^\\circ$. Сонголтуудаас зөвхөн $62^\\circ$ тохирно.",
     "hint": "Зэргэлдээ өнцгүүдийн нийлбэр $180^\\circ$.",
-    "verify": { "value": "180-118" },
+    "verify": {
+      "value": "180-118"
+    },
     "why": {
       "0": "$28^\\circ$ бол $118^\\circ-90^\\circ$. Энд $90^\\circ$ биш, $180^\\circ$-аас хасна.",
       "3": "Өнцгүүд зөвхөн $118^\\circ$ эсвэл $62^\\circ$ байна."
@@ -25,7 +32,7 @@
   },
   {
     "id": "rm22-e2",
-    "topicId": 22,
+    "topicId": 18,
     "domain": "geo",
     "skill": "Lines, angles, and triangles",
     "difficulty": 1,
@@ -33,10 +40,14 @@
     "pool": "stop",
     "prompt": "In triangle $PQR$, the measure of angle $P$ is $47^\\circ$, and the measure of angle $Q$ is twice the measure of angle $P$. What is the measure, in degrees, of angle $R$?",
     "mn": "$PQR$ гурвалжинд $P$ өнцөг $47^\\circ$, $Q$ өнцөг нь $P$ өнцгөөс 2 дахин их. $R$ өнцөг хэдэн градус вэ?",
-    "answer": ["39"],
+    "answer": [
+      "39"
+    ],
     "explain": "$\\angle Q=2\\cdot 47^\\circ=94^\\circ$. Гурвалжны өнцгүүдийн нийлбэр $180^\\circ$: $\\angle R=180^\\circ-47^\\circ-94^\\circ=39^\\circ$.",
     "hint": "Эхлээд $Q$ өнцгийг ол, дараа нь $180^\\circ$-аас хас.",
-    "verify": { "value": "180-47-2*47" },
+    "verify": {
+      "value": "180-47-2*47"
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -44,7 +55,7 @@
   },
   {
     "id": "rm22-m1",
-    "topicId": 22,
+    "topicId": 18,
     "domain": "geo",
     "skill": "Lines, angles, and triangles",
     "difficulty": 2,
@@ -52,11 +63,18 @@
     "pool": "stop",
     "prompt": "Triangle $ABC$ is similar to triangle $DEF$, where $A$, $B$, and $C$ correspond to $D$, $E$, and $F$, respectively. If $AB=12$, $BC=18$, and $DE=8$, what is the length of $\\overline{EF}$?",
     "mn": "$ABC$ гурвалжин $DEF$ гурвалжинтай төсөөтэй ба $A$, $B$, $C$ нь харгалзан $D$, $E$, $F$-тэй харгалзана. $AB=12$, $BC=18$, $DE=8$ бол $EF$-ийн урт хэд вэ?",
-    "choices": ["$14$", "$10$", "$27$", "$12$"],
+    "choices": [
+      "$14$",
+      "$10$",
+      "$27$",
+      "$12$"
+    ],
     "answer": 3,
     "explain": "Төсөөтэй гурвалжны харгалзах талууд пропорциональ: $\\frac{DE}{AB}=\\frac{8}{12}=\\frac{2}{3}$. Тэгэхээр $EF=\\frac{2}{3}\\cdot 18=12$.",
     "hint": "Масштабын коэффициент $\\frac{DE}{AB}$-г ол.",
-    "verify": { "value": "18*8/12" },
+    "verify": {
+      "value": "18*8/12"
+    },
     "why": {
       "2": "Харьцааг урвуугаар нь ($\\frac{12}{8}$) авсан байна.",
       "0": "Талуудыг хасалтаар ($18-4$) биш, үржвэрээр харьцуулна."
@@ -68,7 +86,7 @@
   },
   {
     "id": "rm22-m2",
-    "topicId": 22,
+    "topicId": 17,
     "domain": "geo",
     "skill": "Lines, angles, and triangles",
     "difficulty": 2,
@@ -76,12 +94,24 @@
     "pool": "stop",
     "prompt": "In triangle $JKL$, the measure of angle $J$ is $(x+20)^\\circ$ and the measure of angle $K$ is $50^\\circ$. Side $\\overline{KL}$ is extended past $L$, forming an exterior angle at $L$ that measures $(3x+10)^\\circ$. What is the value of $x$?",
     "mn": "$JKL$ гурвалжинд $J$ өнцөг $(x+20)^\\circ$, $K$ өнцөг $50^\\circ$. $KL$ талыг $L$-ээс цааш үргэлжлүүлэхэд $L$ орой дээр $(3x+10)^\\circ$ гадаад өнцөг үүсчээ. $x$-ийн утга хэд вэ?",
-    "choices": ["$15$", "$20$", "$30$", "$40$"],
+    "choices": [
+      "$15$",
+      "$20$",
+      "$30$",
+      "$40$"
+    ],
     "answer": 2,
     "explain": "Гадаад өнцөг нь хөрш биш хоёр дотоод өнцгийн нийлбэртэй тэнцүү: $3x+10=(x+20)+50$. $2x=60$, $x=30$.",
     "hint": "Гадаад өнцөг = хөрш биш хоёр дотоод өнцгийн нийлбэр.",
-    "verify": { "sub": { "var": "x", "eq": "3x+10 = x+20+50" } },
-    "why": { "1": "$x=20$ үед гадаад өнцөг $70^\\circ$, харин $J+K=90^\\circ$ болно." },
+    "verify": {
+      "sub": {
+        "var": "x",
+        "eq": "3x+10 = x+20+50"
+      }
+    },
+    "why": {
+      "1": "$x=20$ үед гадаад өнцөг $70^\\circ$, харин $J+K=90^\\circ$ болно."
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -89,7 +119,7 @@
   },
   {
     "id": "rm22-h1",
-    "topicId": 22,
+    "topicId": 18,
     "domain": "geo",
     "skill": "Lines, angles, and triangles",
     "difficulty": 3,
@@ -97,12 +127,22 @@
     "pool": "stop",
     "prompt": "In triangle $ABC$, point $D$ lies on $\\overline{AB}$ and point $E$ lies on $\\overline{AC}$ such that $\\overline{DE}$ is parallel to $\\overline{BC}$. If $AD=6$, $DB=4$, $DE=9$, and $AE=7.5$, what is the perimeter of quadrilateral $DBCE$?",
     "mn": "$ABC$ гурвалжны $AB$ тал дээр $D$ цэг, $AC$ тал дээр $E$ цэг оршдог ба $DE \\parallel BC$. $AD=6$, $DB=4$, $DE=9$, $AE=7.5$ бол $DBCE$ дөрвөн өнцөгтийн периметр хэд вэ?",
-    "choices": ["$33$", "$24$", "$28$", "$37.5$"],
+    "choices": [
+      "$33$",
+      "$24$",
+      "$28$",
+      "$37.5$"
+    ],
     "answer": 0,
     "explain": "$DE\\parallel BC$ тул $\\triangle ADE \\sim \\triangle ABC$, масштаб $\\frac{AB}{AD}=\\frac{10}{6}=\\frac{5}{3}$. $BC=9\\cdot\\frac{5}{3}=15$, $AC=7.5\\cdot\\frac{5}{3}=12.5$, тэгэхээр $EC=12.5-7.5=5$. Периметр: $DB+BC+CE+ED=4+15+5+9=33$.",
     "hint": "$AB=AD+DB=10$. $\\triangle ADE$ ба $\\triangle ABC$ төсөөтэй.",
-    "verify": { "value": "4+9*10/6+7.5*4/6+9" },
-    "why": { "3": "$37.5$ бол бүтэн $ABC$ гурвалжны периметр.", "2": "$EC$ талыг нэмэхээ мартжээ." },
+    "verify": {
+      "value": "4+9*10/6+7.5*4/6+9"
+    },
+    "why": {
+      "3": "$37.5$ бол бүтэн $ABC$ гурвалжны периметр.",
+      "2": "$EC$ талыг нэмэхээ мартжээ."
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -110,7 +150,7 @@
   },
   {
     "id": "rm22-h2",
-    "topicId": 22,
+    "topicId": 18,
     "domain": "geo",
     "skill": "Lines, angles, and triangles",
     "difficulty": 3,
@@ -118,10 +158,14 @@
     "pool": "stop",
     "prompt": "Triangle $ABC$ is similar to triangle $DEF$, with $AB$ corresponding to $DE$. The length of $\\overline{AB}$ is $15$, the length of $\\overline{DE}$ is $10$, and the area of triangle $ABC$ is $81$ square units. What is the area, in square units, of triangle $DEF$?",
     "mn": "$ABC$ гурвалжин $DEF$ гурвалжинтай төсөөтэй, $AB$ нь $DE$-тэй харгалзана. $AB=15$, $DE=10$, $ABC$ гурвалжны талбай $81$ кв нэгж. $DEF$ гурвалжны талбай хэдэн кв нэгж вэ?",
-    "answer": ["36"],
+    "answer": [
+      "36"
+    ],
     "explain": "Шугаман масштаб $k=\\frac{10}{15}=\\frac{2}{3}$. Талбай $k^2$ дахин өөрчлөгдөнө: $81\\cdot\\left(\\frac{2}{3}\\right)^2=81\\cdot\\frac{4}{9}=36$.",
     "hint": "Төсөөтэй дүрсийн талбайн харьцаа нь талуудын харьцааны квадрат.",
-    "verify": { "value": "81*(10/15)^2" },
+    "verify": {
+      "value": "81*(10/15)^2"
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -129,7 +173,7 @@
   },
   {
     "id": "rm23-e1",
-    "topicId": 23,
+    "topicId": 18,
     "domain": "geo",
     "skill": "Right triangles and trigonometry",
     "difficulty": 1,
@@ -137,11 +181,18 @@
     "pool": "stop",
     "prompt": "A right triangle has a hypotenuse of length $17$ and one leg of length $8$. What is the length of the other leg?",
     "mn": "Тэгш өнцөгт гурвалжны гипотенуз $17$, нэг катет $8$. Нөгөө катетын урт хэд вэ?",
-    "choices": ["$9$", "$\\sqrt{353}$", "$15$", "$25$"],
+    "choices": [
+      "$9$",
+      "$\\sqrt{353}$",
+      "$15$",
+      "$25$"
+    ],
     "answer": 2,
     "explain": "$b^2=17^2-8^2=289-64=225$, тэгэхээр $b=15$.",
     "hint": "Гипотенузын квадратаас мэдэгдэх катетын квадратыг хас.",
-    "verify": { "value": "sqrt(17^2-8^2)" },
+    "verify": {
+      "value": "sqrt(17^2-8^2)"
+    },
     "why": {
       "0": "Талуудыг шууд хасаж болохгүй, квадратуудыг хасна.",
       "1": "Квадратуудыг нэмсэн байна; $17$ бол гипотенуз."
@@ -153,7 +204,7 @@
   },
   {
     "id": "rm23-e2",
-    "topicId": 23,
+    "topicId": 18,
     "domain": "geo",
     "skill": "Right triangles and trigonometry",
     "difficulty": 1,
@@ -161,10 +212,14 @@
     "pool": "stop",
     "prompt": "In a $30^\\circ$-$60^\\circ$-$90^\\circ$ triangle, the side opposite the $30^\\circ$ angle has length $6$. What is the length of the hypotenuse?",
     "mn": "$30^\\circ$-$60^\\circ$-$90^\\circ$ гурвалжинд $30^\\circ$ өнцгийн эсрэг талын урт $6$. Гипотенузын урт хэд вэ?",
-    "answer": ["12"],
+    "answer": [
+      "12"
+    ],
     "explain": "$30^\\circ$-$60^\\circ$-$90^\\circ$ гурвалжинд талууд $x : x\\sqrt{3} : 2x$ харьцаатай. $x=6$ тул гипотенуз $2\\cdot 6=12$.",
     "hint": "Гипотенуз нь богино катетаас 2 дахин урт.",
-    "verify": { "value": "6/sin(pi/6)" },
+    "verify": {
+      "value": "6/sin(pi/6)"
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -172,7 +227,7 @@
   },
   {
     "id": "rm23-m1",
-    "topicId": 23,
+    "topicId": 18,
     "domain": "geo",
     "skill": "Right triangles and trigonometry",
     "difficulty": 2,
@@ -180,11 +235,18 @@
     "pool": "stop",
     "prompt": "A $6.5$-meter ladder leans against the vertical wall of a building, with its base on level ground $2.5$ meters from the wall. The base of the ladder then slides so that it is $3.9$ meters from the wall, and the top of the ladder stays against the wall. By how many meters does the top of the ladder slide down?",
     "mn": "$6.5$ метр урт шат барилгын босоо хананд налаастай, доод үзүүр нь хананаас $2.5$ метр зайд тэгш газар дээр байна. Дараа нь шатны доод үзүүр гулсаж хананаас $3.9$ метр зайд очсон ба дээд үзүүр нь хананд хэвээр наалттай. Шатны дээд үзүүр хэдэн метр доош гулссан бэ?",
-    "choices": ["$0.8$", "$1.4$", "$1.3$", "$5.2$"],
+    "choices": [
+      "$0.8$",
+      "$1.4$",
+      "$1.3$",
+      "$5.2$"
+    ],
     "answer": 0,
     "explain": "Эхэнд өндөр: $\\sqrt{6.5^2-2.5^2}=\\sqrt{42.25-6.25}=\\sqrt{36}=6$. Дараа нь: $\\sqrt{6.5^2-3.9^2}=\\sqrt{42.25-15.21}=\\sqrt{27.04}=5.2$. Доош гулссан зай: $6-5.2=0.8$ м.",
     "hint": "Хоёр байрлал бүрт өндрийг Пифагорын теоремоор ол.",
-    "verify": { "value": "sqrt(6.5^2-2.5^2)-sqrt(6.5^2-3.9^2)" },
+    "verify": {
+      "value": "sqrt(6.5^2-2.5^2)-sqrt(6.5^2-3.9^2)"
+    },
     "why": {
       "1": "$1.4$ бол доод үзүүрийн шилжилт. Дээд үзүүр өөр зайгаар шилжинэ.",
       "3": "$5.2$ бол шинэ өндөр, ялгавар биш."
@@ -196,7 +258,7 @@
   },
   {
     "id": "rm23-m2",
-    "topicId": 23,
+    "topicId": 18,
     "domain": "geo",
     "skill": "Right triangles and trigonometry",
     "difficulty": 2,
@@ -204,11 +266,18 @@
     "pool": "stop",
     "prompt": "An equilateral triangle has sides of length $10$. What is the height of the triangle?",
     "mn": "Зөв гурвалжны талын урт $10$. Гурвалжны өндөр хэд вэ?",
-    "choices": ["$5$", "$5\\sqrt{3}$", "$10\\sqrt{3}$", "$5\\sqrt{2}$"],
+    "choices": [
+      "$5$",
+      "$5\\sqrt{3}$",
+      "$10\\sqrt{3}$",
+      "$5\\sqrt{2}$"
+    ],
     "answer": 1,
     "explain": "Өндөр нь гурвалжныг хоёр ширхэг $30^\\circ$-$60^\\circ$-$90^\\circ$ гурвалжинд хуваана: гипотенуз $10$, богино катет $5$. Өндөр $=\\sqrt{10^2-5^2}=\\sqrt{75}=5\\sqrt{3}$.",
     "hint": "Өндөр нь суурийг хоёр тэнцүү хэсэгт хуваана.",
-    "verify": { "value": "sqrt(10^2-5^2)" },
+    "verify": {
+      "value": "sqrt(10^2-5^2)"
+    },
     "why": {
       "0": "$5$ бол суурийн хагас, өндөр биш.",
       "3": "$45^\\circ$-$45^\\circ$-$90^\\circ$ гурвалжны харьцааг хэрэглэжээ."
@@ -220,7 +289,7 @@
   },
   {
     "id": "rm23-h1",
-    "topicId": 23,
+    "topicId": 18,
     "domain": "geo",
     "skill": "Right triangles and trigonometry",
     "difficulty": 3,
@@ -228,11 +297,18 @@
     "pool": "stop",
     "prompt": "In triangle $ABC$, the measure of angle $B$ is $45^\\circ$ and the measure of angle $C$ is $30^\\circ$. The altitude from $A$ to $\\overline{BC}$ has length $6$. What is the length of $\\overline{BC}$?",
     "mn": "$ABC$ гурвалжинд $B$ өнцөг $45^\\circ$, $C$ өнцөг $30^\\circ$. $A$ оройгоос $BC$ тал руу татсан өндрийн урт $6$. $BC$-ийн урт хэд вэ?",
-    "choices": ["$12$", "$6+2\\sqrt{3}$", "$12+6\\sqrt{2}$", "$6+6\\sqrt{3}$"],
+    "choices": [
+      "$12$",
+      "$6+2\\sqrt{3}$",
+      "$12+6\\sqrt{2}$",
+      "$6+6\\sqrt{3}$"
+    ],
     "answer": 3,
     "explain": "Өндрийн суурийг $H$ гэе. $\\triangle ABH$ нь $45^\\circ$-$45^\\circ$-$90^\\circ$ тул $BH=AH=6$. $\\triangle ACH$ нь $30^\\circ$-$60^\\circ$-$90^\\circ$, $AH=6$ нь $30^\\circ$-ын эсрэг богино катет тул $CH=6\\sqrt{3}$. $BC=6+6\\sqrt{3}$.",
     "hint": "Өндөр гурвалжныг хоёр тусгай тэгш өнцөгт гурвалжинд хуваана.",
-    "verify": { "value": "6/tan(pi/4)+6/tan(pi/6)" },
+    "verify": {
+      "value": "6/tan(pi/4)+6/tan(pi/6)"
+    },
     "why": {
       "1": "$30^\\circ$-ын эсрэг тал нь богино катет. Урт катет $6\\sqrt{3}$ болно, $\\frac{6}{\\sqrt{3}}$ биш.",
       "2": "Гипотенузуудыг ($AB$, $AC$) нэмсэн байна."
@@ -244,7 +320,7 @@
   },
   {
     "id": "rm23-h2",
-    "topicId": 23,
+    "topicId": 18,
     "domain": "geo",
     "skill": "Right triangles and trigonometry",
     "difficulty": 3,
@@ -252,10 +328,14 @@
     "pool": "stop",
     "prompt": "A right triangle has a perimeter of $30$ and a hypotenuse of length $13$. What is the area of the triangle?",
     "mn": "Тэгш өнцөгт гурвалжны периметр $30$, гипотенуз $13$. Гурвалжны талбай хэд вэ?",
-    "answer": ["30"],
+    "answer": [
+      "30"
+    ],
     "explain": "Катетууд $a$, $b$: $a+b=30-13=17$, $a^2+b^2=169$. $(a+b)^2=a^2+2ab+b^2$ тул $289=169+2ab$, $ab=60$. Талбай $=\\frac{ab}{2}=30$. (Катетууд $5$ ба $12$.)",
     "hint": "$(a+b)^2$-г задалж $ab$-г ол.",
-    "verify": { "value": "((30-13)^2-13^2)/4" },
+    "verify": {
+      "value": "((30-13)^2-13^2)/4"
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -263,7 +343,7 @@
   },
   {
     "id": "rm24-e1",
-    "topicId": 24,
+    "topicId": 21,
     "domain": "geo",
     "skill": "Right triangles and trigonometry",
     "difficulty": 1,
@@ -271,12 +351,22 @@
     "pool": "stop",
     "prompt": "In right triangle $DEF$, angle $F$ is the right angle, $DF=20$, $EF=21$, and $DE=29$. What is the value of $\\sin D$?",
     "mn": "$DEF$ тэгш өнцөгт гурвалжинд $F$ нь тэгш өнцөг, $DF=20$, $EF=21$, $DE=29$. $\\sin D$-ийн утга хэд вэ?",
-    "choices": ["$\\frac{21}{29}$", "$\\frac{20}{29}$", "$\\frac{21}{20}$", "$\\frac{29}{21}$"],
+    "choices": [
+      "$\\frac{21}{29}$",
+      "$\\frac{20}{29}$",
+      "$\\frac{21}{20}$",
+      "$\\frac{29}{21}$"
+    ],
     "answer": 0,
     "explain": "$\\sin D=\\frac{\\text{эсрэг}}{\\text{гипотенуз}}$. $D$-ийн эсрэг тал нь $EF=21$, гипотенуз $DE=29$. $\\sin D=\\frac{21}{29}$.",
     "hint": "SOH: sin = эсрэг / гипотенуз.",
-    "verify": { "value": "21/29" },
-    "why": { "1": "$\\frac{20}{29}$ бол $\\cos D$ (дагалдах тал).", "2": "$\\frac{21}{20}$ бол $\\tan D$." },
+    "verify": {
+      "value": "21/29"
+    },
+    "why": {
+      "1": "$\\frac{20}{29}$ бол $\\cos D$ (дагалдах тал).",
+      "2": "$\\frac{21}{20}$ бол $\\tan D$."
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -284,7 +374,7 @@
   },
   {
     "id": "rm24-e2",
-    "topicId": 24,
+    "topicId": 20,
     "domain": "geo",
     "skill": "Right triangles and trigonometry",
     "difficulty": 1,
@@ -292,10 +382,14 @@
     "pool": "stop",
     "prompt": "An angle has a measure of $\\frac{3\\pi}{4}$ radians. What is the measure of the angle, in degrees?",
     "mn": "Өнцгийн хэмжээ $\\frac{3\\pi}{4}$ радиан. Энэ өнцөг хэдэн градус вэ?",
-    "answer": ["135"],
+    "answer": [
+      "135"
+    ],
     "explain": "$\\pi$ радиан $=180^\\circ$. $\\frac{3\\pi}{4}\\cdot\\frac{180^\\circ}{\\pi}=\\frac{3\\cdot 180^\\circ}{4}=135^\\circ$.",
     "hint": "Радианыг $\\frac{180}{\\pi}$-ээр үржүүл.",
-    "verify": { "value": "(3/4)*180" },
+    "verify": {
+      "value": "(3/4)*180"
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -303,7 +397,7 @@
   },
   {
     "id": "rm24-m1",
-    "topicId": 24,
+    "topicId": 21,
     "domain": "geo",
     "skill": "Right triangles and trigonometry",
     "difficulty": 2,
@@ -311,12 +405,22 @@
     "pool": "stop",
     "prompt": "In a right triangle, $\\theta$ is one of the acute angles and $\\tan\\theta=\\frac{8}{15}$. What is the value of $\\cos\\theta$?",
     "mn": "Тэгш өнцөгт гурвалжны нэг хурц өнцөг $\\theta$ ба $\\tan\\theta=\\frac{8}{15}$. $\\cos\\theta$-ийн утга хэд вэ?",
-    "choices": ["$\\frac{8}{17}$", "$\\frac{17}{15}$", "$\\frac{15}{8}$", "$\\frac{15}{17}$"],
+    "choices": [
+      "$\\frac{8}{17}$",
+      "$\\frac{17}{15}$",
+      "$\\frac{15}{8}$",
+      "$\\frac{15}{17}$"
+    ],
     "answer": 3,
     "explain": "Эсрэг тал $8$, дагалдах тал $15$ гэж үзье. Гипотенуз $\\sqrt{8^2+15^2}=\\sqrt{289}=17$. $\\cos\\theta=\\frac{15}{17}$.",
     "hint": "Эхлээд гипотенузыг Пифагорын теоремоор ол.",
-    "verify": { "value": "15/sqrt(8^2+15^2)" },
-    "why": { "0": "$\\frac{8}{17}$ бол $\\sin\\theta$.", "1": "Харьцааг урвуу авсан байна." },
+    "verify": {
+      "value": "15/sqrt(8^2+15^2)"
+    },
+    "why": {
+      "0": "$\\frac{8}{17}$ бол $\\sin\\theta$.",
+      "1": "Харьцааг урвуу авсан байна."
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -324,7 +428,7 @@
   },
   {
     "id": "rm24-m2",
-    "topicId": 24,
+    "topicId": 21,
     "domain": "geo",
     "skill": "Right triangles and trigonometry",
     "difficulty": 2,
@@ -332,11 +436,18 @@
     "pool": "stop",
     "prompt": "In right triangle $ABC$, angle $C$ is the right angle, $AB=40$, and $\\sin A=0.35$. What is the length of $\\overline{BC}$?",
     "mn": "$ABC$ тэгш өнцөгт гурвалжинд $C$ нь тэгш өнцөг, $AB=40$, $\\sin A=0.35$. $BC$-ийн урт хэд вэ?",
-    "choices": ["$26$", "$6\\sqrt{39}$", "$14$", "$\\frac{800}{7}$"],
+    "choices": [
+      "$26$",
+      "$6\\sqrt{39}$",
+      "$14$",
+      "$\\frac{800}{7}$"
+    ],
     "answer": 2,
     "explain": "$BC$ нь $A$ өнцгийн эсрэг тал, $AB$ гипотенуз. $\\sin A=\\frac{BC}{AB}$ тул $BC=40\\cdot 0.35=14$.",
     "hint": "$A$ өнцгийн эсрэг тал аль нь вэ?",
-    "verify": { "value": "40*0.35" },
+    "verify": {
+      "value": "40*0.35"
+    },
     "why": {
       "3": "$40$-ийг $0.35$-д хуваасан байна; үржүүлэх ёстой.",
       "1": "$6\\sqrt{39}$ бол $AC$ (дагалдах тал)."
@@ -348,7 +459,7 @@
   },
   {
     "id": "rm24-h1",
-    "topicId": 24,
+    "topicId": 21,
     "domain": "geo",
     "skill": "Right triangles and trigonometry",
     "difficulty": 3,
@@ -356,10 +467,17 @@
     "pool": "stop",
     "prompt": "In a right triangle, the two acute angles measure $(2k+10)^\\circ$ and $(3k-5)^\\circ$. It is also true that $\\sin\\left((2k+10)^\\circ\\right)=\\cos\\left((3k-5)^\\circ\\right)$. What is the value of $k$?",
     "mn": "Тэгш өнцөгт гурвалжны хоёр хурц өнцөг $(2k+10)^\\circ$ ба $(3k-5)^\\circ$. Мөн $\\sin\\left((2k+10)^\\circ\\right)=\\cos\\left((3k-5)^\\circ\\right)$ байна. $k$-ийн утга хэд вэ?",
-    "answer": ["17"],
+    "answer": [
+      "17"
+    ],
     "explain": "Хурц өнцгүүдийн хувьд $\\sin x^\\circ=\\cos y^\\circ$ бол $x+y=90$. $(2k+10)+(3k-5)=90$ → $5k+5=90$ → $k=17$. Шалгалт: $44^\\circ+46^\\circ=90^\\circ$.",
     "hint": "$\\sin x=\\cos(90^\\circ-x)$.",
-    "verify": { "sub": { "var": "k", "eq": "sin((2k+10)*pi/180) = cos((3k-5)*pi/180)" } },
+    "verify": {
+      "sub": {
+        "var": "k",
+        "eq": "sin((2k+10)*pi/180) = cos((3k-5)*pi/180)"
+      }
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -367,7 +485,7 @@
   },
   {
     "id": "rm24-h2",
-    "topicId": 24,
+    "topicId": 21,
     "domain": "geo",
     "skill": "Right triangles and trigonometry",
     "difficulty": 3,
@@ -375,11 +493,18 @@
     "pool": "stop",
     "prompt": "In right triangle $XYZ$, angle $Y$ is the right angle and angle $X$ measures $\\theta$ radians. If $\\cos\\theta=0.6$, what is the value of $\\tan\\left(\\frac{\\pi}{2}-\\theta\\right)$?",
     "mn": "$XYZ$ тэгш өнцөгт гурвалжинд $Y$ нь тэгш өнцөг, $X$ өнцөг $\\theta$ радиан. $\\cos\\theta=0.6$ бол $\\tan\\left(\\frac{\\pi}{2}-\\theta\\right)$-ийн утга хэд вэ?",
-    "choices": ["$\\frac{4}{3}$", "$\\frac{3}{5}$", "$\\frac{3}{4}$", "$\\frac{4}{5}$"],
+    "choices": [
+      "$\\frac{4}{3}$",
+      "$\\frac{3}{5}$",
+      "$\\frac{3}{4}$",
+      "$\\frac{4}{5}$"
+    ],
     "answer": 2,
     "explain": "$\\frac{\\pi}{2}-\\theta$ нь нөгөө хурц өнцөг $Z$. $\\cos X=\\frac{XY}{XZ}=\\frac{3}{5}$ тул $XY=3$, $XZ=5$, $YZ=4$. $Z$-ийн эсрэг тал $XY=3$, дагалдах тал $YZ=4$: $\\tan Z=\\frac{3}{4}$.",
     "hint": "$\\frac{\\pi}{2}-\\theta$ радиан бол $Z$ өнцөг ($90^\\circ-\\theta$).",
-    "verify": { "value": "0.6/sqrt(1-0.6^2)" },
+    "verify": {
+      "value": "0.6/sqrt(1-0.6^2)"
+    },
     "why": {
       "0": "$\\frac{4}{3}$ бол $\\tan\\theta$, харин асуулт нөгөө өнцгийн тухай.",
       "3": "$\\frac{4}{5}$ бол $\\sin\\theta$."
@@ -391,7 +516,7 @@
   },
   {
     "id": "rm25-e1",
-    "topicId": 25,
+    "topicId": 19,
     "domain": "geo",
     "skill": "Circles",
     "difficulty": 1,
@@ -399,12 +524,19 @@
     "pool": "stop",
     "prompt": "A circle in the $xy$-plane has equation $(x+3)^2+(y-8)^2=49$. What are the coordinates of the center of the circle?",
     "mn": "$xy$ хавтгай дээрх тойргийн тэгшитгэл $(x+3)^2+(y-8)^2=49$. Тойргийн төвийн координат юу вэ?",
-    "choices": ["$(3,-8)$", "$(-3,-8)$", "$(8,-3)$", "$(-3,8)$"],
+    "choices": [
+      "$(3,-8)$",
+      "$(-3,-8)$",
+      "$(8,-3)$",
+      "$(-3,8)$"
+    ],
     "answer": 3,
     "explain": "Стандарт хэлбэр $(x-h)^2+(y-k)^2=r^2$, төв $(h,k)$. $x+3=x-(-3)$ тул $h=-3$, $y-8$ тул $k=8$. Төв $(-3,8)$.",
     "hint": "Хаалтан доторх тэмдгийг эсрэгээр нь ав.",
     "desmos": {
-      "rows": ["(x+3)^2+(y-8)^2=49"],
+      "rows": [
+        "(x+3)^2+(y-8)^2=49"
+      ],
       "tip": "Тэгшитгэлийг бичээд тойргийн төвийг графикаас шалга."
     },
     "why": {
@@ -418,7 +550,7 @@
   },
   {
     "id": "rm25-e2",
-    "topicId": 25,
+    "topicId": 19,
     "domain": "geo",
     "skill": "Circles",
     "difficulty": 1,
@@ -426,10 +558,14 @@
     "pool": "stop",
     "prompt": "A circle has a radius of $9$ centimeters. An arc of the circle is intercepted by a central angle of $80^\\circ$. The length of the arc is $k\\pi$ centimeters. What is the value of $k$?",
     "mn": "Тойргийн радиус $9$ см. Тойргийн нэг нумыг $80^\\circ$ төв өнцөг хүрээлдэг. Нумын урт $k\\pi$ см бол $k$-ийн утга хэд вэ?",
-    "answer": ["4"],
+    "answer": [
+      "4"
+    ],
     "explain": "Нумын урт $=\\frac{80}{360}\\cdot 2\\pi\\cdot 9=\\frac{2}{9}\\cdot 18\\pi=4\\pi$. Тэгэхээр $k=4$.",
     "hint": "Нумын урт = $\\frac{\\text{өнцөг}}{360}\\cdot 2\\pi r$.",
-    "verify": { "value": "(80/360)*2*9" },
+    "verify": {
+      "value": "(80/360)*2*9"
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -437,7 +573,7 @@
   },
   {
     "id": "rm25-m1",
-    "topicId": 25,
+    "topicId": 19,
     "domain": "geo",
     "skill": "Circles",
     "difficulty": 2,
@@ -445,12 +581,22 @@
     "pool": "stop",
     "prompt": "A circle has a radius of $10$ meters. A sector of the circle has a central angle of $\\frac{2\\pi}{5}$ radians. What is the area, in square meters, of the sector?",
     "mn": "Тойргийн радиус $10$ м. Тойргийн нэг секторын төв өнцөг $\\frac{2\\pi}{5}$ радиан. Секторын талбай хэдэн квадрат метр вэ?",
-    "choices": ["$4\\pi$", "$40\\pi$", "$20\\pi$", "$100\\pi$"],
+    "choices": [
+      "$4\\pi$",
+      "$40\\pi$",
+      "$20\\pi$",
+      "$100\\pi$"
+    ],
     "answer": 2,
     "explain": "Бүтэн тойрог $2\\pi$ радиан. Секторын талбай $=\\frac{\\theta}{2\\pi}\\cdot\\pi r^2=\\frac{1}{2}r^2\\theta=\\frac{1}{2}\\cdot 100\\cdot\\frac{2\\pi}{5}=20\\pi$.",
     "hint": "Радианаар: секторын талбай $=\\frac{1}{2}r^2\\theta$.",
-    "verify": { "value": "0.5*10^2*(2*pi/5)" },
-    "why": { "0": "$4\\pi$ бол нумын урт $r\\theta$.", "1": "$\\frac{1}{2}$-ийг мартжээ." },
+    "verify": {
+      "value": "0.5*10^2*(2*pi/5)"
+    },
+    "why": {
+      "0": "$4\\pi$ бол нумын урт $r\\theta$.",
+      "1": "$\\frac{1}{2}$-ийг мартжээ."
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -458,7 +604,7 @@
   },
   {
     "id": "rm25-m2",
-    "topicId": 25,
+    "topicId": 19,
     "domain": "geo",
     "skill": "Circles",
     "difficulty": 2,
@@ -466,11 +612,18 @@
     "pool": "stop",
     "prompt": "Points $A$, $B$, and $C$ lie on a circle with center $O$. Point $C$ lies on the major arc $AB$, and central angle $AOB$ measures $108^\\circ$. What is the measure of inscribed angle $ACB$?",
     "mn": "$A$, $B$, $C$ цэгүүд $O$ төвтэй тойрог дээр оршино. $C$ цэг нь $AB$ их нум дээр, $AOB$ төв өнцөг $108^\\circ$. $ACB$ багтсан өнцөг хэдэн градус вэ?",
-    "choices": ["$54^\\circ$", "$108^\\circ$", "$72^\\circ$", "$216^\\circ$"],
+    "choices": [
+      "$54^\\circ$",
+      "$108^\\circ$",
+      "$72^\\circ$",
+      "$216^\\circ$"
+    ],
     "answer": 0,
     "explain": "Багтсан өнцөг нь ижил нумд тулсан төв өнцгийн хагастай тэнцүү: $\\frac{108^\\circ}{2}=54^\\circ$.",
     "hint": "Багтсан өнцөг = төв өнцгийн хагас.",
-    "verify": { "value": "108/2" },
+    "verify": {
+      "value": "108/2"
+    },
     "why": {
       "1": "Багтсан өнцөг төв өнцгөөс бага; хагаслах хэрэгтэй.",
       "3": "Хоёр дахин үржүүлсэн байна; харин хуваах ёстой."
@@ -482,7 +635,7 @@
   },
   {
     "id": "rm25-h1",
-    "topicId": 25,
+    "topicId": 19,
     "domain": "geo",
     "skill": "Circles",
     "difficulty": 3,
@@ -490,13 +643,22 @@
     "pool": "stop",
     "prompt": "A circle in the $xy$-plane has equation $x^2+y^2-10x+6y-2=0$. What is the radius of the circle?",
     "mn": "$xy$ хавтгай дээрх тойргийн тэгшитгэл $x^2+y^2-10x+6y-2=0$. Тойргийн радиус хэд вэ?",
-    "choices": ["$6$", "$\\sqrt{2}$", "$36$", "$4\\sqrt{2}$"],
+    "choices": [
+      "$6$",
+      "$\\sqrt{2}$",
+      "$36$",
+      "$4\\sqrt{2}$"
+    ],
     "answer": 0,
     "explain": "Бүтэн квадрат гаргана: $(x^2-10x+25)+(y^2+6y+9)=2+25+9$. $(x-5)^2+(y+3)^2=36$, тэгэхээр $r=6$.",
     "hint": "$x$ ба $y$ тус бүрээр бүтэн квадрат гарга; нэмсэн тоогоо баруун талд ч нэм.",
-    "verify": { "value": "sqrt(2+5^2+3^2)" },
+    "verify": {
+      "value": "sqrt(2+5^2+3^2)"
+    },
     "desmos": {
-      "rows": ["x^2+y^2-10x+6y-2=0"],
+      "rows": [
+        "x^2+y^2-10x+6y-2=0"
+      ],
       "tip": "Desmos тойргийг шууд зурна. Төв $(5,-3)$-аас ирмэг хүртэлх зайг хар."
     },
     "why": {
@@ -510,7 +672,7 @@
   },
   {
     "id": "rm25-h2",
-    "topicId": 25,
+    "topicId": 19,
     "domain": "geo",
     "skill": "Circles",
     "difficulty": 3,
@@ -518,10 +680,17 @@
     "pool": "stop",
     "prompt": "The equation $x^2+8x+y^2-14y=k$, where $k$ is a constant, defines a circle in the $xy$-plane. The area of the circle is $81\\pi$. What is the value of $k$?",
     "mn": "$k$ тогтмол бөгөөд $x^2+8x+y^2-14y=k$ тэгшитгэл $xy$ хавтгай дээр тойрог тодорхойлно. Тойргийн талбай $81\\pi$ бол $k$-ийн утга хэд вэ?",
-    "answer": ["16"],
+    "answer": [
+      "16"
+    ],
     "explain": "Талбай $\\pi r^2=81\\pi$ тул $r^2=81$. Бүтэн квадрат: $(x+4)^2+(y-7)^2=k+16+49=k+65$. $k+65=81$ → $k=16$.",
     "hint": "Эхлээд $r^2$-ыг ол, дараа нь бүтэн квадрат гарга.",
-    "verify": { "sub": { "var": "k", "eq": "81 = k+16+49" } },
+    "verify": {
+      "sub": {
+        "var": "k",
+        "eq": "81 = k+16+49"
+      }
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -529,7 +698,7 @@
   },
   {
     "id": "rm26-e1",
-    "topicId": 26,
+    "topicId": 22,
     "domain": "geo",
     "skill": "Area and volume",
     "difficulty": 1,
@@ -537,12 +706,22 @@
     "pool": "stop",
     "prompt": "A storage box in the shape of a right rectangular prism has length $9$ inches, width $5$ inches, and height $4$ inches. What is the volume, in cubic inches, of the box?",
     "mn": "Тэгш өнцөгт параллелепипед хэлбэртэй хайрцагны урт $9$ инч, өргөн $5$ инч, өндөр $4$ инч. Хайрцагны эзэлхүүн хэдэн куб инч вэ?",
-    "choices": ["$90$", "$202$", "$18$", "$180$"],
+    "choices": [
+      "$90$",
+      "$202$",
+      "$18$",
+      "$180$"
+    ],
     "answer": 3,
     "explain": "$V=lwh=9\\cdot 5\\cdot 4=180$ куб инч.",
     "hint": "Гурван хэмжээсийг үржүүл.",
-    "verify": { "value": "4*5*9" },
-    "why": { "1": "$202$ бол гадаргуугийн талбай.", "2": "Хэмжээсүүдийг нэмсэн байна." },
+    "verify": {
+      "value": "4*5*9"
+    },
+    "why": {
+      "1": "$202$ бол гадаргуугийн талбай.",
+      "2": "Хэмжээсүүдийг нэмсэн байна."
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -550,7 +729,7 @@
   },
   {
     "id": "rm26-e2",
-    "topicId": 26,
+    "topicId": 22,
     "domain": "geo",
     "skill": "Area and volume",
     "difficulty": 1,
@@ -558,12 +737,22 @@
     "pool": "stop",
     "prompt": "The floor of a ger is a circle with a diameter of $6$ meters. What is the area, in square meters, of the floor?",
     "mn": "Гэрийн шал нь $6$ метр диаметртэй тойрог хэлбэртэй. Шалны талбай хэдэн квадрат метр вэ?",
-    "choices": ["$9\\pi$", "$36\\pi$", "$6\\pi$", "$3\\pi$"],
+    "choices": [
+      "$9\\pi$",
+      "$36\\pi$",
+      "$6\\pi$",
+      "$3\\pi$"
+    ],
     "answer": 0,
     "explain": "Радиус $r=\\frac{6}{2}=3$. Талбай $\\pi r^2=\\pi\\cdot 3^2=9\\pi$ кв м.",
     "hint": "Эхлээд радиусыг ол.",
-    "verify": { "value": "pi*3^2" },
-    "why": { "1": "Диаметрийг радиус гэж авсан байна.", "2": "$6\\pi$ бол тойргийн урт." },
+    "verify": {
+      "value": "pi*3^2"
+    },
+    "why": {
+      "1": "Диаметрийг радиус гэж авсан байна.",
+      "2": "$6\\pi$ бол тойргийн урт."
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -571,7 +760,7 @@
   },
   {
     "id": "rm26-m1",
-    "topicId": 26,
+    "topicId": 22,
     "domain": "geo",
     "skill": "Area and volume",
     "difficulty": 2,
@@ -579,11 +768,18 @@
     "pool": "stop",
     "prompt": "A right circular cone has a base radius of $6$ centimeters and a height of $8$ centimeters. What is the volume, in cubic centimeters, of the cone?",
     "mn": "Шулуун дугуй конусын суурийн радиус $6$ см, өндөр $8$ см. Конусын эзэлхүүн хэдэн куб см вэ?",
-    "choices": ["$288\\pi$", "$96\\pi$", "$60\\pi$", "$128\\pi$"],
+    "choices": [
+      "$288\\pi$",
+      "$96\\pi$",
+      "$60\\pi$",
+      "$128\\pi$"
+    ],
     "answer": 1,
     "explain": "$V=\\frac{1}{3}\\pi r^2h=\\frac{1}{3}\\pi\\cdot 36\\cdot 8=96\\pi$ куб см.",
     "hint": "Конус нь ижил суурь, өндөртэй цилиндрийн $\\frac{1}{3}$.",
-    "verify": { "value": "(1/3)*pi*6^2*8" },
+    "verify": {
+      "value": "(1/3)*pi*6^2*8"
+    },
     "why": {
       "0": "$\\frac{1}{3}$-ийг мартжээ (цилиндрийн эзэлхүүн).",
       "2": "$60\\pi$ бол хажуу гадаргуугийн талбай.",
@@ -596,7 +792,7 @@
   },
   {
     "id": "rm26-m2",
-    "topicId": 26,
+    "topicId": 22,
     "domain": "geo",
     "skill": "Area and volume",
     "difficulty": 2,
@@ -604,10 +800,14 @@
     "pool": "stop",
     "prompt": "A right pyramid has a square base with side length $9$ meters and a height of $10$ meters. What is the volume, in cubic meters, of the pyramid?",
     "mn": "Шулуун пирамидын суурь нь $9$ метр талтай квадрат, өндөр нь $10$ метр. Пирамидын эзэлхүүн хэдэн куб метр вэ?",
-    "answer": ["270"],
+    "answer": [
+      "270"
+    ],
     "explain": "Суурийн талбай $B=9^2=81$. $V=\\frac{1}{3}Bh=\\frac{1}{3}\\cdot 81\\cdot 10=270$ куб м.",
     "hint": "$V=\\frac{1}{3}\\cdot$ суурийн талбай $\\cdot$ өндөр.",
-    "verify": { "value": "(1/3)*9^2*10" },
+    "verify": {
+      "value": "(1/3)*9^2*10"
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -615,7 +815,7 @@
   },
   {
     "id": "rm26-h1",
-    "topicId": 26,
+    "topicId": 22,
     "domain": "geo",
     "skill": "Area and volume",
     "difficulty": 3,
@@ -623,11 +823,18 @@
     "pool": "stop",
     "prompt": "Cylinder $P$ has radius $r$ and height $h$. Cylinder $Q$ has a radius that is $3$ times the radius of cylinder $P$ and a height that is half the height of cylinder $P$. The volume of cylinder $Q$ is how many times the volume of cylinder $P$?",
     "mn": "$P$ цилиндрийн радиус $r$, өндөр $h$. $Q$ цилиндрийн радиус нь $P$-ийнхээс $3$ дахин их, өндөр нь $P$-ийнхээс хоёр дахин бага. $Q$ цилиндрийн эзэлхүүн $P$-ийнхээс хэд дахин их вэ?",
-    "choices": ["$\\frac{3}{2}$", "$9$", "$\\frac{9}{2}$", "$\\frac{27}{2}$"],
+    "choices": [
+      "$\\frac{3}{2}$",
+      "$9$",
+      "$\\frac{9}{2}$",
+      "$\\frac{27}{2}$"
+    ],
     "answer": 2,
     "explain": "$V_Q=\\pi(3r)^2\\cdot\\frac{h}{2}=9\\pi r^2\\cdot\\frac{h}{2}=\\frac{9}{2}\\pi r^2h=\\frac{9}{2}V_P$.",
     "hint": "Радиус эзэлхүүнд квадратаар орно.",
-    "verify": { "value": "3^2*(1/2)" },
+    "verify": {
+      "value": "3^2*(1/2)"
+    },
     "why": {
       "0": "Радиусыг квадрат зэрэгт дэвшүүлээгүй.",
       "1": "Өндөр хагас болсныг тооцоогүй.",
@@ -640,7 +847,7 @@
   },
   {
     "id": "rm26-h2",
-    "topicId": 26,
+    "topicId": 22,
     "domain": "geo",
     "skill": "Area and volume",
     "difficulty": 3,
@@ -648,13 +855,247 @@
     "pool": "stop",
     "prompt": "A grain silo is made of a right circular cylinder with a hemisphere on top. The cylinder and the hemisphere each have a radius of $3$ meters, and the cylinder has a height of $10$ meters. The total volume of the silo is $k\\pi$ cubic meters. What is the value of $k$?",
     "mn": "Үр тарианы агуулах нь шулуун дугуй цилиндр ба түүний дээр байрлах хагас бөмбөрцгөөс тогтоно. Цилиндр ба хагас бөмбөрцгийн радиус $3$ метр, цилиндрийн өндөр $10$ метр. Агуулахын нийт эзэлхүүн $k\\pi$ куб метр бол $k$-ийн утга хэд вэ?",
-    "answer": ["108"],
+    "answer": [
+      "108"
+    ],
     "explain": "Цилиндр: $\\pi r^2h=\\pi\\cdot 9\\cdot 10=90\\pi$. Хагас бөмбөрцөг: $\\frac{1}{2}\\cdot\\frac{4}{3}\\pi r^3=\\frac{2}{3}\\pi\\cdot 27=18\\pi$. Нийт $108\\pi$, $k=108$.",
     "hint": "Бөмбөрцгийн эзэлхүүн $\\frac{4}{3}\\pi r^3$; хагасыг нь ав.",
-    "verify": { "value": "3^2*10+(2/3)*3^3" },
+    "verify": {
+      "value": "3^2*10+(2/3)*3^3"
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
     "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-17-1-1",
+    "topicId": 17,
+    "domain": "geo",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "Two angles form a straight angle. One measures 45 degrees. What is the other angle in degrees?",
+    "mn": "Нэг шулуун үүсгэх хоёр хөрш өнцгийн нэг нь $45^\\circ$. Нөгөө өнцөг хэдэн градус вэ?",
+    "answer": [
+      "135"
+    ],
+    "explain": "Шулуун өнцөг $180^\\circ$. Иймд $180-45=135^\\circ$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "180-(3*5+30)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-17-2-1",
+    "topicId": 17,
+    "domain": "geo",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "Parallel lines are cut by a transversal. Corresponding angles measure $(3x+3)$ and $(2x+18)$ degrees. What is $x$?",
+    "mn": "Зэрэгцээ шулууны харгалзах өнцгүүд $(3x+3)^\\circ$, $(2x+18)^\\circ$ бол $x$ хэд вэ?",
+    "answer": [
+      "15"
+    ],
+    "explain": "Харгалзах өнцгүүд тэнцүү: $3x+3=2x+18$. Иймд $x=15$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "18-3"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-17-3-1",
+    "topicId": 17,
+    "domain": "geo",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "Two parallel lines are cut by a transversal. Same-side interior angles measure $(4x+3)$ and $(2x+9)$ degrees. What is $x$?",
+    "mn": "Зэрэгцээ шулууны нэг талын дотоод өнцгүүд $(4x+3)^\\circ$, $(2x+9)^\\circ$ бол $x$ хэд вэ?",
+    "answer": [
+      "28"
+    ],
+    "explain": "Нэг талын дотоод өнцгүүдийн нийлбэр $180^\\circ$: $6x+12=180$. Иймд $x=(174-6)/6=28$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "(174-2*3)/6"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-17-3-2",
+    "topicId": 17,
+    "domain": "geo",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "Two parallel lines are cut by a transversal. Same-side interior angles measure $(4x+4)$ and $(2x+10)$ degrees. What is $x$?",
+    "mn": "Зэрэгцээ шулууны нэг талын дотоод өнцгүүд $(4x+4)^\\circ$, $(2x+10)^\\circ$ бол $x$ хэд вэ?",
+    "answer": [
+      "83/3"
+    ],
+    "explain": "Нэг талын дотоод өнцгүүдийн нийлбэр $180^\\circ$: $6x+14=180$. Иймд $x=(174-8)/6=83/3$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "(174-2*4)/6"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-20-1-1",
+    "topicId": 20,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "An angle measures 90 degrees. Its measure in radians is $k\\pi$. What is $k$?",
+    "mn": "$90^\\circ$ өнцөг $k\\pi$ радиан бол $k$ хэд вэ?",
+    "answer": [
+      "1/2"
+    ],
+    "explain": "Градусыг $\\pi/180$-аар үржүүлнэ: $90\\pi/180=(1/2)\\pi$. Иймд $k=1/2$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "90/180"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-20-2-1",
+    "topicId": 20,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A circle has radius 3 and a central angle of $\\frac{2\\pi}{3}$ radians. The intercepted arc length is $k\\pi$. What is $k$?",
+    "mn": "Радиус $3$ тойргийн төвийн өнцөг $2\\pi/3$ радиан. Нумын урт $k\\pi$ бол $k$ хэд вэ?",
+    "answer": [
+      "2"
+    ],
+    "explain": "$s=r\\theta=3\\cdot2\\pi/3=(2)\\pi$, иймд $k=2$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "3*2/3"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-20-2-2",
+    "topicId": 20,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A circle has radius 4 and a central angle of $\\frac{2\\pi}{3}$ radians. The intercepted arc length is $k\\pi$. What is $k$?",
+    "mn": "Радиус $4$ тойргийн төвийн өнцөг $2\\pi/3$ радиан. Нумын урт $k\\pi$ бол $k$ хэд вэ?",
+    "answer": [
+      "8/3"
+    ],
+    "explain": "$s=r\\theta=4\\cdot2\\pi/3=(8/3)\\pi$, иймд $k=8/3$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "4*2/3"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-20-3-1",
+    "topicId": 20,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A sector of a circle with radius 6 has area $9\\pi$. Its central angle is $k\\pi$ radians. What is $k$?",
+    "mn": "Радиус $6$ тойргийн секторын талбай $9\\pi$. Төвийн өнцөг $k\\pi$ радиан бол $k$ хэд вэ?",
+    "answer": [
+      "1/2"
+    ],
+    "explain": "$A=r^2\\theta/2$ тул $\\theta=2A/r^2=2\\cdot9\\pi/36=\\pi/2$. Иймд $k=1/2$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "2*9/36"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-20-3-2",
+    "topicId": 20,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A sector of a circle with radius 8 has area $16\\pi$. Its central angle is $k\\pi$ radians. What is $k$?",
+    "mn": "Радиус $8$ тойргийн секторын талбай $16\\pi$. Төвийн өнцөг $k\\pi$ радиан бол $k$ хэд вэ?",
+    "answer": [
+      "1/2"
+    ],
+    "explain": "$A=r^2\\theta/2$ тул $\\theta=2A/r^2=2\\cdot16\\pi/64=\\pi/2$. Иймд $k=1/2$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "2*16/64"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-21-1-1",
+    "topicId": 21,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "In a right triangle, the side opposite acute angle $A$ has length 9 and the hypotenuse has length 15. What is $\\sin A$?",
+    "mn": "Тэгш өнцөгт гурвалжны $A$ хурц өнцгийн эсрэг тал $9$, гипотенуз $15$. $\\sin A$ хэд вэ?",
+    "answer": [
+      "3/5"
+    ],
+    "explain": "Синус нь эсрэг катет/гипотенуз: $9/15=3/5$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "9/15"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
   }
 ]

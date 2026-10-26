@@ -1,304 +1,350 @@
 [
   {
-    "id": "rmp07-m",
-    "topicId": 7,
-    "domain": "psda",
-    "skill": "Ratios, rates, proportional relationships, and units",
-    "difficulty": 2,
-    "format": "mcq",
-    "pool": "placement",
-    "prompt": "On a map, $2$ centimeters represent $45$ kilometers. The distance between two towns on the map is $9$ centimeters. What is the actual distance between the towns, in kilometers?",
-    "mn": "Газрын зураг дээр $2$ см нь $45$ км-ийг илэрхийлнэ. Хоёр хотын хоорондох зай зураг дээр $9$ см. Бодит зай хэдэн км вэ?",
-    "choices": ["$90$", "$405$", "$202.5$", "$22.5$"],
-    "answer": 2,
-    "explain": "$1$ см $= 22.5$ км. $9\\cdot 22.5 = 202.5$ км.",
-    "hint": "Пропорц зохио: $\\frac{2}{45} = \\frac{9}{x}$.",
-    "why": {
-      "1": "$9\\cdot 45$ — $2$-т хуваагаагүй.",
-      "3": "$1$ см-ийн зай, $9$-өөр үржүүлээгүй."
-    },
-    "verify": {
-      "value": "9*45/2"
-    },
-    "vocab": ["represent", "actual distance"],
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rmp09-m",
-    "topicId": 9,
+    "id": "rmc2-p08-1",
+    "topicId": 8,
     "domain": "psda",
     "skill": "Percentages",
-    "difficulty": 2,
+    "difficulty": 1,
     "format": "spr",
     "pool": "placement",
-    "prompt": "After a $20\\%$ increase, the price of a backpack is \\$$54$. What was the price of the backpack, in dollars, before the increase?",
-    "mn": "$20\\%$-иар өссөний дараа үүргэвчийн үнэ \\$$54$ болжээ. Өсөхөөс өмнө үүргэвч хэдэн доллар байсан бэ?",
-    "answer": ["45"],
-    "explain": "Анхны үнэ $x$: $1.2x = 54$, $x = 45$.",
-    "hint": "$54$-өөс $20\\%$-ийг хасах нь буруу — $54$ нь анхны үнийн $120\\%$.",
+    "prompt": "A school in Darkhan has $640$ students. Of these students, $35\\%$ walk to school. How many students walk to school?",
+    "mn": "Дарханы нэгэн сургууль $640$ сурагчтай. Тэдний $35\\%$ нь сургуульдаа явганаар ирдэг. Хэдэн сурагч явганаар ирдэг вэ?",
+    "answer": [
+      "224"
+    ],
+    "explain": "$35\\% = 0.35$. $0.35\\cdot 640 = 224$.",
+    "hint": "Хувийг аравтын бутархай болгоод тоогоор үржүүл.",
     "verify": {
-      "value": "54/1.2"
+      "value": "0.35*640"
     },
-    "vocab": ["increase", "before"],
+    "vocab": [
+      "of these"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
     "createdAt": "2026-10-25"
   },
   {
-    "id": "rmp11-m",
-    "topicId": 11,
+    "id": "rmc2-p08-3",
+    "topicId": 8,
+    "domain": "psda",
+    "skill": "Percentages",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "A coat was on sale for $25\\%$ off its original price. A sales tax of $8\\%$ was then applied to the sale price, and the total amount paid was \\$$81$. What was the original price of the coat, in dollars?",
+    "mn": "Хүрэм анхны үнээсээ $25\\%$-ийн хямдралтай зарагдаж байв. Хямдралтай үнэ дээр $8\\%$-ийн татвар нэмэгдэж, нийт \\$$81$ төлсөн. Хүрмний анхны үнэ хэдэн доллар байсан бэ?",
+    "choices": [
+      "$108$",
+      "$81$",
+      "$100$",
+      "$92$"
+    ],
+    "answer": 2,
+    "explain": "Анхны үнэ $x$ бол $x\\cdot 0.75\\cdot 1.08 = 81$, өөрөөр хэлбэл $0.81x = 81$, $x = 100$.",
+    "hint": "Төлсөн үнийг анхны үнээр илэрхийлж, тэгшитгэл зохио.",
+    "desmos": {
+      "rows": [
+        "0.75*1.08x=81"
+      ],
+      "tip": "Desmos-д тэгшитгэлийг бичвэл $x$-ийн утгыг шууд гаргана."
+    },
+    "why": {
+      "0": "$100\\cdot 1.08$ — анхны үнэ дээр зөвхөн татварыг нэмсэн.",
+      "1": "Төлсөн үнийг анхны үнэтэй андуурсан."
+    },
+    "verify": {
+      "value": "81/(0.75*1.08)"
+    },
+    "vocab": [
+      "sales tax",
+      "original price"
+    ],
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-p10-1",
+    "topicId": 10,
+    "domain": "psda",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "A recipe for buuz dough uses $3$ cups of flour for every $2$ cups of water. How many cups of flour are needed if $8$ cups of water are used?",
+    "mn": "Бууз хийх гурилан зуурмагийн жоронд $2$ аяга усанд $3$ аяга гурил ордог. $8$ аяга ус хэрэглэвэл хэдэн аяга гурил хэрэгтэй вэ?",
+    "choices": [
+      "$10$",
+      "$16$",
+      "$12$",
+      "$6$"
+    ],
+    "answer": 2,
+    "explain": "Харьцаа $3:2$. Ус $8 = 2\\cdot 4$ тул гурил $3\\cdot 4 = 12$ аяга.",
+    "hint": "Ус хэдэн дахин нэмэгдсэн бэ? Гурилыг мөн адил дахин нэмэгдүүл.",
+    "why": {
+      "1": "$8\\cdot 2$ — харьцааг урвуугаар хэрэглэсэн.",
+      "0": "$8+2$ — харьцааг нэмэх үйлдлээр сольсон."
+    },
+    "verify": {
+      "value": "3/2*8"
+    },
+    "vocab": [
+      "for every",
+      "cups"
+    ],
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-p10-3",
+    "topicId": 10,
+    "domain": "psda",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "The ratio of $a$ to $b$ is $3:5$, and the ratio of $b$ to $c$ is $2:7$. What is the value of $\\frac{a}{c}$?",
+    "mn": "$a$ ба $b$-ийн харьцаа $3:5$, $b$ ба $c$-ийн харьцаа $2:7$. $\\frac{a}{c}$-ийн утга хэд вэ?",
+    "choices": [
+      "$\\frac{3}{7}$",
+      "$\\frac{5}{14}$",
+      "$\\frac{21}{10}$",
+      "$\\frac{6}{35}$"
+    ],
+    "answer": 3,
+    "explain": "$\\frac{a}{c} = \\frac{a}{b}\\cdot\\frac{b}{c} = \\frac{3}{5}\\cdot\\frac{2}{7} = \\frac{6}{35}$.",
+    "hint": "$\\frac{a}{b}$ ба $\\frac{b}{c}$-г үржүүлбэл $b$ хураагдана.",
+    "why": {
+      "0": "Харьцааны эхний ба сүүлийн тоог ($3$ ба $7$) шууд авсан — $b$-г тэнцүүлээгүй."
+    },
+    "verify": {
+      "value": "(3/5)*(2/7)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-p23-1",
+    "topicId": 23,
     "domain": "psda",
     "skill": "Two-variable data: models and scatterplots",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "A scatterplot shows the number of visitors $y$, in hundreds, at a museum in Ulaanbaatar and the number of days $x$ since an exhibit opened. The line of best fit is $y = 2.5x + 40$. According to the line of best fit, what is the predicted number of visitors, in hundreds, on day $12$?",
+    "mn": "Цэгэн график нь Улаанбаатарын нэгэн музейн зочдын тоо $y$ (зуугаар) ба үзэсгэлэн нээгдсэнээс хойших өдрийн тоо $x$-ийг харуулна. Хамгийн тохиромжтой шулуун $y = 2.5x + 40$. Энэ шулуунаар $12$ дахь өдрийн зочдын тоо (зуугаар) хэд гэж таамаглагдах вэ?",
+    "choices": [
+      "$30$",
+      "$52$",
+      "$70$",
+      "$82$"
+    ],
+    "answer": 2,
+    "explain": "$x = 12$ орлуулбал $y = 2.5\\cdot 12 + 40 = 30 + 40 = 70$.",
+    "hint": "$x$-ийн оронд $12$-ыг орлуул.",
+    "why": {
+      "0": "$2.5\\cdot 12$ — сул гишүүн $40$-ийг нэмээгүй."
+    },
+    "verify": {
+      "value": "2.5*12+40"
+    },
+    "vocab": [
+      "line of best fit",
+      "predicted"
+    ],
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-p23-3",
+    "topicId": 23,
+    "domain": "psda",
+    "skill": "Two-variable data: models and scatterplots",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "A line of best fit for a scatterplot passes through the points $(2, 31)$ and $(10, 79)$. Based on this line, what is the predicted value of $y$ when $x = 15$?",
+    "mn": "Цэгэн графикийн хамгийн тохиромжтой шулуун $(2, 31)$ ба $(10, 79)$ цэгүүдийг дайрна. Энэ шулуунаар $x = 15$ үед $y$-ийн таамагласан утга хэд вэ?",
+    "choices": [
+      "$94$",
+      "$109$",
+      "$115$",
+      "$103$"
+    ],
+    "answer": 1,
+    "explain": "Налалт $\\frac{79-31}{10-2} = \\frac{48}{8} = 6$. $y = 6x + b$: $31 = 12 + b$, $b = 19$. $x = 15$ үед $y = 90 + 19 = 109$.",
+    "hint": "Хоёр цэгээр налалт, дараа нь сул гишүүнийг ол.",
+    "desmos": {
+      "rows": [
+        "(2,31)",
+        "(10,79)",
+        "y=6x+19"
+      ],
+      "tip": "Хоёр цэгийг хүснэгтэд оруулаад y_1~mx_1+b гэж регресс хийвэл шулуун шууд гарна."
+    },
+    "why": {
+      "0": "$6\\cdot 15+4$ — сул гишүүнийг буруу олсон.",
+      "2": "$79+6\\cdot 6$ — $x$-ийн зөрүүг ($15-10=5$) буруу тоолсон."
+    },
+    "verify": {
+      "value": "6*15+19"
+    },
+    "vocab": [
+      "passes through"
+    ],
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-p24-2",
+    "topicId": 24,
+    "domain": "psda",
+    "skill": "Probability and conditional probability",
     "difficulty": 2,
     "format": "mcq",
     "pool": "placement",
-    "prompt": "A scatterplot shows the average daily temperature $y$, in degrees Celsius, and the number of days $x$ after March 1 in Khovd. The line of best fit is $y = -1.4x + 63$. According to the line of best fit, what is the predicted temperature, in degrees Celsius, on day $15$?",
-    "mn": "Цэгэн график нь Ховдод 3-р сарын 1-ээс хойших өдрийн тоо $x$ ба өдрийн дундаж температур $y$ (°C)-ийг харуулна. Хамгийн тохиромжтой шулуун $y = -1.4x + 63$. Шулуунаар $15$ дахь өдрийн температур хэд гэж таамаглагдах вэ?",
-    "choices": ["$42$", "$84$", "$48$", "$21$"],
-    "answer": 0,
-    "explain": "$y = -1.4\\cdot 15 + 63 = -21 + 63 = 42$.",
-    "hint": "$x = 15$-ыг орлуулж, тэмдгийг анхаар.",
+    "prompt": "In a survey, $200$ students were asked whether they plan to watch the Naadam horse races. Of the $100$ students in grade 10, $48$ answered yes and $52$ answered no. Of the $100$ students in grade 11, $66$ answered yes and $34$ answered no. If one of the students who answered yes is selected at random, what is the probability that the student is in grade 11?",
+    "mn": "Судалгаагаар $200$ сурагчаас Наадмын морин уралдааныг үзэх эсэхийг асуужээ. 10-р ангийн $100$ сурагчаас $48$ нь тийм, $52$ нь үгүй гэсэн. 11-р ангийн $100$ сурагчаас $66$ нь тийм, $34$ нь үгүй гэсэн. \\\"Тийм\\\" гэж хариулсан сурагчдаас санамсаргүйгээр нэгийг сонгоход 11-р ангийнх байх магадлал хэд вэ?",
+    "choices": [
+      "$\\frac{33}{50}$",
+      "$\\frac{33}{100}$",
+      "$\\frac{11}{19}$",
+      "$\\frac{57}{100}$"
+    ],
+    "answer": 2,
+    "explain": "\\\"Тийм\\\" гэсэн нийт $48+66 = 114$. Тэдний $66$ нь 11-р анги. $\\frac{66}{114} = \\frac{11}{19}$.",
+    "hint": "Нөхцөл (\\\"тийм\\\" гэсэн) нь хуваарийг тодорхойлно.",
     "why": {
-      "1": "$63+21$ — сөрөг налалтын тэмдгийг алдсан."
+      "0": "$\\frac{66}{100}$ — 11-р ангийн хувьд \\\"тийм\\\" байх магадлал (нөхцөлийг урвуулсан).",
+      "1": "$\\frac{66}{200}$ — бүх сурагчаас тооцсон.",
+      "3": "$\\frac{114}{200}$ — \\\"тийм\\\" гэх магадлал."
     },
     "verify": {
-      "value": "-1.4*15+63"
+      "value": "66/114"
     },
-    "vocab": ["line of best fit", "predicted"],
+    "vocab": [
+      "at random",
+      "selected"
+    ],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
     "createdAt": "2026-10-25"
   },
   {
-    "id": "rmp13-m",
-    "topicId": 13,
+    "id": "rmc2-p25-1",
+    "topicId": 25,
+    "domain": "psda",
+    "skill": "One-variable data: distributions and measures of center and spread",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "The list shows the number of books read last month by $5$ students: $4, 7, 7, 9, 13$. What is the mean number of books read?",
+    "mn": "Жагсаалтад $5$ сурагчийн өнгөрсөн сард уншсан номын тоо байна: $4, 7, 7, 9, 13$. Уншсан номын дундаж хэд вэ?",
+    "choices": [
+      "$7$",
+      "$8$",
+      "$9$",
+      "$40$"
+    ],
+    "answer": 1,
+    "explain": "Нийлбэр $4+7+7+9+13 = 40$. Дундаж $40\\div 5 = 8$.",
+    "hint": "Бүх утгыг нэмээд тоонд нь хуваа.",
+    "desmos": {
+      "rows": [
+        "mean([4,7,7,9,13])"
+      ],
+      "tip": "Desmos-д mean([...]) гэж бичвэл дунджийг шууд бодно."
+    },
+    "why": {
+      "0": "$7$ нь медиан (ба моод), дундаж биш.",
+      "3": "$40$ нь нийлбэр — $5$-д хуваагаагүй."
+    },
+    "verify": {
+      "value": "(4+7+7+9+13)/5"
+    },
+    "vocab": [
+      "mean"
+    ],
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-p25-3",
+    "topicId": 25,
+    "domain": "psda",
+    "skill": "One-variable data: distributions and measures of center and spread",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "A data set of $10$ numbers has a mean of $18$ and a median of $17$. The greatest number in the data set, $30$, is replaced with $50$. What is the mean of the new data set?",
+    "mn": "$10$ тооноос бүрдэх өгөгдлийн дундаж $18$, медиан $17$. Хамгийн их тоо болох $30$-ыг $50$-аар сольжээ. Шинэ өгөгдлийн дундаж хэд вэ?",
+    "choices": [
+      "$20$",
+      "$18$",
+      "$19$",
+      "$38$"
+    ],
+    "answer": 0,
+    "explain": "Нийлбэр $10\\cdot 18 = 180$. Солисны дараа $180-30+50 = 200$. Дундаж $200\\div 10 = 20$. Медиан харин өөрчлөгдөхгүй ($17$) — хамгийн их утга медианд нөлөөлдөггүй.",
+    "hint": "Нийлбэр хэдээр өөрчлөгдсөн бэ?",
+    "why": {
+      "1": "Медиан өөрчлөгдөхгүй ч дундаж өөрчлөгдөнө.",
+      "3": "$18+20$ — өсөлтийг $10$-д хуваагаагүй."
+    },
+    "verify": {
+      "value": "(10*18-30+50)/10"
+    },
+    "vocab": [
+      "replaced",
+      "greatest"
+    ],
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-p26-2",
+    "topicId": 26,
     "domain": "psda",
     "skill": "Inference from sample statistics and margin of error",
     "difficulty": 2,
     "format": "mcq",
     "pool": "placement",
-    "prompt": "A random sample of $250$ of the $6,000$ voters in a district was surveyed, and $90$ of the voters in the sample support a proposal. Based on the sample, which of the following is the best estimate of the number of voters in the district who support the proposal?",
-    "mn": "Тойргийн $6,000$ сонгогчоос $250$-ийг санамсаргүйгээр сонгож асуухад $90$ нь саналыг дэмжсэн. Түүвэрт тулгуурлавал тойргийн саналыг дэмжигч сонгогчдын тооны хамгийн сайн үнэлгээ аль вэ?",
-    "choices": ["$90$", "$2,160$", "$3,840$", "$1,500$"],
-    "answer": 1,
-    "explain": "Түүврийн хувь $\\frac{90}{250} = 0.36$. $0.36\\cdot 6000 = 2160$.",
-    "hint": "Түүврийн хувийг нийт сонгогчдод хэрэглэ.",
-    "why": {
-      "2": "Дэмжээгүй сонгогчдын тоо.",
-      "0": "Зөвхөн түүвэр дэх тоо."
-    },
-    "verify": {
-      "value": "90/250*6000"
-    },
-    "vocab": ["random sample", "estimate"],
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rmp08-e",
-    "topicId": 8,
-    "domain": "psda",
-    "skill": "Ratios, rates, proportional relationships, and units",
-    "difficulty": 1,
-    "format": "spr",
-    "pool": "placement",
-    "prompt": "A bag of flour weighs $2.5$ kilograms. How many $125$-gram portions of flour are in the bag? ($1$ kilogram $= 1,000$ grams)",
-    "mn": "Гурилын уут $2.5$ кг жинтэй. Уутанд $125$ граммын хэдэн хэсэг гурил байх вэ? ($1$ кг $= 1,000$ г)",
-    "answer": ["20"],
-    "explain": "$2.5$ кг $= 2500$ г. $2500\\div 125 = 20$.",
-    "hint": "Эхлээд нэгжийг ижил болго.",
-    "verify": {
-      "value": "2.5*1000/125"
-    },
-    "vocab": ["portions", "weighs"],
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rmp08-h",
-    "topicId": 8,
-    "domain": "psda",
-    "skill": "Ratios, rates, proportional relationships, and units",
-    "difficulty": 3,
-    "format": "mcq",
-    "pool": "placement",
-    "prompt": "A car's fuel efficiency is $40$ miles per gallon. Assume that $1$ mile $= 1.6$ kilometers and $1$ gallon $= 4$ liters. What is the car's fuel efficiency, in kilometers per liter?",
-    "mn": "Машины шатахууны үр ашиг галлон тутамд $40$ миль. $1$ миль $= 1.6$ км, $1$ галлон $= 4$ литр гэж үзье. Машины шатахууны үр ашиг литр тутамд хэдэн км вэ?",
-    "choices": ["$100$", "$256$", "$25.6$", "$16$"],
+    "prompt": "A researcher surveyed $150$ randomly selected adults in Erdenet about their daily commute time and reported a margin of error of $6$ minutes for the mean commute time. The researcher wants to conduct a new survey with a smaller margin of error. Which change is most likely to produce a smaller margin of error?",
+    "mn": "Судлаач Эрдэнэтийн санамсаргүй сонгосон $150$ насанд хүрэгчээс өдөр бүр ажилдаа очих хугацааг асууж, дундаж хугацааны алдааны хязгаарыг $6$ минут гэж мэдээлжээ. Илүү бага алдааны хязгаартай шинэ судалгаа хийхийг хүсч байна. Аль өөрчлөлт алдааны хязгаарыг багасгах магадлал хамгийн өндөр вэ?",
+    "choices": [
+      "Survey $100$ randomly selected adults in Erdenet.",
+      "Survey only the $150$ adults who live closest to the city center.",
+      "Survey $150$ adults who volunteer to answer an online form.",
+      "Survey $600$ randomly selected adults in Erdenet."
+    ],
     "answer": 3,
-    "explain": "$40$ миль $= 64$ км. $1$ галлон $= 4$ литр тул $64\\div 4 = 16$ км/литр.",
-    "hint": "Хүртвэрийг км, хуваарийг литрт шилжүүл.",
+    "explain": "Бусад нөхцөл ижил бол түүврийн хэмжээ ихсэх тусам алдааны хязгаар багасна. Санамсаргүй бус түүвэр нь хазайлт үүсгэнэ, алдааны хязгаарыг багасгахгүй.",
+    "hint": "Илүү их мэдээлэл цуглуулбал үнэлгээ илүү нарийвчлалтай болно.",
     "why": {
-      "0": "$40\\cdot 4\\div 1.6$ — хөрвүүлэх коэффициентүүдийг урвуугаар хэрэглэсэн.",
-      "1": "$40\\cdot 1.6\\cdot 4$ — литрээр хуваах ёстой."
+      "0": "Түүвэр багасвал алдааны хязгаар ихэснэ.",
+      "1": "Санамсаргүй бус түүвэр хазайлттай."
     },
-    "verify": {
-      "value": "40*1.6/4"
-    },
-    "vocab": ["fuel efficiency", "miles per gallon"],
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rmp10-e",
-    "topicId": 10,
-    "domain": "psda",
-    "skill": "One-variable data: distributions and measures of center and spread",
-    "difficulty": 1,
-    "format": "mcq",
-    "pool": "placement",
-    "prompt": "What is the range of the data set $14, 9, 21, 17, 6, 12$?",
-    "mn": "$14, 9, 21, 17, 6, 12$ өгөгдлийн далайц (range) хэд вэ?",
-    "choices": ["$13$", "$21$", "$15$", "$6$"],
-    "answer": 2,
-    "explain": "Далайц $=$ хамгийн их $-$ хамгийн бага $= 21 - 6 = 15$.",
-    "hint": "Хамгийн их ба хамгийн бага утгыг ол.",
-    "why": {
-      "1": "$21$ нь хамгийн их утга, далайц биш."
-    },
-    "verify": {
-      "value": "21-6"
-    },
-    "vocab": ["range"],
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rmp10-h",
-    "topicId": 10,
-    "domain": "psda",
-    "skill": "One-variable data: distributions and measures of center and spread",
-    "difficulty": 3,
-    "format": "spr",
-    "pool": "placement",
-    "prompt": "A class of $20$ students had a mean test score of $72$. When the scores of these students are combined with the scores of another class of $30$ students, the mean score of all $50$ students is $78$. What is the mean test score of the class of $30$ students?",
-    "mn": "$20$ сурагчтай ангийн шалгалтын дундаж оноо $72$. Эдгээрийг $30$ сурагчтай өөр ангийн оноотой нэгтгэхэд $50$ сурагчийн дундаж $78$ болсон. $30$ сурагчтай ангийн дундаж оноо хэд вэ?",
-    "answer": ["82"],
-    "explain": "Нийт оноо $50\\cdot 78 = 3900$. Эхний анги $20\\cdot 72 = 1440$. Хоёр дахь анги $3900-1440 = 2460$, дундаж $2460\\div 30 = 82$.",
-    "hint": "Дунджуудыг шууд дундажлах боломжгүй — нийлбэр ашигла.",
-    "verify": {
-      "value": "(50*78-20*72)/30"
-    },
-    "vocab": ["combined", "mean score"],
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rmp12-e",
-    "topicId": 12,
-    "domain": "psda",
-    "skill": "Probability and conditional probability",
-    "difficulty": 1,
-    "format": "spr",
-    "pool": "placement",
-    "prompt": "A jar contains $12$ marbles, and $3$ of them are white. If one marble is selected at random, what is the probability that it is NOT white?",
-    "mn": "Саванд $12$ бөмбөлөг байгаагаас $3$ нь цагаан. Санамсаргүй нэгийг авахад цагаан БИШ байх магадлал хэд вэ?",
-    "answer": ["3/4", ".75", "0.75"],
-    "explain": "Цагаан биш $12-3 = 9$. $\\frac{9}{12} = \\frac{3}{4}$.",
-    "hint": "Цагаан бишийн тоог нийтэд хуваа.",
-    "verify": {
-      "value": "(12-3)/12"
-    },
-    "vocab": ["at random", "NOT"],
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rmp12-h",
-    "topicId": 12,
-    "domain": "psda",
-    "skill": "Probability and conditional probability",
-    "difficulty": 3,
-    "format": "mcq",
-    "pool": "placement",
-    "prompt": "A survey of $300$ people recorded age group and preferred phone brand. Under age $30$: Brand A $90$, Brand B $60$. Age $30$ or older: Brand A $70$, Brand B $80$. If a person who prefers Brand B is selected at random, what is the probability that the person is under age $30$?",
-    "mn": "$300$ хүнээс насны бүлэг ба илүүд үздэг утасны брэндийг асуужээ. $30$-аас доош насны: A брэнд $90$, B брэнд $60$. $30$ ба түүнээс дээш: A брэнд $70$, B брэнд $80$. B брэндийг илүүд үздэг хүнээс санамсаргүй нэгийг сонгоход $30$-аас доош настай байх магадлал хэд вэ?",
-    "choices": ["$\\frac{3}{7}$", "$\\frac{2}{5}$", "$\\frac{1}{5}$", "$\\frac{4}{7}$"],
-    "answer": 0,
-    "explain": "B брэнд нийт $60+80 = 140$. Тэдний $60$ нь $30$-аас доош. $\\frac{60}{140} = \\frac{3}{7}$.",
-    "hint": "B брэндийг илүүд үздэг хүмүүс л хуваарьт орно.",
-    "why": {
-      "1": "$\\frac{60}{150}$ — нөхцөлийг урвуулсан.",
-      "2": "$\\frac{60}{300}$ — бүх хүнээс тооцсон."
-    },
-    "verify": {
-      "value": "60/140"
-    },
-    "vocab": ["preferred", "under age"],
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rmp14-e",
-    "topicId": 14,
-    "domain": "psda",
-    "skill": "Evaluating statistical claims: observational studies and experiments",
-    "difficulty": 1,
-    "format": "mcq",
-    "pool": "placement",
-    "prompt": "In an experiment, researchers randomly assign participants to either a treatment group or a control group. What is the main reason for random assignment?",
-    "mn": "Туршилтад судлаачид оролцогчдыг санамсаргүйгээр эмчилгээний эсвэл хяналтын бүлэгт хуваарилдаг. Санамсаргүй оноолтын гол зорилго юу вэ?",
-    "choices": [
-      "To make sure the sample represents the whole population",
-      "To increase the number of participants in the study",
-      "To make the groups similar so that differences in results can be attributed to the treatment",
-      "To guarantee that the treatment will work"
+    "vocab": [
+      "margin of error",
+      "randomly selected"
     ],
-    "answer": 2,
-    "explain": "Санамсаргүй оноолт нь бүлгүүдийг бусад шинжээрээ ижил төстэй болгож, үр дүнгийн ялгааг эмчилгээтэй холбох боломж олгоно.",
-    "hint": "Хэрэв бүлгүүд эхнээсээ өөр байвал ялгааг юугаар тайлбарлах вэ?",
-    "why": {
-      "0": "Энэ нь санамсаргүй ТҮҮВРИЙН зорилго."
-    },
-    "vocab": ["random assignment", "control group"],
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rmp14-h",
-    "topicId": 14,
-    "domain": "psda",
-    "skill": "Evaluating statistical claims: observational studies and experiments",
-    "difficulty": 3,
-    "format": "mcq",
-    "pool": "placement",
-    "prompt": "Researchers selected a random sample of $1,000$ adults in Mongolia and recorded how often each adult exercises and how many sick days each adult took last year. Adults who exercised regularly took fewer sick days, on average. Which of the following conclusions is best supported by the study?",
-    "mn": "Судлаачид Монголын $1,000$ насанд хүрэгчийн санамсаргүй түүвэр сонгож, хэр олон удаа дасгал хийдэг ба өнгөрсөн жил хэдэн өдөр өвчний чөлөө авсныг бүртгэжээ. Тогтмол дасгал хийдэг хүмүүс дунджаар цөөн өдөр өвчний чөлөө авсан. Аль дүгнэлт хамгийн сайн батлагдах вэ?",
-    "choices": [
-      "Regular exercise causes adults in Mongolia to take fewer sick days.",
-      "Among adults in Mongolia, regular exercise is associated with taking fewer sick days.",
-      "Regular exercise is associated with fewer sick days only for the $1,000$ adults in the sample.",
-      "Regular exercise causes fewer sick days for all adults in the world."
-    ],
-    "answer": 1,
-    "explain": "Санамсаргүй түүвэр → Монголын насанд хүрэгчдэд ерөнхийлж болно. Санамсаргүй оноолт байхгүй → шалтгаан биш, зөвхөн хамаарал.",
-    "hint": "Энэ туршилт уу, ажиглалтын судалгаа уу?",
-    "why": {
-      "0": "Ажиглалтын судалгаа тул шалтгааны дүгнэлт хийхгүй.",
-      "2": "Санамсаргүй түүвэр тул олонлогт ерөнхийлж болно."
-    },
-    "vocab": ["associated with", "random sample"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",

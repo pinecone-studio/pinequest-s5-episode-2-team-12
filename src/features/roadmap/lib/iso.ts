@@ -7,7 +7,7 @@ export type Tilt = {
   depth: number;
 };
 
-export const TILT: Tilt = { angle: -5, squash: 0.62, depth: 24 };
+export const TILT: Tilt = { angle: -3, squash: 0.62, depth: 24 };
 
 /** Affine matrix (SVG order a b c d e f) that tilts a w×h map and shifts it to start at (pad, pad). */
 export type Iso = {

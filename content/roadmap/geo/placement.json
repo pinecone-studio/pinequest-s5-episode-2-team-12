@@ -1,144 +1,251 @@
 [
   {
-    "id": "rmp22-m",
-    "topicId": 22,
+    "id": "rmc2-p17-2",
+    "topicId": 17,
     "domain": "geo",
     "skill": "Lines, angles, and triangles",
     "difficulty": 2,
     "format": "mcq",
     "pool": "placement",
-    "prompt": "Two parallel lines are intersected by a transversal. A pair of alternate interior angles formed by the transversal have measures $(4x+12)^\\circ$ and $(6x-20)^\\circ$. What is the value of $x$?",
-    "mn": "Хоёр параллель шулууныг огтлогч огтолжээ. Үүссэн хэвтээ дотоод (ээлжит дотоод) хоёр өнцөг $(4x+12)^\\circ$ ба $(6x-20)^\\circ$. $x$-ийн утга хэд вэ?",
-    "choices": ["$8$", "$16$", "$32$", "$\\frac{94}{5}$"],
-    "answer": 1,
-    "explain": "Параллель шулуунуудын ээлжит дотоод өнцгүүд тэнцүү: $4x+12=6x-20$. $32=2x$, $x=16$.",
-    "hint": "Ээлжит дотоод өнцгүүд тэнцүү.",
-    "verify": { "sub": { "var": "x", "eq": "4x+12 = 6x-20" } },
-    "why": { "3": "Өнцгүүдийг нийлбэр нь $180^\\circ$ гэж үзсэн; ээлжит дотоод өнцгүүд тэнцүү байдаг." },
+    "prompt": "In triangle $JKL$, the measure of angle $J$ is $(x+20)^\\circ$ and the measure of angle $K$ is $50^\\circ$. Side $\\overline{KL}$ is extended past $L$, forming an exterior angle at $L$ that measures $(3x+10)^\\circ$. What is the value of $x$?",
+    "mn": "$JKL$ гурвалжинд $J$ өнцөг $(x+20)^\\circ$, $K$ өнцөг $50^\\circ$. $KL$ талыг $L$-ээс цааш үргэлжлүүлэхэд $L$ орой дээр $(3x+10)^\\circ$ гадаад өнцөг үүсчээ. $x$-ийн утга хэд вэ?",
+    "choices": [
+      "$15$",
+      "$20$",
+      "$30$",
+      "$40$"
+    ],
+    "answer": 2,
+    "explain": "Гадаад өнцөг нь хөрш биш хоёр дотоод өнцгийн нийлбэртэй тэнцүү: $3x+10=(x+20)+50$. $2x=60$, $x=30$.",
+    "hint": "Гадаад өнцөг = хөрш биш хоёр дотоод өнцгийн нийлбэр.",
+    "verify": {
+      "sub": {
+        "var": "x",
+        "eq": "3x+10 = x+20+50"
+      }
+    },
+    "why": {
+      "1": "$x=20$ үед гадаад өнцөг $70^\\circ$, харин $J+K=90^\\circ$ болно."
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
     "createdAt": "2026-10-25"
   },
   {
-    "id": "rmp24-m",
-    "topicId": 24,
+    "id": "rmc2-p18-1",
+    "topicId": 18,
     "domain": "geo",
-    "skill": "Right triangles and trigonometry",
-    "difficulty": 2,
+    "skill": "Lines, angles, and triangles",
+    "difficulty": 1,
     "format": "spr",
     "pool": "placement",
-    "prompt": "In right triangle $ABC$, angle $C$ is the right angle, $AC=24$, and $BC=7$. What is the value of $\\cos B$?",
-    "mn": "$ABC$ тэгш өнцөгт гурвалжинд $C$ нь тэгш өнцөг, $AC=24$, $BC=7$. $\\cos B$-ийн утга хэд вэ?",
-    "answer": ["7/25", ".28", "0.28"],
-    "explain": "Гипотенуз $AB=\\sqrt{24^2+7^2}=\\sqrt{625}=25$. $B$-ийн дагалдах тал $BC=7$: $\\cos B=\\frac{7}{25}=0.28$.",
-    "hint": "Эхлээд гипотенузыг ол. CAH: cos = дагалдах / гипотенуз.",
-    "verify": { "value": "7/sqrt(24^2+7^2)" },
+    "prompt": "In triangle $PQR$, the measure of angle $P$ is $47^\\circ$, and the measure of angle $Q$ is twice the measure of angle $P$. What is the measure, in degrees, of angle $R$?",
+    "mn": "$PQR$ гурвалжинд $P$ өнцөг $47^\\circ$, $Q$ өнцөг нь $P$ өнцгөөс 2 дахин их. $R$ өнцөг хэдэн градус вэ?",
+    "answer": [
+      "39"
+    ],
+    "explain": "$\\angle Q=2\\cdot 47^\\circ=94^\\circ$. Гурвалжны өнцгүүдийн нийлбэр $180^\\circ$: $\\angle R=180^\\circ-47^\\circ-94^\\circ=39^\\circ$.",
+    "hint": "Эхлээд $Q$ өнцгийг ол, дараа нь $180^\\circ$-аас хас.",
+    "verify": {
+      "value": "180-47-2*47"
+    },
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
     "createdAt": "2026-10-25"
   },
   {
-    "id": "rmp26-m",
-    "topicId": 26,
+    "id": "rmc2-p18-3",
+    "topicId": 18,
+    "domain": "geo",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "In triangle $ABC$, point $D$ lies on $\\overline{AB}$ and point $E$ lies on $\\overline{AC}$ such that $\\overline{DE}$ is parallel to $\\overline{BC}$. If $AD=6$, $DB=4$, $DE=9$, and $AE=7.5$, what is the perimeter of quadrilateral $DBCE$?",
+    "mn": "$ABC$ гурвалжны $AB$ тал дээр $D$ цэг, $AC$ тал дээр $E$ цэг оршдог ба $DE \\parallel BC$. $AD=6$, $DB=4$, $DE=9$, $AE=7.5$ бол $DBCE$ дөрвөн өнцөгтийн периметр хэд вэ?",
+    "choices": [
+      "$33$",
+      "$24$",
+      "$28$",
+      "$37.5$"
+    ],
+    "answer": 0,
+    "explain": "$DE\\parallel BC$ тул $\\triangle ADE \\sim \\triangle ABC$, масштаб $\\frac{AB}{AD}=\\frac{10}{6}=\\frac{5}{3}$. $BC=9\\cdot\\frac{5}{3}=15$, $AC=7.5\\cdot\\frac{5}{3}=12.5$, тэгэхээр $EC=12.5-7.5=5$. Периметр: $DB+BC+CE+ED=4+15+5+9=33$.",
+    "hint": "$AB=AD+DB=10$. $\\triangle ADE$ ба $\\triangle ABC$ төсөөтэй.",
+    "verify": {
+      "value": "4+9*10/6+7.5*4/6+9"
+    },
+    "why": {
+      "3": "$37.5$ бол бүтэн $ABC$ гурвалжны периметр.",
+      "2": "$EC$ талыг нэмэхээ мартжээ."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-p19-2",
+    "topicId": 19,
+    "domain": "geo",
+    "skill": "Circles",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "A circle has a radius of $10$ meters. A sector of the circle has a central angle of $\\frac{2\\pi}{5}$ radians. What is the area, in square meters, of the sector?",
+    "mn": "Тойргийн радиус $10$ м. Тойргийн нэг секторын төв өнцөг $\\frac{2\\pi}{5}$ радиан. Секторын талбай хэдэн квадрат метр вэ?",
+    "choices": [
+      "$4\\pi$",
+      "$40\\pi$",
+      "$20\\pi$",
+      "$100\\pi$"
+    ],
+    "answer": 2,
+    "explain": "Бүтэн тойрог $2\\pi$ радиан. Секторын талбай $=\\frac{\\theta}{2\\pi}\\cdot\\pi r^2=\\frac{1}{2}r^2\\theta=\\frac{1}{2}\\cdot 100\\cdot\\frac{2\\pi}{5}=20\\pi$.",
+    "hint": "Радианаар: секторын талбай $=\\frac{1}{2}r^2\\theta$.",
+    "verify": {
+      "value": "0.5*10^2*(2*pi/5)"
+    },
+    "why": {
+      "0": "$4\\pi$ бол нумын урт $r\\theta$.",
+      "1": "$\\frac{1}{2}$-ийг мартжээ."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-p20-1",
+    "topicId": 20,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "placement",
+    "prompt": "An angle has a measure of $\\frac{3\\pi}{4}$ radians. What is the measure of the angle, in degrees?",
+    "mn": "Өнцгийн хэмжээ $\\frac{3\\pi}{4}$ радиан. Энэ өнцөг хэдэн градус вэ?",
+    "answer": [
+      "135"
+    ],
+    "explain": "$\\pi$ радиан $=180^\\circ$. $\\frac{3\\pi}{4}\\cdot\\frac{180^\\circ}{\\pi}=\\frac{3\\cdot 180^\\circ}{4}=135^\\circ$.",
+    "hint": "Радианыг $\\frac{180}{\\pi}$-ээр үржүүл.",
+    "verify": {
+      "value": "(3/4)*180"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-p20-3",
+    "topicId": 20,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "placement",
+    "prompt": "A sector of a circle with radius 6 has area $9\\pi$. Its central angle is $k\\pi$ radians. What is $k$?",
+    "mn": "Радиус $6$ тойргийн секторын талбай $9\\pi$. Төвийн өнцөг $k\\pi$ радиан бол $k$ хэд вэ?",
+    "answer": [
+      "1/2"
+    ],
+    "explain": "$A=r^2\\theta/2$ тул $\\theta=2A/r^2=2\\cdot9\\pi/36=\\pi/2$. Иймд $k=1/2$.",
+    "hint": "Эхлээд өгсөн нөхцөл ба олох хэмжээг ялга. Хариугаа дээрх хичээлийн дүрэмтэй холбож шалга.",
+    "verify": {
+      "value": "2*9/36"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-curriculum",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc2-p21-1",
+    "topicId": 21,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "In right triangle $DEF$, angle $F$ is the right angle, $DF=20$, $EF=21$, and $DE=29$. What is the value of $\\sin D$?",
+    "mn": "$DEF$ тэгш өнцөгт гурвалжинд $F$ нь тэгш өнцөг, $DF=20$, $EF=21$, $DE=29$. $\\sin D$-ийн утга хэд вэ?",
+    "choices": [
+      "$\\frac{21}{29}$",
+      "$\\frac{20}{29}$",
+      "$\\frac{21}{20}$",
+      "$\\frac{29}{21}$"
+    ],
+    "answer": 0,
+    "explain": "$\\sin D=\\frac{\\text{эсрэг}}{\\text{гипотенуз}}$. $D$-ийн эсрэг тал нь $EF=21$, гипотенуз $DE=29$. $\\sin D=\\frac{21}{29}$.",
+    "hint": "SOH: sin = эсрэг / гипотенуз.",
+    "verify": {
+      "value": "21/29"
+    },
+    "why": {
+      "1": "$\\frac{20}{29}$ бол $\\cos D$ (дагалдах тал).",
+      "2": "$\\frac{21}{20}$ бол $\\tan D$."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-p21-3",
+    "topicId": 21,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "placement",
+    "prompt": "In a right triangle, the two acute angles measure $(2k+10)^\\circ$ and $(3k-5)^\\circ$. It is also true that $\\sin\\left((2k+10)^\\circ\\right)=\\cos\\left((3k-5)^\\circ\\right)$. What is the value of $k$?",
+    "mn": "Тэгш өнцөгт гурвалжны хоёр хурц өнцөг $(2k+10)^\\circ$ ба $(3k-5)^\\circ$. Мөн $\\sin\\left((2k+10)^\\circ\\right)=\\cos\\left((3k-5)^\\circ\\right)$ байна. $k$-ийн утга хэд вэ?",
+    "answer": [
+      "17"
+    ],
+    "explain": "Хурц өнцгүүдийн хувьд $\\sin x^\\circ=\\cos y^\\circ$ бол $x+y=90$. $(2k+10)+(3k-5)=90$ → $5k+5=90$ → $k=17$. Шалгалт: $44^\\circ+46^\\circ=90^\\circ$.",
+    "hint": "$\\sin x=\\cos(90^\\circ-x)$.",
+    "verify": {
+      "sub": {
+        "var": "k",
+        "eq": "sin((2k+10)*pi/180) = cos((3k-5)*pi/180)"
+      }
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc2-p22-2",
+    "topicId": 22,
     "domain": "geo",
     "skill": "Area and volume",
     "difficulty": 2,
     "format": "mcq",
     "pool": "placement",
-    "prompt": "A sphere has a radius of $3$ inches. What is the volume, in cubic inches, of the sphere?",
-    "mn": "Бөмбөрцгийн радиус $3$ инч. Бөмбөрцгийн эзэлхүүн хэдэн куб инч вэ?",
-    "choices": ["$12\\pi$", "$27\\pi$", "$108\\pi$", "$36\\pi$"],
-    "answer": 3,
-    "explain": "$V=\\frac{4}{3}\\pi r^3=\\frac{4}{3}\\pi\\cdot 27=36\\pi$ куб инч.",
-    "hint": "Бөмбөрцгийн эзэлхүүн $\\frac{4}{3}\\pi r^3$ (томьёоны хуудсанд бий).",
-    "verify": { "value": "(4/3)*pi*3^3" },
-    "why": { "1": "$\\frac{4}{3}$-ийг мартжээ.", "2": "$\\frac{1}{3}$ биш $4$-өөр үржүүлсэн байна." },
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rmp23-e",
-    "topicId": 23,
-    "domain": "geo",
-    "skill": "Right triangles and trigonometry",
-    "difficulty": 1,
-    "format": "mcq",
-    "pool": "placement",
-    "prompt": "A right triangle has legs of length $20$ and $21$. What is the length of the hypotenuse?",
-    "mn": "Тэгш өнцөгт гурвалжны катетууд $20$ ба $21$. Гипотенузын урт хэд вэ?",
-    "choices": ["$41$", "$29$", "$841$", "$\\sqrt{41}$"],
+    "prompt": "A right circular cone has a base radius of $6$ centimeters and a height of $8$ centimeters. What is the volume, in cubic centimeters, of the cone?",
+    "mn": "Шулуун дугуй конусын суурийн радиус $6$ см, өндөр $8$ см. Конусын эзэлхүүн хэдэн куб см вэ?",
+    "choices": [
+      "$288\\pi$",
+      "$96\\pi$",
+      "$60\\pi$",
+      "$128\\pi$"
+    ],
     "answer": 1,
-    "explain": "$c^2=20^2+21^2=400+441=841$, $c=\\sqrt{841}=29$.",
-    "hint": "$a^2+b^2=c^2$.",
-    "verify": { "value": "sqrt(20^2+21^2)" },
-    "why": { "0": "Катетуудыг шууд нэмж болохгүй.", "2": "$841$ бол $c^2$; язгуур гаргах хэрэгтэй." },
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rmp23-h",
-    "topicId": 23,
-    "domain": "geo",
-    "skill": "Right triangles and trigonometry",
-    "difficulty": 3,
-    "format": "spr",
-    "pool": "placement",
-    "prompt": "An equilateral triangle has a height of $9$. The area of the triangle can be written as $k\\sqrt{3}$, where $k$ is a constant. What is the value of $k$?",
-    "mn": "Зөв гурвалжны өндөр $9$. Гурвалжны талбайг $k\\sqrt{3}$ хэлбэрээр бичиж болно ($k$ тогтмол). $k$-ийн утга хэд вэ?",
-    "answer": ["27"],
-    "explain": "Өндөр нь $30^\\circ$-$60^\\circ$-$90^\\circ$ гурвалжны урт катет: $\\frac{s}{2}\\sqrt{3}=9$ → $s=\\frac{18}{\\sqrt{3}}=6\\sqrt{3}$. Талбай $=\\frac{1}{2}\\cdot 6\\sqrt{3}\\cdot 9=27\\sqrt{3}$, $k=27$.",
-    "hint": "Өндөр нь суурийн хагасаас $\\sqrt{3}$ дахин урт.",
-    "verify": { "value": "(2*9/sqrt(3))^2/4" },
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rmp25-e",
-    "topicId": 25,
-    "domain": "geo",
-    "skill": "Circles",
-    "difficulty": 1,
-    "format": "mcq",
-    "pool": "placement",
-    "prompt": "A circular table has a radius of $7$ decimeters. What is the circumference, in decimeters, of the table?",
-    "mn": "Дугуй ширээний радиус $7$ дм. Ширээний тойргийн урт хэдэн дм вэ?",
-    "choices": ["$7\\pi$", "$14\\pi$", "$49\\pi$", "$28\\pi$"],
-    "answer": 1,
-    "explain": "Тойргийн урт $C=2\\pi r=2\\pi\\cdot 7=14\\pi$ дм.",
-    "hint": "$C=2\\pi r$.",
-    "verify": { "value": "2*pi*7" },
-    "why": { "2": "$49\\pi$ бол талбай $\\pi r^2$.", "0": "$2$-оор үржүүлэхээ мартжээ." },
-    "source": "original",
-    "reviewed": false,
-    "author": "suprep-seed",
-    "createdAt": "2026-10-25"
-  },
-  {
-    "id": "rmp25-h",
-    "topicId": 25,
-    "domain": "geo",
-    "skill": "Circles",
-    "difficulty": 3,
-    "format": "mcq",
-    "pool": "placement",
-    "prompt": "Points $A$ and $B$ lie on a circle with center $O$ and radius $12$. The length of minor arc $AB$ is $10\\pi$. What is the measure, in radians, of central angle $AOB$?",
-    "mn": "$A$ ба $B$ цэгүүд $O$ төвтэй, $12$ радиустай тойрог дээр оршино. $AB$ бага нумын урт $10\\pi$. $AOB$ төв өнцөг хэдэн радиан вэ?",
-    "choices": ["$\\frac{5\\pi}{12}$", "$\\frac{5\\pi}{3}$", "$\\frac{5\\pi}{6}$", "$\\frac{6}{5}$"],
-    "answer": 2,
-    "explain": "Радианаар нумын урт $s=r\\theta$. $\\theta=\\frac{s}{r}=\\frac{10\\pi}{12}=\\frac{5\\pi}{6}$ ($=150^\\circ$, бага нум тул $\\pi$-ээс бага).",
-    "hint": "$s=r\\theta$ (θ радианаар).",
-    "verify": { "value": "10*pi/12" },
+    "explain": "$V=\\frac{1}{3}\\pi r^2h=\\frac{1}{3}\\pi\\cdot 36\\cdot 8=96\\pi$ куб см.",
+    "hint": "Конус нь ижил суурь, өндөртэй цилиндрийн $\\frac{1}{3}$.",
+    "verify": {
+      "value": "(1/3)*pi*6^2*8"
+    },
     "why": {
-      "0": "Диаметр $24$-д хуваасан байна; радиусаар хуваана.",
-      "1": "$\\frac{5\\pi}{3}>\\pi$ тул бага нум байж чадахгүй."
+      "0": "$\\frac{1}{3}$-ийг мартжээ (цилиндрийн эзэлхүүн).",
+      "2": "$60\\pi$ бол хажуу гадаргуугийн талбай.",
+      "3": "Радиус ба өндрийг сольсон байна."
     },
     "source": "original",
     "reviewed": false,

@@ -14,9 +14,13 @@ const state = sampleState(); // stops 1–4 done, 5 current, the rest locked
 const views = stopViews(state, true);
 const at = (no: number) => views.find((v) => v.stop.no === no)!;
 
-function renderPanel(no: number, extra: { onMove?: (n: number) => void; onClose?: () => void } = {}) {
+function renderPanel(
+  no: number,
+  extra: { onMove?: (n: number) => void; onClose?: () => void; inline?: boolean } = {},
+) {
   return render(
     <StopPanel
+      inline={extra.inline}
       v={at(no)}
       views={views}
       state={state}
@@ -33,16 +37,29 @@ function renderPanel(no: number, extra: { onMove?: (n: number) => void; onClose?
 }
 
 describe('StopPanel', () => {
+  test('map overview contains only the heading, learning goals and Start action', async () => {
+    renderPanel(5, { inline: true });
+    const overview = screen.getByRole('region', { name: '5-р зогсоол, Улиастай' });
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(within(overview).getByRole('heading', { name: at(5).topic.title })).toBeTruthy();
+    await waitFor(() => expect(within(overview).getAllByRole('listitem')).toHaveLength(3));
+    expect(within(overview).getAllByRole('link')).toHaveLength(1);
+    expect(within(overview).getByRole('link', { name: 'Эхлэх' }).getAttribute('href')).toBe(
+      '/roadmap/stop/5',
+    );
+    expect(within(overview).queryByRole('button')).toBeNull();
+    expect(within(overview).queryByText('Гол томьёо')).toBeNull();
+  });
+
   test('current stop: header, place, topic, inside, for you, related, actions', async () => {
     renderPanel(5);
     const dialog = screen.getByRole('dialog', { name: '5-р зогсоол, Улиастай' });
     expect(within(dialog).getByRole('heading', { name: 'Улиастай' })).toBeTruthy();
     expect(within(dialog).getByText('Завхан')).toBeTruthy();
     expect(within(dialog).getByText('одоогийн зогсоол')).toBeTruthy();
-    await waitFor(() => expect(within(dialog).getByText(/Манжийн үеийн жанжны/)).toBeTruthy());
-    expect(
-      within(dialog).getByText('Systems of two linear equations in two variables', { exact: false }),
-    ).toBeTruthy();
+    await waitFor(() => expect(within(dialog).getByText('Гол томьёо')).toBeTruthy());
+    expect(within(dialog).queryByText(/Манжийн үеийн жанжны/)).toBeNull();
+    expect(within(dialog).getByText('Nonlinear functions', { exact: false })).toBeTruthy();
     expect(within(dialog).getByText('Гол томьёо')).toBeTruthy();
     expect(within(dialog).getByText('Жишээ бодлого')).toBeTruthy();
     expect(within(dialog).getByText('Энэ сэдвээр 2 асуултад алдсан')).toBeTruthy();
@@ -60,7 +77,12 @@ describe('StopPanel', () => {
   test('locked stop: what unlocks it, no start button, preview opens the content', async () => {
     renderPanel(9);
     const dialog = screen.getByRole('dialog', { name: '9-р зогсоол, Хархорин' });
-    await waitFor(() => expect(within(dialog).getByText(/Их Монгол Улсын эртний нийслэл/)).toBeTruthy());
+    await waitFor(() =>
+      expect(within(dialog).getByRole('button', { name: 'Урьдчилж харах' }).hasAttribute('disabled')).toBe(
+        false,
+      ),
+    );
+    expect(within(dialog).queryByText(/Их Монгол Улсын эртний нийслэл/)).toBeNull();
     expect(within(dialog).getByText('Эхлээд 5-р зогсоол Улиастай-ийг дуусгавал нээгдэнэ.')).toBeTruthy();
     expect(within(dialog).queryByRole('link', { name: /Эхлэх|Үргэлжлүүлэх/ })).toBeNull();
     expect(within(dialog).queryByText('Гол томьёо')).toBeNull();

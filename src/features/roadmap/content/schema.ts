@@ -44,17 +44,11 @@ export const RoadmapQuestionSchema = z
   })
   .superRefine((q, ctx) => {
     const topic = topicById(q.topicId);
-    if (topic && topic.domain !== q.domain) {
-      ctx.addIssue({
-        code: 'custom',
-        message: `domain ${q.domain} ≠ topic ${q.topicId} domain ${topic.domain}`,
-      });
-    }
-    if (topic && topic.cbSkill !== q.skill) {
-      ctx.addIssue({
-        code: 'custom',
-        message: `skill must be the topic's College Board skill "${topic.cbSkill}"`,
-      });
+    if (topic) {
+      const skills = [{ domain: topic.domain, skill: topic.cbSkill }, ...(topic.relatedSkills ?? [])];
+      if (!skills.some((s) => s.domain === q.domain && s.skill === q.skill)) {
+        ctx.addIssue({ code: 'custom', message: `domain and skill must belong to topic ${topic.id}` });
+      }
     }
     if (q.format === 'mcq') {
       if (!q.choices) ctx.addIssue({ code: 'custom', message: 'mcq needs 4 choices' });
@@ -77,6 +71,8 @@ export const IntroScreenSchema = z.object({
   /** Rich text: $…$ TeX and **bold**. */
   body: z.string().min(10),
   kind: z.enum(['idea', 'example', 'desmos']),
+  /** A self-check solution revealed only when the learner asks. */
+  checkAnswer: z.string().min(10).optional(),
 });
 export const IntrosSchema = z.record(z.string().regex(/^\d+$/), z.array(IntroScreenSchema).min(2).max(4));
 export type IntroScreen = z.infer<typeof IntroScreenSchema>;

@@ -28,6 +28,10 @@ export type Topic = {
   id: number;
   /** Mongolian title (draft, editable). */
   title: string;
+  /** Course chapter title from the 26-topic syllabus. */
+  englishTitle?: string;
+  /** Additional SAT skills included in this broader course chapter. */
+  relatedSkills?: { domain: Domain; skill: string }[];
   cbDomain: CbDomain;
   cbSkill: string;
   domain: Domain;
