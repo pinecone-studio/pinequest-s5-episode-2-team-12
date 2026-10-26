@@ -1,9 +1,11 @@
-import { ComingSoon } from '@/components/ComingSoon';
+import { loadShell } from '@/components/shell/load-shell';
+import { DailyView } from '@/features/daily/components/DailyView';
 import { getT } from '@/lib/i18n';
 
-export const metadata = { title: getT('common')('nav.daily') };
+export const metadata = { title: getT('daily')('title') };
 
-// Placeholder until phase 6 of docs/plans/2026-10-25-map-home-plan.md
-export default function Page() {
-  return <ComingSoon section="C" title={getT('common')('nav.daily')} tasks="6-р үе шат" />;
+// Section C · «Өдрийн сорил»: the same 5 problems for everyone today, server-timed, feeds the leaderboard.
+export default async function DailyPage() {
+  const shell = await loadShell();
+  return <DailyView demo={shell.demo} wallet={shell.wallet} />;
 }

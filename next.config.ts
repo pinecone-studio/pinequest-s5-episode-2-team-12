@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
       { source: '/dashboard', destination: '/', permanent: false },
       { source: '/roadmap', destination: '/', permanent: false },
       { source: '/league', destination: '/leaderboard', permanent: false },
+      // level, streak and badges moved into the profile
+      { source: '/progress', destination: '/profile', permanent: false },
     ];
   },
 };

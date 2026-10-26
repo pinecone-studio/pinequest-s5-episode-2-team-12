@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "decks": [
     {
       "id": "f-given",
@@ -17,7 +18,8 @@
           "when": "Радиус өгөгдөөд талбай асуувал.",
           "ex": "$r=3$ → $A=9\\pi$",
           "art": "circle",
-          "v": "area"
+          "v": "area",
+          "reviewed": false
         },
         {
           "id": "f-circ",
@@ -28,7 +30,8 @@
           "when": "Тойргийн хүрээ, дугуйн нэг эргэлт.",
           "ex": "$C=10\\pi$ → $r=5$",
           "art": "circle",
-          "v": "c"
+          "v": "c",
+          "reviewed": false
         },
         {
           "id": "f-rect",
@@ -38,7 +41,8 @@
           "tex": "A=\\ell w",
           "when": "Урт × өргөн.",
           "ex": "$\\ell=8,\\ w=6$ → $A=48$",
-          "art": "rect"
+          "art": "rect",
+          "reviewed": false
         },
         {
           "id": "f-tri",
@@ -49,7 +53,8 @@
           "when": "Суурь ба өндөр мэдэгдэж байвал.",
           "ex": "$b=10,\\ h=4$ → $A=20$",
           "art": "triangle",
-          "v": "area"
+          "v": "area",
+          "reviewed": false
         },
         {
           "id": "f-pyth",
@@ -59,7 +64,8 @@
           "tex": "c^2=a^2+b^2",
           "when": "Тэгш өнцөгт гурвалжны гурав дахь тал.",
           "ex": "$6,8$ → $c=10$",
-          "art": "triangle"
+          "art": "triangle",
+          "reviewed": false
         },
         {
           "id": "f-306090",
@@ -70,7 +76,8 @@
           "when": "Нэг тал, нэг өнцөг мэдэгдэх үед.",
           "ex": "богино тал $4$ → гипотенуз $8$",
           "art": "triangle",
-          "v": "30"
+          "v": "30",
+          "reviewed": false
         },
         {
           "id": "f-cyl",
@@ -81,7 +88,8 @@
           "when": "Лааз, хоолой, усан сав.",
           "ex": "$r=2,\\ h=5$ → $V=20\\pi$",
           "art": "solid",
-          "v": "cyl"
+          "v": "cyl",
+          "reviewed": false
         },
         {
           "id": "f-sphere",
@@ -92,7 +100,8 @@
           "when": "Бөмбөг, бөмбөлөг.",
           "ex": "$r=3$ → $V=36\\pi$",
           "art": "solid",
-          "v": "sphere"
+          "v": "sphere",
+          "reviewed": false
         },
         {
           "id": "f-cone",
@@ -103,7 +112,8 @@
           "when": "Цилиндрийн гуравны нэг.",
           "ex": "$r=3,\\ h=4$ → $V=12\\pi$",
           "art": "solid",
-          "v": "cone"
+          "v": "cone",
+          "reviewed": false
         },
         {
           "id": "f-deg",
@@ -113,7 +123,8 @@
           "tex": "360^\\circ=2\\pi\\ \\text{рад}",
           "when": "Өнцгийг хувиргах.",
           "ex": "$90^\\circ=\\frac{\\pi}{2}$",
-          "art": "angle"
+          "art": "angle",
+          "reviewed": false
         }
       ]
     },
@@ -134,7 +145,8 @@
           "when": "Хоёр цэг өгөгдсөн шулуун.",
           "ex": "$(0,4),(2,10)$ → $m=3$",
           "art": "line",
-          "v": "slope"
+          "v": "slope",
+          "reviewed": false
         },
         {
           "id": "f-quad",
@@ -145,7 +157,8 @@
           "when": "Задрахгүй квадрат тэгшитгэл.",
           "ex": "$x^2-6x+5=0$ → $x=1,5$",
           "art": "parabola",
-          "v": "two"
+          "v": "two",
+          "reviewed": false
         },
         {
           "id": "f-disc",
@@ -156,7 +169,8 @@
           "when": "Шийдийн тоо: $D>0$ хоёр, $D=0$ нэг, $D<0$ байхгүй.",
           "ex": "$x^2+8x+16$: $D=0$ → нэг шийд",
           "art": "parabola",
-          "v": "one"
+          "v": "one",
+          "reviewed": false
         },
         {
           "id": "f-vertex",
@@ -167,7 +181,8 @@
           "when": "Хамгийн их / бага утга.",
           "ex": "$x^2-4x+7$ → $x=2$, $y=3$",
           "art": "parabola",
-          "v": "vertex"
+          "v": "vertex",
+          "reviewed": false
         },
         {
           "id": "f-circeq",
@@ -178,7 +193,8 @@
           "when": "Төв $(h,k)$ ба радиус унших.",
           "ex": "$(x-2)^2+(y+1)^2=25$ → $r=5$",
           "art": "circle",
-          "v": "eq"
+          "v": "eq",
+          "reviewed": false
         },
         {
           "id": "f-pct",
@@ -189,7 +205,8 @@
           "when": "Үнэ өсөх / буурах.",
           "ex": "$40\\to 50$ → $25\\%$",
           "art": "pie",
-          "v": "pct"
+          "v": "pct",
+          "reviewed": false
         }
       ]
     }

@@ -19,6 +19,11 @@ export type Profile = {
   hidePublic: boolean;
   /** Only friends see this student. */
   friendsOnly: boolean;
+  /** Preset avatar (components/brand/avatars.ts). */
+  avatarId?: string;
+  /** Home aimag (lib/aimags.ts), for the aimag leaderboard. */
+  aimag?: string;
+  school?: string;
 };
 
 export type TutorMode = 'hint' | 'explain' | 'desmos' | 'similar' | 'translate';

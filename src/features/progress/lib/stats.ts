@@ -13,21 +13,28 @@ function addDays(key: string, n: number): string {
 
 /**
  * Streak = consecutive Ulaanbaatar days with XP, ending today — or yesterday, so the streak survives until
- * the student has had a chance to study today.
+ * the student has had a chance to study today. Each streak freeze (shop) bridges one missed day, as long as
+ * the streak continues on the other side of it.
  */
-export function streakOf(days: readonly string[], today = getUlaanbaatarDate()): number {
+export function streakOf(days: readonly string[], today = getUlaanbaatarDate(), freezes = 0): number {
   const set = new Set(days);
   let cursor = set.has(today) ? today : addDays(today, -1);
   let n = 0;
-  while (set.has(cursor)) {
-    n++;
-    cursor = addDays(cursor, -1);
+  let left = freezes;
+  for (;;) {
+    if (set.has(cursor)) {
+      n++;
+      cursor = addDays(cursor, -1);
+    } else if (left > 0 && n > 0 && set.has(addDays(cursor, -1))) {
+      left--;
+      cursor = addDays(cursor, -1);
+    } else break;
   }
   return n;
 }
 
-export function statsFromXp(rows: readonly XpRow[], today = getUlaanbaatarDate()): Stats {
+export function statsFromXp(rows: readonly XpRow[], today = getUlaanbaatarDate(), freezes = 0): Stats {
   const xp = rows.reduce((s, r) => s + r.amount, 0);
   const days = [...new Set(rows.map((r) => getUlaanbaatarDate(new Date(r.at))))].sort();
-  return { xp, level: calculateLevel(xp).level, streak: streakOf(days, today), days, mastery: {} };
+  return { xp, level: calculateLevel(xp).level, streak: streakOf(days, today, freezes), days, mastery: {} };
 }

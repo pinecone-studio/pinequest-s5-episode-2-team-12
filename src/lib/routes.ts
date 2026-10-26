@@ -50,6 +50,8 @@ export const routes = {
 
   // D · exam & mistakes
   mock: '/mock',
+  mockResult: (id: string) => `/profile/mock/${seg(id)}`,
+  mockCompare: (id: string, withId?: string) => `/profile/mock/${seg(id)}/compare${qs({ with: withId })}`,
   mistakes: '/mistakes',
   daily: '/daily',
 
@@ -58,7 +60,8 @@ export const routes = {
   deck: (id: string) => `/cards/${seg(id)}`,
   deckQuiz: (id: string) => `/cards/${seg(id)}/quiz`,
   myCards: '/cards/mine',
-  flashcards: '/flashcards',
+  flashcards: (topic?: number) => `/flashcards${qs({ topic })}`,
+  adminFlashcards: '/admin/flashcards',
 
   // F · progress
   progress: '/progress',

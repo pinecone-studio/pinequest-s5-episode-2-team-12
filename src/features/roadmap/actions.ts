@@ -6,6 +6,9 @@ import { revalidatePath } from 'next/cache';
 import { routes } from '@/lib/routes';
 import { getDb } from '@/lib/supabase/server';
 import { getAdminDb } from '@/server/db';
+import { EARN } from '@/features/shop/catalog';
+import { afterStudy, awardGems } from '@/server/gems';
+import { recordMistakes } from '@/server/mistakes';
 import { awardBadges, awardXp } from '@/server/xp';
 import { ROADMAP } from './config';
 import { progressRow, stopRow } from './lib/db-map';
@@ -76,6 +79,11 @@ async function saveAttempts(
       hint_used: a.hintUsed,
       at: new Date(a.at).toISOString(),
     })),
+  );
+  await recordMistakes(
+    userId,
+    attempts.flatMap((a, i) => (a.correct ? [] : [{ qid: a.qid, chosen: answers[i]?.answer ?? '' }])),
+    context,
   );
   return error;
 }
@@ -203,6 +211,12 @@ export async function submitStop(input: {
   const key = `roadmap:stop:${input.no}:${stop.attempts}`;
   const xp = await awardXp(s.userId, out.xp, 'roadmap', key);
   const badges = await awardBadges(s.userId, out.badges);
+  // gems: the first pass of a stop (with its stars), each new region badge, streak milestones
+  if (graded.result.passed)
+    await awardGems(s.userId, EARN.stopPass + EARN.perStar * graded.result.stars, 'stop', `stop:${input.no}`);
+  for (const b of badges)
+    if (b.startsWith('roadmap-') && b !== 'roadmap-final') await awardGems(s.userId, EARN.region, 'region', `region:${b}`);
+  await afterStudy(s.userId);
   revalidatePath(routes.home);
   return {
     ok: true,

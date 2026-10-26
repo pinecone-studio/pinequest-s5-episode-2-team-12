@@ -126,7 +126,7 @@ export function SettingsForm({
           {account.kind !== 'user' && (
             <Link
               href={routes.login()}
-              className="inline-flex h-11 items-center rounded-2xl bg-leaf px-5 font-bold text-[14px] text-[var(--c-on-leaf)]"
+              className="inline-flex h-11 items-center rounded-2xl bg-leaf-deep px-5 font-bold text-[14px] text-[var(--c-on-leaf)]"
             >
               {t('account.login')}
             </Link>
