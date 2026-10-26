@@ -16,6 +16,8 @@ export function serverEnv() {
     // Fine-tuned small model (Suu) served by Ollama, e.g. http://localhost:11434
     ollamaUrl: process.env.OLLAMA_URL ?? '',
     ollamaModel: process.env.OLLAMA_MODEL ?? 'suu',
+    // Bearer token for ai/serve/proxy.ts (the gate in front of Ollama when it is reached through a tunnel)
+    ollamaToken: process.env.OLLAMA_TOKEN ?? '',
   };
 }
 

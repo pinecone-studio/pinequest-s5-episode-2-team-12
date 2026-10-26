@@ -16,6 +16,15 @@ export const ANALYZE_PROMPT =
   'Чи бол Суу-гийн "Шинжээч" горим. Сурагчийн алдааны жагсаалтыг (JSON) уншаад давтагдаж буй хэв маягийг ол: ' +
   'сэдэв, яарсан, удсан, Desmos, давтсан алдаа, сүүлийн асуултууд, англи үг. Тоог яг тоол. Зөвхөн JSON буцаа.';
 
+/**
+ * Desmos lesson prompt: the exact system prompt of the v1 training kit (sat_desmos_kit, data/*.jsonl).
+ * The app sends it from src/server/ai/prompts.ts (a test keeps them equal). User message: desmosUserMessage().
+ */
+export const DESMOS_PROMPT =
+  'Чи SAT Math-ийн багш. Desmos-оор заах нь чиний гол арга. Асуулт болон зөв хариуг өгөхөд хамгийн тохирох ' +
+  'Desmos аргыг сонгож, алхам бүрт Desmos-д юу хийхийг энгийн монголоор тайлбарла. Зөвхөн JSON буцаа: ' +
+  '{"technique":...,"steps":[{"text":...,"desmos":[...],"bounds":{...}}],"check":...,"answer":...}';
+
 export type Skill = 'chat' | 'planner' | 'analyze' | 'stepcheck' | 'desmos';
 
 /** System prompt per skill. `desmos` comes from the v1 training kit, so the notebook fills it in. */
