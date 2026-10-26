@@ -239,8 +239,10 @@ export function AppShell({
         </Link>
         <div className="ml-auto flex items-center gap-2.5">
           <ExamChip initial={settings} demo={demo} />
+          {/* no viewport prefetch: on the map home its bytes would compete with the first paint */}
           <Link
             href={routes.profile}
+            prefetch={false}
             aria-label={t('shell.profile')}
             className="rounded-full ring-2 ring-paper/80 hover:ring-leaf"
           >

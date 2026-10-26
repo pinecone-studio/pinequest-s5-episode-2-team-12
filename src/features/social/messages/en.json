@@ -105,6 +105,8 @@
     "take": "Start the test",
     "resume": "Resume",
     "scheduled": "Starts in {in}",
+    "hoursMinutes": "{h} h {m} min",
+    "minutes": "{m} min",
     "open": "In progress — everyone on the same clock",
     "closed": "Finished",
     "board": "Results",
