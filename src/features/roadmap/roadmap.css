@@ -33,7 +33,7 @@
 .roadmap-stage.is-dragging { cursor: grabbing; }
 .roadmap-stage:not(.is-dragging) { cursor: grab; }
 .roadmap-stage button { cursor: pointer; }
-.roadmap-terrain { position: absolute; left: 0; top: 0; max-width: none; transform-origin: 0 0; pointer-events: none; }
+.roadmap-terrain { pointer-events: none; }
 
 /* constant on-screen size for pins and cards, whatever the zoom */
 .roadmap-pin { position: absolute; width: 0; height: 0; transform: scale(var(--inv, 1)); transform-origin: 0 0; }

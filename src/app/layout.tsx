@@ -11,13 +11,25 @@ const unbounded = Unbounded({
   variable: '--font-unbounded',
   display: 'swap',
 });
+// accent faces load when a page uses them, so the home screen's bandwidth goes to the map and the app code
 const mono = JetBrains_Mono({
   subsets: ['latin', 'cyrillic'],
   variable: '--font-jetbrains',
   display: 'swap',
+  preload: false,
 });
-const slab = Roboto_Slab({ subsets: ['latin', 'cyrillic'], variable: '--font-roboto-slab', display: 'swap' });
-const caveat = Caveat({ subsets: ['latin', 'cyrillic'], variable: '--font-caveat', display: 'swap' });
+const slab = Roboto_Slab({
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-roboto-slab',
+  display: 'swap',
+  preload: false,
+});
+const caveat = Caveat({
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-caveat',
+  display: 'swap',
+  preload: false,
+});
 
 export const metadata: Metadata = {
   title: { default: 'Suprep — SAT Math', template: '%s · Suprep' },

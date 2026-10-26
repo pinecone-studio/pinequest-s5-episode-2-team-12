@@ -14,7 +14,7 @@
   --c-line-2: #c3d4bd;
   --c-ink: #0c1a12;
   --c-ink-2: #3c5345;
-  --c-ink-3: #5f7768;
+  --c-ink-3: #526a5b; /* ≥ 4.5:1 on paper-2 and sage (axe) */
   --c-forest: #0a3323;
   --c-forest-2: #0f3f2c;
   --c-on-forest: #eef6ea;
@@ -35,7 +35,7 @@
   --c-teal-soft: #dcecef;
   --c-danger: #b4402c;
   --c-danger-soft: #fde4dd;
-  --c-amber: #a86a04;
+  --c-amber: #8a5600; /* ≥ 4.5:1 on amber-soft */
   --c-amber-soft: #fbefd4;
   --c-gold: #e8b931;
   --c-cat: #141414;

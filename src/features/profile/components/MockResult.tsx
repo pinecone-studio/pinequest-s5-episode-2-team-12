@@ -174,7 +174,7 @@ export function MockResult({
             </select>
             <Link
               href={routes.mockCompare(id, withId || earlier[0].id)}
-              className="inline-flex h-11 items-center rounded-2xl bg-leaf px-5 text-[14px] font-bold text-[var(--c-on-leaf)]"
+              className="inline-flex h-11 items-center rounded-2xl bg-leaf-deep px-5 text-[14px] font-bold text-[var(--c-on-leaf)]"
             >
               {t('result.compare')}
             </Link>

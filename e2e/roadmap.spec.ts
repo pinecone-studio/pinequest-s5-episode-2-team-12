@@ -121,6 +121,7 @@ test('a locked stop shows what unlocks it and can be previewed', async ({ page }
   // the current pin bobs, so open it from the keyboard (Playwright waits for a still target to click)
   await page.getByRole('button', { name: /^5-р зогсоол, Улиастай/ }).focus();
   await page.keyboard.press('Enter');
+  await expect(page.getByRole('dialog', { name: '5-р зогсоол, Улиастай' })).toBeVisible();
   for (let i = 0; i < 4; i++) await page.keyboard.press('ArrowRight');
   const panel = page.getByRole('dialog', { name: '9-р зогсоол, Хархорин' });
   await expect(panel.getByText(/дуусгавал нээгдэнэ/)).toBeVisible();

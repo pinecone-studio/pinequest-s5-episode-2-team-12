@@ -14,9 +14,9 @@ import { joinGroup, startGroupMock } from '../group-actions';
 import { groupState } from '../lib/group';
 import type { GroupView as View } from '../queries';
 
-const until = (ms: number) => {
+const until = (ms: number, t: ReturnType<typeof useT>) => {
   const m = Math.max(0, Math.ceil(ms / 60_000));
-  return m >= 60 ? `${Math.floor(m / 60)} ц ${m % 60} мин` : `${m} мин`;
+  return m >= 60 ? t('group.hoursMinutes', { h: Math.floor(m / 60), m: m % 60 }) : t('group.minutes', { m });
 };
 
 export function GroupView({ view, meId }: { view: View; meId: string }) {
@@ -49,7 +49,7 @@ export function GroupView({ view, meId }: { view: View; meId: string }) {
         <p className="text-[13px] text-ink-3">{t('group.rules')}</p>
         <p className="font-semibold text-ink">
           {state === 'scheduled'
-            ? t('group.scheduled', { in: until(Date.parse(view.startsAt) - now) })
+            ? t('group.scheduled', { in: until(Date.parse(view.startsAt) - now, t) })
             : state === 'open'
               ? t('group.open')
               : t('group.closed')}
