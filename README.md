@@ -18,6 +18,22 @@ Prototype (дизайн): https://claude.ai/artifact/Qa2ruJcMEp3fZ38jzed8AP · �
 Supabase-ийн түлхүүргүй үед апп `src/mocks/`-ийн жишээ өгөгдлөөр ажиллана. Gemini-ийн түлхүүргүй үед Суу
 «Демо горим»-оор хариулна (`demo: true`).
 
+## Нэвтрэлт (Supabase Auth)
+
+Нүүр (`/`) нь нэвтэрсэн сурагчид газрын зураг, нэвтрээгүй хүнд зөвхөн «Нэвтрэх / Бүртгүүлэх», «Демо сурагчаар
+орох» товчтой дэлгэц харуулна. `src/proxy.ts` session-ийг шинэчилж, нэвтрээгүй хүнийг `/` руу буцаана.
+Supabase-гүй үед «Демо» нь зөвхөн cookie тавьж, өмнөх шигээ жишээ өгөгдлөөр ажиллана.
+
+Supabase төсөл дээр нэг удаа (Dashboard → Authentication):
+
+1. **Sign In / Providers**: Email (OTP), Google (Client ID/Secret), **Anonymous sign-ins** асаана (демо).
+2. **URL Configuration**: Redirect URL-д `http://localhost:3001/auth/callback` ба production домэйн нэмнэ.
+3. **Email Templates → Magic Link**: 6 оронтой код ирэхийн тулд `{{ .Token }}`-г загварт оруулна.
+4. `supabase/migrations/0007_profile_settings.sql`-г ажиллуулна (шинэ хэрэглэгч бүрт profile мөр үүснэ).
+
+`.env.local`-г git-д хэзээ ч оруулахгүй (`.gitignore`-д бий). Багийнханд хувийн чатаар дамжуулна;
+`SUPABASE_SERVICE_ROLE_KEY` бүх RLS-ийг тойрдог тул олон нийтийн суваг руу хэзээ ч бичихгүй.
+
 ## Бүтэц
 
 ```
@@ -46,7 +62,7 @@ prototype/                prototype-ийн код, зөвхөн лавлагаа
 
 | Хэсэг | Хавтас | Хуудас |
 |---|---|---|
-| A Замнал ба хичээл | `features/journey` | /journey, /lesson/[id] |
+| A Замнал ба хичээл | `features/journey`, `features/roadmap` | /journey, /lesson/[id], /roadmap, /roadmap/stop/[no], /roadmap/placement, /admin/questions |
 | B Desmos Академи | `features/desmos` | /desmos, /desmos/[id] |
 | C Дасгал | `features/practice` | /bank, /hard, /practice |
 | D Бүтэн тест ба алдаа | `features/exam`, `features/mistakes` | /mock, /mistakes |
@@ -55,6 +71,27 @@ prototype/                prototype-ийн код, зөвхөн лавлагаа
 | G AI багш Суу | `features/tutor`, `server/tutor`, `api/tutor` | /tutor |
 | H AI сургалт | `ai/` | — |
 | I Нүүр, онбординг, төлөвлөгөө, PWA | `features/home`, `onboarding`, `planner`, `notifications` | /, /onboarding, /dashboard, /planner, /help |
+
+## Монголын аялал (SAT Math roadmap)
+
+26 зогсоол = SAT Math-ийн 26 сэдэв. Эхлээд түвшин тогтоох тест (2 модуль, 35 мин) → түвшин (Сул/Дунд/Сайн)
+ба сэдэв бүрийн эзэмшил нь зогсоол бүрийн бодлогын тоо, хүндийг тодорхойлно.
+
+- Тохиргоо: `features/roadmap/{stops,topics,config}.ts` (зогсоолын дараалал, сэдэв, босго, XP).
+- Логик (unit тесттэй): `features/roadmap/lib/` — `selectProblems`, placement, unlock, scoring, submit.
+- Асуулт: `content/roadmap/<domain>/{questions,placement,intros}.json` — **бүгд анхны (original)**, College
+  Board-оос зөвхөн ангилал (domain/skill/difficulty/format) авсан. Production-д зөвхөн `reviewed: true` гарна.
+- `bun run roadmap:check-answers` — хариуг тоогоор шалгана · `bun run roadmap:import [-- file.csv] [--dry-run]`
+  — JSON/CSV-г шалгаад Supabase руу · `bun run roadmap:map` — газрын зургийг Natural Earth-оос дахин үүсгэнэ.
+- Газрын зургийн рельеф: `bun run roadmap:terrain` — AWS Terrain Tiles (өндөршил) ба Natural Earth (нуур)-ыг татаж
+  (`scripts/roadmap/.cache`, git-д орохгүй), `public/map/terrain-{1024,2048,3072}.webp`-г дахин bake хийнэ.
+  Биомын өнгө, сүүдэр: `scripts/roadmap/terrain.ts`. Чимэглэл (мод, гэр): `features/roadmap/props.ts`.
+- DB: `supabase/migrations/0006_roadmap.sql`. Бичилт Server Action → service role (`src/server/db.ts`).
+  Админ: `profiles.role = 'admin'` (зөвхөн service role/админ өөрчилнө) → `/admin/questions`.
+- Зогсоолын самбар (пин дарахад): газрын нэг мөр `features/roadmap/content/places.ts`, сэдвийн тайлбар, сурах
+  зүйлс, томьёо, холбоос (флэш карт, Desmos, хичээл) `features/roadmap/content/guides.ts`. **Бүгд `reviewed: false`
+  ноорог — багш хянаж `true` болгоно.** Тест: `content/details.test.ts` (холбоос бүр, KaTeX томьёо бүр шалгагдана).
+- `/?demo=states` — картын бүх төлөвийг харуулна (`/roadmap` → `/` руу шилжинэ).
 
 ## GitHub: Issue → Branch → Тест → Код → Commit → PR
 
@@ -91,3 +128,4 @@ Branch шинэчлэх: `git checkout main && git pull && git checkout <branch>
 - Хуудас хооронд линк зөвхөн `routes`-оор: `routes.lesson(id)`, `routes.deck(id)`.
 - API түлхүүр (Gemini, Supabase service role) хэзээ ч браузерт байхгүй: зөвхөн `.env.local` ба `src/server`.
 - Цаг/өдрийн хил `Asia/Ulaanbaatar` (`src/lib/time.ts`).
+# SuPrep

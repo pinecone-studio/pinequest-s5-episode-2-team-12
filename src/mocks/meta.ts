@@ -71,6 +71,56 @@ export const BADGES: Badge[] = [
     how: '6-р түвшинд хүрсэн',
     glyph: 'crown',
   },
+  // A · «Монголын аялал»: one per region (tier) + the finish in Ulaanbaatar
+  {
+    id: 'roadmap-west',
+    en: 'Western Traveller',
+    mn: 'Баруун бүсийн аялагч',
+    how: 'Баруун бүсийн 6 зогсоолыг туулсан',
+    glyph: 'map',
+  },
+  {
+    id: 'roadmap-khangai',
+    en: 'Khangai Traveller',
+    mn: 'Хангайн аялагч',
+    how: 'Хангайн бүсийн 4 зогсоолыг туулсан',
+    glyph: 'map',
+  },
+  {
+    id: 'roadmap-gobi',
+    en: 'Gobi Traveller',
+    mn: 'Говийн аялагч',
+    how: 'Говийн бүсийн 5 зогсоолыг туулсан',
+    glyph: 'map',
+  },
+  {
+    id: 'roadmap-east',
+    en: 'Eastern Traveller',
+    mn: 'Зүүн бүсийн аялагч',
+    how: 'Зүүн бүсийн 4 зогсоолыг туулсан',
+    glyph: 'map',
+  },
+  {
+    id: 'roadmap-north',
+    en: 'Northern Traveller',
+    mn: 'Хойд бүсийн аялагч',
+    how: 'Хойд бүсийн 4 зогсоолыг туулсан',
+    glyph: 'map',
+  },
+  {
+    id: 'roadmap-central',
+    en: 'Central Traveller',
+    mn: 'Төвийн бүсийн аялагч',
+    how: 'Төвийн бүсийн 3 зогсоолыг туулсан',
+    glyph: 'map',
+  },
+  {
+    id: 'roadmap-final',
+    en: 'Across Mongolia',
+    mn: 'Монголыг туулагч',
+    how: '26 зогсоолыг дуусгаж Улаанбаатарт хүрсэн',
+    glyph: 'flag',
+  },
 ];
 
 export const QUESTS: Quest[] = [

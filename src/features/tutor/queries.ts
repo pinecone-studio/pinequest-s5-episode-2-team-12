@@ -1,4 +1,6 @@
 // Section G · chat history and context for a lesson/question/mistake.
+import { roadmapQuestionById } from '@/features/roadmap/content/bank';
+import { topicById } from '@/features/roadmap/topics';
 import { getDb } from '@/lib/supabase/server';
 import { DESMOS } from '@/mocks/desmos';
 import { QUESTIONS } from '@/mocks/questions';
@@ -27,12 +29,21 @@ export async function getContext(kind: TutorContextKind = 'general', id?: string
   const general: TutorContext = { kind: 'general', title: 'SAT Math' };
   if (!id) return general;
   if (kind === 'question' || kind === 'mistake') {
-    const q = QUESTIONS.find((x) => x.id === id);
-    return q ? { kind, id, title: q.skill, problem: q.prompt } : general;
+    // roadmap stops send their own (rm…) questions; the topic title is more useful to Суу than the CB skill
+    const q = QUESTIONS.find((x) => x.id === id) ?? roadmapQuestionById(id);
+    const title = (q?.topicId && topicById(q.topicId)?.title) || q?.skill;
+    return q && title ? { kind, id, title, problem: q.prompt } : general;
   }
   if (kind === 'desmos') {
     const d = DESMOS.find((x) => x.id === id);
     return d ? { kind, id, title: d.title, problem: d.question } : general;
+  }
+  if (kind === 'topic') {
+    // a roadmap stop: Суу knows which SAT topic the student is looking at
+    const topic = topicById(Number(id));
+    return topic
+      ? { kind, id, title: topic.title, problem: `${topic.cbDomain} · ${topic.cbSkill}` }
+      : general;
   }
   if (kind === 'lesson') {
     const n = ALL_NODES.find((x) => x.id === id);

@@ -1,0 +1,334 @@
+[
+  {
+    "id": "rmp01-m",
+    "topicId": 1,
+    "domain": "alg",
+    "skill": "Linear equations in one variable",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "What is the solution to the equation $7(x - 2) = 3x + 10$?",
+    "mn": "$7(x - 2) = 3x + 10$ тэгшитгэлийн шийд юу вэ?",
+    "choices": [
+      "$3$",
+      "$6$",
+      "$\\frac{12}{5}$",
+      "$-1$"
+    ],
+    "answer": 1,
+    "explain": "Задалбал $7x - 14 = 3x + 10$. $3x$-ийг хасаж, $14$-ийг нэмбэл $4x = 24$, $x = 6$.",
+    "hint": "$7$-г хаалтын хоёр гишүүнд үржүүл.",
+    "desmos": {
+      "rows": [
+        "y=7(x-2)",
+        "y=3x+10"
+      ],
+      "tip": "Огтлолцлын цэг $(6, 28)$."
+    },
+    "verify": {
+      "sub": {
+        "var": "x",
+        "eq": "7(x - 2) = 3x + 10"
+      }
+    },
+    "why": {
+      "0": "$7(x-2)$-ийг $7x - 2$ гэж задалсан."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp02-e",
+    "topicId": 2,
+    "domain": "alg",
+    "skill": "Linear equations in two variables",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "What is the slope of the graph of $3x - y = 7$ in the $xy$-plane?",
+    "mn": "$xy$ хавтгай дээрх $3x - y = 7$ тэгшитгэлийн графикийн налуу хэд вэ?",
+    "choices": [
+      "$3$",
+      "$-3$",
+      "$-7$",
+      "$7$"
+    ],
+    "answer": 0,
+    "explain": "$y$-ийг илэрхийлбэл $y = 3x - 7$. Налуу нь $x$-ийн коэффициент $3$.",
+    "hint": "Тэгшитгэлийг $y = mx + b$ хэлбэрт оруул.",
+    "desmos": {
+      "rows": [
+        "3x-y=7"
+      ],
+      "tip": "Шулуун дээрх хоёр цэгийг дарж налууг тооцно: $3$."
+    },
+    "verify": {
+      "value": "-3/(-1)"
+    },
+    "why": {
+      "1": "$y$-ийн өмнөх хасах тэмдгийг тооцоогүй.",
+      "2": "$-7$ бол $y$-огтлол."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp02-h",
+    "topicId": 2,
+    "domain": "alg",
+    "skill": "Linear equations in two variables",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "placement",
+    "prompt": "A line in the $xy$-plane passes through the points $(k, 9)$ and $(2, 1)$ and has a slope of $\\frac{4}{3}$. What is the value of $k$?",
+    "mn": "$xy$ хавтгай дээрх шулуун $(k, 9)$ ба $(2, 1)$ цэгүүдийг дайрдаг бөгөөд налуу нь $\\frac{4}{3}$. $k$-ийн утга хэд вэ?",
+    "answer": [
+      "8"
+    ],
+    "explain": "$\\frac{9 - 1}{k - 2} = \\frac{4}{3}$, тэгэхээр $4(k - 2) = 24$, $k - 2 = 6$, $k = 8$.",
+    "hint": "Налуугийн томьёонд хоёр цэгийг тавьж тэгшитгэл зохио.",
+    "desmos": {
+      "rows": [
+        "y-1=4/3(x-2)",
+        "y=9"
+      ],
+      "tip": "Шулуун $y=9$-тэй $x=8$ дээр огтлолцоно."
+    },
+    "verify": {
+      "sub": {
+        "var": "k",
+        "eq": "(9 - 1)/(k - 2) = 4/3"
+      }
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp03-m",
+    "topicId": 3,
+    "domain": "alg",
+    "skill": "Linear functions",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "The function $h(t) = 45 + 6t$ models the height, in centimeters, of a plant $t$ weeks after it was measured. According to the model, after how many weeks will the plant be $105$ centimeters tall?",
+    "mn": "$h(t) = 45 + 6t$ функц нь хэмжилт хийснээс хойш $t$ долоо хоногийн дараах ургамлын өндрийг (см) загварчилдаг. Загвараар ургамал хэдэн долоо хоногийн дараа $105$ см өндөр болох вэ?",
+    "choices": [
+      "$60$",
+      "$\\frac{35}{2}$",
+      "$10$",
+      "$25$"
+    ],
+    "answer": 2,
+    "explain": "$45 + 6t = 105$ гэвэл $6t = 60$, $t = 10$.",
+    "hint": "$h(t)$-г $105$-тай тэнцүүл.",
+    "desmos": {
+      "rows": [
+        "y=45+6x",
+        "y=105"
+      ],
+      "tip": "Огтлолцлын цэг $(10, 105)$."
+    },
+    "verify": {
+      "sub": {
+        "var": "t",
+        "eq": "45 + 6t = 105"
+      }
+    },
+    "why": {
+      "0": "$60$ бол өсөх ёстой өндөр (см), долоо хоног биш.",
+      "1": "$45$-ыг хасахгүйгээр $105/6$ гэж бодсон."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp04-e",
+    "topicId": 4,
+    "domain": "alg",
+    "skill": "Systems of two linear equations in two variables",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "placement",
+    "prompt": "$$x = y + 3$$ $$x + y = 15$$ What is the value of $y$ in the solution to the system of equations above?",
+    "mn": "$$x = y + 3$$ $$x + y = 15$$ Дээрх системийн шийдэд $y$-ийн утга хэд вэ?",
+    "answer": [
+      "6"
+    ],
+    "explain": "Орлуулбал $(y + 3) + y = 15$, $2y = 12$, $y = 6$ (мөн $x = 9$).",
+    "hint": "$x$-ийн оронд $y + 3$-ыг тавь.",
+    "desmos": {
+      "rows": [
+        "x=y+3",
+        "x+y=15"
+      ],
+      "tip": "Огтлолцлын цэг $(9, 6)$."
+    },
+    "verify": {
+      "sub": {
+        "var": "y",
+        "eq": "(y + 3) + y = 15"
+      }
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp04-h",
+    "topicId": 4,
+    "domain": "alg",
+    "skill": "Systems of two linear equations in two variables",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "At a horse-riding camp, $2$ adult tickets and $3$ child tickets cost a total of $55$ thousand tugriks, and $3$ adult tickets and $2$ child tickets cost a total of $60$ thousand tugriks. What is the combined cost, in thousands of tugriks, of $1$ adult ticket and $1$ child ticket?",
+    "mn": "Морь унах зусланд $2$ том хүний, $3$ хүүхдийн тасалбар нийт $55$ мянган төгрөг, $3$ том хүний, $2$ хүүхдийн тасалбар нийт $60$ мянган төгрөг. $1$ том хүний болон $1$ хүүхдийн тасалбарын нийлбэр үнэ хэдэн мянган төгрөг вэ?",
+    "choices": [
+      "$9$",
+      "$14$",
+      "$115$",
+      "$23$"
+    ],
+    "answer": 3,
+    "explain": "Тэгшитгэлүүдийг нэмбэл $5a + 5c = 115$, тэгэхээр $a + c = 23$. (Нарийвчилбал $a = 14$, $c = 9$.)",
+    "hint": "Хоёр тэгшитгэлийг нэмээд юу ажиглагдаж байна?",
+    "desmos": {
+      "rows": [
+        "2x+3y=55",
+        "3x+2y=60"
+      ],
+      "tip": "Огтлолцлын цэг $(14, 9)$; нийлбэр нь $23$."
+    },
+    "verify": {
+      "value": "(55 + 60)/5"
+    },
+    "why": {
+      "1": "$14$ бол зөвхөн том хүний тасалбар.",
+      "2": "$115$ бол $5a + 5c$; $5$-д хуваах хэрэгтэй."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp05-m",
+    "topicId": 5,
+    "domain": "alg",
+    "skill": "Systems of two linear equations in two variables",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "$$4x - 6y = 9$$ $$y = \\frac{2}{3}x + c$$ In the system of equations above, $c$ is a constant. For what value of $c$ does the system have infinitely many solutions?",
+    "mn": "$$4x - 6y = 9$$ $$y = \\frac{2}{3}x + c$$ Дээрх системд $c$ тогтмол. $c$-ийн ямар утгад систем хязгааргүй олон шийдтэй вэ?",
+    "choices": [
+      "$\\frac{3}{2}$",
+      "$-\\frac{3}{2}$",
+      "$9$",
+      "$-\\frac{9}{4}$"
+    ],
+    "answer": 1,
+    "explain": "Эхний тэгшитгэлийг $y$-ээр илэрхийлбэл $-6y = -4x + 9$, $y = \\frac{2}{3}x - \\frac{3}{2}$. Налуу аль хэдийн тэнцүү тул огтлол ч тэнцүү байх ёстой: $c = -\\frac{3}{2}$.",
+    "hint": "Эхний тэгшитгэлийг $y = mx + b$ хэлбэрт оруул.",
+    "desmos": {
+      "rows": [
+        "4x-6y=9",
+        "y=2/3x+c"
+      ],
+      "tip": "$c$ гулсуурыг шулуунууд давхцах хүртэл хөдөлгөнө."
+    },
+    "verify": {
+      "sub": {
+        "var": "c",
+        "eq": "-6c = 9"
+      }
+    },
+    "why": {
+      "0": "$-6$-д хуваахдаа тэмдгийг алдсан.",
+      "2": "Тэгшитгэлийг $y$-ээр илэрхийлээгүй."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp06-e",
+    "topicId": 6,
+    "domain": "alg",
+    "skill": "Linear inequalities in one or two variables",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "What is the least value of $x$ that satisfies the inequality $x - 4 \\ge 9$?",
+    "mn": "$x - 4 \\ge 9$ тэнцэтгэл бишийг хангах $x$-ийн хамгийн бага утга хэд вэ?",
+    "choices": [
+      "$5$",
+      "$36$",
+      "$-5$",
+      "$13$"
+    ],
+    "answer": 3,
+    "explain": "Хоёр талд $4$ нэмбэл $x \\ge 13$. Хамгийн бага утга $13$.",
+    "hint": "$-4$-ийг арилгахын тулд хоёр талд ижил тоо нэм.",
+    "desmos": {
+      "rows": [
+        "x-4\\ge9"
+      ],
+      "tip": "Будагдсан муж $x=13$-аас баруун тийш."
+    },
+    "verify": {
+      "value": "9 + 4"
+    },
+    "why": {
+      "0": "$4$-ийг нэмэхийн оронд хассан."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp06-h",
+    "topicId": 6,
+    "domain": "alg",
+    "skill": "Linear inequalities in one or two variables",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "placement",
+    "prompt": "$$y \\le -x + 10$$ $$y \\ge 2x - 5$$ A point $(x, y)$ satisfies the system of inequalities above. What is the greatest possible value of $x$?",
+    "mn": "$$y \\le -x + 10$$ $$y \\ge 2x - 5$$ $(x, y)$ цэг дээрх тэнцэтгэл бишийн системийг хангадаг. $x$-ийн хамгийн их боломжит утга хэд вэ?",
+    "answer": [
+      "5"
+    ],
+    "explain": "Нэг цэг хоёуланг хангахын тулд $2x - 5 \\le y \\le -x + 10$ байх ёстой, тэгэхээр $2x - 5 \\le -x + 10$, $3x \\le 15$, $x \\le 5$. $x = 5$ үед $y = 5$ цэг хангана.",
+    "hint": "Хоёр хилийн шулуун хаана огтлолцох вэ?",
+    "desmos": {
+      "rows": [
+        "y\\le-x+10",
+        "y\\ge2x-5"
+      ],
+      "tip": "Давхцсан мужийн хамгийн баруун цэг нь огтлолцол $(5, 5)$."
+    },
+    "verify": {
+      "sub": {
+        "var": "x",
+        "eq": "-x + 10 = 2x - 5"
+      }
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  }
+]

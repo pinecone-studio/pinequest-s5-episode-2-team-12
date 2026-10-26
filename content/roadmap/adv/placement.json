@@ -1,0 +1,321 @@
+[
+  {
+    "id": "rmp15-m",
+    "topicId": 15,
+    "domain": "adv",
+    "skill": "Equivalent expressions",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "The expression $(x + 7)(x - 3) - (x - 2)^2$ is equivalent to $ax + b$, where $a$ and $b$ are constants. What is the value of $b$?",
+    "mn": "$(x + 7)(x - 3) - (x - 2)^2$ илэрхийлэл $ax + b$-тэй тэнцүү ($a, b$ тогтмол). $b$-ийн утга хэд вэ?",
+    "choices": [
+      "$-17$",
+      "$-25$",
+      "$-21$",
+      "$-19$"
+    ],
+    "answer": 1,
+    "explain": "$(x + 7)(x - 3) = x^2 + 4x - 21$. $(x - 2)^2 = x^2 - 4x + 4$. Хасахад: $x^2 + 4x - 21 - x^2 + 4x - 4 = 8x - 25$. $b = -25$.",
+    "hint": "$(x - 2)^2$-ийг бүтнээр нь задлаад дараа нь хас.",
+    "why": {
+      "0": "$-(+4)$-ийг $+4$ гэж тэмдэг алдсан.",
+      "2": "$(x - 2)^2$-ийн сул гишүүнийг орхисон."
+    },
+    "verify": {
+      "value": "7*(-3) - (-2)^2"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp17-m",
+    "topicId": 17,
+    "domain": "adv",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "placement",
+    "prompt": "What is the sum of the solutions to the equation $3x^2 - 12x - 7 = 0$?",
+    "mn": "$3x^2 - 12x - 7 = 0$ тэгшитгэлийн шийдүүдийн нийлбэр хэд вэ?",
+    "answer": [
+      "4"
+    ],
+    "explain": "$ax^2 + bx + c = 0$-ийн шийдийн нийлбэр $-\\frac{b}{a} = -\\frac{-12}{3} = 4$. (Квадрат томьёогоор: $\\frac{12 + \\sqrt{228}}{6} + \\frac{12 - \\sqrt{228}}{6} = 4$.)",
+    "hint": "Квадрат томьёоны $\\pm$ хэсгүүд нэмэхэд хураагдана.",
+    "verify": {
+      "value": "(12 + sqrt(144 + 84))/6 + (12 - sqrt(144 + 84))/6"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp19-m",
+    "topicId": 19,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "The vertex of the graph of $y = x^2 + 6x - 16$ in the $xy$-plane is $(h, k)$. What is the value of $h + k$?",
+    "mn": "$xy$ хавтгай дээрх $y = x^2 + 6x - 16$-ийн графикийн орой $(h, k)$. $h + k$ хэд вэ?",
+    "choices": [
+      "$-22$",
+      "$-16$",
+      "$-28$",
+      "$-19$"
+    ],
+    "answer": 2,
+    "explain": "$h = -\\frac{6}{2} = -3$. $k = (-3)^2 + 6(-3) - 16 = 9 - 18 - 16 = -25$. $h + k = -28$.",
+    "hint": "Бүтэн квадрат: $y = (x + 3)^2 - 25$.",
+    "desmos": {
+      "rows": [
+        "y=x^2+6x-16"
+      ],
+      "tip": "Параболын доод цэгийг дарна: $(-3, -25)$."
+    },
+    "why": {
+      "0": "$h = 3$ гэж тэмдэг алдсан.",
+      "3": "$k$-ийн оронд $y$ тэнхлэгийн огтлол $-16$-ийг авсан."
+    },
+    "verify": {
+      "value": "-6/2 + ((-3)^2 + 6(-3) - 16)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp16-e",
+    "topicId": 16,
+    "domain": "adv",
+    "skill": "Equivalent expressions",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "If $\\frac{x^5 \\cdot x^3}{x^2} = x^n$ for all $x > 0$, what is the value of $n$?",
+    "mn": "$x > 0$ бүрт $\\frac{x^5 \\cdot x^3}{x^2} = x^n$ бол $n$ хэд вэ?",
+    "choices": [
+      "$13$",
+      "$6$",
+      "$10$",
+      "$4$"
+    ],
+    "answer": 1,
+    "explain": "$x^5 \\cdot x^3 = x^8$. $\\frac{x^8}{x^2} = x^6$. $n = 6$.",
+    "hint": "Үржихэд зэрэг нэмэгдэнэ, хуваахад хасагдана.",
+    "why": {
+      "0": "$5 \\cdot 3 - 2$ гэж зэргийг үржүүлсэн."
+    },
+    "verify": {
+      "value": "5 + 3 - 2"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp16-h",
+    "topicId": 16,
+    "domain": "adv",
+    "skill": "Equivalent expressions",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "placement",
+    "prompt": "If $9^a \\cdot 27^b = 3^{12}$ and $\\frac{4^a}{2^b} = 2^6$, what is the value of $a + b$?",
+    "mn": "$9^a \\cdot 27^b = 3^{12}$ ба $\\frac{4^a}{2^b} = 2^6$ бол $a + b$ хэд вэ?",
+    "answer": [
+      "5.25",
+      "21/4"
+    ],
+    "explain": "Эхнийх: $3^{2a + 3b} = 3^{12}$ тул $2a + 3b = 12$. Хоёр дахь: $2^{2a - b} = 2^6$ тул $2a - b = 6$. Хасахад $4b = 6$, $b = 1.5$. Тэгвэл $2a = 6 + 1.5 = 7.5$, $a = 3.75$. $a + b = 5.25$. Шалгах: $2(3.75) + 3(1.5) = 12$ ✓.",
+    "hint": "Тэгшитгэл бүрийг нэг суурьт шилжүүлж, зэргүүдийн шугаман систем болго.",
+    "verify": {
+      "value": "(6 + (12 - 6)/4)/2 + (12 - 6)/4"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp18-e",
+    "topicId": 18,
+    "domain": "adv",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "placement",
+    "prompt": "What value of $x$ satisfies the equation $\\sqrt{3x} = 6$?",
+    "mn": "$\\sqrt{3x} = 6$ тэгшитгэлийг хангах $x$ хэд вэ?",
+    "answer": [
+      "12"
+    ],
+    "explain": "Квадратлана: $3x = 36$, $x = 12$. Шалгах: $\\sqrt{36} = 6$ ✓.",
+    "hint": "Хоёр талыг квадрат зэрэгт дэвшүүл.",
+    "verify": {
+      "sub": {
+        "var": "x",
+        "eq": "sqrt(3x) = 6"
+      }
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp18-h",
+    "topicId": 18,
+    "domain": "adv",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "What is the solution to the equation $\\frac{3x}{x - 2} = \\frac{6}{x - 2} + x$?",
+    "mn": "$\\frac{3x}{x - 2} = \\frac{6}{x - 2} + x$ тэгшитгэлийн шийд хэд вэ?",
+    "choices": [
+      "$2$",
+      "$6$",
+      "$3$",
+      "$-3$"
+    ],
+    "answer": 2,
+    "explain": "$x - 2$-оор үржүүлнэ: $3x = 6 + x(x - 2)$, $x^2 - 5x + 6 = 0$, $(x - 2)(x - 3) = 0$. $x = 2$ хуваарийг тэг болгох тул илүү шийд. Цорын ганц шийд $x = 3$.",
+    "hint": "Хуваарийг тэг болгох утга шийд болж чадахгүй.",
+    "why": {
+      "0": "$x = 2$ үед $x - 2 = 0$ болж илэрхийлэл тодорхойлогдохгүй."
+    },
+    "verify": {
+      "sub": {
+        "var": "x",
+        "eq": "3x/(x - 2) = 6/(x - 2) + x"
+      }
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp20-e",
+    "topicId": 20,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "The function $V$ is defined by $V(t) = 800(1.25)^t$. What is the value of $V(2)$?",
+    "mn": "$V(t) = 800(1.25)^t$ функц өгөгдөв. $V(2)$ хэд вэ?",
+    "choices": [
+      "$1200$",
+      "$2000$",
+      "$1000$",
+      "$1250$"
+    ],
+    "answer": 3,
+    "explain": "$V(2) = 800 \\cdot 1.25^2 = 800 \\cdot 1.5625 = 1250$.",
+    "hint": "$1.25$-аар хоёр удаа үржүүл: $800 \\to 1000 \\to \\dots$",
+    "why": {
+      "0": "$800 + 2 \\cdot 200$ гэж шугаман өсөлт гэж бодсон.",
+      "2": "Зөвхөн нэг удаа үржүүлсэн ($V(1)$)."
+    },
+    "verify": {
+      "value": "800(1.25)^2"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp20-h",
+    "topicId": 20,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "placement",
+    "prompt": "A patient receives 250 milligrams of a medicine. The amount of medicine in the patient’s body decreases by 20% every 2 hours. How many milligrams of the medicine remain 6 hours after it is given?",
+    "mn": "Өвчтөнд 250 миллиграмм эм өгчээ. Биед байгаа эмийн хэмжээ 2 цаг тутамд $20\\%$-иар буурдаг. Эм өгснөөс хойш 6 цагийн дараа хэдэн миллиграмм үлдэх вэ?",
+    "answer": [
+      "128"
+    ],
+    "explain": "6 цагт $\\frac{6}{2} = 3$ үе. Үе бүрт $0.8$-аар үржинэ: $250 \\cdot 0.8^3 = 250 \\cdot 0.512 = 128$.",
+    "hint": "Загвар: $A(t) = 250(0.8)^{\\frac{t}{2}}$.",
+    "verify": {
+      "value": "250(1 - 0.2)^(6/2)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp21-e",
+    "topicId": 21,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "placement",
+    "prompt": "The function $f$ is defined by $f(x) = 5 - 2x$. What is the value of $f(-4)$?",
+    "mn": "$f(x) = 5 - 2x$ функц өгөгдөв. $f(-4)$ хэд вэ?",
+    "answer": [
+      "13"
+    ],
+    "explain": "$f(-4) = 5 - 2(-4) = 5 + 8 = 13$.",
+    "hint": "$-2 \\cdot (-4)$ эерэг.",
+    "verify": {
+      "value": "5 - 2(-4)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmp21-h",
+    "topicId": 21,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "placement",
+    "prompt": "The function $f$ is defined by $f(x) = x^2 - 4x + 1$. The graph of $y = g(x)$ is the result of translating the graph of $y = f(x)$ 3 units to the left and 2 units down. If the vertex of the graph of $y = g(x)$ is $(h, k)$, what is the value of $h + k$?",
+    "mn": "$f(x) = x^2 - 4x + 1$. $y = g(x)$-ийн график нь $y = f(x)$-ийн графикийг зүүн тийш 3, доош 2 нэгж шилжүүлсэн график. $y = g(x)$-ийн орой $(h, k)$ бол $h + k$ хэд вэ?",
+    "choices": [
+      "$0$",
+      "$-6$",
+      "$-2$",
+      "$4$"
+    ],
+    "answer": 1,
+    "explain": "$f(x) = (x - 2)^2 - 3$ тул $f$-ийн орой $(2, -3)$. Зүүн тийш 3: $x = -1$; доош 2: $y = -5$. $g$-ийн орой $(-1, -5)$, $h + k = -6$.",
+    "hint": "Эхлээд $f$-ийн оройг олоод, дараа нь оройг шилжүүл.",
+    "desmos": {
+      "rows": [
+        "f(x)=x^2-4x+1",
+        "g(x)=f(x+3)-2"
+      ],
+      "tip": "$g$-ийн доод цэгийг дарна: $(-1, -5)$."
+    },
+    "why": {
+      "0": "Зүүн биш баруун тийш шилжүүлсэн: $(5, -5)$.",
+      "2": "Доош биш дээш шилжүүлсэн: $(-1, -1)$."
+    },
+    "verify": {
+      "value": "(2 - 3) + (-3 - 2)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "suprep-seed",
+    "createdAt": "2026-10-25"
+  }
+]

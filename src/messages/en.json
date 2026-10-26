@@ -6,27 +6,30 @@
   "nav": {
     "groups": {
       "main": "",
-      "practice": "Practice",
       "materials": "Materials",
       "me": "Me"
     },
-    "dashboard": "Home",
-    "journey": "My journey",
+    "journey": "Lessons",
     "desmos": "Desmos Academy",
     "bank": "Question bank",
     "hard": "Hard questions",
-    "mock": "Full test",
+    "mock": "Tests",
     "mistakes": "Mistake notebook",
-    "cards": "Words & formulas",
     "tutor": "AI tutor Suu",
     "planner": "AI study plan",
     "practicePlayer": "Practice",
-    "league": "Green league",
     "help": "Help",
-    "progress": "My progress",
     "achievements": "Achievements",
-    "more": "More",
-    "skip": "Skip to main content"
+    "skip": "Skip to main content",
+    "map": "Journey (map)",
+    "flashcards": "Flashcards",
+    "daily": "Daily challenge",
+    "friends": "Friends & duels",
+    "leaderboard": "Leaderboard",
+    "shop": "Shop",
+    "settings": "Settings",
+    "menu": "Menu",
+    "closeMenu": "Close menu"
   },
   "placeholder": {
     "title": "This section is being built",
@@ -61,18 +64,25 @@
   },
   "shell": {
     "tagline": "Learn · Practice · Master",
-    "search": "Search lessons, questions, formulas…",
     "streak": "{n}-day streak",
-    "xp": "Total XP",
-    "notifications": "Notifications",
     "level": "Level {n}",
     "settings": "Settings",
     "guest": "Student",
-    "promo": {
-      "title": "Full mock test",
-      "body": "Two timed modules in the real SAT format.",
-      "cta": "Take the test"
-    },
-    "empty": "No new notifications"
+    "profile": "Profile",
+    "exam": {
+      "chip": "SAT in {n} days",
+      "chipToday": "SAT is today! Good luck",
+      "chipNone": "Pick your SAT date",
+      "title": "Time to the SAT",
+      "days": "days",
+      "hrs": "hrs",
+      "min": "min",
+      "date": "Test date",
+      "official": "Official dates",
+      "custom": "Other date",
+      "save": "Save",
+      "saved": "Date saved",
+      "passed": "This date has passed. Pick your next test."
+    }
   }
 }

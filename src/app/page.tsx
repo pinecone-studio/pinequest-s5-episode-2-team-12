@@ -1,35 +1,64 @@
 import Link from 'next/link';
-import { CatSitting, Logo, Stars } from '@/components/brand';
+import { Logo } from '@/components/brand';
+import { AppShell } from '@/components/shell/AppShell';
+import { loadShell } from '@/components/shell/load-shell';
+import { enterDemo } from '@/features/auth/actions';
+import { RoadmapView } from '@/features/roadmap/components/RoadmapView';
+import { currentUserId, getRoadmap } from '@/features/roadmap/queries';
 import { getT } from '@/lib/i18n';
 import { routes } from '@/lib/routes';
+import { getSession } from '@/lib/session';
+import '@/features/roadmap/roadmap.css';
 
-// Section I · I1 — replace this with the 3D landing (prototype: Landing.tsx + Hero3D.tsx)
-export default function LandingPage() {
-  const t = getT('common');
+const btn = 'btn3d inline-flex items-center justify-center h-[52px] px-7 rounded-2xl font-bold text-[15px]';
+
+/** Signed-out visitors: logo, one sentence, two buttons. */
+function EntryScreen() {
+  const t = getT('auth');
   return (
-    <main className="min-h-dvh gutter py-8 grid content-center justify-items-center gap-6 text-center paper-grain">
+    <main className="min-h-dvh gutter py-10 grid content-center justify-items-center gap-6 text-center paper-grain">
       <Logo />
-      <div className="relative">
-        <Stars className="absolute -top-6 -right-24 w-40 opacity-70" />
-        <CatSitting size={150} mood="happy" className="anim-floaty" />
-      </div>
-      <h1 className="font-display font-extrabold text-[30px] md:text-[44px] leading-tight text-ink max-w-[16ch]">
-        {t('app.tagline')}
+      <h1 className="font-display font-bold text-[22px] md:text-[28px] leading-snug text-ink max-w-[26ch]">
+        {t('entry.lead')}
       </h1>
-      <div className="flex flex-wrap justify-center gap-3">
+      <div className="grid w-full max-w-[320px] gap-3">
         <Link
-          href={routes.onboarding}
-          className="btn3d inline-flex items-center h-[52px] px-7 rounded-2xl font-bold text-[15px] [--face:var(--c-leaf)] [--edge:var(--c-leaf-2)] text-[var(--c-on-leaf)]"
+          href={routes.login()}
+          className={`${btn} [--face:var(--c-leaf)] [--edge:var(--c-leaf-2)] text-[var(--c-on-leaf)]`}
         >
-          {t('landing.start')}
+          {t('entry.login')}
         </Link>
-        <Link
-          href={routes.dashboard}
-          className="btn3d inline-flex items-center h-[52px] px-7 rounded-2xl font-bold text-[15px] border-[1.5px] border-line-2 [--face:var(--c-paper)] [--edge:var(--c-line-2)] text-ink"
-        >
-          {t('landing.demo')}
-        </Link>
+        <form action={enterDemo}>
+          <button
+            type="submit"
+            className={`${btn} w-full border-[1.5px] border-line-2 [--face:var(--c-paper)] [--edge:var(--c-line-2)] text-ink`}
+          >
+            {t('entry.demo')}
+          </button>
+        </form>
       </div>
     </main>
+  );
+}
+
+// Home: the map («Монголын аялал») for students. ?demo=states shows every pin state (design review).
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const session = await getSession().catch(() => null);
+  if (!session) return <EntryScreen />;
+  const sp = await searchParams;
+  const userId = await currentUserId();
+  const [shell, server] = await Promise.all([
+    loadShell(),
+    userId ? getRoadmap(userId).catch(() => null) : Promise.resolve(null),
+  ]);
+  return (
+    <AppShell {...shell} variant="map">
+      <h1 className="sr-only">{getT('roadmap')('pages.roadmap.title')}</h1>
+      <RoadmapView demo={!userId} server={server} sample={sp.demo === 'states'} />
+    </AppShell>
   );
 }

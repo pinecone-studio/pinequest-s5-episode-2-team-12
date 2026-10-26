@@ -13,7 +13,7 @@ const Body = z.object({
   raw: z.boolean().default(false),
   context: z
     .object({
-      kind: z.enum(['lesson', 'desmos', 'question', 'mistake', 'general']),
+      kind: z.enum(['lesson', 'desmos', 'question', 'mistake', 'topic', 'general']),
       id: z.string().optional(),
     })
     .optional(),

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { type FormEvent, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Pill } from '@/components/ui/Pill';
+import { usePlacementWeak } from '@/features/roadmap/components/placement-weak';
+import type { RoadmapState } from '@/features/roadmap/types';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
@@ -16,7 +18,16 @@ type SatDate = { d: string; reg: string; late: string };
 const field =
   'h-11 w-full rounded-xl border border-line bg-paper px-3 text-[15px] text-ink outline-none focus:border-leaf';
 
-export function PlannerDemo({ dates, phases }: { dates: SatDate[]; phases: Phase[] }) {
+export function PlannerDemo({
+  dates,
+  phases,
+  roadmap = { demo: true, server: null, ids: [] },
+}: {
+  dates: SatDate[];
+  phases: Phase[];
+  /** Placement result → weak topics («Монголын аялал»). */
+  roadmap?: { demo: boolean; server: RoadmapState | null; ids: number[] };
+}) {
   const t = useT('planner');
   const today = dayKey();
   const upcoming = dates.filter((d) => d.d > today);
@@ -24,7 +35,14 @@ export function PlannerDemo({ dates, phases }: { dates: SatDate[]; phases: Phase
   const [current, setCurrent] = useState(600);
   const [target, setTarget] = useState(750);
   const [hours, setHours] = useState(1.5);
+  const placementWeak = usePlacementWeak(roadmap);
+  const topics = [...placementWeak, ...WEAK_TOPICS.filter((x) => !placementWeak.includes(x))];
   const [weak, setWeak] = useState<string[]>([WEAK_TOPICS[1], WEAK_TOPICS[2]]);
+  const fromPlacement = placementWeak.join('|');
+  // the placement result arrives after mount in demo mode (localStorage)
+  useEffect(() => {
+    if (fromPlacement) setWeak(fromPlacement.split('|'));
+  }, [fromPlacement]);
   const [plan, setPlan] = useState<DemoPlan | null>(null);
   const [thinking, setThinking] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -109,7 +127,7 @@ export function PlannerDemo({ dates, phases }: { dates: SatDate[]; phases: Phase
         <fieldset className="grid gap-2">
           <legend className="mb-1.5 text-[13.5px] font-semibold text-ink-2">{t('demo.weak')}</legend>
           <div className="flex flex-wrap gap-2">
-            {WEAK_TOPICS.map((topic) => (
+            {topics.map((topic) => (
               <button
                 key={topic}
                 type="button"

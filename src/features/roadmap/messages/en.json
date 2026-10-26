@@ -1,0 +1,236 @@
+{
+  "pages": {
+    "roadmap": {
+      "title": "Journey across Mongolia"
+    },
+    "stop": {
+      "title": "Stop"
+    },
+    "placement": {
+      "title": "Placement test"
+    },
+    "results": {
+      "title": "Test results"
+    },
+    "admin": {
+      "title": "Review questions"
+    }
+  },
+  "eyebrow": "SAT MATH · 26 STOPS",
+  "lead": "Cross Mongolia from west to east and master one SAT Math topic at every stop.",
+  "stopNo": "Stop {n}",
+  "status": {
+    "locked": "locked",
+    "available": "open",
+    "current": "current stop",
+    "completed": "completed",
+    "tested-out": "tested out",
+    "stars": "{n} stars"
+  },
+  "testedOutChip": "Tested out",
+  "level": {
+    "label": "Level",
+    "weak": "Weak",
+    "mid": "Medium",
+    "strong": "Strong"
+  },
+  "map": {
+    "label": "Map of Mongolia: a journey with 26 stops",
+    "help": "Drag to move, pinch or scroll to zoom. Arrow keys move, + / − zoom.",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "fit": "Whole map",
+    "locate": "Current position",
+    "attribution": "Borders, lakes: Natural Earth (public domain) · Elevation: AWS Terrain Tiles (SRTM, GMTED, ETOPO)",
+    "role": "map"
+  },
+  "sheet": {
+    "start": "Start",
+    "continue": "Continue",
+    "replay": "Practice again",
+    "testOut": "Test out",
+    "testOutHint": "3 hard problems — get all right to finish the stop (less XP).",
+    "locked": "Finish the previous stop to open this one.",
+    "closedRoadmap": "Take the placement test first.",
+    "set": "{n} problems",
+    "close": "Close",
+    "masteryLabel": "This topic",
+    "setLabel": "Problems",
+    "bestLabel": "Best",
+    "attemptsLabel": "Attempts"
+  },
+  "gate": {
+    "title": "Before you set off",
+    "body": "A 35-minute placement test tunes how many problems each stop has and how hard they are.",
+    "take": "Take the test",
+    "skip": "Skip (Medium level)",
+    "skippedTitle": "You have not taken the placement test",
+    "skippedBody": "You are on the Medium level for now. Take the test so the problems fit you better.",
+    "retake": "Retake the test",
+    "retakeBody": "The new result updates the stops you have not finished.",
+    "prompt": "Take the placement test",
+    "skipShort": "Skip",
+    "skippedShort": "Take the test so the problems fit you better."
+  },
+  "demoStates": "Sample: every card state",
+  "placement": {
+    "intro": {
+      "title": "Placement test",
+      "body": "Two modules like the digital SAT. Module 1 has 13 medium questions; your result picks a harder or easier Module 2. Each of the 26 topics appears once.",
+      "time": "{min} minutes total",
+      "calc": "Desmos calculator allowed",
+      "noScore": "This is not an SAT score — it only sets your level.",
+      "start": "Start the test",
+      "back": "Back to the journey"
+    },
+    "module": "Module {n}",
+    "question": "Question {i} of {n}",
+    "next": "Next",
+    "prev": "Back",
+    "finishModule": "Finish module",
+    "finishTest": "Finish test",
+    "unanswered": "{n} questions are unanswered. Finish anyway?",
+    "confirm": "Yes, finish",
+    "cancel": "Go back",
+    "timeLeft": "Time left",
+    "timeUp": "Time is up",
+    "routeHard": "Module 2: harder version",
+    "routeEasy": "Module 2: easier version",
+    "answerPlaceholder": "Type your answer (e.g. 3/4 or 0.75)",
+    "desmos": "Open Desmos"
+  },
+  "results": {
+    "eyebrow": "TEST RESULTS",
+    "level": "Your level",
+    "levelNote": "This is not an SAT score. It sets the difficulty and length of your journey.",
+    "score": "Weighted score: {pct}%",
+    "correct": "{c}/{n} correct",
+    "domains": "By domain",
+    "weakest": "3 topics to watch",
+    "weakestStop": "Stop {n} · {place}",
+    "begin": "Start the journey",
+    "planner": "Use in my plan",
+    "none": "No test result found.",
+    "take": "Take the test"
+  },
+  "stop": {
+    "intro": "Quick intro",
+    "introNext": "Next",
+    "introSkip": "To the problems",
+    "introOpen": "Show the intro",
+    "problem": "Problem {i} of {n}",
+    "check": "Check",
+    "next": "Next",
+    "finish": "See results",
+    "hint": "Hint",
+    "correct": "Correct!",
+    "wrong": "Not quite",
+    "answerWas": "Answer: {a}",
+    "askSuu": "Ask Suu",
+    "desmosTip": "Desmos tip",
+    "placeholder": "Type your answer",
+    "passed": "Stop cleared!",
+    "failed": "Almost! Try again",
+    "failedBody": "You need {need}/{n} to pass. You will get fresh problems, with more of the kinds you missed.",
+    "scoreLine": "{c}/{n} correct · {pct}%",
+    "xp": "+{n} XP",
+    "retry": "Try again",
+    "toMap": "Back to the map",
+    "nextStop": "Next stop: {place}",
+    "region": "New badge: {name}",
+    "lockedTitle": "This stop is locked",
+    "testOutTitle": "Test out",
+    "noQuestions": "No questions for this topic yet.",
+    "unreviewed": "Unreviewed (development mode)",
+    "translate": "In Mongolian",
+    "translateHide": "In English",
+    "choices": "Answer choices"
+  },
+  "celebrate": {
+    "title": "You reached Ulaanbaatar!",
+    "body": "26 stops — every SAT Math topic. Now take a full test and see how far you have come.",
+    "mock": "Take a full test",
+    "map": "See the journey"
+  },
+  "admin": {
+    "lead": "Review and approve original questions. Only approved questions are served in production.",
+    "filter": {
+      "all": "All",
+      "pending": "Unreviewed",
+      "reviewed": "Approved"
+    },
+    "topic": "Topic",
+    "approve": "Approve",
+    "unapprove": "Unapprove",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "readOnly": "Supabase is not configured — read-only view of content/roadmap JSON.",
+    "forbidden": "Only admins can open this page.",
+    "count": "{n} questions",
+    "saved": "Saved",
+    "error": "Could not save"
+  },
+  "journeyBanner": {
+    "title": "New: Journey across Mongolia",
+    "body": "Learn the 26 SAT Math topics through 26 towns of Mongolia.",
+    "cta": "Open the journey"
+  },
+  "mastery": {
+    "weak": "Weak",
+    "ok": "Medium",
+    "strong": "Strong"
+  },
+  "trip": {
+    "chip": "{done} / {total} stops",
+    "label": "Trip progress: {done} of {total} stops done"
+  },
+  "pin": {
+    "passed": "Passed",
+    "cluster": "{n} stops: {names}. Click to zoom in."
+  },
+  "panel": {
+    "stopNo": "Stop {n}",
+    "topic": "Topic",
+    "learn": "What you will learn",
+    "inside": "What's inside",
+    "goals": "Goals",
+    "formulas": "Key formulas",
+    "example": "Worked example",
+    "forYou": "For you",
+    "mastery": "Your level",
+    "source": {
+      "placement": "from the placement test",
+      "attempts": "from your attempts",
+      "default": "no test yet, so Medium"
+    },
+    "best": "Best score",
+    "noBest": "Not started",
+    "set": "Problems",
+    "problems": "{n} problems",
+    "mix": "Easy {e} · Medium {m} · Hard {h}",
+    "time": "Time",
+    "minutes": "≈ {n} min",
+    "reward": "Reward",
+    "xp": "+{pass}–{max} XP",
+    "related": "Related",
+    "cards": "Flashcards",
+    "desmos": "Desmos tip",
+    "lessons": "Short lessons",
+    "mistakes": "Mistake notebook",
+    "mistakeCount": "{n} questions missed on this topic",
+    "noMistakes": "No mistakes on this topic",
+    "lesson": "Watch the short lesson",
+    "ask": "Ask Suu",
+    "lockedBy": "Finish stop {n} {place} first to unlock it.",
+    "preview": "Preview",
+    "hidePreview": "Hide preview",
+    "prev": "Previous stop",
+    "next": "Next stop",
+    "keys": "← → switch stops · Esc close",
+    "draft": "Draft — not yet reviewed by a teacher",
+    "loading": "Loading…",
+    "failed": "Could not load the content.",
+    "close": "Close"
+  }
+}

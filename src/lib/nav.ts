@@ -1,11 +1,11 @@
-// Sidebar / bottom-nav structure. Labels are keys in src/messages/*.json → nav.*
+// Drawer structure (☰). Labels are keys in src/messages/*.json → nav.*
 import { routes } from './routes';
 
-export type NavItem = { key: string; href: string; section: string; mobile?: boolean };
+export type NavItem = { key: string; href: string; section: string };
 export type NavGroup = {
-  key: 'main' | 'practice' | 'materials' | 'me';
+  key: 'main' | 'materials' | 'me';
   items: NavItem[];
-  /** Folded under its title in the sidebar; opens on click. */
+  /** Folded under its title; opens on click. */
   collapsible?: boolean;
 };
 
@@ -13,21 +13,17 @@ export const NAV: NavGroup[] = [
   {
     key: 'main',
     items: [
-      { key: 'dashboard', href: routes.dashboard, section: 'I', mobile: true },
-      { key: 'journey', href: routes.journey, section: 'A', mobile: true },
-      { key: 'tutor', href: routes.tutor(), section: 'G', mobile: true },
-      { key: 'planner', href: routes.planner, section: 'I', mobile: true },
-    ],
-  },
-  {
-    key: 'practice',
-    collapsible: true,
-    items: [
+      { key: 'map', href: routes.home, section: 'A' },
       { key: 'practicePlayer', href: routes.practice(), section: 'C' },
-      { key: 'bank', href: routes.bank(), section: 'C' },
-      { key: 'hard', href: routes.hard, section: 'C' },
       { key: 'mock', href: routes.mock, section: 'D' },
+      { key: 'tutor', href: routes.tutor(), section: 'G' },
+      { key: 'flashcards', href: routes.flashcards, section: 'E' },
       { key: 'mistakes', href: routes.mistakes, section: 'D' },
+      { key: 'daily', href: routes.daily, section: 'C' },
+      { key: 'friends', href: routes.friends, section: 'F' },
+      { key: 'leaderboard', href: routes.leaderboard, section: 'F' },
+      { key: 'shop', href: routes.shop, section: 'F' },
+      { key: 'planner', href: routes.planner, section: 'I' },
     ],
   },
   {
@@ -35,22 +31,24 @@ export const NAV: NavGroup[] = [
     collapsible: true,
     items: [
       { key: 'desmos', href: routes.desmosHome, section: 'B' },
-      { key: 'cards', href: routes.cards, section: 'E' },
-      { key: 'league', href: routes.league, section: 'F' },
+      { key: 'journey', href: routes.journey, section: 'A' },
+      { key: 'bank', href: routes.bank(), section: 'C' },
+      { key: 'hard', href: routes.hard, section: 'C' },
       { key: 'help', href: routes.help, section: 'I' },
     ],
   },
   {
     key: 'me',
     items: [
-      { key: 'progress', href: routes.progress, section: 'F' },
       { key: 'achievements', href: routes.achievements, section: 'F' },
+      { key: 'settings', href: routes.settings, section: 'I' },
     ],
   },
 ];
 
-/** Active when the path is the item or below it (/cards/ops → cards). */
+/** Active when the path is the item or below it (/cards/ops → cards). Home is active only on itself. */
 export function isActive(pathname: string, href: string): boolean {
   const base = href.split('?')[0];
+  if (base === '/') return pathname === '/';
   return pathname === base || pathname.startsWith(`${base}/`);
 }

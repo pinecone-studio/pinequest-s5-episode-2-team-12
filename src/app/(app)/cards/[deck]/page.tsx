@@ -28,7 +28,9 @@ export default async function DeckPage({
   const due = dueCards([deck], states, Date.now()).map((d) => d.card);
   const review = due.length === 0;
   return (
-    <StudySession
+    <>
+      <h1 className="sr-only">{deck.title}</h1>
+      <StudySession
       deck={{ id: deck.id, title: deck.title, color: deck.color }}
       cards={review ? deck.cards : due}
       pool={decks.flatMap((d) => d.cards)}
@@ -36,5 +38,6 @@ export default async function DeckPage({
       review={review && deck.cards.length > 0}
       //hi
     />
+    </>
   );
 }

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { CatHead } from '@/components/brand';
 import { Pill } from '@/components/ui/Pill';
+import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
 import type { Stage } from '@/types';
 import { nextLesson, nodeStatus } from '../lib/unlock';
@@ -13,6 +14,7 @@ type JourneyMapProps = {
 };
 
 export function JourneyMap({ stages, progress }: JourneyMapProps) {
+  const tr = useT('roadmap');
   const next = nextLesson(progress);
   const nextHref = next
     ? next.kind === 'desmos'
@@ -57,6 +59,28 @@ export function JourneyMap({ stages, progress }: JourneyMapProps) {
           <CatHead mood="happy" />
         </div>
       </header>
+
+      <Link
+        href={routes.home}
+        className="group flex items-center gap-4 rounded-3xl border border-sage-2 bg-sage p-5 transition-colors hover:border-leaf"
+      >
+        <span
+          className="grid size-12 shrink-0 place-items-center rounded-2xl bg-lime text-[var(--c-on-lime)]"
+          aria-hidden="true"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+            <path d="M9 4.5 3.5 6.5v13l5.5-2 6 2 5.5-2v-13l-5.5 2z" />
+            <path d="M9 4.5v13M15 6.5v13" />
+          </svg>
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-display text-lg font-bold text-ink">{tr('journeyBanner.title')}</span>
+          <span className="block text-sm text-ink-2">{tr('journeyBanner.body')}</span>
+        </span>
+        <span className="hidden shrink-0 font-bold text-leaf-2 group-hover:underline sm:inline">
+          {tr('journeyBanner.cta')} →
+        </span>
+      </Link>
 
       <div className="flex flex-col gap-7">
         {stages.map((stage) => (
