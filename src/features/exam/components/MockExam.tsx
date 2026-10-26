@@ -1,17 +1,19 @@
 'use client';
-// «Бүтэн тест»: intro → module 1 (35 min) → break (≤10 min) → module 2 (adaptive, 35 min) → results.
-// The server grades every module (mock-actions.ts); the browser only ever sees questions without answers.
-// Answers, flags and time per question survive a reload (lib/local-mocks.ts); when the clock runs out the
-// module is sent automatically.
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
+// «Mock тест»: intro → module 1 (35 min) → break (≤10 min) → module 2 (adaptive, 35 min) → results.
+// The server grades every module (mock-actions.ts); the browser only ever sees questions without answers.
+// Answers, flags and time per question survive a reload (lib/local-mocks.ts); when the clock runs out the
+// module is sent automatically.
+import { PageHeader } from '@/components/ui/PageHeader';
 import { QuestionView } from '@/features/roadmap/components/QuestionView';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
 import type { Question } from '@/types';
+import { MOCK } from '../config';
 import { getRemainingSeconds } from '../lib/exam-machine';
 import {
   type InProgress,
@@ -198,13 +200,21 @@ export function MockExam({
   /* ——— intro ——— */
   if (!step) {
     return (
-      <div className="mx-auto grid w-full max-w-2xl gap-6 py-6">
-        <header className="grid gap-2">
-          <p className="eyebrow">{t('intro.eyebrow')}</p>
-          <h1 className="font-display text-3xl font-bold text-ink">{t('intro.title')}</h1>
-          <p className="text-[15px] leading-relaxed text-ink-2">{t('intro.lead')}</p>
-        </header>
-        <ul className="soft-card grid gap-2 p-5 text-[14.5px] text-ink-2">
+      <div className="workspace-page max-w-4xl">
+        <PageHeader title={t('intro.title')} description={t('intro.lead')} icon="mock" />
+        <dl className="grid grid-cols-3 gap-3">
+          {[
+            { key: 'modules', value: 2 },
+            { key: 'questions', value: MOCK.questionsPerModule * 2 },
+            { key: 'minutes', value: MOCK.moduleMinutes * 2 },
+          ].map(({ key, value }) => (
+            <div key={key} className="stat-card">
+              <dt className="text-xs text-ink-3">{t(`intro.summary.${key}`)}</dt>
+              <dd className="font-display font-bold text-ink tnum">{value}</dd>
+            </div>
+          ))}
+        </dl>
+        <ul className="soft-card grid gap-4 p-6 sm:p-8 text-[14.5px] leading-relaxed text-ink-2">
           {[1, 2, 3, 4].map((n) => (
             <li key={n} className="flex gap-2">
               <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-leaf" />

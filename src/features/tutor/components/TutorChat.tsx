@@ -83,7 +83,7 @@ function SuuAvatar({ size = 34, className }: { size?: number; className?: string
     >
       {/* biome-ignore lint/performance/noImgElement: static transparent PNG */}
       <img
-        src="/brand/cat-sit.png"
+        src="/brand/suu-logo-head.png"
         alt=""
         width={size}
         height={size}
@@ -217,13 +217,13 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
   const empty = messages.length === 0;
 
   return (
-    <div className="soft-card overflow-hidden md:grid md:grid-cols-[250px_minmax(0,1fr)] md:h-[calc(100dvh-124px)] min-h-[calc(100dvh-180px)]">
+    <div className="soft-card mx-auto w-full max-w-6xl overflow-hidden border border-line md:grid md:grid-cols-[250px_minmax(0,1fr)] md:h-[calc(100dvh-124px)] min-h-[calc(100dvh-180px)]">
       {/* recent chats */}
       <aside className="hidden md:flex flex-col gap-3 border-r border-line bg-paper-2/60 p-3 min-h-0">
         <button
           type="button"
           onClick={newChat}
-          className="flex items-center justify-center gap-2 h-11 rounded-2xl bg-leaf text-[var(--c-on-leaf)] font-bold text-[15px] shadow-[0_10px_20px_-12px_var(--c-leaf)] hover:brightness-105"
+          className="flex items-center justify-center gap-2 h-11 rounded-2xl bg-lime text-[var(--c-on-lime)] font-bold text-[15px] shadow-[0_10px_20px_-12px_var(--c-leaf)] hover:brightness-105"
         >
           <span className="text-[20px] leading-none">+</span>
           {t('chat.newChat')}
@@ -262,12 +262,12 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
 
       {/* conversation */}
       <div className="flex flex-col min-h-0 min-w-0">
-        <div className="md:hidden flex items-center justify-between gap-3 px-4 pt-4">
+        <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-4">
           <h1 className="font-bold text-ink">{t('pages.tutor.title')}</h1>
           <button
             type="button"
             onClick={newChat}
-            className="h-9 px-3 rounded-xl bg-sage text-leaf-2 text-[14px] font-bold"
+            className="md:hidden h-9 px-3 rounded-xl bg-sage text-leaf-2 text-[14px] font-bold"
           >
             + {t('chat.newChat')}
           </button>
@@ -301,7 +301,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
             {empty && !ctx.problem && (
               <div className="grid justify-items-center text-center pt-6 md:pt-14 pb-4">
                 <SuuAvatar size={112} className="shadow-[0_18px_36px_-18px_rgba(12,40,22,.45)]" />
-                <h1 className="mt-6 text-[19px] md:text-[21px] text-ink-2">{t('chat.hero')}</h1>
+                <h2 className="mt-6 text-[19px] md:text-[21px] text-ink-2">{t('chat.hero')}</h2>
               </div>
             )}
 

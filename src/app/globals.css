@@ -435,9 +435,9 @@ button:disabled { cursor: not-allowed; }
 @layer components {
 .shell-bg {
   background:
-    radial-gradient(900px 500px at 85% -10%, color-mix(in srgb, var(--c-leaf) 9%, transparent), transparent 70%),
-    radial-gradient(700px 500px at 20% 110%, color-mix(in srgb, var(--c-lime) 8%, transparent), transparent 70%),
-    var(--c-bg);
+    radial-gradient(70% 60% at 50% 45%, color-mix(in srgb, var(--c-leaf) 10%, transparent), transparent 70%),
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--c-ink) 6%, transparent) 1px, transparent 0) 0 0 / 22px 22px,
+    var(--c-paper-2);
 }
 .soft-card {
   background: var(--c-paper);
@@ -474,3 +474,103 @@ button:disabled { cursor: not-allowed; }
   :root:not([data-theme="light"]) { --chart-2: #8b6fd6; }
 }
 :root[data-theme="dark"] { --chart-2: #8b6fd6; }
+
+/* Shared student workspace: compact headers, clear surfaces, and quiet depth. */
+@layer components {
+.workspace-page {
+  width: 100%;
+  margin-inline: auto;
+  display: grid;
+  gap: 24px;
+  padding-block: 16px 32px;
+}
+.page-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 8px 0 24px;
+  border-bottom: 1px solid var(--c-line);
+}
+.page-heading-copy { display: flex; align-items: flex-start; gap: 16px; min-width: 0; flex: 1 1 280px; }
+.page-heading-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  color: var(--c-leaf-ink);
+  background: color-mix(in srgb, var(--c-lime) 16%, var(--c-paper));
+  border: 1px solid var(--c-line);
+}
+.page-heading h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.5vw, 34px);
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: -0.035em;
+  color: var(--c-ink);
+  overflow-wrap: anywhere;
+}
+.page-heading p { max-width: 68ch; margin-top: 8px; font-size: 14px; line-height: 1.7; color: var(--c-ink-2); }
+.page-heading-action { flex-shrink: 0; }
+.workspace-page .soft-card,
+.workspace-page .section-panel {
+  border: 1px solid var(--c-line);
+  border-radius: 22px;
+  background: var(--c-paper);
+  box-shadow: 0 2px 0 var(--c-edge), 0 14px 28px -22px color-mix(in srgb, var(--c-ink) 28%, transparent);
+}
+.workspace-page .stat-card {
+  position: relative;
+  border-radius: 18px;
+  padding: 18px 20px;
+  background: linear-gradient(135deg, var(--c-paper), var(--c-paper-2));
+  border: 1px solid var(--c-line);
+}
+.workspace-page .stat-card dt { font-weight: 600; }
+.workspace-page .stat-card dd { margin-top: 8px; font-size: 30px; letter-spacing: -0.04em; }
+.workspace-page :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea):focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--c-leaf) 24%, transparent);
+  outline-offset: 2px;
+  border-color: var(--c-leaf);
+}
+.bank-question { padding: 24px; }
+.bank-question > :first-child { padding-bottom: 14px; border-bottom: 1px solid var(--c-line); }
+.bank-question ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.wardrobe-card { transition: border-color 150ms ease, box-shadow 150ms ease; }
+.wardrobe-card:hover { border-color: var(--c-sage-2); box-shadow: 0 8px 24px -16px color-mix(in srgb, var(--c-leaf) 45%, transparent); }
+.wardrobe-preview { background: radial-gradient(ellipse at 50% 80%, var(--c-sage), var(--c-paper-2) 75%); }
+.workspace-page .study-card { background: linear-gradient(150deg, var(--c-paper), color-mix(in srgb, var(--c-sage) 35%, var(--c-paper))); }
+.workspace-page .filter-panel { padding: 20px; border-radius: 20px; background: var(--c-paper); border: 1px solid var(--c-line); }
+@media (max-width: 639px) {
+  .workspace-page { gap: 20px; padding-top: 8px; }
+  .page-heading { gap: 16px; padding-bottom: 20px; }
+  .page-heading-copy { gap: 12px; }
+  .page-heading-icon { width: 40px; height: 40px; border-radius: 13px; }
+  .workspace-page .stat-card { padding: 14px 12px; }
+  .workspace-page .stat-card dd { font-size: 26px; }
+  .bank-question { padding: 18px; }
+  .bank-question ol { grid-template-columns: minmax(0, 1fr); }
+}
+}
+
+@layer components {
+@media (max-width: 639px) {
+  .page-heading-action { margin-left: 52px; }
+  .page-heading-action > :is(div, p) { display: flex; align-items: center; gap: 12px; padding: 8px 14px; }
+  .page-heading-action .tnum { font-size: 22px; }
+}
+}
+
+@layer components {
+@media (max-width: 639px) {
+  .workspace-page .stat-card dt { min-height: 2.8em; line-height: 1.4; }
+  .workspace-page .wardrobe-card { padding: 12px; }
+  .workspace-page .wardrobe-card .wardrobe-preview { padding-block: 16px; }
+  .workspace-page .wardrobe-card .font-bold { font-size: 14px; }
+}
+}

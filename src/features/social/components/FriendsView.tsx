@@ -1,11 +1,12 @@
 'use client';
-// /friends: invite (code, link, share sheet), add by code, requests, the friends list (level, streak) with
-// remove / block / report, duels and group tests. Demo mode uses demo friends (bots) in localStorage.
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useId, useMemo, useState } from 'react';
 import { Avatar } from '@/components/brand/Avatar';
 import { Button } from '@/components/ui/Button';
+// /friends: invite (code, link, share sheet), add by code, requests, the friends list (level, streak) with
+// remove / block / report, duels and group tests. Demo mode uses demo friends (bots) in localStorage.
+import { PageHeader } from '@/components/ui/PageHeader';
 import { Pill } from '@/components/ui/Pill';
 import { toast } from '@/components/ui/toast';
 import { TOPICS } from '@/features/roadmap/topics';
@@ -216,16 +217,13 @@ export function FriendsView({
               : t('duels.status.open');
 
   return (
-    <div className="mx-auto grid w-full max-w-5xl grid-cols-[minmax(0,1fr)] gap-4">
-      <header className="grid gap-1">
-        <h1 className="font-display text-3xl font-bold text-ink">{t('friends.title')}</h1>
-        <p className="text-[14px] text-ink-2">{t('friends.lead')}</p>
-        {demo && (
-          <p className="rounded-2xl bg-teal-soft px-4 py-2 text-sm font-semibold text-teal">
-            {t('friends.demo')}
-          </p>
-        )}
-      </header>
+    <div className="workspace-page max-w-6xl grid-cols-[minmax(0,1fr)]">
+      <PageHeader title={t('friends.title')} description={t('friends.lead')} icon="friends" />
+      {demo && (
+        <p className="rounded-2xl border border-line bg-paper-2 px-4 py-3 text-[13px] leading-relaxed text-ink-2">
+          {t('friends.demo')}
+        </p>
+      )}
 
       <div className="grid gap-4 md:grid-cols-2">
         <section className={section} aria-labelledby={`${uid}-code`}>

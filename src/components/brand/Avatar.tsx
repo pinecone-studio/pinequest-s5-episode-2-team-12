@@ -1,8 +1,7 @@
-// A student's avatar: a preset (Суу on a colored disc) or, without one, their initial on green. Shop
-// cosmetics: a frame ring and an outfit (emoji accessory).
+// The supplied Suu mascot, with an optional shop outfit and avatar frame.
 import { itemById } from '@/features/shop/catalog';
 import { avatarById } from './avatars';
-import { CatHead } from './Cat';
+import { MascotArt } from './MascotArt';
 
 export function Avatar({
   name,
@@ -20,7 +19,8 @@ export function Avatar({
 }) {
   const preset = avatarById(avatarId);
   const ring = frame ? itemById(frame)?.look : undefined;
-  const hat = outfit ? itemById(outfit)?.look : undefined;
+  const clothing = outfit ? itemById(outfit) : undefined;
+  const hat = clothing?.look;
   const disc = (
     <span
       className="grid place-items-center overflow-hidden rounded-full font-bold text-[var(--c-on-leaf)] shrink-0"
@@ -31,11 +31,7 @@ export function Avatar({
         background: preset?.bg ?? 'linear-gradient(135deg, var(--c-leaf), var(--c-leaf-2))',
       }}
     >
-      {preset ? (
-        <CatHead size={Math.round(size * 0.74)} mood={preset.mood} />
-      ) : (
-        (name.trim()[0] ?? 'S').toUpperCase()
-      )}
+      <MascotArt art={clothing?.art} size={Math.round(size * 0.9)} />
     </span>
   );
   return (
@@ -43,6 +39,7 @@ export function Avatar({
       className="relative inline-grid shrink-0 place-items-center"
       style={{ width: size, height: size }}
       aria-hidden="true"
+      title={name}
     >
       {ring ? (
         <span

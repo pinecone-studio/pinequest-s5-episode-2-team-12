@@ -1,10 +1,11 @@
 'use client';
-// /flashcards: today's queue (due reviews, then a few new cards), deck and topic filters, «for the current
-// stop», and a study card: front → flip → back → Дахин / Хэцүү / Зүгээр / Амархан (SM-2, lib/sm2.ts).
-// Space flips, 1–4 grade. Demo mode keeps the states in localStorage.
 import { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import { Rich, Tex } from '@/components/math';
 import { Button } from '@/components/ui/Button';
+// /flashcards: today's queue (due reviews, then a few new cards), deck and topic filters, «for the current
+// stop», and a study card: front → flip → back → Дахин / Хэцүү / Зүгээр / Амархан (SM-2, lib/sm2.ts).
+// Space flips, 1–4 grade. Demo mode keeps the states in localStorage.
+import { PageHeader } from '@/components/ui/PageHeader';
 import { Pill } from '@/components/ui/Pill';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { loadLocalRoadmap } from '@/features/roadmap/lib/local-store';
@@ -119,11 +120,8 @@ export function FlashcardsView({
   const draft = card && !card.reviewed && !approved.has(card.key);
 
   return (
-    <div className="mx-auto grid w-full max-w-3xl gap-5">
-      <header className="grid gap-1">
-        <h1 className="font-display text-3xl font-bold text-ink">{t('title')}</h1>
-        <p className="text-[14px] text-ink-2">{t('lead')}</p>
-      </header>
+    <div className="workspace-page max-w-4xl">
+      <PageHeader title={t('title')} description={t('lead')} icon="flashcards" />
 
       <dl className="grid grid-cols-3 gap-2">
         {(
@@ -133,14 +131,14 @@ export function FlashcardsView({
             ['learned', stats.learned],
           ] as const
         ).map(([k, v]) => (
-          <div key={k} className="soft-card px-4 py-3">
+          <div key={k} className="stat-card">
             <dt className="text-[12px] text-ink-3">{t(`stats.${k}`)}</dt>
             <dd className="font-display text-2xl font-bold text-ink tnum">{v}</dd>
           </div>
         ))}
       </dl>
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="filter-panel flex flex-wrap items-center gap-3">
         <SegmentedControl<DeckId | 'all'>
           label={t('title')}
           value={deck}
@@ -189,7 +187,7 @@ export function FlashcardsView({
       </div>
 
       {card ? (
-        <section className="soft-card grid gap-5 p-6" aria-live="polite">
+        <section className="soft-card study-card grid gap-6 p-6 sm:p-8" aria-live="polite">
           <div className="flex items-center justify-between gap-2 text-[12px] text-ink-3">
             <span>{card.group}</span>
             <span className="flex items-center gap-2">
@@ -197,7 +195,7 @@ export function FlashcardsView({
               <span>{t('left', { n: q.length })}</span>
             </span>
           </div>
-          <div className="grid min-h-[140px] place-items-center text-center">
+          <div className="grid min-h-[200px] place-items-center text-center">
             <div className="grid gap-2">
               <p className="font-display text-[30px] font-bold leading-tight text-ink">{card.front}</p>
               {card.ipa && !flipped && <p className="text-[14px] text-ink-3">{card.ipa}</p>}

@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from 'react';
 import { Rich } from '@/components/math';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { useT } from '@/lib/i18n-client';
 import type { Domain, Question } from '@/types';
 import { filterQuestions } from '../lib/filter-questions';
 
@@ -21,7 +23,7 @@ const domains: { id: Domain | 'all'; label: string }[] = [
 
 /* ───────── Shared look: tokens from globals.css (--c-*, .card) ───────── */
 
-const card = 'card rounded-[2rem] p-7';
+const card = 'section-panel';
 const fieldLabel = 'eyebrow text-ink-3';
 const field =
   'w-full rounded-2xl border border-line bg-paper-2 px-4 py-3 text-ink placeholder:text-sm placeholder:text-ink-3';
@@ -30,6 +32,7 @@ const chipIdle = 'border-line bg-paper-2 text-ink-3 hover:border-leaf hover:text
 const chipActive = 'border-leaf bg-leaf/10 text-leaf-2';
 
 export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Props) {
+  const t = useT('practice');
   const [domain, setDomain] = useState<Domain | 'all'>('all');
   const [difficulty, setDifficulty] = useState<1 | 2 | 3 | 'all'>(hardOnly ? 3 : 'all');
   const [desmosOnly, setDesmosOnly] = useState(false);
@@ -50,20 +53,22 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
   );
 
   return (
-    <main className="mx-auto w-full max-w-5xl space-y-5 p-6 text-ink">
+    <div className="workspace-page max-w-6xl text-ink">
       {!hardOnly && (
-        <header className="space-y-2">
-          <h1 className="font-display text-3xl font-bold tracking-tight md:text-4xl">Question Bank</h1>
-          <p className="text-ink-2">Browse, search, and filter SAT Math questions.</p>
-        </header>
+        <PageHeader title={t('pages.bank.title')} description={t('bank.lead')} icon="bank">
+          <div className="rounded-2xl border border-line bg-paper px-5 py-3 text-right">
+            <span className="block font-display text-2xl font-bold text-leaf-2 tnum">{questions.length}</span>
+            <span className="text-xs font-semibold text-ink-3">{t('bank.available')}</span>
+          </div>
+        </PageHeader>
       )}
 
       {/* Filters */}
-      <section className={`${card} space-y-5`}>
+      <section className={`${card} space-y-5 p-5 sm:p-6`}>
         <div className="space-y-2.5">
-          <h2 className={fieldLabel}>Domain</h2>
+          <h2 className={fieldLabel}>{t('bank.domain')}</h2>
 
-          <nav className="flex flex-wrap gap-2" aria-label="Question domains">
+          <nav className="flex flex-wrap gap-2" aria-label={t('bank.domainsLabel')}>
             {domains.map((item) => (
               <button
                 key={item.id}
@@ -72,7 +77,7 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
                 aria-pressed={domain === item.id}
                 className={`${chipBase} ${domain === item.id ? chipActive : chipIdle}`}
               >
-                {item.label}
+                {t(`bank.domains.${item.id}`)}
               </button>
             ))}
           </nav>
@@ -80,18 +85,18 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <label className="space-y-2">
-            <span className={fieldLabel}>Search</span>
+            <span className={fieldLabel}>{t('bank.search')}</span>
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search questions or skills..."
+              placeholder={t('bank.searchPlaceholder')}
               className={field}
             />
           </label>
 
           {!hardOnly && (
             <label className="space-y-2">
-              <span className={fieldLabel}>Difficulty</span>
+              <span className={fieldLabel}>{t('bank.difficulty')}</span>
               <select
                 value={difficulty}
                 onChange={(event) =>
@@ -101,10 +106,10 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
                 }
                 className={field}
               >
-                <option value="all">All difficulties</option>
-                <option value="1">1 — Easy</option>
-                <option value="2">2 — Medium</option>
-                <option value="3">3 — Hard</option>
+                <option value="all">{t('bank.allDifficulties')}</option>
+                <option value="1">{t('bank.easy')}</option>
+                <option value="2">{t('bank.medium')}</option>
+                <option value="3">{t('bank.hard')}</option>
               </select>
             </label>
           )}
@@ -117,7 +122,7 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
                 onChange={(event) => setDesmosOnly(event.target.checked)}
                 className="h-4 w-4 accent-(--c-leaf)"
               />
-              Desmos-supported only
+              {t('bank.desmosOnly')}
             </label>
 
             <label className="flex cursor-pointer items-center gap-2.5">
@@ -127,29 +132,31 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
                 onChange={(event) => setSavedOnly(event.target.checked)}
                 className="h-4 w-4 accent-(--c-leaf)"
               />
-              Saved questions only
+              {t('bank.savedOnly')}
             </label>
           </div>
         </div>
       </section>
 
       <p className="px-1 text-sm text-ink-3" aria-live="polite">
-        {visibleQuestions.length} questions found
+        {t('bank.found', { n: visibleQuestions.length })}
       </p>
 
       {/* Questions */}
       <section className="space-y-3">
         {visibleQuestions.map((question) => (
-          <article key={question.id} className={`${card} space-y-4`}>
+          <article key={question.id} className={`${card} bank-question space-y-4`}>
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-sm font-bold text-ink">{question.skill}</h2>
 
               <span className="rounded-full bg-paper-2 px-3 py-1 text-xs font-bold text-ink-3">
-                Difficulty {question.difficulty}
+                {t('bank.difficultyBadge', { n: question.difficulty })}
               </span>
 
               {question.desmos && (
-                <span className="rounded-full bg-teal-soft px-3 py-1 text-xs font-bold text-teal">Desmos</span>
+                <span className="rounded-full bg-teal-soft px-3 py-1 text-xs font-bold text-teal">
+                  Desmos
+                </span>
               )}
             </div>
 
@@ -178,12 +185,12 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
         ))}
 
         {visibleQuestions.length === 0 && (
-          <div className="rounded-[2rem] border border-dashed border-line-2 bg-paper p-10 text-center">
-            <p className="font-bold text-ink">No questions found</p>
-            <p className="mt-1 text-sm text-ink-3">Try changing your filters or search terms</p>
+          <div className="rounded-3xl border border-dashed border-line-2 bg-paper p-10 text-center">
+            <p className="font-bold text-ink">{t('bank.empty')}</p>
+            <p className="mt-1 text-sm text-ink-3">{t('bank.emptyBody')}</p>
           </div>
         )}
       </section>
-    </main>
+    </div>
   );
 }

@@ -1,6 +1,12 @@
 import type { ReactNode } from 'react';
+import { AppShell } from '@/components/shell/AppShell';
+import { loadShell } from '@/components/shell/load-shell';
 
-/** Exam mode: no nav, no XP, no animation (.calm). Section D. */
-export default function ExamLayout({ children }: { children: ReactNode }) {
-  return <main className="calm min-h-dvh gutter py-6">{children}</main>;
+/** Keep navigation available in exam mode while preserving the calm exam styling. */
+export default async function ExamLayout({ children }: { children: ReactNode }) {
+  return (
+    <AppShell {...(await loadShell())}>
+      <div className="calm min-h-dvh py-6">{children}</div>
+    </AppShell>
+  );
 }

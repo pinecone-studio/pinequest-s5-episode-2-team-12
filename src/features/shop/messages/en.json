@@ -85,6 +85,90 @@
     "banner-night": {
       "name": "Night banner",
       "desc": "Deep blue."
+    },
+    "outfit-school-suit": {
+      "name": "School suit",
+      "desc": "Navy blazer and red tie."
+    },
+    "outfit-school-bow": {
+      "name": "School bow",
+      "desc": "Cream cardigan and red bow."
+    },
+    "outfit-deel-blue": {
+      "name": "Blue deel",
+      "desc": "Blue Mongolian deel with gold trim."
+    },
+    "outfit-deel-red": {
+      "name": "Red deel",
+      "desc": "Red deel with a teal sash."
+    },
+    "outfit-deel-green": {
+      "name": "Green deel",
+      "desc": "Green deel with a traditional hat."
+    },
+    "outfit-deel-gold": {
+      "name": "Golden deel",
+      "desc": "Golden deel with blue sash and boots."
+    },
+    "outfit-knit-glasses": {
+      "name": "Bookworm knit",
+      "desc": "Cable-knit sweater and round glasses."
+    },
+    "outfit-scholar": {
+      "name": "Scholar Suu",
+      "desc": "Navy cardigan and glasses."
+    },
+    "outfit-beret": {
+      "name": "Artist Suu",
+      "desc": "Red beret and cream sweater."
+    },
+    "outfit-varsity": {
+      "name": "Varsity Suu",
+      "desc": "Blue cap and varsity jacket."
+    },
+    "outfit-winter-knit": {
+      "name": "Winter warmth",
+      "desc": "Cream beanie and green scarf."
+    },
+    "outfit-gardener": {
+      "name": "Gardener Suu",
+      "desc": "Straw hat and green overalls."
+    },
+    "outfit-graduate": {
+      "name": "Graduate Suu",
+      "desc": "Graduation cap and gold-trimmed gown."
+    },
+    "outfit-summer": {
+      "name": "Summer holiday",
+      "desc": "Lavender sun hat and floral shirt."
+    },
+    "outfit-mint-hoodie": {
+      "name": "Mint hoodie",
+      "desc": "A cozy mint-green hoodie."
+    },
+    "outfit-denim": {
+      "name": "Denim jacket",
+      "desc": "Blue denim over a white tee."
+    },
+    "outfit-heart": {
+      "name": "Heart sweater",
+      "desc": "Peach sweater with a white heart."
+    },
+    "outfit-stripes": {
+      "name": "Striped tee",
+      "desc": "Red striped tee and blue trousers."
+    },
+    "outfit-sherpa": {
+      "name": "Cozy jacket",
+      "desc": "A soft tan sherpa jacket."
+    },
+    "outfit-tracksuit": {
+      "name": "Tracksuit",
+      "desc": "Black tracksuit with white stripes."
     }
+  },
+  "collection": {
+    "title": "Suu’s wardrobe",
+    "lead": "Find a new look for your Suu."
   }
 }

@@ -3,7 +3,7 @@
 // floats transparently over a full-screen <main>; other pages get a solid bar and the usual gutter.
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
+import { type ReactNode, useCallback, useId, useRef, useState } from 'react';
 import { Logo } from '@/components/brand';
 import { Avatar } from '@/components/brand/Avatar';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
@@ -17,6 +17,7 @@ import { isActive, NAV, type NavGroup, type NavItem } from '@/lib/nav';
 import { routes } from '@/lib/routes';
 import { ExamChip } from './ExamChip';
 import { Flame, Icon } from './icons';
+import { useSidebar } from './sidebar-state';
 
 export type ShellUser = { name: string; level: number; xp: number; streak: number; avatarId?: string };
 export { Avatar };
@@ -101,12 +102,9 @@ function NavDrawer({
   const name = user.name || t('shell.guest');
   return (
     <div className={cn('fixed inset-0 z-50', !open && 'hidden')}>
-      <button
-        type="button"
-        aria-label={t('nav.closeMenu')}
-        tabIndex={-1}
-        className="absolute inset-0 bg-[color-mix(in_srgb,var(--c-forest)_45%,transparent)] cursor-default"
-        onClick={onClose}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--c-forest)_45%,transparent)]"
       />
       <div
         ref={ref}
@@ -115,7 +113,7 @@ function NavDrawer({
         aria-modal="true"
         aria-label={t('nav.menu')}
         tabIndex={-1}
-        className="drawer-in absolute inset-y-0 left-0 w-[300px] max-w-[86vw] flex flex-col gap-5 overflow-y-auto scroll-thin bg-paper border-r-[1.5px] border-line shadow-pop rounded-r-[28px] px-4 pt-5 pb-[max(16px,env(safe-area-inset-bottom))]"
+        className="absolute inset-y-0 left-0 w-[300px] max-w-[86vw] flex flex-col gap-5 overflow-y-auto scroll-thin bg-paper border-r-[1.5px] border-line shadow-pop rounded-r-[28px] px-4 pt-5 pb-[max(16px,env(safe-area-inset-bottom))]"
       >
         <div className="flex items-center justify-between px-1">
           <Link href={routes.home} aria-label="Suprep">
@@ -196,16 +194,13 @@ export function AppShell({
 }) {
   const t = useT('common');
   const pathname = usePathname() ?? '/';
-  const [open, setOpen] = useState(false);
+  const { open, setOpen } = useSidebar();
+  const closeSidebar = useCallback(() => setOpen(false), [setOpen]);
   const drawerId = useId();
   const me: ShellUser = user ?? { name: '', level: 1, xp: 0, streak: 0 };
   const map = variant === 'map';
   const w = useWallet(demo, wallet);
   const look = { frame: w.equipped.frame, outfit: w.equipped.outfit };
-
-  // navigating closes the drawer
-  // biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger
-  useEffect(() => setOpen(false), [pathname]);
 
   return (
     <div className={cn('min-h-dvh', !map && 'shell-bg')}>
@@ -254,7 +249,7 @@ export function AppShell({
       <NavDrawer
         id={drawerId}
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={closeSidebar}
         user={me}
         pathname={pathname}
         gems={w.balance}
@@ -264,7 +259,7 @@ export function AppShell({
       {/* biome-ignore lint/correctness/useUniqueElementIds: the app shell renders once; #main is the skip-link target */}
       <main
         id="main"
-        className={cn(map ? 'fixed inset-0' : 'min-w-0 gutter pt-2 pb-12 w-full max-w-[1320px] mx-auto')}
+        className={cn(map ? 'fixed inset-0' : 'min-w-0 gutter pt-4 pb-12 w-full max-w-[1280px] mx-auto')}
       >
         {children}
       </main>
