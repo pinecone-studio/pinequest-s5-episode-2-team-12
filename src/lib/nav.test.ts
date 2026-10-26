@@ -22,17 +22,13 @@ test('every nav item has a unique key and href', () => {
 test('drawer order follows the spec; only Материал folds', () => {
   expect(NAV[0].items.map((i) => i.key)).toEqual([
     'map',
-    'practicePlayer',
     'mock',
     'tutor',
     'flashcards',
     'mistakes',
-    'daily',
     'friends',
-    'leaderboard',
     'shop',
-    'planner',
   ]);
   expect(NAV.filter((g) => g.collapsible).map((g) => g.key)).toEqual(['materials']);
-  expect(NAV.at(-1)?.items.map((i) => i.key)).toEqual(['achievements', 'settings']);
+  expect(NAV.at(-1)?.items.map((i) => i.key)).toEqual(['settings']);
 });
