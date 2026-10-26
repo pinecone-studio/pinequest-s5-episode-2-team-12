@@ -19,6 +19,9 @@ import { loadLocalRoadmap } from '@/features/roadmap/lib/local-store';
 import type { RegionId } from '@/features/roadmap/types';
 import { type SettingsPatch, saveSettings } from '@/features/settings/actions';
 import { readLocalSettings, writeLocalSettings } from '@/features/settings/local';
+import { itemById } from '@/features/shop/catalog';
+import { useWallet } from '@/features/shop/lib/use-wallet';
+import type { ServerWallet } from '@/features/shop/queries';
 import { AIMAGS } from '@/lib/aimags';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
@@ -67,10 +70,14 @@ function Header({
   user,
   demo,
   onSaved,
+  gems,
+  look,
 }: {
   user: ProfileUser;
   demo: boolean;
   onSaved: (p: Partial<ProfileUser>) => void;
+  gems: number;
+  look: { frame?: string; outfit?: string; banner?: string };
 }) {
   const t = useT('profile');
   const [editing, setEditing] = useState(false);
@@ -112,9 +119,22 @@ function Header({
   };
 
   return (
-    <section className="soft-card grid gap-5 p-5 md:p-6">
-      <div className="flex flex-wrap items-center gap-4">
-        <Avatar name={user.name || '?'} avatarId={user.avatarId} size={76} />
+    <section className="soft-card relative grid gap-5 overflow-hidden p-5 md:p-6">
+      {look.banner && (
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-16"
+          style={{ background: itemById(look.banner)?.look }}
+        />
+      )}
+      <div className={cn('relative flex flex-wrap items-center gap-4', look.banner && 'pt-6')}>
+        <Avatar
+          name={user.name || '?'}
+          avatarId={user.avatarId}
+          size={76}
+          frame={look.frame}
+          outfit={look.outfit}
+        />
         <div className="min-w-0 flex-1">
           <h1 className="font-display text-[26px] font-bold leading-tight text-ink">{user.name || '—'}</h1>
           <p className="text-[13.5px] text-ink-3">
@@ -127,13 +147,17 @@ function Header({
           </Button>
         )}
       </div>
-      <dl className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <dl className="grid grid-cols-3 gap-2">
         <div className="rounded-2xl bg-paper-2 px-4 py-3">
           <dt className="text-[12px] text-ink-3">{t('header.xp')}</dt>
           <dd className="font-display text-2xl font-bold text-ink tnum">{user.xp.toLocaleString('en-US')}</dd>
           <dd className="mt-1.5 h-1.5 rounded-full bg-line" aria-hidden="true">
             <span className="block h-full rounded-full bg-leaf" style={{ width: `${user.levelPct}%` }} />
           </dd>
+        </div>
+        <div className="rounded-2xl bg-paper-2 px-4 py-3">
+          <dt className="text-[12px] text-ink-3">{t('header.gems')}</dt>
+          <dd className="font-display text-2xl font-bold text-ink tnum">💎 {gems}</dd>
         </div>
         <div className="rounded-2xl bg-paper-2 px-4 py-3">
           <dt className="text-[12px] text-ink-3">{t('header.streak')}</dt>
@@ -450,7 +474,9 @@ export function ProfileView({
   server,
   meta,
   rank,
+  wallet = null,
 }: {
+  wallet?: ServerWallet | null;
   demo: boolean;
   user: ProfileUser;
   badges: (Badge & { earned: boolean })[];
@@ -459,6 +485,7 @@ export function ProfileView({
   rank: { rank: number; of: number } | null;
 }) {
   const [user, setUser] = useState(initialUser);
+  const w = useWallet(demo, wallet);
   const [data, setData] = useState<ProfileServer>(server ?? { mocks: [], answers: [], regionsDone: [] });
   useEffect(() => {
     if (!demo) return;
@@ -486,7 +513,13 @@ export function ProfileView({
 
   return (
     <div className="mx-auto grid w-full max-w-6xl gap-4">
-      <Header user={user} demo={demo} onSaved={(p) => setUser((u) => ({ ...u, ...p }))} />
+      <Header
+        user={user}
+        demo={demo}
+        onSaved={(p) => setUser((u) => ({ ...u, ...p }))}
+        gems={w.balance}
+        look={{ frame: w.equipped.frame, outfit: w.equipped.outfit, banner: w.equipped.banner }}
+      />
       <div className="grid gap-4 md:grid-cols-2">
         <SkillRadar
           answers={[...data.answers, ...mockAnswers]}

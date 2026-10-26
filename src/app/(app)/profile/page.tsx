@@ -55,6 +55,7 @@ export default async function ProfilePage() {
       server={server}
       meta={questionMeta()}
       rank={rank}
+      wallet={shell.wallet}
     />
   );
 }

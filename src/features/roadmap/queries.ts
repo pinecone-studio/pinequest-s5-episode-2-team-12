@@ -1,5 +1,6 @@
 // Section A · roadmap reads. Without Supabase every function returns content/roadmap (demo mode).
 import { getDb } from '@/lib/supabase/server';
+import { getQuestionsDb } from '@/server/db';
 import type { Question } from '@/types';
 import { ROADMAP } from './config';
 import { BANK_TOPIC, placementPool, stopPool } from './content/bank';
@@ -49,9 +50,9 @@ export async function getRoadmap(userId: string): Promise<RoadmapState | null> {
 const withTopic = (q: Question): Question =>
   q.topicId ? q : { ...q, topicId: BANK_TOPIC[q.id], format: q.choices ? 'mcq' : 'spr', pool: 'stop' };
 
-/** Servable stop questions for a topic. RLS already hides unreviewed rows from non-admins. */
+/** Servable stop questions for a topic (server-only read; unreviewed rows filtered below). */
 export async function listStopQuestions(topicId: number): Promise<Question[]> {
-  const db = await getDb();
+  const db = await getQuestionsDb();
   if (!db) return stopPool(topicId);
   const bankIds = Object.entries(BANK_TOPIC)
     .filter(([, t]) => t === topicId)
@@ -70,7 +71,7 @@ export async function listStopQuestions(topicId: number): Promise<Question[]> {
 }
 
 export async function listPlacementQuestions(): Promise<Question[]> {
-  const db = await getDb();
+  const db = await getQuestionsDb();
   if (!db) return placementPool();
   const { data, error } = await db.from('questions').select('content, reviewed').eq('pool', 'placement');
   if (error) throw error;

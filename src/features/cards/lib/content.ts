@@ -16,6 +16,8 @@ export const CardSchema = z.object({
   when: text.optional(),
   art: z.enum(ART_KINDS),
   v: text.optional(),
+  /** Drafts ship false; an admin approves them (/admin/flashcards). */
+  reviewed: z.boolean().optional(),
 });
 
 export const DeckSchema = z.object({
@@ -28,7 +30,11 @@ export const DeckSchema = z.object({
   cards: z.array(CardSchema).min(1),
 });
 
-export const ContentSchema = z.object({ decks: z.array(DeckSchema).min(1) });
+/** `version` bumps when cards are added or reworded, so stored review states can be migrated. */
+export const ContentSchema = z.object({
+  version: z.number().int().optional(),
+  decks: z.array(DeckSchema).min(1),
+});
 
 export function parseDecks(json: unknown): Deck[] {
   return ContentSchema.parse(json).decks;

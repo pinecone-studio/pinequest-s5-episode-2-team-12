@@ -76,3 +76,17 @@ describe('mock engine', () => {
     expect(overlap).toBe(0);
   });
 });
+
+test('group attempts keep the shared form and clock (no adaptive module 2)', async () => {
+  const { startGroupAttempt } = await import('./engine');
+  const { groupClock, makeGroupForm } = await import('@/features/social/lib/group');
+  const form = makeGroupForm(mockBank().pool, 3);
+  const clock = groupClock(new Date(T0).toISOString());
+  const a = startGroupAttempt('g1', 'session', form, clock, T0 + 2 * MIN);
+  expect(a.modules[0].endsAt).toBe(clock.module1.endsAt); // joining late does not buy extra time
+  const s1 = submitModule(a, 1, all(form.module1), T0 + 20 * MIN);
+  if ('error' in s1) throw new Error(s1.error);
+  expect(s1.attempt.route).toBeNull();
+  expect(s1.attempt.modules[1].ids).toEqual(form.module2);
+  expect(s1.attempt.modules[1].startedAt).toBe(clock.module2.startedAt);
+});

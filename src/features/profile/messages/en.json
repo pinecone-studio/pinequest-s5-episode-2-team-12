@@ -14,7 +14,8 @@
     "school": "School (optional)",
     "saved": "Saved",
     "failed": "Could not save",
-    "demo": "In demo mode changes stay on this device."
+    "demo": "In demo mode changes stay on this device.",
+    "gems": "Gems"
   },
   "rank": {
     "title": "Ranking",

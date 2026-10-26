@@ -38,6 +38,7 @@ export type Card = {
   when?: string;
   art: CardArt;
   v?: string;
+  reviewed?: boolean;
 };
 
 export type DeckKind = 'word' | 'formula' | 'mine';

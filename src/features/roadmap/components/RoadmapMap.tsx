@@ -40,7 +40,6 @@ import { CheckIcon, LockIcon, StarRow } from './TopicIcon';
 
 const ISO = isoMatrix(MAP.width, MAP.height);
 const MATRIX = svgMatrix(ISO);
-const CSS_MATRIX = `matrix(${[ISO.a, ISO.b, ISO.c, ISO.d, ISO.e, ISO.f].map((n) => +n.toFixed(5)).join(',')})`;
 const CONTENT: Size = { w: ISO.width, h: ISO.height };
 const POINTS: Record<number, Pt> = Object.fromEntries(
   STOPS.map((s) => [s.no, toScreen(ISO, MAP.points[s.no])]),
@@ -57,7 +56,7 @@ const STRATA = Array.from({ length: Math.ceil(TILT.depth / 1.5) }, (_, i) => {
   return { dy, layer };
 });
 
-const TERRAIN_SRCSET = [1024, 2048, 3072].map((w) => `/map/terrain-${w}.webp ${w}w`).join(', ');
+const TERRAIN_WIDTHS = [1024, 2048, 3072];
 
 /** Below this zoom (× the fit scale) nearby pins merge into clusters; above LABEL_ZOOM every label shows. */
 const CLUSTER_ZOOM = 1.35;
@@ -249,8 +248,8 @@ function PinGlyph({ v }: { v: StopView }) {
   );
 }
 
-/** Pick the smallest terrain image that is sharp at this zoom (device pixels capped at 2×; 1× on Save-Data). */
-function useTerrainSizes(scale: number): string {
+/** The smallest terrain image that is sharp at this zoom (device pixels capped at 2×; 1× on Save-Data). */
+function useTerrainHref(scale: number, laidOut: boolean): string {
   const [dpr, setDpr] = useState(1);
   useEffect(() => {
     const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
@@ -258,9 +257,15 @@ function useTerrainSizes(scale: number): string {
     // the browser multiplies `sizes` by the device ratio; this factor caps the result
     setDpr((saveData ? 1 : Math.min(2, device)) / device);
   }, []);
-  // css px the image needs, bucketed so the attribute changes rarely
-  const need = Math.ceil((MAP.width * scale * dpr) / 128) * 128;
-  return `${Math.max(128, need)}px`;
+  // device px the image needs; the first paint always uses the preloaded 1024
+  const need = MAP.width * scale * dpr * (typeof window === 'undefined' ? 1 : window.devicePixelRatio || 1);
+  const width = !laidOut
+    ? 1024
+    : (TERRAIN_WIDTHS.find((w) => w >= need) ?? TERRAIN_WIDTHS[TERRAIN_WIDTHS.length - 1]);
+  // never step back down: the bigger image is already cached
+  const [max, setMax] = useState(1024);
+  useEffect(() => setMax((m) => Math.max(m, width)), [width]);
+  return `/map/terrain-${Math.max(max, width)}.webp`;
 }
 
 export function RoadmapMap({
@@ -271,6 +276,7 @@ export function RoadmapMap({
   fullBleed = false,
   cluster = true,
   selectedNo = null,
+  skin,
 }: {
   views: StopView[];
   /** Current position; null when every stop is done. */
@@ -283,6 +289,8 @@ export function RoadmapMap({
   cluster?: boolean;
   /** The stop whose panel is open: the camera flies to it and its label is highlighted. */
   selectedNo?: number | null;
+  /** Shop map skin: 'winter' | 'night'. */
+  skin?: string;
 }) {
   const t = useT('roadmap');
   const helpId = useId();
@@ -303,7 +311,6 @@ export function RoadmapMap({
   const minScale = (fit?.scale ?? 1) * ZOOM.min;
   const maxScale = (fit?.scale ?? 1) * ZOOM.max;
   const narrow = (box?.w ?? 1000) < 768;
-  const sizes = useTerrainSizes(view.scale);
 
   const apply = useCallback(
     (v: View) => {
@@ -352,6 +359,7 @@ export function RoadmapMap({
   const placed = useRef(false);
   // the terrain loads only once the first view is set, so `sizes` never asks for the zoom-1 (oversized) image
   const [laidOut, setLaidOut] = useState(false);
+  const terrainHref = useTerrainHref(view.scale, laidOut);
   useEffect(() => {
     const el = boxRef.current;
     if (!el) return;
@@ -555,6 +563,7 @@ export function RoadmapMap({
         tabIndex={0}
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
+        data-skin={skin}
         className={cn(
           'roadmap-stage relative h-full w-full overflow-clip',
           !fullBleed && 'rounded-[26px] border border-line',
@@ -564,36 +573,44 @@ export function RoadmapMap({
         <p id={helpId} className="sr-only">
           {t('map.help')}
         </p>
-        {box && (
-          <>
-            <div
-              className={cn('roadmap-layer absolute left-0 top-0', flying && 'is-flying')}
-              style={
-                {
+        {/* The terrain is server-rendered, so the first paint (and LCP) does not wait for hydration. Until the box
+            is measured the layer fills the stage and the SVG fits the map ("meet" = fitView); afterwards the very
+            same element moves with the pan/zoom transform — no remount, no second paint. */}
+        <div
+          className={cn(
+            'roadmap-layer absolute',
+            laidOut ? 'left-0 top-0' : 'inset-3',
+            flying && 'is-flying',
+          )}
+          style={
+            laidOut
+              ? ({
                   width: CONTENT.w,
                   height: CONTENT.h,
                   transform: `translate(${view.x}px, ${view.y}px) scale(${view.scale})`,
                   '--inv': 1 / view.scale,
-                } as React.CSSProperties
-              }
-            >
-              <MapBase />
-              {laidOut && (
-                // biome-ignore lint/performance/noImgElement: baked terrain needs srcset under a CSS matrix; next/image can't transform
-                <img
-                  src="/map/terrain-1024.webp"
-                  srcSet={TERRAIN_SRCSET}
-                  sizes={sizes}
-                  alt=""
-                  width={MAP.width}
-                  height={MAP.height}
-                  draggable={false}
-                  fetchPriority="high"
-                  decoding="async"
-                  className="roadmap-terrain"
-                  style={{ width: MAP.width, height: MAP.height, transform: CSS_MATRIX }}
-                />
-              )}
+                } as React.CSSProperties)
+              : undefined
+          }
+        >
+          {laidOut && <MapBase />}
+          <svg
+            className="roadmap-terrain absolute inset-0 h-full w-full overflow-visible"
+            viewBox={`0 0 ${CONTENT.w} ${CONTENT.h}`}
+            preserveAspectRatio="xMidYMid meet"
+            aria-hidden="true"
+          >
+            {!laidOut && (
+              <path
+                d={MAP.outline}
+                transform={`translate(0 ${TILT.depth}) ${MATRIX}`}
+                style={{ fill: 'var(--rm-soil)' }}
+              />
+            )}
+            <image href={terrainHref} width={MAP.width} height={MAP.height} transform={MATRIX} />
+          </svg>
+          {box && laidOut && (
+            <>
               <MapOverlay frontierIndex={frontierIndex} />
               <Clouds />
               {views.map((v) => {
@@ -694,8 +711,11 @@ export function RoadmapMap({
                   </div>
                 );
               })}
-            </div>
-
+            </>
+          )}
+        </div>
+        {box && laidOut && (
+          <>
             {/* labels and leader lines in screen px, so text stays crisp at any zoom */}
             <div
               className="pointer-events-none absolute left-0 top-0"

@@ -1,17 +1,18 @@
 // Section C · reads.
 import { getDb } from '@/lib/supabase/server';
+import { getQuestionsDb } from '@/server/db';
 import { QUESTIONS } from '@/mocks/questions';
 import type { Question, QuestionFilter } from '@/types';
 import { filterQuestions } from './lib/filter-questions';
 
 export async function listQuestions(filter: QuestionFilter = {}): Promise<Question[]> {
-  const db = await getDb();
+  const db = await getQuestionsDb();
 
   if (!db) {
     return filterQuestions(QUESTIONS, filter);
   }
 
-  let query = db.from('questions').select('content');
+  let query = db.from('questions').select('content').eq('reviewed', true);
 
   if (filter.domain) {
     query = query.eq('domain', filter.domain);
@@ -32,13 +33,18 @@ export async function listQuestions(filter: QuestionFilter = {}): Promise<Questi
 }
 
 export async function getQuestion(id: string): Promise<Question | null> {
-  const db = await getDb();
+  const db = await getQuestionsDb();
 
   if (!db) {
     return QUESTIONS.find((question) => question.id === id) ?? null;
   }
 
-  const { data, error } = await db.from('questions').select('content').eq('id', id).maybeSingle();
+  const { data, error } = await db
+    .from('questions')
+    .select('content')
+    .eq('id', id)
+    .eq('reviewed', true)
+    .maybeSingle();
 
   if (error) throw error;
 

@@ -1,0 +1,22 @@
+{
+  "title": "Daily challenge",
+  "lead": "The same 5 problems for every student, every day. One try only — be fast and right to score more.",
+  "rules": "3 minutes per problem. 100 points for a correct answer, up to 50 more for speed.",
+  "start": "Start",
+  "resume": "Resume",
+  "question": "Problem {n} of {total}",
+  "submit": "Submit",
+  "next": "Next",
+  "right": "Correct!",
+  "wrong": "Not quite. Correct answer: {a}",
+  "explain": "Explanation",
+  "done": "Today's challenge is done",
+  "score": "Score",
+  "correct": "{n}/{total} correct",
+  "tomorrow": "A new challenge comes tomorrow.",
+  "board": "See the leaderboard",
+  "flagged": "Answers came in too fast, so this run does not count for rankings.",
+  "loading": "Loading…",
+  "error": "Something went wrong. Please try again.",
+  "hint": "💡 Use a hint ({n} left)"
+}

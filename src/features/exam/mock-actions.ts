@@ -4,9 +4,12 @@
 // grades, but nothing is stored. The browser never gets answers while a module is open.
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { EARN } from '@/features/shop/catalog';
 import { routes } from '@/lib/routes';
 import { getDb } from '@/lib/supabase/server';
 import { getAdminDb } from '@/server/db';
+import { afterStudy, awardGems } from '@/server/gems';
+import { recordMistakes } from '@/server/mistakes';
 import { awardXp } from '@/server/xp';
 import type { Question } from '@/types';
 import { MOCK } from './config';
@@ -64,7 +67,9 @@ function stepOf(a: MockAttempt, demo: boolean, late?: boolean): ExamStep {
       phase: 'module1',
       module: { no: 1, startedAt: m1.startedAt, endsAt: m1.endsAt, questions: publicQuestions(m1.ids) },
     };
-  if (m2 && Date.parse(m2.endsAt) > Date.parse(m2.startedAt))
+  // a group's module 2 opens at the shared time; until then it is the break
+  const begun = m2 && Date.parse(m2.endsAt) > Date.parse(m2.startedAt);
+  if (m2 && begun && Date.now() >= Date.parse(m2.startedAt) - MOCK.graceMs)
     return {
       ...base,
       phase: 'module2',
@@ -73,7 +78,10 @@ function stepOf(a: MockAttempt, demo: boolean, late?: boolean): ExamStep {
   return {
     ...base,
     phase: 'break',
-    breakEndsAt: new Date(Date.parse(m1.submittedAt) + MOCK.breakMinutes * 60_000).toISOString(),
+    breakEndsAt:
+      a.groupId && m2
+        ? m2.startedAt
+        : new Date(Date.parse(m1.submittedAt) + MOCK.breakMinutes * 60_000).toISOString(),
   };
 }
 
@@ -170,8 +178,18 @@ export async function submitModule(input: {
   if ('error' in r) return { ok: false, reason: r.error };
   if (s) {
     if (!(await saveRow(s, r.attempt))) return { ok: false, reason: 'database_error' };
-    if (r.attempt.finishedAt && !r.attempt.flagged)
+    const graded = r.attempt.modules.find((m) => m.no === input.no)?.answers ?? [];
+    // blanks are not mistakes the notebook can teach from; wrong answers are
+    await recordMistakes(
+      s.userId,
+      graded.filter((a) => a.answer && !a.correct).map((a) => ({ qid: a.qid, chosen: a.answer })),
+      'mock',
+    );
+    if (r.attempt.finishedAt && !r.attempt.flagged) {
       await awardXp(s.userId, XP_FOR_MOCK, 'exam', `mock:${r.attempt.id}`);
+      await awardGems(s.userId, EARN.mock, 'mock', `mock:${r.attempt.id}`);
+      await afterStudy(s.userId);
+    }
     if (r.attempt.finishedAt) revalidatePath(routes.profile);
   }
   return { ok: true, step: stepOf(r.attempt, !s, r.late) };
