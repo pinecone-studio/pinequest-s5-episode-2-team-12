@@ -9,14 +9,14 @@ const t = getT('roadmap');
 
 test('aria label reads number, place, topic and state', () => {
   const v = stopViews(initialState(), true).find((x) => x.stop.no === 6)!;
-  expect(stopAriaLabel(v, t)).toBe('6-р зогсоол, Мөрөн, Шугаман тэнцэтгэл биш, түгжээтэй');
+  expect(stopAriaLabel(v, t)).toBe('6-р зогсоол, Мөрөн, Шулуун ба шугаман тэгшитгэл, түгжээтэй');
 });
 
 test('completed stops mention their stars', () => {
   let s = withPlacement(initialState(), skippedResult('T'));
   s = withAttempt(s, 1, scoreAttempt({ correct: 9, total: 10, hintsUsed: 0 }), 'T').state;
   const v = stopViews(s, true)[0];
-  expect(stopAriaLabel(v, t)).toBe('1-р зогсоол, Өлгий, Нэг хувьсагчтай шугаман тэгшитгэл, дууссан, 2 од');
+  expect(stopAriaLabel(v, t)).toBe('1-р зогсоол, Өлгий, Зэрэг ба язгуур, дууссан, 2 од');
 });
 
 test('ring shows best correct against the pass mark of the set length', () => {

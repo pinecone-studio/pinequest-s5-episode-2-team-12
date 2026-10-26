@@ -3,7 +3,7 @@ import { getDb } from '@/lib/supabase/server';
 import { getQuestionsDb } from '@/server/db';
 import type { Question } from '@/types';
 import { ROADMAP } from './config';
-import { BANK_TOPIC, placementPool, stopPool } from './content/bank';
+import { placementPool, roadmapQuestionById, stopPool } from './content/bank';
 import { type PlacementRow, type ProgressRow, type StopRow, stateFromRows } from './lib/db-map';
 import type { ProblemAttempt, RoadmapState } from './types';
 
@@ -47,38 +47,50 @@ export async function getRoadmap(userId: string): Promise<RoadmapState | null> {
   );
 }
 
-const withTopic = (q: Question): Question =>
-  q.topicId ? q : { ...q, topicId: BANK_TOPIC[q.id], format: q.choices ? 'mcq' : 'spr', pool: 'stop' };
+/** Old imports may still carry the previous ordinal topic ids. Resolve by question identity. */
+const withTopic = (q: Question): Question => {
+  const active = roadmapQuestionById(q.id);
+  return active
+    ? {
+        ...q,
+        topicId: active.topicId,
+        domain: active.domain,
+        skill: active.skill,
+        format: active.format,
+        pool: active.pool,
+      }
+    : q;
+};
 
-/** Servable stop questions for a topic (server-only read; unreviewed rows filtered below). */
-export async function listStopQuestions(topicId: number): Promise<Question[]> {
+async function curriculumPool(pool: 'stop' | 'placement', topicId?: number): Promise<Question[]> {
+  const active = pool === 'stop' ? stopPool(topicId, true) : placementPool(true);
+  const fallback = pool === 'stop' ? stopPool(topicId) : placementPool();
   const db = await getQuestionsDb();
-  if (!db) return stopPool(topicId);
-  const bankIds = Object.entries(BANK_TOPIC)
-    .filter(([, t]) => t === topicId)
-    .map(([id]) => id);
-  let query = db.from('questions').select('content, reviewed');
-  query = bankIds.length
-    ? query.or(`and(topic_id.eq.${topicId},pool.eq.stop),id.in.(${bankIds.join(',')})`)
-    : query.eq('topic_id', topicId).eq('pool', 'stop');
-  const { data, error } = await query;
+  if (!db) return fallback;
+  // Select by current ids so an old topic_id cannot serve questions from a different chapter.
+  const { data, error } = await db
+    .from('questions')
+    .select('content, reviewed')
+    .in(
+      'id',
+      active.map((q) => q.id),
+    );
   if (error) throw error;
   const rows = (data ?? [])
     .filter((r) => ROADMAP.allowUnreviewed || r.reviewed)
     .map((r) => withTopic(r.content as Question));
-  // nothing imported yet: in development fall back to the files so the roadmap is usable
-  return rows.length || !ROADMAP.allowUnreviewed ? rows : stopPool(topicId);
+  if (!ROADMAP.allowUnreviewed) return rows;
+  const loaded = new Set(rows.map((q) => q.id));
+  return [...rows, ...fallback.filter((q) => !loaded.has(q.id))];
+}
+
+/** Servable stop questions for the current curriculum, with the production review gate intact. */
+export async function listStopQuestions(topicId: number): Promise<Question[]> {
+  return curriculumPool('stop', topicId);
 }
 
 export async function listPlacementQuestions(): Promise<Question[]> {
-  const db = await getQuestionsDb();
-  if (!db) return placementPool();
-  const { data, error } = await db.from('questions').select('content, reviewed').eq('pool', 'placement');
-  if (error) throw error;
-  const rows = (data ?? [])
-    .filter((r) => ROADMAP.allowUnreviewed || r.reviewed)
-    .map((r) => r.content as Question);
-  return rows.length || !ROADMAP.allowUnreviewed ? rows : placementPool();
+  return curriculumPool('placement');
 }
 
 /** Recent answers on a topic (selection history: fresh draws, missed questions weigh more). */

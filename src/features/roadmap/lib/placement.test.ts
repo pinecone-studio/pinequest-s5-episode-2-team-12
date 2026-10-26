@@ -147,6 +147,6 @@ test('domain breakdown uses the topic domain', () => {
     { q: item(1, 2), correct: true },
     { q: item(22, 2), correct: false },
   ]);
-  expect(b.alg).toEqual({ correct: 1, total: 1 });
+  expect(b.adv).toEqual({ correct: 1, total: 1 });
   expect(b.geo).toEqual({ correct: 0, total: 1 });
 });

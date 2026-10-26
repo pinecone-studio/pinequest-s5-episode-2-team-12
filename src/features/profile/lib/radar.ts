@@ -7,14 +7,14 @@ import type { Domain } from '@/types';
 export type Cluster = { id: string; domain: Domain; topics: number[] };
 
 export const CLUSTERS: Cluster[] = [
-  { id: 'linEq', domain: 'alg', topics: [1, 2, 6] },
-  { id: 'linFn', domain: 'alg', topics: [3, 4, 5] },
-  { id: 'ratio', domain: 'psda', topics: [7, 8, 9] },
-  { id: 'data', domain: 'psda', topics: [10, 11, 12] },
-  { id: 'stats', domain: 'psda', topics: [13, 14] },
-  { id: 'expr', domain: 'adv', topics: [15, 16, 17, 18] },
-  { id: 'nonlin', domain: 'adv', topics: [19, 20, 21] },
-  { id: 'geo', domain: 'geo', topics: [22, 23, 24, 25, 26] },
+  { id: 'linEq', domain: 'alg', topics: [3, 6, 14] },
+  { id: 'linFn', domain: 'alg', topics: [7, 11, 13] },
+  { id: 'ratio', domain: 'psda', topics: [8, 10] },
+  { id: 'data', domain: 'psda', topics: [23, 24] },
+  { id: 'stats', domain: 'psda', topics: [25, 26] },
+  { id: 'expr', domain: 'adv', topics: [1, 2, 4, 12] },
+  { id: 'nonlin', domain: 'adv', topics: [5, 9, 15, 16] },
+  { id: 'geo', domain: 'geo', topics: [17, 18, 19, 20, 21, 22] },
 ];
 export const DOMAIN_AXES: Domain[] = ['alg', 'adv', 'psda', 'geo'];
 

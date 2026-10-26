@@ -14,6 +14,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { createPortal } from 'react-dom';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import {
@@ -270,6 +271,7 @@ export function RoadmapMap({
   cluster = true,
   selectedNo = null,
   skin,
+  showTopicHeading = true,
 }: {
   views: StopView[];
   /** Current position; null when every stop is done. */
@@ -284,6 +286,7 @@ export function RoadmapMap({
   selectedNo?: number | null;
   /** Shop map skin: 'winter' | 'night'. */
   skin?: string;
+  showTopicHeading?: boolean;
 }) {
   const t = useT('roadmap');
   const helpId = useId();
@@ -293,7 +296,9 @@ export function RoadmapMap({
   // The home map stays fitted and anchored to the bottom, including after a resize.
   const fixedView = box ? fitView(box, CONTENT) : null;
   const view =
-    fullBleed && box && fixedView ? { ...fixedView, y: box.h - CONTENT.h * fixedView.scale + 28 } : camera;
+    fullBleed && box && fixedView
+      ? { ...fixedView, x: fixedView.x + 20, y: box.h - CONTENT.h * fixedView.scale + 28 }
+      : camera;
   const [hover, setHover] = useState<number | null>(null);
   const [dragging, setDragging] = useState(false);
   const [flying, setFlying] = useState(false);
@@ -556,7 +561,7 @@ export function RoadmapMap({
   const placeName = (no: number) => STOPS.find((s) => s.no === no)?.place ?? '';
 
   return (
-    <div className={cn('relative isolate', className)}>
+    <div className={cn('relative isolate z-0', className)}>
       <div
         ref={boxRef}
         role="application"
@@ -638,11 +643,38 @@ export function RoadmapMap({
                   >
                     <span className="roadmap-shadow" aria-hidden="true" />
                     {isFrontier && <span className="roadmap-ring" aria-hidden="true" />}
-                    {floatNo === v.stop.no && zoom >= 1 && (
-                      <div className="roadmap-float" aria-hidden="true">
-                        <StopCard v={v} />
-                      </div>
-                    )}
+                    {floatNo === v.stop.no &&
+                      zoom >= 1 &&
+                      (fullBleed ? (
+                        createPortal(
+                          <div
+                            className="roadmap-float"
+                            aria-hidden="true"
+                            style={{
+                              position: 'fixed',
+                              left:
+                                (boxRef.current?.getBoundingClientRect().left ?? 0) +
+                                view.x +
+                                x * view.scale -
+                                100,
+                              bottom:
+                                window.innerHeight -
+                                (boxRef.current?.getBoundingClientRect().top ?? 0) -
+                                view.y -
+                                y * view.scale +
+                                58,
+                              zIndex: 60,
+                            }}
+                          >
+                            <StopCard v={v} />
+                          </div>,
+                          document.body,
+                        )
+                      ) : (
+                        <div className="roadmap-float" aria-hidden="true">
+                          <StopCard v={v} />
+                        </div>
+                      ))}
                     <button
                       type="button"
                       className="roadmap-coin"
@@ -766,6 +798,7 @@ export function RoadmapMap({
       </div>
 
       {fullBleed &&
+        showTopicHeading &&
         frontierNo !== null &&
         (() => {
           const current = views.find((v) => v.stop.no === frontierNo);

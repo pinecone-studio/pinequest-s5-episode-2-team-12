@@ -10,6 +10,7 @@ import { Sheet } from '@/components/ui/Sheet';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
+import { guideFor } from '../content/guides';
 import { loadStopDetail, type StopDetailResult } from '../detail-actions';
 import { blockingStop, missedOn, stopPlan, topicMastery } from '../lib/plan';
 import type { StopView } from '../lib/view';
@@ -91,6 +92,7 @@ export function StopPanel({
   history,
   onClose,
   onMove,
+  inline = false,
 }: {
   v: StopView | undefined;
   views: StopView[];
@@ -101,14 +103,20 @@ export function StopPanel({
   history: ProblemAttempt[];
   onClose: () => void;
   onMove: (no: number) => void;
+  /** Borderless overview in the open space above the home map. */
+  inline?: boolean;
 }) {
   const t = useT('roadmap');
   const uid = useId();
   const no = v?.stop.no ?? null;
   const loaded = useStopDetail(no);
   const [preview, setPreview] = useState(false);
+  const [overviewTab, setOverviewTab] = useState('topic');
   // biome-ignore lint/correctness/useExhaustiveDependencies: a new stop closes the preview
-  useEffect(() => setPreview(false), [no]);
+  useEffect(() => {
+    setPreview(false);
+    setOverviewTab('topic');
+  }, [no]);
 
   // ← / → between stops while the panel is open (not while typing)
   useEffect(() => {
@@ -139,16 +147,58 @@ export function StopPanel({
   const tip = detail?.intros.find((s) => /desmos|тооны машин/i.test(s.title));
   const label = `${t('panel.stopNo', { n: v.stop.no })}, ${v.stop.place}`;
 
-  return (
-    <Sheet
-      open
-      onClose={onClose}
-      label={label}
-      className="grid content-start gap-4"
-      phoneHeight="max-h-[68dvh]"
-    >
+  if (inline) {
+    const overviewGuide = detail?.guide ?? guideFor(v.topic.id);
+    return (
+      <section aria-label={label} className="roadmap-stop-overview roadmap-featured-topic absolute z-20">
+        <header className="grid gap-3">
+          <p className="eyebrow">
+            {t('panel.stopNo', { n: v.stop.no })} · {v.region.title}
+          </p>
+          <div className="flex items-start gap-3">
+            <div className="min-w-0">
+              <h2 className="font-display text-[clamp(26px,3vw,44px)] font-bold leading-tight text-ink">
+                {v.topic.title}
+              </h2>
+              <p className="mt-1 text-[13px] text-ink-3">
+                {v.stop.place} · {v.stop.aimag}
+              </p>
+            </div>
+          </div>
+        </header>
+        {overviewGuide && (
+          <ul className="grid gap-2 text-[14px] text-ink-2">
+            {overviewGuide.goals.map((goal) => (
+              <li key={goal} className="flex gap-2">
+                <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-leaf" />
+                <Rich text={goal} />
+              </li>
+            ))}
+          </ul>
+        )}
+        <div className="roadmap-stop-start">
+          {locked && open ? (
+            <button type="button" disabled className={cta} style={lime}>
+              {t('sheet.start')}
+            </button>
+          ) : (
+            <Link
+              href={!open ? routes.placement : routes.roadmapStop(v.stop.no)}
+              className={cta}
+              style={lime}
+            >
+              {t('sheet.start')}
+            </Link>
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  const content = (
+    <>
       {/* header */}
-      <header className="grid gap-3">
+      <header className={cn('grid gap-3', inline && 'col-span-full')}>
         <div className="flex items-center justify-between gap-2">
           <p className="eyebrow">
             {t('panel.stopNo', { n: v.stop.no })} · {v.region.title}
@@ -220,8 +270,17 @@ export function StopPanel({
             <TopicIcon name={v.topic.icon} size={26} />
           </span>
           <div className="min-w-0 flex-1">
-            <h2 className="font-display text-[24px] font-bold leading-tight text-ink">{v.stop.place}</h2>
-            <p className="text-[13px] text-ink-3">{v.stop.aimag}</p>
+            <h2
+              className={cn(
+                'font-display font-bold leading-tight text-ink',
+                inline ? 'text-[clamp(24px,2.6vw,40px)]' : 'text-[24px]',
+              )}
+            >
+              {inline ? v.topic.title : v.stop.place}
+            </h2>
+            <p className="text-[13px] text-ink-3">
+              {inline ? `${v.stop.place} · ${v.stop.aimag}` : v.stop.aimag}
+            </p>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -233,17 +292,30 @@ export function StopPanel({
             </span>
           )}
         </div>
-        {detail?.place && (
-          <p className="rounded-2xl bg-paper-2 px-3.5 py-2.5 text-[14px] leading-snug text-ink-2">
-            {detail.place.fact}
-          </p>
-        )}
       </header>
 
+      {inline && (
+        <nav className="roadmap-overview-tabs flex gap-2 overflow-x-auto" aria-label={t('panel.topic')}>
+          {['topic', ...(showInside ? ['inside', 'forYou', 'related'] : [])].map((tab) => (
+            <button
+              type="button"
+              key={tab}
+              aria-pressed={overviewTab === tab}
+              onClick={() => setOverviewTab(tab)}
+              className={cn(
+                'shrink-0 rounded-full px-3 py-1.5 text-[12px] font-bold',
+                overviewTab === tab ? 'bg-sage text-leaf-2' : 'text-ink-3 hover:bg-paper-2',
+              )}
+            >
+              {t(`panel.${tab}`)}
+            </button>
+          ))}
+        </nav>
+      )}
       {/* topic */}
       <Section title={t('panel.topic')} id={`${uid}-topic`}>
         <div>
-          <p className="font-bold text-[16px] leading-snug text-ink">{v.topic.title}</p>
+          {!inline && <p className="font-bold text-[16px] leading-snug text-ink">{v.topic.title}</p>}
           <p className="mt-0.5 font-mono text-[11.5px] text-ink-3">
             {v.topic.cbDomain} · {v.topic.cbSkill}
           </p>
@@ -260,7 +332,7 @@ export function StopPanel({
       </Section>
 
       {/* locked: what unlocks it */}
-      {locked && (
+      {locked && !inline && (
         <div className="grid gap-2 rounded-2xl bg-paper-2 px-4 py-3">
           <p className="text-[13.5px] font-semibold text-ink-2">
             {!open
@@ -427,10 +499,16 @@ export function StopPanel({
 
       {loaded?.done && !detail && <p className="text-[13px] text-danger">{t('panel.failed')}</p>}
 
-      <p className="hidden text-center text-[11.5px] text-ink-3 md:block">{t('panel.keys')}</p>
+      {!inline && <p className="hidden text-center text-[11.5px] text-ink-3 md:block">{t('panel.keys')}</p>}
       {/* actions */}
       {!locked && open && (
-        <div className="sticky -bottom-5 -mx-5 -mb-5 grid gap-2 border-t border-line bg-paper px-5 pt-3 pb-[max(20px,env(safe-area-inset-bottom))] md:-bottom-6 md:-mx-6 md:-mb-6 md:px-6 md:pb-6">
+        <div
+          className={
+            inline
+              ? 'roadmap-overview-actions col-span-full flex flex-wrap items-center gap-3 border-t border-line pt-3'
+              : 'sticky -bottom-5 -mx-5 -mb-5 grid gap-2 border-t border-line bg-paper px-5 pt-3 pb-[max(20px,env(safe-area-inset-bottom))] md:-bottom-6 md:-mx-6 md:-mb-6 md:px-6 md:pb-6'
+          }
+        >
           <Link href={routes.roadmapStop(v.stop.no)} className={cta} style={done ? soft : lime}>
             {done ? t('sheet.replay') : v.status === 'current' ? t('sheet.continue') : t('sheet.start')}
           </Link>
@@ -459,12 +537,55 @@ export function StopPanel({
         </div>
       )}
       {locked && (
-        <div className="flex justify-end">
+        <div
+          className={
+            inline ? 'roadmap-overview-actions flex flex-wrap items-center gap-2' : 'flex justify-end'
+          }
+        >
+          {inline && (
+            <>
+              <p className="text-[12px] text-ink-3">
+                {!open
+                  ? t('sheet.closedRoadmap')
+                  : blocker
+                    ? t('panel.lockedBy', { n: blocker, place: stopByNo(blocker)?.place ?? '' })
+                    : t('sheet.locked')}
+              </p>
+              {!open && (
+                <Link href={routes.placement} className={cta} style={lime}>
+                  {t('gate.prompt')}
+                </Link>
+              )}
+              <button
+                type="button"
+                className={quiet}
+                aria-expanded={preview}
+                onClick={() => {
+                  setPreview(!preview);
+                  setOverviewTab(!preview ? 'inside' : 'topic');
+                }}
+              >
+                {preview ? t('panel.hidePreview') : t('panel.preview')}
+              </button>
+            </>
+          )}
           <Link href={routes.tutor({ kind: 'topic', id: String(v.topic.id) })} className={quiet}>
             {t('panel.ask')}
           </Link>
         </div>
       )}
+    </>
+  );
+
+  return (
+    <Sheet
+      open
+      onClose={onClose}
+      label={label}
+      className="grid content-start gap-4"
+      phoneHeight="max-h-[68dvh]"
+    >
+      {content}
     </Sheet>
   );
 }

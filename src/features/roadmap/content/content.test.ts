@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'bun:test';
+import katex from 'katex';
 import { checkQuestion } from '../../../../scripts/roadmap/check-answers';
 import { ROADMAP } from '../config';
 import { module1, module2 } from '../lib/placement';
@@ -60,6 +61,21 @@ describe('roadmap bank', () => {
   test('intros: 2–4 screens for every topic', () => {
     expect(IntrosSchema.safeParse(Object.fromEntries(Object.entries(INTROS))).success).toBe(true);
     for (const t of TOPICS) expect(INTROS[t.id]?.length ?? 0).toBeGreaterThanOrEqual(2);
+  });
+
+  test('every lesson has a worked example and self-check, and its math renders', () => {
+    for (const topic of TOPICS) {
+      const screens = INTROS[topic.id];
+      expect(screens.some((s) => s.kind === 'example')).toBe(true);
+      expect(screens.at(-1)?.checkAnswer).toBeTruthy();
+      for (const screen of screens) {
+        for (const text of [screen.body, screen.checkAnswer ?? '']) {
+          for (const match of text.matchAll(/\$([^$]+)\$/g)) {
+            expect(() => katex.renderToString(match[1], { throwOnError: true })).not.toThrow();
+          }
+        }
+      }
+    }
   });
 
   test('the review gate hides unreviewed questions in production', () => {

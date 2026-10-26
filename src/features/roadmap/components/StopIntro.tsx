@@ -10,6 +10,7 @@ import type { IntroScreen } from '../content/schema';
 export function StopIntro({ screens, onDone }: { screens: IntroScreen[]; onDone: () => void }) {
   const t = useT('roadmap');
   const [i, setI] = useState(0);
+  const [answerVisible, setAnswerVisible] = useState(false);
   const uid = useId();
   const s = screens[i];
   const last = i === screens.length - 1;
@@ -35,11 +36,35 @@ export function StopIntro({ screens, onDone }: { screens: IntroScreen[]; onDone:
           <Rich text={s.body} />
         </p>
       </div>
+      {s.checkAnswer && (
+        <div className="grid gap-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            aria-expanded={answerVisible}
+            onClick={() => setAnswerVisible(!answerVisible)}
+          >
+            {answerVisible ? 'Бодолтыг нуух' : 'Бодолтыг харах'}
+          </Button>
+          {answerVisible && (
+            <p className="text-[16px] leading-relaxed text-ink-2">
+              <Rich text={s.checkAnswer} />
+            </p>
+          )}
+        </div>
+      )}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <Button variant="ghost" size="sm" onClick={onDone}>
           {t('stop.introSkip')}
         </Button>
-        <Button variant="lime" onClick={() => (last ? onDone() : setI(i + 1))}>
+        <Button
+          variant="lime"
+          onClick={() => {
+            setAnswerVisible(false);
+            if (last) onDone();
+            else setI(i + 1);
+          }}
+        >
           {last ? t('stop.introSkip') : t('stop.introNext')}
         </Button>
       </div>

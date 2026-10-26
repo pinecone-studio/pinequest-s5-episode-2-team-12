@@ -14,6 +14,8 @@ const { stopViews } = await import('../lib/view');
 const { RoadmapMap } = await import('./RoadmapMap');
 const { RoadmapView } = await import('./RoadmapView');
 const { StopCard } = await import('./StopCard');
+const { StopIntro } = await import('./StopIntro');
+const { INTROS } = await import('../content/bank');
 const { StopPlayer } = await import('./StopPlayer');
 
 import type { Question } from '@/types';
@@ -38,7 +40,7 @@ describe('StopCard', () => {
     expect(screen.getByText('Өлгий')).toBeTruthy();
     expect(screen.getByText('Баян-Өлгий')).toBeTruthy();
     expect(screen.getByText('1-р зогсоол')).toBeTruthy();
-    expect(screen.getByText('Нэг хувьсагчтай шугаман тэгшитгэл')).toBeTruthy();
+    expect(screen.getByText('Зэрэг ба язгуур')).toBeTruthy();
   });
 
   test('tested-out shows the chip', () => {
@@ -54,20 +56,47 @@ describe('StopCard', () => {
   });
 });
 
+describe('curriculum lessons', () => {
+  test('all 26 lessons teach before showing a self-check solution', () => {
+    for (let no = 1; no <= 26; no++) {
+      const screens = INTROS[no];
+      let finished = false;
+      const lesson = render(
+        <StopIntro
+          screens={screens}
+          onDone={() => {
+            finished = true;
+          }}
+        />,
+      );
+      expect(screen.queryByRole('button', { name: 'Бодолтыг харах' })).toBeNull();
+      for (let i = 0; i < screens.length - 1; i++)
+        fireEvent.click(screen.getByRole('button', { name: 'Дараах' }));
+      const reveal = screen.getByRole('button', { name: 'Бодолтыг харах' });
+      expect(reveal.getAttribute('aria-expanded')).toBe('false');
+      fireEvent.click(reveal);
+      expect(screen.getByRole('button', { name: 'Бодолтыг нуух' }).getAttribute('aria-expanded')).toBe(
+        'true',
+      );
+      fireEvent.click(screen.getAllByRole('button', { name: 'Бодлого руу' }).at(-1)!);
+      expect(finished).toBe(true);
+      lesson.unmount();
+    }
+  });
+});
+
 describe('RoadmapView', () => {
-  test('returning from unfinished placement still shows the first topic and placement prompt', () => {
+  test('returning from unfinished placement still shows the first topic without extra prompts', () => {
     localStorage.clear();
     const { container, unmount } = render(<RoadmapView demo server={null} />);
-    expect(container.querySelector('.roadmap-featured-topic h2')?.textContent).toBe(
-      'Нэг хувьсагчтай шугаман тэгшитгэл',
-    );
-    expect(screen.getByRole('region', { name: 'Аялал эхлэхийн өмнө' })).toBeTruthy();
+    expect(container.querySelector('.roadmap-featured-topic h2')?.textContent).toBe('Зэрэг ба язгуур');
+    expect(screen.queryByRole('region', { name: 'Аялал эхлэхийн өмнө' })).toBeNull();
     unmount();
     const returned = render(<RoadmapView demo server={null} />);
     expect(returned.container.querySelector('.roadmap-featured-topic h2')?.textContent).toBe(
-      'Нэг хувьсагчтай шугаман тэгшитгэл',
+      'Зэрэг ба язгуур',
     );
-    expect(screen.getByRole('region', { name: 'Аялал эхлэхийн өмнө' })).toBeTruthy();
+    expect(screen.queryByRole('region', { name: 'Аялал эхлэхийн өмнө' })).toBeNull();
   });
 });
 
@@ -79,7 +108,7 @@ describe('RoadmapMap', () => {
     const pins = within(map).getAllByRole('button');
     expect(pins).toHaveLength(26);
     expect(
-      screen.getByRole('button', { name: '6-р зогсоол, Мөрөн, Шугаман тэнцэтгэл биш, түгжээтэй' }),
+      screen.getByRole('button', { name: '6-р зогсоол, Мөрөн, Шулуун ба шугаман тэгшитгэл, түгжээтэй' }),
     ).toBeTruthy();
     expect(screen.getByRole('button', { name: /^1-р зогсоол, Өлгий, .*дууссан, 3 од$/ })).toBeTruthy();
   });
@@ -118,12 +147,12 @@ describe('RoadmapMap', () => {
     expect(heading.textContent).toBe(title);
     const other = screen.getByRole('button', { name: /^6-р зогсоол/ });
     fireEvent.focus(other);
-    expect(container.querySelector('.roadmap-float')?.textContent).toContain(
+    expect(document.querySelector('.roadmap-float')?.textContent).toContain(
       views.find((v) => v.stop.no === 6)!.stop.place,
     );
     expect(heading.textContent).toBe(title);
     fireEvent.blur(other);
-    expect(container.querySelector('.roadmap-float')).toBeNull();
+    expect(document.querySelector('.roadmap-float')).toBeNull();
   });
 
   test('only the current pin is enlarged and the emphasis follows progress', () => {
