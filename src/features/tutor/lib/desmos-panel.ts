@@ -26,8 +26,8 @@ const letter = (i: number) => String.fromCharCode(65 + i);
 
 /** The side panel's input for a bank question. */
 export function panelInput(q: Question): DesmosPanelInput {
-  const prompt = q.prompt.replace(/\$/g, '').trim();
-  const choices = q.choices?.map((c, i) => `${letter(i)}) ${c.replace(/\$/g, '').trim()}`) ?? [];
+  const prompt = q.prompt.replace(/(?<!\\)\$/g, '').trim();
+  const choices = q.choices?.map((c, i) => `${letter(i)}) ${c.replace(/(?<!\\)\$/g, '').trim()}`) ?? [];
   const question = [prompt, ...choices].join('\n').slice(0, PANEL_QUESTION_MAX);
   let answer: string | undefined;
   if (typeof q.answer === 'number') {

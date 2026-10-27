@@ -65,7 +65,7 @@ describe('panelInput', () => {
     for (const q of QUESTIONS) {
       const p = panelInput(q);
       expect(p.question.length).toBeGreaterThan(3);
-      expect(p.question).not.toContain('$');
+      expect(p.question).not.toMatch(/(?<!\\)\$/);
       expect(p.answer).toBeTruthy();
     }
   });
