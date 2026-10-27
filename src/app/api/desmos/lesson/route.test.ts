@@ -43,6 +43,30 @@ test('model off → no lesson, reason off', async () => {
   expect(await res.json()).toEqual({ lesson: null, source: 'none', reason: 'off' });
 });
 
+test('Desmos skill off (OLLAMA_SKILLS without desmos) → reason off, no model call', async () => {
+  const calls = fakeOllama(good.output);
+  process.env.OLLAMA_SKILLS = 'chat';
+  const res = await call({ question: good.question, answer: good.answer });
+  expect(await res.json()).toEqual({ lesson: null, source: 'none', reason: 'off' });
+  expect(calls()).toBe(0);
+});
+
+test('Suu v1 (OLLAMA_SKILLS=desmos): lesson with the answer, no chat solving without it', async () => {
+  const calls = fakeOllama(good.output);
+  process.env.OLLAMA_SKILLS = 'desmos';
+  expect(await (await call({ question: good.question, answer: good.answer })).json()).toMatchObject({
+    source: 'model',
+    answerFrom: 'student',
+  });
+  expect(calls()).toBe(1);
+  expect(await (await call({ question: good.question })).json()).toEqual({
+    lesson: null,
+    source: 'none',
+    reason: 'failed',
+  });
+  expect(calls()).toBe(1);
+});
+
 test('model on → the checked model lesson', async () => {
   fakeOllama(good.output);
   const body = await (await call({ question: good.question, answer: good.answer })).json();

@@ -16,8 +16,22 @@ export type OllamaOptions = {
 
 type OllamaChat = { message?: { content?: string } };
 
-export function hasOllama(): boolean {
-  return Boolean(serverEnv().ollamaUrl);
+/** What Suu can be asked to do. A model version may know only some of them (Suu v1 learned only 'desmos'). */
+export type SuuSkill = 'chat' | 'desmos';
+
+/**
+ * True when OLLAMA_URL is set and, if a skill is given, OLLAMA_SKILLS allows it (empty OLLAMA_SKILLS = all).
+ * A skill that is off falls back to the demo/sample content instead of asking a model that never learned it.
+ */
+export function hasOllama(skill?: SuuSkill): boolean {
+  const { ollamaUrl, ollamaSkills } = serverEnv();
+  if (!ollamaUrl) return false;
+  if (!skill) return true;
+  const on = ollamaSkills
+    .split(',')
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+  return on.length === 0 || on.includes(skill);
 }
 
 /** Headers for Ollama. With OLLAMA_TOKEN set (tunnel + ai/serve/proxy.ts) it adds the bearer token. */
