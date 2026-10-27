@@ -181,7 +181,7 @@
 }
 
 .roadmap-cat-eyelids { opacity: 0; animation: suu-blink 5.4s infinite; }
-.roadmap-cat-tail { transform-box: view-box; animation: suu-tail-swish 4.8s ease-in-out infinite; }
+.roadmap-cat-tail { transform-box: fill-box; animation: suu-tail-swish 4.8s ease-in-out infinite; }
 @keyframes suu-tail-swish {
   0%, 100% { transform: rotate(-3deg); }
   50% { transform: rotate(4deg); }
