@@ -3,7 +3,7 @@ import { QUESTIONS } from '@/mocks/questions';
 import type { Question } from '@/types';
 import { drawRows } from './desmos-calc';
 import { DESMOS_AI_LESSONS } from './desmos-lessons';
-import { PANEL_QUESTION_MAX, panelInput, plainValue, visibleSteps } from './desmos-panel';
+import { PANEL_QUESTION_MAX, panelInput, plainValue, revealStep, visibleSteps } from './desmos-panel';
 
 const base: Question = {
   id: 'x1',
@@ -71,12 +71,67 @@ describe('panelInput', () => {
   });
 });
 
-test('visibleSteps keeps the last step locked until the answer is in', () => {
-  const lesson = DESMOS_AI_LESSONS[0];
-  const n = lesson.steps.length;
-  expect(visibleSteps(lesson, false)).toBe(n - 1);
-  expect(visibleSteps(lesson, true)).toBe(n);
-  expect(visibleSteps({ ...lesson, steps: lesson.steps.slice(0, 1) }, false)).toBe(0);
+describe('revealStep / visibleSteps', () => {
+  const step = (text: string, latex?: string) => ({ text, desmos: latex ? [{ latex }] : [] });
+  const lesson = (question: string, answer: string, steps: ReturnType<typeof step>[]) => ({
+    id: 'x',
+    title: '',
+    question,
+    answer,
+    check: '',
+    match: [],
+    steps,
+  });
+
+  test('a lesson that says the answer early is locked from that step (kit: function_eval)', () => {
+    const l = lesson('The function f is defined by f(x) = -x^2 - 6x - 4. What is the value of f(6)?', '-76', [
+      step('Функцийг Desmos-д бич: f(x) = -x^2 - 6x - 4.', 'f\\left(x\\right)=-x^2-6x-4'),
+      step('Шинэ мөрөнд f(6) гэж бич. Desmos шууд -76 гэж бодно.', 'f\\left(6\\right)'),
+      step('Хариу: -76.'),
+    ]);
+    expect(revealStep(l)).toBe(1);
+    expect(visibleSteps(l, false)).toBe(1);
+    expect(visibleSteps(l, true)).toBe(3);
+  });
+
+  test('numbers given in the question are not the answer giving itself away (3x + 5 = 20 → 5)', () => {
+    const sample = DESMOS_AI_LESSONS[0];
+    expect(revealStep(sample)).toBe(sample.steps.length - 1);
+    expect(visibleSteps({ ...sample, steps: sample.steps.slice(0, 1) }, false)).toBe(0);
+  });
+
+  test('the choices hold the answer, so they never count as given', () => {
+    const l = lesson('What is x?\nA) 3\nB) 4\nC) 96\nD) 6', '96', [
+      step('Хүснэгт бич.'),
+      step('a·b^5 = 96 гарна.'),
+      step('Хариу C.'),
+    ]);
+    expect(revealStep(l)).toBe(1);
+  });
+
+  test('fractions and points are matched however they are written', () => {
+    const frac = lesson('Solve 2x = 33.', '33/2', [
+      step('y = 2x бич.'),
+      step('x = \\frac{33}{2} гарна.'),
+      step('.'),
+    ]);
+    expect(revealStep(frac)).toBe(1);
+    const point = lesson('Where do the lines meet?', '(2, 5)', [
+      step('Хоёр шулуун зур.', 'y=2x+1'),
+      step('Огтлолцол дээр дар.', '\\left(2,5\\right)'),
+      step('Хариу (2, 5).'),
+    ]);
+    expect(revealStep(point)).toBe(1);
+  });
+
+  test('letter answers lock only the last step', () => {
+    const l = lesson('Which is equivalent? (A) 2x (B) 3x', 'B', [
+      step('Зур.'),
+      step('B давхцана.'),
+      step('Хариу B.'),
+    ]);
+    expect(revealStep(l)).toBe(2);
+  });
 });
 
 test('drawRows draws expressions, tables and a regression', () => {

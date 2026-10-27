@@ -78,7 +78,7 @@ describe('TutorChat Desmos side panel', () => {
   const lesson = {
     id: 'ai',
     title: 'Огтлолцол',
-    question: 'q',
+    question: 'If 3x+5\\le 20, greatest x?',
     answer: '5',
     check: '3·5+5 = 20 ✓',
     match: [],
