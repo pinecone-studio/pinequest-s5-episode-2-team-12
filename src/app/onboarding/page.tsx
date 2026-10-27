@@ -24,7 +24,7 @@ export default async function OnboardingPage({
   }
   return (
     <div className="mx-auto grid w-full max-w-2xl gap-8">
-      <div className="justify-self-center">
+      <div className="onboarding-brand justify-self-center">
         <Logo />
       </div>
       <OnboardingForm demo={session.kind === 'demo'} today={dayKey()} next={next} />

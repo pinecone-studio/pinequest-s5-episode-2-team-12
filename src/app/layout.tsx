@@ -3,6 +3,7 @@ import { Caveat, JetBrains_Mono, Onest, Oranienbaum, Roboto_Slab, Yeseva_One } f
 import type { ReactNode } from 'react';
 import { THEME_SCRIPT } from '@/lib/theme';
 import './globals.css';
+import './emerald-workspace.css';
 import { Providers } from './providers';
 
 const oranienbaum = Oranienbaum({

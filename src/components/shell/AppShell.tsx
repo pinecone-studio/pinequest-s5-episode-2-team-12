@@ -30,7 +30,7 @@ function NavLink({ item, pathname }: { item: NavItem; pathname: string }) {
       href={item.href}
       aria-current={on ? 'page' : undefined}
       className={cn(
-        'flex items-center gap-3 h-11 px-3.5 rounded-2xl text-[14.5px] font-semibold transition-colors',
+        'workspace-nav-link flex items-center gap-3 h-11 px-3.5 rounded-2xl text-[14.5px] font-semibold transition-colors',
         on
           ? 'bg-sage text-leaf-2 shadow-[inset_0_0_0_1px_var(--c-sage-2)]'
           : 'text-ink-2 hover:bg-paper-2 hover:text-ink',
@@ -113,7 +113,7 @@ function NavDrawer({
         aria-modal="true"
         aria-label={t('nav.menu')}
         tabIndex={-1}
-        className="absolute inset-y-0 left-0 w-[300px] max-w-[86vw] flex flex-col gap-5 overflow-y-auto scroll-thin bg-paper border-r-[1.5px] border-line shadow-pop rounded-r-[28px] px-4 pt-5 pb-[max(16px,env(safe-area-inset-bottom))]"
+        className="workspace-drawer absolute inset-y-0 left-0 w-[300px] max-w-[86vw] flex flex-col gap-5 overflow-y-auto scroll-thin bg-paper border-r-[1.5px] border-line shadow-pop rounded-r-[28px] px-4 pt-5 pb-[max(16px,env(safe-area-inset-bottom))]"
       >
         <div className="flex items-center justify-between px-1">
           <Link href={routes.home} aria-label="Suprep">
@@ -204,7 +204,7 @@ export function AppShell({
   const look = { frame: w.equipped.frame, outfit: w.equipped.outfit };
 
   return (
-    <div className={cn('min-h-dvh', !map && 'shell-bg')}>
+    <div className={cn('min-h-dvh', !map && 'shell-bg emerald-workspace')}>
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[70] card px-4 py-2"
@@ -225,6 +225,7 @@ export function AppShell({
         }
         className={cn(
           'z-30 gutter py-3 flex items-center gap-3',
+          !map && 'workspace-topbar',
           map
             ? 'fixed inset-x-0 top-0 pointer-events-none [&>*]:pointer-events-auto'
             : 'sticky top-0 bg-[color-mix(in_srgb,var(--c-bg)_82%,transparent)] backdrop-blur-md',
@@ -240,7 +241,7 @@ export function AppShell({
         >
           <Icon name="menu" size={22} />
         </button>
-        <Link href={routes.home} aria-label="Suprep" className="hidden sm:block">
+        <Link href={routes.home} aria-label="Suprep" className={map ? 'hidden sm:block' : 'block'}>
           <Logo light={map && w.equipped.skin === 'skin-night'} />
         </Link>
         {map && (

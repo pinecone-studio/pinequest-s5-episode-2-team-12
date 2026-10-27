@@ -114,7 +114,7 @@ export function OnboardingForm({ demo, today, next = '/' }: { demo: boolean; tod
     values.map((value) => ({ value, label: t(`${prefix}.${value}`) }));
   return (
     <div className="grid gap-6">
-      <div className="grid gap-3">
+      <div className="onboarding-progress grid gap-3">
         <p className="eyebrow">{t('step', { n: step + 1, total: 4 })}</p>
         <progress
           value={step + 1}
