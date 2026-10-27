@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { routes } from '@/lib/routes';
 import { getDb } from '@/lib/supabase/server';
-import { getAdminDb } from '@/server/db';
+import { getAdminDb, getQuestionsTable } from '@/server/db';
 import { RoadmapQuestionSchema } from './content/schema';
 
 export type ReviewPatch = {
@@ -38,7 +38,11 @@ export async function reviewQuestion(id: string, patch: ReviewPatch): Promise<Re
   if (!admin) return { ok: false, reason: 'database_error' };
   if (typeof id !== 'string' || !/^rm[a-z0-9-]+$/.test(id)) return { ok: false, reason: 'invalid_input' };
 
-  const { data: row, error } = await admin.from('questions').select('content').eq('id', id).maybeSingle();
+  const { data: row, error } = await admin
+    .from(getQuestionsTable())
+    .select('content')
+    .eq('id', id)
+    .maybeSingle();
   if (error || !row) return { ok: false, reason: error ? 'database_error' : 'invalid_input' };
 
   const allowed: (keyof ReviewPatch)[] = ['reviewed', 'prompt', 'mn', 'explain', 'hint', 'answer'];
@@ -51,7 +55,7 @@ export async function reviewQuestion(id: string, patch: ReviewPatch): Promise<Re
 
   const reviewed = (next as { reviewed: boolean }).reviewed;
   const { error: writeError } = await admin
-    .from('questions')
+    .from(getQuestionsTable())
     .update({ content: next, reviewed, updated_at: new Date().toISOString() })
     .eq('id', id);
   if (writeError) return { ok: false, reason: 'database_error' };

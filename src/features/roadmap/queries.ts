@@ -1,6 +1,6 @@
 // Section A · roadmap reads. Without Supabase every function returns content/roadmap (demo mode).
 import { getDb } from '@/lib/supabase/server';
-import { getQuestionsDb } from '@/server/db';
+import { getQuestionsDb, getQuestionsTable } from '@/server/db';
 import type { Question } from '@/types';
 import { ROADMAP } from './config';
 import { placementPool, roadmapQuestionById, stopPool } from './content/bank';
@@ -69,7 +69,7 @@ async function curriculumPool(pool: 'stop' | 'placement', topicId?: number): Pro
   if (!db) return fallback;
   // Select by current ids so an old topic_id cannot serve questions from a different chapter.
   const { data, error } = await db
-    .from('questions')
+    .from(getQuestionsTable())
     .select('content, reviewed')
     .in(
       'id',

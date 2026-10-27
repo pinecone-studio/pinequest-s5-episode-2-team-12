@@ -129,3 +129,25 @@ Branch шинэчлэх: `git checkout main && git pull && git checkout <branch>
 - API түлхүүр (Gemini, Supabase service role) хэзээ ч браузерт байхгүй: зөвхөн `.env.local` ба `src/server`.
 - Цаг/өдрийн хил `Asia/Ulaanbaatar` (`src/lib/time.ts`).
 # SuPrep
+
+
+## Connecting the existing Suuprep Supabase project
+
+The legacy database keeps its original UUID-based `questions` table. For this project,
+set `SUPABASE_QUESTIONS_TABLE=learning_questions` in the ignored `.env.local`, alongside
+`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY`.
+Keep the service key server-side.
+
+`scripts/supabase/prepare-existing-project.ts` generates a compatibility SQL transaction
+from the migrations. Review its output before running it in the project SQL editor.
+The migration ledger makes repeat runs skip applied migrations. This bootstrap is for
+the existing legacy schema; new projects can use the normal migration files.
+
+Run `bun scripts/supabase/check-connection.ts` for read-only table checks.
+The optional `--auth` check creates and deletes a temporary test account without sending
+email, and verifies onboarding persistence and student access restrictions.
+
+For local email login, allow `http://localhost:3000/auth/callback**` in Auth redirect URLs.
+The default email templates send a sign-in link. Public email delivery needs custom
+SMTP in Supabase; Google login needs its own provider credentials. Add the production
+site URL and callback allow-list entry when deploying.

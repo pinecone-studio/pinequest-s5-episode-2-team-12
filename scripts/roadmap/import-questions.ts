@@ -111,7 +111,7 @@ async function main() {
 
   // keep the review decision of rows that already exist
   const { data: existing, error: readError } = await db
-    .from('questions')
+    .from(process.env.SUPABASE_QUESTIONS_TABLE === 'learning_questions' ? 'learning_questions' : 'questions')
     .select('id, reviewed')
     .in(
       'id',
@@ -139,7 +139,11 @@ async function main() {
     };
   });
   for (let i = 0; i < rows.length; i += 200) {
-    const { error } = await db.from('questions').upsert(rows.slice(i, i + 200), { onConflict: 'id' });
+    const { error } = await db
+      .from(
+        process.env.SUPABASE_QUESTIONS_TABLE === 'learning_questions' ? 'learning_questions' : 'questions',
+      )
+      .upsert(rows.slice(i, i + 200), { onConflict: 'id' });
     if (error) throw new Error(`upsert: ${error.message}`);
   }
   console.log(`✓ uploaded ${rows.length} questions.`);

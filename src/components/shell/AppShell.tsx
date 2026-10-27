@@ -230,7 +230,7 @@ export function AppShell({
           <Icon name="menu" size={22} />
         </button>
         <Link href={routes.home} aria-label="Suprep" className="hidden sm:block">
-          <Logo compact />
+          <Logo />
         </Link>
         <div className="ml-auto flex items-center gap-2.5">
           <ExamChip initial={settings} demo={demo} />

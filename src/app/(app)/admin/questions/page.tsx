@@ -4,6 +4,7 @@ import { AUTHORED, PLACEMENT } from '@/features/roadmap/content/bank';
 import type { RoadmapQuestion } from '@/features/roadmap/content/schema';
 import { getT } from '@/lib/i18n';
 import { getDb } from '@/lib/supabase/server';
+import { getQuestionsTable } from '@/server/db';
 
 export const metadata = { title: getT('roadmap')('pages.admin.title') };
 
@@ -15,7 +16,7 @@ export default async function AdminQuestionsPage() {
   let questions: RoadmapQuestion[] = [...AUTHORED, ...PLACEMENT];
   if ('id' in who) {
     const db = await getDb();
-    const { data } = (await db?.from('questions').select('content').not('topic_id', 'is', null)) ?? {
+    const { data } = (await db?.from(getQuestionsTable()).select('content').not('topic_id', 'is', null)) ?? {
       data: null,
     };
     if (data?.length) questions = data.map((r) => r.content as RoadmapQuestion);

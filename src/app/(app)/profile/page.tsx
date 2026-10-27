@@ -3,15 +3,13 @@ import { listMockAttempts } from '@/features/exam/mock-queries';
 import { getProfile } from '@/features/home/queries';
 import { type ProfileServer, ProfileView } from '@/features/profile/components/ProfileView';
 import { listAnswers, questionMeta, weeklyRank } from '@/features/profile/queries';
-import { listBadges } from '@/features/progress/queries';
-import { getRoadmap } from '@/features/roadmap/queries';
 import { getT } from '@/lib/i18n';
 import { calculateLevel } from '@/lib/level';
 import { getSession } from '@/lib/session';
 
 export const metadata = { title: getT('profile')('title') };
 
-// Section F · profile: header, ranking, skill radar, full-test history, badges.
+// Section F · profile: header, ranking, skill radar, full-test history.
 export default async function ProfilePage() {
   const [shell, profile, session] = await Promise.all([
     loadShell(),
@@ -19,18 +17,12 @@ export default async function ProfilePage() {
     getSession().catch(() => null),
   ]);
   const userId = session?.kind === 'user' ? session.userId : null;
-  const [badges, server, rank] = await Promise.all([
-    listBadges(profile.id).catch(() => []),
+  const [server, rank] = await Promise.all([
     userId
-      ? Promise.all([
-          listMockAttempts(userId).catch(() => []),
-          listAnswers(userId).catch(() => []),
-          getRoadmap(userId).catch(() => null),
-        ]).then(
-          ([mocks, answers, roadmap]): ProfileServer => ({
+      ? Promise.all([listMockAttempts(userId).catch(() => []), listAnswers(userId).catch(() => [])]).then(
+          ([mocks, answers]): ProfileServer => ({
             mocks,
             answers,
-            regionsDone: roadmap?.regionsDone ?? [],
           }),
         )
       : Promise.resolve(null),
@@ -51,7 +43,6 @@ export default async function ProfilePage() {
         xp,
         streak: shell.user?.streak ?? 0,
       }}
-      badges={badges}
       server={server}
       meta={questionMeta()}
       rank={rank}

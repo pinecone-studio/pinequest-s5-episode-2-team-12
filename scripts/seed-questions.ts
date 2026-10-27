@@ -9,6 +9,7 @@ type QuestionRow = {
   domain: (typeof QUESTIONS)[number]['domain'];
   difficulty: (typeof QUESTIONS)[number]['difficulty'];
   content: (typeof QUESTIONS)[number];
+  reviewed: boolean;
 };
 
 const DOMAINS = new Set(['alg', 'adv', 'psda', 'geo']);
@@ -33,7 +34,8 @@ async function seedQuestions() {
     id: q.id,
     domain: q.domain,
     difficulty: q.difficulty,
-    content: q,
+    content: { ...q, reviewed: q.reviewed ?? true },
+    reviewed: q.reviewed ?? true,
   }));
 
   // the same checks the table enforces, so a bad row fails here with a clear message
@@ -45,11 +47,13 @@ async function seedQuestions() {
   }
 
   console.log(`Seed бэлэн: ${rows.length} асуулт.`);
-  const { error } = await db.from('questions').upsert(rows, { onConflict: 'id' });
+  const { error } = await db
+    .from(process.env.SUPABASE_QUESTIONS_TABLE === 'learning_questions' ? 'learning_questions' : 'questions')
+    .upsert(rows, { onConflict: 'id' });
   if (error) throw new Error(`Questions seed алдаа: ${error.message}`);
 
   const { count, error: countError } = await db
-    .from('questions')
+    .from(process.env.SUPABASE_QUESTIONS_TABLE === 'learning_questions' ? 'learning_questions' : 'questions')
     .select('id', { count: 'exact', head: true });
   if (countError) throw new Error(`Тоолж чадсангүй: ${countError.message}`);
   console.log(`Questions seed амжилттай! Supabase дээр одоо ${count} асуулт байна.`);

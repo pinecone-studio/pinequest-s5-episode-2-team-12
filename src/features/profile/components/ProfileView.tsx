@@ -1,5 +1,5 @@
 'use client';
-// /profile: who I am (editable), my ranking, the skill radar, full-test history and badges. Signed-in data
+// /profile: who I am (editable), my ranking, the skill radar, full-test history. Signed-in data
 // comes from the page; demo mode reads the roadmap and mocks from localStorage after mount.
 import Link from 'next/link';
 import { type ReactNode, useEffect, useMemo, useState } from 'react';
@@ -10,13 +10,10 @@ import { RadarChart } from '@/components/charts/RadarChart';
 import { Flame } from '@/components/shell/icons';
 import { Button } from '@/components/ui/Button';
 import { Pill } from '@/components/ui/Pill';
-import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { toast } from '@/components/ui/toast';
 import { loadLocalMocks } from '@/features/exam/lib/local-mocks';
 import type { MockAttempt } from '@/features/exam/lib/mock';
-import { BadgeEmblem } from '@/features/progress/components/BadgeEmblem';
 import { loadLocalRoadmap } from '@/features/roadmap/lib/local-store';
-import type { RegionId } from '@/features/roadmap/types';
 import { type SettingsPatch, saveSettings } from '@/features/settings/actions';
 import { readLocalSettings, writeLocalSettings } from '@/features/settings/local';
 import { itemById } from '@/features/shop/catalog';
@@ -26,8 +23,7 @@ import { AIMAGS } from '@/lib/aimags';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
-import type { Badge } from '@/types';
-import { CLUSTERS, clusterRadar, DOMAIN_AXES, domainRadar, type QuestionMeta, resolve } from '../lib/radar';
+import { DOMAIN_AXES, domainRadar, type QuestionMeta, resolve } from '../lib/radar';
 import type { RawAnswer } from '../queries';
 
 export type ProfileUser = {
@@ -40,7 +36,7 @@ export type ProfileUser = {
   xp: number;
   streak: number;
 };
-export type ProfileServer = { mocks: MockAttempt[]; answers: RawAnswer[]; regionsDone: RegionId[] };
+export type ProfileServer = { mocks: MockAttempt[]; answers: RawAnswer[] };
 
 function Card({
   title,
@@ -285,7 +281,6 @@ function SkillRadar({
   meta: QuestionMeta;
 }) {
   const t = useT('profile');
-  const [view, setView] = useState<'clusters' | 'domains'>('clusters');
   const [overlay, setOverlay] = useState(false);
   const resolved = useMemo(() => resolve(answers, meta), [answers, meta]);
   const fromMock = useMemo(
@@ -300,18 +295,15 @@ function SkillRadar({
         : [],
     [lastMock, meta],
   );
-  const calc = view === 'clusters' ? clusterRadar : domainRadar;
-  const now = calc(resolved);
-  const axes = (view === 'clusters' ? CLUSTERS.map((c) => c.id) : DOMAIN_AXES).map((id) =>
-    t(`radar.axes.${id}`),
-  );
+  const now = domainRadar(resolved);
+  const axes = DOMAIN_AXES.map((id) => t(`radar.axes.${id}`));
   const hasData = now.some((a) => a.value !== null);
   const series = [
     { id: 'now', label: t('radar.current'), values: now.map((a) => a.value), color: 'var(--chart-1)' },
   ];
   if (overlay && lastMock) {
     // the last test on its own, compared at its own date (no decay)
-    const prev = calc(fromMock, Date.parse(lastMock.finishedAt ?? lastMock.startedAt));
+    const prev = domainRadar(fromMock, Date.parse(lastMock.finishedAt ?? lastMock.startedAt));
     series.push({
       id: 'prev',
       label: t('radar.previous'),
@@ -320,16 +312,8 @@ function SkillRadar({
     });
   }
   return (
-    <Card title={t('radar.title')} className="md:row-span-2">
-      <SegmentedControl<'clusters' | 'domains'>
-        label={t('radar.title')}
-        value={view}
-        onChange={setView}
-        options={[
-          { value: 'clusters', label: t('radar.clusters') },
-          { value: 'domains', label: t('radar.domains') },
-        ]}
-      />
+    <Card title={t('radar.title')}>
+      <p className="text-[13px] font-semibold text-ink-2">{t('radar.domains')}</p>
       {hasData ? (
         <RadarChart axes={axes} series={series} caption={t('radar.caption')} emptyLabel={t('radar.empty')} />
       ) : (
@@ -419,58 +403,9 @@ function MockHistory({ mocks }: { mocks: MockAttempt[] }) {
   );
 }
 
-function Achievements({
-  badges,
-  regionsDone,
-}: {
-  badges: (Badge & { earned: boolean })[];
-  regionsDone: RegionId[];
-}) {
-  const t = useT('profile');
-  const earned = (b: Badge & { earned: boolean }) =>
-    b.earned || (b.id.startsWith('roadmap-') && regionsDone.includes(b.id.slice(8) as RegionId));
-  const core = badges.filter((b) => !b.id.startsWith('roadmap-') && earned(b)).slice(0, 4);
-  const regions = badges.filter((b) => b.id.startsWith('roadmap-') && b.id !== 'roadmap-final');
-  return (
-    <Card
-      title={t('achievements.title')}
-      action={
-        <Link href={routes.achievements} className="text-[13px] font-bold text-leaf-2 hover:underline">
-          {t('achievements.all')}
-        </Link>
-      }
-    >
-      {core.length === 0 ? (
-        <p className="text-[14px] text-ink-2">{t('achievements.none')}</p>
-      ) : (
-        <ul className="flex flex-wrap gap-3">
-          {core.map((b) => (
-            <li key={b.id} className="grid w-20 justify-items-center gap-1 text-center">
-              <BadgeEmblem badge={b} earned size={56} />
-              <span className="text-[11.5px] font-semibold leading-tight text-ink-2">{b.mn}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-      <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-ink-3">
-        {t('achievements.regions')}
-      </p>
-      <ul className="flex flex-wrap gap-2">
-        {regions.map((b) => (
-          <li key={b.id} title={b.mn} className={cn(!earned(b) && 'opacity-40')}>
-            <BadgeEmblem badge={b} earned={earned(b)} size={44} />
-            <span className="sr-only">{b.mn}</span>
-          </li>
-        ))}
-      </ul>
-    </Card>
-  );
-}
-
 export function ProfileView({
   demo,
   user: initialUser,
-  badges,
   server,
   meta,
   rank,
@@ -479,7 +414,6 @@ export function ProfileView({
   wallet?: ServerWallet | null;
   demo: boolean;
   user: ProfileUser;
-  badges: (Badge & { earned: boolean })[];
   server: ProfileServer | null;
   meta: QuestionMeta;
   rank: { rank: number; of: number } | null;
@@ -487,11 +421,11 @@ export function ProfileView({
   const common = useT('common');
   const [user, setUser] = useState(initialUser);
   const w = useWallet(demo, wallet);
-  const [data, setData] = useState<ProfileServer>(server ?? { mocks: [], answers: [], regionsDone: [] });
+  const [data, setData] = useState<ProfileServer>(server ?? { mocks: [], answers: [] });
   useEffect(() => {
     if (!demo) return;
     const local = loadLocalRoadmap();
-    setData({ mocks: loadLocalMocks(), answers: local.history, regionsDone: local.state.regionsDone });
+    setData({ mocks: loadLocalMocks(), answers: local.history });
     const s = readLocalSettings();
     setUser((u) => ({
       ...u,
@@ -521,11 +455,8 @@ export function ProfileView({
         gems={w.balance}
         look={{ frame: w.equipped.frame, outfit: w.equipped.outfit, banner: w.equipped.banner }}
       />
-      <nav aria-label={common('shell.profile')} className="grid gap-3 sm:grid-cols-2">
-        {[
-          { href: routes.achievements, label: common('nav.achievements') },
-          { href: routes.planner, label: common('nav.planner') },
-        ].map((item) => (
+      <nav aria-label={common('shell.profile')} className="grid gap-3">
+        {[{ href: routes.planner, label: common('nav.planner') }].map((item) => (
           <Link
             key={item.href}
             href={item.href}
@@ -543,7 +474,6 @@ export function ProfileView({
           meta={meta}
         />
         <RankCard rank={rank} demo={demo} />
-        <Achievements badges={badges} regionsDone={data.regionsDone} />
       </div>
       <MockHistory mocks={data.mocks} />
     </div>

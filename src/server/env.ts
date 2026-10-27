@@ -13,6 +13,8 @@ export function serverEnv() {
     geminiModel: process.env.GEMINI_MODEL ?? 'gemini-2.5-flash',
     promptVersion: process.env.TUTOR_PROMPT_VERSION ?? 'v1',
     supabaseServiceRole: process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
+    supabaseQuestionsTable:
+      process.env.SUPABASE_QUESTIONS_TABLE === 'learning_questions' ? 'learning_questions' : 'questions',
     // Fine-tuned small model (Suu) served by Ollama, e.g. http://localhost:11434
     ollamaUrl: process.env.OLLAMA_URL ?? '',
     ollamaModel: process.env.OLLAMA_MODEL ?? 'suu',

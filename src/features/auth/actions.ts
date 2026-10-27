@@ -44,14 +44,26 @@ export async function enterDemo(): Promise<never> {
   redirect('/');
 }
 
-export async function sendEmailCode(email: string): Promise<AuthResult> {
+export async function previewOnboarding(): Promise<never> {
+  await setDemoCookie(true);
+  redirect('/onboarding');
+}
+
+export async function sendEmailCode(
+  email: string,
+  mode: 'login' | 'signup' = 'login',
+  next?: string,
+): Promise<AuthResult> {
   const db = await getDb();
   if (!db) return { ok: false, reason: 'not_configured' };
   const parsed = Email.safeParse(email);
   if (!parsed.success) return { ok: false, reason: 'invalid_input' };
   const { error } = await db.auth.signInWithOtp({
     email: parsed.data,
-    options: { shouldCreateUser: true, emailRedirectTo: `${await origin()}/auth/callback` },
+    options: {
+      shouldCreateUser: mode === 'signup',
+      emailRedirectTo: `${await origin()}/auth/callback?next=${encodeURIComponent(safeNext(next))}`,
+    },
   });
   return error ? { ok: false, reason: 'failed' } : { ok: true };
 }

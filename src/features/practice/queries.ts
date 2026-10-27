@@ -1,7 +1,7 @@
 // Section C · reads.
 import { getDb } from '@/lib/supabase/server';
 import { QUESTIONS } from '@/mocks/questions';
-import { getQuestionsDb } from '@/server/db';
+import { getQuestionsDb, getQuestionsTable } from '@/server/db';
 import type { Question, QuestionFilter } from '@/types';
 import { filterQuestions } from './lib/filter-questions';
 
@@ -12,7 +12,7 @@ export async function listQuestions(filter: QuestionFilter = {}): Promise<Questi
     return filterQuestions(QUESTIONS, filter);
   }
 
-  let query = db.from('questions').select('content').eq('reviewed', true);
+  let query = db.from(getQuestionsTable()).select('content').eq('reviewed', true);
 
   if (filter.domain) {
     query = query.eq('domain', filter.domain);
@@ -40,7 +40,7 @@ export async function getQuestion(id: string): Promise<Question | null> {
   }
 
   const { data, error } = await db
-    .from('questions')
+    .from(getQuestionsTable())
     .select('content')
     .eq('id', id)
     .eq('reviewed', true)
