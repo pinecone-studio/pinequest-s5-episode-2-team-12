@@ -232,5 +232,9 @@
     "loading": "Loading…",
     "failed": "Could not load the content.",
     "close": "Close"
+  },
+  "heading": {
+    "title": "LESSONS · ROADMAP",
+    "guidebook": "GUIDEBOOK"
   }
 }

@@ -91,3 +91,18 @@ describe('gem wallet', () => {
     expect(ITEMS.every((i) => i.price > 0)).toBe(true);
   });
 });
+
+test('default map clears the skin without spending gems or losing owned themes', async () => {
+  const { resetMapSkin } = await import('./wallet');
+  const before = {
+    events: [{ amount: 100, reason: 'test', key: 'earned' }],
+    owned: { 'skin-night': 1, 'skin-winter': 1 },
+    equipped: { skin: 'skin-night', frame: 'frame-gold' },
+  };
+  const after = resetMapSkin(before);
+  expect(after.equipped.skin).toBeUndefined();
+  expect(after.equipped.frame).toBe('frame-gold');
+  expect(after.owned).toEqual(before.owned);
+  expect(after.events).toEqual(before.events);
+  expect(before.equipped.skin).toBe('skin-night');
+});

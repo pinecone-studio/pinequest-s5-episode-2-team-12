@@ -170,5 +170,11 @@
   "collection": {
     "title": "Suu’s wardrobe",
     "lead": "Find a new look for your Suu."
+  },
+  "defaultMap": {
+    "name": "Default map",
+    "desc": "The original Mongolia map design.",
+    "free": "Free",
+    "use": "Use default map"
   }
 }

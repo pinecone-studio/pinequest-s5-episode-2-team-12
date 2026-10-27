@@ -56,3 +56,20 @@ export async function equipItem(itemId: string): Promise<ShopResult> {
   revalidatePath('/', 'layout');
   return { ok: true };
 }
+
+/** The default map is free: clear just the signed-in user's equipped skin. */
+export async function resetMapSkin(): Promise<ShopResult> {
+  const u = await user();
+  if (!u) return { ok: false, reason: 'demo_mode' };
+  const admin = getAdminDb();
+  if (!admin) return { ok: false, reason: 'database_error' };
+  const skins = ITEMS.filter((i) => i.kind === 'skin').map((i) => i.id);
+  const { error } = await admin
+    .from('inventory')
+    .update({ equipped: false })
+    .eq('user_id', u.id)
+    .in('item_id', skins);
+  if (error) return { ok: false, reason: 'database_error' };
+  revalidatePath('/', 'layout');
+  return { ok: true };
+}

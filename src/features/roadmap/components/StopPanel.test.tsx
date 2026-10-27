@@ -16,11 +16,12 @@ const at = (no: number) => views.find((v) => v.stop.no === no)!;
 
 function renderPanel(
   no: number,
-  extra: { onMove?: (n: number) => void; onClose?: () => void; inline?: boolean } = {},
+  extra: { onMove?: (n: number) => void; onClose?: () => void; inline?: boolean; night?: boolean } = {},
 ) {
   return render(
     <StopPanel
       inline={extra.inline}
+      night={extra.night}
       v={at(no)}
       views={views}
       state={state}
@@ -49,6 +50,14 @@ describe('StopPanel', () => {
     );
     expect(within(overview).queryByRole('button')).toBeNull();
     expect(within(overview).queryByText('Гол томьёо')).toBeNull();
+  });
+
+  test('night skin uses white text while keeping the Start button readable', () => {
+    const { container } = renderPanel(5, { inline: true, night: true });
+    expect(screen.getByRole('heading', { name: at(5).topic.title }).style.color).toBe('#ffffff');
+    expect(container.querySelector('header .eyebrow')?.getAttribute('style')).toContain('#ffffff');
+    expect(container.querySelector('ul')?.getAttribute('style')).toContain('#ffffff');
+    expect(screen.getByRole('link', { name: 'Эхлэх' }).getAttribute('style')).toContain('var(--c-on-lime)');
   });
 
   test('current stop: header, place, topic, inside, for you, related, actions', async () => {

@@ -895,6 +895,7 @@ export function RoadmapMap({
         </div>
       )}
       <p
+        style={skin === 'night' ? { color: '#ffffff' } : undefined}
         className={cn(
           'pointer-events-none absolute left-4 max-w-[60%] text-[10.5px] leading-tight text-ink-3',
           fullBleed ? 'bottom-[max(4px,env(safe-area-inset-bottom))] max-sm:hidden' : 'bottom-2',

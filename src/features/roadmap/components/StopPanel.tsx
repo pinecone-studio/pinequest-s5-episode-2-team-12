@@ -93,6 +93,7 @@ export function StopPanel({
   onClose,
   onMove,
   inline = false,
+  night = false,
 }: {
   v: StopView | undefined;
   views: StopView[];
@@ -105,6 +106,7 @@ export function StopPanel({
   onMove: (no: number) => void;
   /** Borderless overview in the open space above the home map. */
   inline?: boolean;
+  night?: boolean;
 }) {
   const t = useT('roadmap');
   const uid = useId();
@@ -148,26 +150,30 @@ export function StopPanel({
   const label = `${t('panel.stopNo', { n: v.stop.no })}, ${v.stop.place}`;
 
   if (inline) {
+    const textColor = night ? { color: '#ffffff' } : undefined;
     const overviewGuide = detail?.guide ?? guideFor(v.topic.id);
     return (
       <section aria-label={label} className="roadmap-stop-overview roadmap-featured-topic absolute z-20">
         <header className="grid gap-3">
-          <p className="eyebrow">
+          <p className="eyebrow" style={textColor}>
             {t('panel.stopNo', { n: v.stop.no })} · {v.region.title}
           </p>
           <div className="flex items-start gap-3">
             <div className="min-w-0">
-              <h2 className="font-display text-[clamp(26px,3vw,44px)] font-bold leading-tight text-ink">
+              <h2
+                style={textColor}
+                className="font-display text-[clamp(26px,3vw,44px)] font-bold leading-tight text-ink"
+              >
                 {v.topic.title}
               </h2>
-              <p className="mt-1 text-[13px] text-ink-3">
+              <p style={textColor} className="mt-1 text-[13px] text-ink-3">
                 {v.stop.place} · {v.stop.aimag}
               </p>
             </div>
           </div>
         </header>
         {overviewGuide && (
-          <ul className="grid gap-2 text-[14px] text-ink-2">
+          <ul style={textColor} className="grid gap-2 text-[14px] text-ink-2">
             {overviewGuide.goals.map((goal) => (
               <li key={goal} className="flex gap-2">
                 <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-leaf" />
