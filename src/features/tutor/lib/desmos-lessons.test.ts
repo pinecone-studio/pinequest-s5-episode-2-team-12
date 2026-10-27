@@ -19,3 +19,13 @@ test('finds a lesson from its own question and from typed variants', () => {
   expect(findLesson('Пифагор')).toBeNull();
   expect(findLesson('   ')).toBeNull();
 });
+
+test('exact mode: only the sample question itself, not keyword matches', () => {
+  for (const l of DESMOS_AI_LESSONS)
+    expect(findLesson(` ${l.question.toUpperCase()} `, { exact: true })?.id).toBe(l.id);
+  const other =
+    'A ball is thrown upward. Its height is h(t) = -16t^2 + 32t + 21. When is the maximum height reached?';
+  expect(findLesson(other)?.id).toBe('maxmin');
+  expect(findLesson(other, { exact: true })).toBeNull();
+  expect(findLesson('What is the mean of 1, 2, 3?', { exact: true })).toBeNull();
+});

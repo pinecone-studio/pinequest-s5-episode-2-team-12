@@ -1,7 +1,8 @@
-// Suu on a small fine-tuned model (Qwen2.5-1.5B + LoRA, see ai/train/suu_finetune.ipynb) served by Ollama.
+// Suu on a small fine-tuned model (Qwen2.5 + LoRA, see ai/train/suu_v2.ipynb) served by Ollama.
 // Server-only. When OLLAMA_URL is empty or Ollama is down, the route falls back to demo replies.
+// The HTTP call itself lives in src/server/ai/ollama-client.ts (shared with the Desmos lessons).
 
-import { serverEnv } from '@/server/env';
+import { ollamaChat } from '@/server/ai/ollama-client';
 import type { TutorMode } from '@/types';
 
 /** Same system prompt the model was fine-tuned with (ai/train/export.ts). Keep them in sync. */
@@ -24,11 +25,8 @@ export function buildUserMessage(mode: TutorMode, message: string, raw = false):
   return raw ? message.trim() : `${message.trim()}\n\n${MODE_ASK[mode]}`;
 }
 
-export function hasOllama(): boolean {
-  return Boolean(serverEnv().ollamaUrl);
-}
-
-type OllamaChat = { message?: { content?: string } };
+/** True when OLLAMA_URL is set (the tutor and the Desmos lessons then try the model first). */
+export { hasOllama } from '@/server/ai/ollama-client';
 
 /** Returns the model's reply, or null if Ollama is not configured / not reachable / too slow. */
 export async function ollamaReply(
@@ -37,28 +35,12 @@ export async function ollamaReply(
   fetchImpl: typeof fetch = fetch,
   raw = false,
 ): Promise<string | null> {
-  const { ollamaUrl, ollamaModel } = serverEnv();
-  if (!ollamaUrl) return null;
-  try {
-    const res = await fetchImpl(`${ollamaUrl.replace(/\/$/, '')}/api/chat`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        model: ollamaModel,
-        stream: false,
-        options: { temperature: 0.3, num_predict: 400 },
-        messages: [
-          { role: 'system', content: SUU_SYSTEM_PROMPT },
-          { role: 'user', content: buildUserMessage(mode, message, raw) },
-        ],
-      }),
-      signal: AbortSignal.timeout(30_000),
-    });
-    if (!res.ok) return null;
-    const data = (await res.json()) as OllamaChat;
-    const text = data.message?.content?.trim();
-    return text ? text : null;
-  } catch {
-    return null;
-  }
+  return ollamaChat(
+    [
+      { role: 'system', content: SUU_SYSTEM_PROMPT },
+      { role: 'user', content: buildUserMessage(mode, message, raw) },
+    ],
+    { temperature: 0.3, maxTokens: 400 },
+    fetchImpl,
+  );
 }
