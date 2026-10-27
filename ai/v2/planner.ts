@@ -243,7 +243,20 @@ function randomDaysLeft(r: Rng): number {
   if (x < 0.07) return int(r, 1, 3);
   if (x < 0.32) return int(r, 4, 14);
   if (x < 0.65) return int(r, 15, 42);
-  return int(r, 43, 120);
+  if (x < 0.88) return int(r, 43, 120);
+  return int(r, 121, 300); // the app offers SAT dates up to a year ahead
+}
+
+/**
+ * Which topics the student has data for, the way the app sends them: answered roadmap topics (n ≥ 1) plus topics
+ * the student marked weak without answering any (n = 0). Brand-new students have only a few thin topics; active
+ * ones up to all 26.
+ */
+function randomTopicCount(r: Rng): { count: number; fresh: boolean } {
+  const x = r();
+  if (x < 0.1) return { count: int(r, 0, 3), fresh: true };
+  if (x < 0.25) return { count: int(r, 10, 26), fresh: false };
+  return { count: int(r, 5, 9), fresh: false };
 }
 
 /** Note rules and the Mongolian text that says them. */
@@ -300,30 +313,34 @@ export function randomNote(r: Rng, base: number): { rules: NoteRules; text?: str
 export function randomStudent(r: Rng): { input: PlannerInput; rules: NoteRules } {
   const start = int(r, 0, 6);
   const days = DAYS.map((_, i) => DAYS[(start + i) % 7] as Day);
-  const current = 300 + 10 * int(r, 0, 42);
+  const current = 200 + 10 * int(r, 0, 58);
   const target = Math.min(800, current + 10 * int(r, 4, 20));
-  const hoursPerDay = pick(r, [0.5, 1, 1, 1.5, 1.5, 2, 2.5, 3] as const);
+  const hoursPerDay = pick(r, [0.5, 1, 1, 1.5, 1.5, 2, 2, 2.5, 3, 4, 5, 6] as const);
+  const { count, fresh } = randomTopicCount(r);
   const ids = shuffle(
     r,
     Array.from({ length: 26 }, (_, i) => i + 1),
-  ).slice(0, int(r, 5, 9));
+  ).slice(0, count);
   let few = 0;
   const level = (current - 200) / 6;
   const topics: TopicStat[] = ids
     .sort((a, b) => a - b)
     .map((id) => {
-      const isFew = few < 2 && r() < 0.15;
+      const isFew = fresh || (few < 2 && r() < 0.15);
       if (isFew) few++;
+      const n = isFew ? int(r, 0, MIN_N - 1) : int(r, MIN_N, 40);
+      // a topic marked weak but never answered has no accuracy or time yet
+      if (n === 0) return { id, name: TOPIC_NAMES[id] ?? String(id), acc: 0, n: 0, sec: 0, trend: 0 };
       return {
         id,
         name: TOPIC_NAMES[id] ?? String(id),
         acc: Math.max(10, Math.min(98, Math.round(level + int(r, -35, 30)))),
-        n: isFew ? int(r, 1, MIN_N - 1) : int(r, MIN_N, 40),
+        n,
         sec: int(r, 40, 200),
-        trend: r() < 0.5 ? 0 : int(r, -15, 15),
+        trend: r() < 0.5 || n < MIN_N ? 0 : int(r, -15, 15),
       };
     });
-  if (!topics.some((t) => t.n >= MIN_N) && topics[0]) topics[0].n = int(r, MIN_N, 20);
+  if (!fresh && !topics.some((t) => t.n >= MIN_N) && topics[0]) topics[0].n = int(r, MIN_N, 20);
   const habits = r() < 0.6 ? { rushed: int(r, 0, 6), slow: int(r, 0, 6), desmos: int(r, 0, 6) } : undefined;
   const { rules, text } = randomNote(r, Math.round(hoursPerDay * 60));
   const input: PlannerInput = {

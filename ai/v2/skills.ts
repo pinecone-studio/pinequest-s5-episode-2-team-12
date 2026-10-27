@@ -61,38 +61,45 @@ export const DAY_NAMES: Record<Day, string> = {
   Ня: 'Ням',
 };
 
-/** Short Mongolian names of the 26 roadmap topics (same ids as src/features/roadmap/topics.ts). */
+/**
+ * The 26 roadmap topics by id, with the titles the app shows (src/features/roadmap/topics.ts; a test keeps them
+ * equal). The model sees these ids and names in planner/analyze inputs, so they must be the app's own.
+ */
 export const TOPIC_NAMES: Record<number, string> = {
-  1: 'Нэг хувьсагчтай шугаман тэгшитгэл',
-  2: 'Хоёр хувьсагчтай шугаман тэгшитгэл',
-  3: 'Шугаман функц',
-  4: 'Шугаман тэгшитгэлийн систем',
-  5: 'Системийн шийдийн тоо',
-  6: 'Шугаман тэнцэтгэл биш',
-  7: 'Харьцаа, хурд, пропорц',
-  8: 'Нэгж хөрвүүлэлт',
-  9: 'Хувь',
-  10: 'Дундаж, медиан, тархалт',
-  11: 'Цэгэн график, загвар',
-  12: 'Магадлал',
-  13: 'Түүврийн дүгнэлт',
-  14: 'Статистик дүгнэлтийг үнэлэх',
-  15: 'Олон гишүүнт',
-  16: 'Зэрэг, язгуур',
-  17: 'Квадрат тэгшитгэл',
-  18: 'Шугаман бус систем',
-  19: 'Квадрат функц ба парабол',
-  20: 'Илтгэгч функц',
-  21: 'Функцийн тэмдэглэгээ',
-  22: 'Шулуун, өнцөг, гурвалжин',
-  23: 'Пифагор',
-  24: 'Тригонометр',
-  25: 'Тойрог',
-  26: 'Талбай ба эзэлхүүн',
+  1: 'Зэрэг ба язгуур',
+  2: 'Алгебрын илэрхийлэл',
+  3: 'Тэгшитгэл хувиргах ба бодох',
+  4: 'Бусад төрлийн тэгшитгэл',
+  5: 'Функц',
+  6: 'Шулуун ба шугаман тэгшитгэл',
+  7: 'Шугаман загварыг тайлбарлах',
+  8: 'Хувь',
+  9: 'Илтгэгч ба шугаман өсөлт',
+  10: 'Хурд, нэгж хөрвүүлэлт ба харьцаа',
+  11: 'Өгүүлбэртэй бодлого',
+  12: 'Квадрат тэгшитгэл',
+  13: 'Тэгшитгэлийн систем',
+  14: 'Тэнцэтгэл биш',
+  15: 'Функцийн хувиргалт',
+  16: 'Квадрат функц',
+  17: 'Өнцөг',
+  18: 'Гурвалжин',
+  19: 'Тойрог',
+  20: 'Радиан',
+  21: 'Тригонометр',
+  22: 'Талбай, периметр ба эзэлхүүн',
+  23: 'Өгөгдөл унших',
+  24: 'Магадлал',
+  25: 'Статистик I: төв ба тархалт',
+  26: 'Статистик II: түүвэр ба дүгнэлт',
 };
 
-/** Topics where Desmos usually solves the question fastest. */
-export const DESMOS_TOPICS = new Set([1, 2, 3, 4, 5, 6, 11, 17, 18, 19, 20, 21, 25]);
+/**
+ * Topics where Desmos usually solves the question fastest: at least 40% of the topic's bank questions come with
+ * hand-written Desmos rows (equations, functions, systems, inequalities, quadratics, circles, data). Geometry,
+ * trigonometry and probability are not Desmos topics.
+ */
+export const DESMOS_TOPICS = new Set([2, 3, 5, 6, 12, 13, 14, 16, 19, 23, 25]);
 
 /** Share of letters that are Cyrillic (math and English terms are allowed around it). */
 export function mongolianShare(text: string): number {

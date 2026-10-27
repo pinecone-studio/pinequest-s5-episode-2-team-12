@@ -8,16 +8,16 @@ import { Button } from '@/components/ui/Button';
 // roadmap history and mocks in localStorage.
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Pill } from '@/components/ui/Pill';
-import { loadLocalMocks } from '@/features/exam/lib/local-mocks';
 import { QuestionView } from '@/features/roadmap/components/QuestionView';
-import { loadLocalRoadmap } from '@/features/roadmap/lib/local-store';
 import { TOPICS, topicById } from '@/features/roadmap/topics';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
 import type { Question } from '@/types';
 import { type CheckResult, checkMistake, mistakePreviews, type Preview } from '../actions';
+import { localEntries } from '../lib/local-data';
 import { buildNotebook, dueNotes, type Entry, type NoteState, summary } from '../lib/notebook';
+import { SuuInsights } from './SuuInsights';
 
 const KEY = 'suprep:mistakes:v1';
 type Stored = Record<string, NoteState & { reviewedAt?: number }>;
@@ -35,26 +35,6 @@ function writeLocal(s: Stored) {
   } catch {
     // storage blocked
   }
-}
-
-/** Demo: wrong answers from the roadmap history and finished mocks. */
-function localEntries(): Entry[] {
-  const road = loadLocalRoadmap()
-    .history.filter((h) => !h.correct)
-    .map((h) => ({ qid: h.qid, chosen: '', source: 'stop' as const, at: h.at }));
-  const mocks = loadLocalMocks().flatMap((m) =>
-    m.modules.flatMap((mod) =>
-      mod.answers
-        .filter((a) => a.answer && !a.correct)
-        .map((a) => ({
-          qid: a.qid,
-          chosen: a.answer,
-          source: 'mock' as const,
-          at: Date.parse(m.finishedAt ?? m.startedAt),
-        })),
-    ),
-  );
-  return [...road, ...mocks];
 }
 
 const asView = (q: Preview): Question => ({
@@ -193,6 +173,7 @@ export function MistakesView({
           </div>
         ))}
       </dl>
+      <SuuInsights demo={demo} count={notes.length} />
       <div className="filter-panel flex flex-wrap items-center gap-3">
         <label className="sr-only" htmlFor={topicFieldId}>
           {t('filter')}

@@ -1,5 +1,5 @@
-// Pitch demo · AI төлөвлөгөө. Builds a study plan from the exam date and the phase split in PHASES.
-// The week schedule text is hand-written (labelled «Жишээ төлөвлөгөө») until the AI planner (I4) is built.
+// AI төлөвлөгөө · the phase timeline: the weeks until the exam split across PHASES (computed, not AI).
+// The 7-day plan itself comes from Суу's planner skill (POST /api/suu/planner).
 import { DAY_MS } from '@/lib/time';
 
 export type Phase = { n: string; what: string; f: number };
@@ -68,16 +68,3 @@ export function buildPlan(input: PlanInput, phases: Phase[]): DemoPlan {
     phases: planned,
   };
 }
-
-/** This week's schedule (hand-written sample). `{weak}` is replaced with the student's weak topic. */
-export const WEEK = [
-  { day: 'Да', task: '{weak}: замналын 2 хичээл + 15 асуулт', min: 90 },
-  { day: 'Мя', task: 'Desmos Академи: огтлолцол ба slider', min: 60 },
-  { day: 'Лх', task: '{weak}: хүнд асуултын бүс, 10 асуулт', min: 90 },
-  { day: 'Пү', task: 'Карт: 30 томьёо ба англи үг давтах', min: 30 },
-  { day: 'Ба', task: 'Холимог 22 асуулт, 35 минут цаг хэмжинэ', min: 60 },
-  { day: 'Бя', task: 'Mock тест (Math хэсэг) + алдааны дэвтэр', min: 120 },
-  { day: 'Ня', task: 'Амрах. Зөвхөн алдааны дэвтрээ 15 минут харах', min: 15 },
-];
-
-export const WEAK_TOPICS = ['Алгебр', 'Квадрат функц', 'Өгөгдөл ба статистик', 'Геометр', 'Хувь ба харьцаа'];

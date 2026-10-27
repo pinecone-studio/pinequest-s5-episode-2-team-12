@@ -30,7 +30,8 @@ for (const dir of MODELS) {
       expect(env.BASE_SHA256).toMatch(/^[0-9a-f]{64}$/);
       expect(env.ADAPTER_SHA256).toMatch(/^[0-9a-f]{64}$/);
       expect(env.LLAMA_CPP_COMMIT).toMatch(/^[0-9a-f]{40}$/);
-      for (const s of (env.SKILLS ?? '').split(',').filter(Boolean)) expect(['chat', 'desmos']).toContain(s);
+      for (const s of (env.SKILLS ?? '').split(',').filter(Boolean))
+        expect(['chat', 'desmos', 'planner', 'analyze']).toContain(s);
     });
 
     test('the adapter in git is the exact file that was tested', async () => {

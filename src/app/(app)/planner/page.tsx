@@ -1,8 +1,8 @@
-import { PlannerDemo } from '@/features/planner/components/PlannerDemo';
+import { PlannerView } from '@/features/planner/components/PlannerView';
 import { currentUserId, getRoadmap } from '@/features/roadmap/queries';
 import { PHASES, SAT_DATES } from '@/mocks/meta';
 
-// Section I · I4 — pitch demo: computed phases + a sample week (see features/planner/lib/demo-plan.ts).
+// Section I · I4 — AI төлөвлөгөө: Суу's planner skill on the student's own data (POST /api/suu/planner).
 // ?weak=1,5,9 (from the placement results) preselects those roadmap topics as weak.
 export default async function PlannerPage({
   searchParams,
@@ -18,5 +18,5 @@ export default async function PlannerPage({
     .slice(0, 5);
   const userId = await currentUserId();
   const server = userId ? await getRoadmap(userId).catch(() => null) : null;
-  return <PlannerDemo dates={SAT_DATES} phases={PHASES} roadmap={{ demo: !userId, server, ids }} />;
+  return <PlannerView dates={SAT_DATES} phases={PHASES} roadmap={{ demo: !userId, server, ids }} />;
 }
