@@ -31,7 +31,7 @@ export function MascotArt({
       overflow="hidden"
     >
       <image
-        href={art ? '/brand/suu-outfits.png' : '/brand/suu-logo-head.png'}
+        href={art ? '/brand/suu-outfits.webp' : '/brand/suu-logo-head.webp'}
         width={art ? 1402 : 1254}
         height={art ? 1122 : 1254}
       />

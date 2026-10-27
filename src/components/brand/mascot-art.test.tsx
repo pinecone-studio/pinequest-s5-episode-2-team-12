@@ -14,7 +14,7 @@ test('the logo and default avatar use the supplied brand artwork', () => {
   );
   expect(
     [...container.querySelectorAll('image')].every(
-      (i) => i.getAttribute('href') === '/brand/suu-logo-head.png',
+      (i) => i.getAttribute('href') === '/brand/suu-logo-head.webp',
     ),
   ).toBe(true);
   expect(container.querySelectorAll('image').length).toBe(2);
@@ -30,11 +30,11 @@ test('each supplied outfit can be bought, equipped, shown, and taken off', () =>
     const { container, rerender, unmount } = render(
       <Avatar name="Student" outfit={dressed.equipped.outfit} />,
     );
-    expect(container.querySelector('image')?.getAttribute('href')).toBe('/brand/suu-outfits.png');
+    expect(container.querySelector('image')?.getAttribute('href')).toBe('/brand/suu-outfits.webp');
     expect(container.querySelector('svg')?.getAttribute('viewBox')).toBe(outfit.art?.join(' '));
     const undressed = equip(dressed, outfit.id);
     rerender(<Avatar name="Student" outfit={undressed.equipped.outfit} />);
-    expect(container.querySelector('image')?.getAttribute('href')).toBe('/brand/suu-logo-head.png');
+    expect(container.querySelector('image')?.getAttribute('href')).toBe('/brand/suu-logo-head.webp');
     unmount();
   }
 });

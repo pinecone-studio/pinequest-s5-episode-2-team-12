@@ -9,20 +9,12 @@
     "pool": "placement",
     "prompt": "What value of $x$ is the solution to the equation $5(x - 3) + 2x = 3x + 13$?",
     "mn": "$5(x - 3) + 2x = 3x + 13$ тэгшитгэлийн шийд болох $x$-ийн утга аль вэ?",
-    "choices": [
-      "$4$",
-      "$28$",
-      "$\\frac{7}{2}$",
-      "$7$"
-    ],
+    "choices": ["$4$", "$28$", "$\\frac{7}{2}$", "$7$"],
     "answer": 3,
     "explain": "Хаалтаа задалъя: $5x - 15 + 2x = 3x + 13$, өөрөөр хэлбэл $7x - 15 = 3x + 13$. Хоёр талаас $3x$-ийг хасвал $4x - 15 = 13$, $15$ нэмбэл $4x = 28$, тэгэхээр $x = 7$.",
     "hint": "$5$-ыг хаалт доторх **хоёр** гишүүнд үржүүл.",
     "desmos": {
-      "rows": [
-        "y=5(x-3)+2x",
-        "y=3x+13"
-      ],
+      "rows": ["y=5(x-3)+2x", "y=3x+13"],
       "tip": "Хоёр шулуун $x=7$ дээр огтлолцоно."
     },
     "verify": {
@@ -35,9 +27,7 @@
       "0": "$5(x-3)$-ийг $5x - 3$ гэж задалжээ. $-3$-ыг ч бас $5$-аар үржүүлнэ.",
       "1": "$28$ бол $4x$-ийн утга; $4$-т хуваах шаардлагатай."
     },
-    "vocab": [
-      "solution"
-    ],
+    "vocab": ["solution"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -53,25 +43,17 @@
     "pool": "placement",
     "prompt": "For the linear function $g$, $g(2) = 11$ and $g(6) = 23$. What is the value of $g(10)$?",
     "mn": "$g$ шугаман функцийн хувьд $g(2) = 11$ ба $g(6) = 23$. $g(10)$-ын утга хэд вэ?",
-    "answer": [
-      "35"
-    ],
+    "answer": ["35"],
     "explain": "Налуу $\\frac{23 - 11}{6 - 2} = 3$. $x$ нь $6$-аас $10$ хүртэл $4$-өөр өсөхөд $g$ нь $3 \\cdot 4 = 12$-оор өснө: $g(10) = 23 + 12 = 35$.",
     "hint": "Шугаман функц тогтмол хурдаар өөрчлөгддөг. Нэг нэгжид хэдээр өөрчлөгдөж байна?",
     "desmos": {
-      "rows": [
-        "(2,11)",
-        "(6,23)",
-        "y=mx+b"
-      ],
+      "rows": ["(2,11)", "(6,23)", "y=mx+b"],
       "tip": "$m$, $b$ гулсуурыг хоёр цэгийг дайртал тохируулбал $m=3$, $b=5$; тэгэхээр $g(10)=35$."
     },
     "verify": {
       "value": "11 + (23 - 11)/(6 - 2)*(10 - 2)"
     },
-    "vocab": [
-      "linear function"
-    ],
+    "vocab": ["linear function"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -87,21 +69,12 @@
     "pool": "placement",
     "prompt": "A line in the $xy$-plane passes through the points $(2, 5)$ and $(6, 17)$. What is the slope of the line?",
     "mn": "$xy$ хавтгай дээрх шулуун $(2, 5)$ ба $(6, 17)$ цэгүүдийг дайрч өнгөрдөг. Шулууны налуу хэд вэ?",
-    "choices": [
-      "$3$",
-      "$\\frac{1}{3}$",
-      "$4$",
-      "$12$"
-    ],
+    "choices": ["$3$", "$\\frac{1}{3}$", "$4$", "$12$"],
     "answer": 0,
     "explain": "Налуу $m = \\frac{17 - 5}{6 - 2} = \\frac{12}{4} = 3$.",
     "hint": "Налуу $= \\frac{y_2 - y_1}{x_2 - x_1}$.",
     "desmos": {
-      "rows": [
-        "(2,5)",
-        "(6,17)",
-        "y-5=m(x-2)"
-      ],
+      "rows": ["(2,5)", "(6,17)", "y-5=m(x-2)"],
       "tip": "$m$ гулсуурыг шулуун хоёр цэгийг дайртал хөдөлгөнө: $m=3$."
     },
     "verify": {
@@ -111,10 +84,7 @@
       "1": "$x$-ийн өөрчлөлтийг $y$-ийн өөрчлөлтөд хуваажээ (урвуу).",
       "3": "$12$ бол зөвхөн $y$-ийн өөрчлөлт; $x$-ийн өөрчлөлтөд ($4$) хуваах хэрэгтэй."
     },
-    "vocab": [
-      "slope",
-      "passes through"
-    ],
+    "vocab": ["slope", "passes through"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -130,20 +100,12 @@
     "pool": "placement",
     "prompt": "In the $xy$-plane, the graph of $kx - 4y = 20$, where $k$ is a constant, is a line with a slope of $\\frac{3}{2}$. What is the value of $k$?",
     "mn": "$xy$ хавтгайд $kx - 4y = 20$ ($k$ тогтмол) тэгшитгэлийн график нь $\\frac{3}{2}$ налуутай шулуун. $k$-ийн утга хэд вэ?",
-    "choices": [
-      "$-6$",
-      "$\\frac{3}{8}$",
-      "$6$",
-      "$\\frac{8}{3}$"
-    ],
+    "choices": ["$-6$", "$\\frac{3}{8}$", "$6$", "$\\frac{8}{3}$"],
     "answer": 2,
     "explain": "$y$-ийг илэрхийлье: $-4y = -kx + 20$, $y = \\frac{k}{4}x - 5$. Налуу $\\frac{k}{4} = \\frac{3}{2}$ тул $k = 6$.",
     "hint": "Тэгшитгэлийг $y = mx + b$ хэлбэрт шилжүүл.",
     "desmos": {
-      "rows": [
-        "kx-4y=20",
-        "y=1.5x"
-      ],
+      "rows": ["kx-4y=20", "y=1.5x"],
       "tip": "$k$ гулсуураар шулууныг $y=1.5x$-тэй параллель болгоход $k=6$."
     },
     "verify": {
@@ -156,10 +118,7 @@
       "0": "$-4y$-ийн хасах тэмдгийг $k$-д шилжүүлэхдээ алдсан.",
       "1": "$\\frac{3}{2}$-ийг $4$-т хуваасан; харин $4$-өөр үржүүлэх ёстой."
     },
-    "vocab": [
-      "constant",
-      "slope"
-    ],
+    "vocab": ["constant", "slope"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -175,19 +134,12 @@
     "pool": "placement",
     "prompt": "A water tank holds $480$ liters. Water drains from the tank at a constant rate, and after $5$ minutes the tank holds $380$ liters. At this rate, how many minutes after it began draining will the tank be empty?",
     "mn": "Усны саванд $480$ литр ус байна. Ус тогтмол хурдаар гоожиж, $5$ минутын дараа саванд $380$ литр үлджээ. Энэ хурдаар гоожвол гоожиж эхэлснээс хойш хэдэн минутын дараа сав хоосорно вэ?",
-    "choices": [
-      "$19$",
-      "$20$",
-      "$24$",
-      "$29$"
-    ],
+    "choices": ["$19$", "$20$", "$24$", "$29$"],
     "answer": 2,
     "explain": "$5$ минутад $100$ литр гоожсон тул хурд нь минутад $20$ литр. Загвар: $V(t) = 480 - 20t$. $V(t) = 0$ гэвэл $t = 24$.",
     "hint": "Эхлээд минут тутамд хэдэн литр гоожиж байгааг ол.",
     "desmos": {
-      "rows": [
-        "y=480-20x"
-      ],
+      "rows": ["y=480-20x"],
       "tip": "Шулууны $x$ тэнхлэгтэй огтлолцох цэг $(24, 0)$."
     },
     "verify": {
@@ -197,10 +149,7 @@
       "0": "$380 / 20$: үлдсэн усыг хоосрох хүртэлх хугацаа; эхний $5$ минутыг нэмээгүй.",
       "3": "Эхний $5$ минутыг давхар тооцсон."
     },
-    "vocab": [
-      "constant rate",
-      "drains"
-    ],
+    "vocab": ["constant rate", "drains"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -216,25 +165,17 @@
     "pool": "placement",
     "prompt": "A crew that assembles gers in Ulaanbaatar charges a fixed fee of ₮150,000 plus ₮40,000 for each hour of work. If a customer was charged a total of ₮430,000, for how many hours did the crew work?",
     "mn": "Улаанбаатарт гэр барьдаг баг тогтмол ₮150,000 дээр нэмээд ажилласан цаг тутамд ₮40,000 авдаг. Хэрэв нэг үйлчлүүлэгч нийт ₮430,000 төлсөн бол баг хэдэн цаг ажилласан бэ?",
-    "answer": [
-      "7"
-    ],
+    "answer": ["7"],
     "explain": "Цагийн тоог $h$ гэвэл $150{,}000 + 40{,}000h = 430{,}000$. Хоёр талаас $150{,}000$-ыг хасвал $40{,}000h = 280{,}000$, тэгэхээр $h = 7$.",
     "hint": "Тогтмол төлбөрийг нийт дүнгээс хасаад үлдсэнийг цагийн үнэд хуваа.",
     "desmos": {
-      "rows": [
-        "y=150000+40000x",
-        "y=430000"
-      ],
+      "rows": ["y=150000+40000x", "y=430000"],
       "tip": "Огтлолцлын цэгийн $x$ нь цагийн тоо: $x=7$."
     },
     "verify": {
       "value": "(430000 - 150000)/40000"
     },
-    "vocab": [
-      "fixed fee",
-      "charged"
-    ],
+    "vocab": ["fixed fee", "charged"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -250,20 +191,12 @@
     "pool": "placement",
     "prompt": "A museum in Ulaanbaatar sells adult tickets for ₮8,000 each and student tickets for ₮5,000 each. A group bought $30$ tickets and paid a total of ₮189,000. How many adult tickets did the group buy?",
     "mn": "Улаанбаатарын нэгэн музей том хүний тасалбарыг ₮8,000, оюутны тасалбарыг ₮5,000-аар зардаг. Нэг бүлэг $30$ тасалбар авч нийт ₮189,000 төлсөн. Тэд хэдэн том хүний тасалбар авсан бэ?",
-    "choices": [
-      "$13$",
-      "$15$",
-      "$17$",
-      "$23$"
-    ],
+    "choices": ["$13$", "$15$", "$17$", "$23$"],
     "answer": 0,
     "explain": "Том хүний тасалбарыг $a$, оюутных $s$ гэе: $a + s = 30$, $8{,}000a + 5{,}000s = 189{,}000$. $s = 30 - a$-г орлуулбал $8{,}000a + 150{,}000 - 5{,}000a = 189{,}000$, $3{,}000a = 39{,}000$, $a = 13$.",
     "hint": "Тасалбарын тоо болон нийт мөнгөний хувьд хоёр тэгшитгэл бич.",
     "desmos": {
-      "rows": [
-        "x+y=30",
-        "8000x+5000y=189000"
-      ],
+      "rows": ["x+y=30", "8000x+5000y=189000"],
       "tip": "Огтлолцлын цэг $(13, 17)$: $x$ нь том хүний тасалбар."
     },
     "verify": {
@@ -275,9 +208,7 @@
     "why": {
       "2": "$17$ бол оюутны тасалбарын тоо."
     },
-    "vocab": [
-      "total"
-    ],
+    "vocab": ["total"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -293,19 +224,12 @@
     "pool": "placement",
     "prompt": "If $2x + 3 \\le 11$, what is the greatest possible value of $x$?",
     "mn": "Хэрэв $2x + 3 \\le 11$ бол $x$-ийн хамгийн их боломжит утга хэд вэ?",
-    "choices": [
-      "$8$",
-      "$\\frac{11}{2}$",
-      "$7$",
-      "$4$"
-    ],
+    "choices": ["$8$", "$\\frac{11}{2}$", "$7$", "$4$"],
     "answer": 3,
     "explain": "Хоёр талаас $3$-ыг хасвал $2x \\le 8$, $2$-т хуваавал $x \\le 4$. Хамгийн их утга $4$.",
     "hint": "Тэнцэтгэл бишийг тэгшитгэл шиг бод; эерэг тоонд хуваахад тэмдэг өөрчлөгдөхгүй.",
     "desmos": {
-      "rows": [
-        "2x+3\\le11"
-      ],
+      "rows": ["2x+3\\le11"],
       "tip": "Desmos муж будна; хил нь $x=4$."
     },
     "verify": {
@@ -315,9 +239,7 @@
       "0": "$8$ бол $2x$-ийн хамгийн их утга.",
       "2": "$(11+3)/2$: $3$-ыг хасахын оронд нэмсэн."
     },
-    "vocab": [
-      "greatest possible value"
-    ],
+    "vocab": ["greatest possible value"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -333,23 +255,17 @@
     "pool": "placement",
     "prompt": "If $-7 < 3 - 2x \\le 5$, what is the least possible value of $x$?",
     "mn": "Хэрэв $-7 < 3 - 2x \\le 5$ бол $x$-ийн хамгийн бага боломжит утга хэд вэ?",
-    "answer": [
-      "-1"
-    ],
+    "answer": ["-1"],
     "explain": "Бүх хэсгээс $3$-ыг хасвал $-10 < -2x \\le 2$. $-2$-т хуваахад тэмдгүүд эргэнэ: $5 > x \\ge -1$, өөрөөр хэлбэл $-1 \\le x < 5$. Хамгийн бага утга $-1$.",
     "hint": "Сөрөг тоонд хуваахад тэнцэтгэл бишийн тэмдэг эргэнэ.",
     "desmos": {
-      "rows": [
-        "-7<3-2x\\le5"
-      ],
+      "rows": ["-7<3-2x\\le5"],
       "tip": "Будагдсан хэсэг $-1 \\le x < 5$; зүүн хил (бүтэн шугам) нь $x=-1$."
     },
     "verify": {
       "value": "(3 - 5)/2"
     },
-    "vocab": [
-      "least possible value"
-    ],
+    "vocab": ["least possible value"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",

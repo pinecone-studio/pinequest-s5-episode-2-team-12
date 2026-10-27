@@ -1,5 +1,6 @@
 import { itemById } from '@/features/shop/catalog';
 import { AnimatedCatImage } from './AnimatedCatImage';
+import { OUTFIT_TAILS, SITTING_TAIL } from './cat-tails';
 
 /** Uses the same equipped shop artwork as the user's avatar. */
 export function MapCat({ outfit }: { outfit?: string }) {
@@ -21,12 +22,11 @@ export function MapCat({ outfit }: { outfit?: string }) {
         }}
       >
         <AnimatedCatImage
-          href="/brand/suu-outfits.png"
+          href="/brand/suu-outfits.webp"
           width={1402}
           height={1122}
           bounds={clothing.art}
-          tail={`M${x + width * 0.79} ${y + height * 0.48}H${x + width}V${y + height * 0.95}H${x + width * 0.79}Z`}
-          pivot={[x + width * 0.79, y + height * 0.88]}
+          tail={OUTFIT_TAILS[clothing.id]}
         />
         <g className="roadmap-cat-eyelids" fill="#191716">
           <ellipse cx={x + width * 0.3} cy={y + height * 0.37} rx={width * 0.085} ry={height * 0.082} />
@@ -38,12 +38,11 @@ export function MapCat({ outfit }: { outfit?: string }) {
   return (
     <svg viewBox="130 20 970 1220" aria-hidden="true" focusable="false">
       <AnimatedCatImage
-        href="/brand/suu-sitting.png"
+        href="/brand/suu-sitting.webp"
         width={1254}
         height={1254}
         bounds={[130, 20, 970, 1220]}
-        tail="M395 1100C330 1070 285 1010 292 900L305 855Q315 820 275 812Q235 814 210 800Q155 780 178 730Q210 662 273 677Q385 675 411 775Q425 843 392 905Z"
-        pivot={[395, 1080]}
+        tail={SITTING_TAIL}
       />
       <g className="roadmap-cat-eyelids" fill="#171616">
         <ellipse cx="465" cy="520" rx="100" ry="110" />
