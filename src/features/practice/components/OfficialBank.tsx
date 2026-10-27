@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { type FormEvent, useId, useState, useTransition } from 'react';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { SuuSidePanel } from '@/features/tutor/components/SuuSidePanel';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import type { Domain } from '@/types';
@@ -13,7 +14,7 @@ import {
   type OfficialPage,
   officialFilterToParams,
 } from '../lib/official';
-import { OfficialQuestionCard } from './OfficialQuestionCard';
+import { OfficialQuestionCard, type SuuState } from './OfficialQuestionCard';
 
 const DOMAINS: (Domain | 'all')[] = ['all', 'alg', 'adv', 'psda', 'geo'];
 const field =
@@ -28,6 +29,9 @@ export function OfficialBank({ data, filter }: { data: OfficialPage; filter: Off
   const [pending, start] = useTransition();
   const [search, setSearch] = useState(filter.search ?? '');
   const searchId = useId();
+  // the question open in the «AI багш Суу» side panel, and what its card reports (checked, the answer given)
+  const [suu, setSuu] = useState<({ id: string } & SuuState) | null>(null);
+  const suuQuestion = suu ? data.questions.find((q) => q.id === suu.id) : undefined;
 
   function go(next: Partial<OfficialFilter>) {
     const params = officialFilterToParams({ ...filter, page: 1, ...next });
@@ -159,18 +163,43 @@ export function OfficialBank({ data, filter }: { data: OfficialPage; filter: Off
         )}
       </div>
 
-      <section className={cn('space-y-3 transition-opacity', pending && 'opacity-50')} aria-busy={pending}>
-        {data.questions.map((q, i) => (
-          <OfficialQuestionCard key={q.id} question={q} index={firstIndex + i + 1} />
-        ))}
+      <div className={cn(suuQuestion && 'pb-[56dvh] lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:pb-0')}>
+        <section
+          className={cn('min-w-0 space-y-3 transition-opacity', pending && 'opacity-50')}
+          aria-busy={pending}
+        >
+          {data.questions.map((q, i) => (
+            <OfficialQuestionCard
+              key={q.id}
+              question={q}
+              index={firstIndex + i + 1}
+              suuOpen={suuQuestion?.id === q.id}
+              onSuu={(state) => setSuu(state ? { id: q.id, ...state } : null)}
+            />
+          ))}
 
-        {data.questions.length === 0 && (
-          <div className="rounded-3xl border border-dashed border-line-2 bg-paper p-10 text-center">
-            <p className="font-bold text-ink">{t('bank.empty')}</p>
-            <p className="mt-1 text-sm text-ink-3">{t('bank.emptyBody')}</p>
-          </div>
+          {data.questions.length === 0 && (
+            <div className="rounded-3xl border border-dashed border-line-2 bg-paper p-10 text-center">
+              <p className="font-bold text-ink">{t('bank.empty')}</p>
+              <p className="mt-1 text-sm text-ink-3">{t('bank.emptyBody')}</p>
+            </div>
+          )}
+        </section>
+
+        {suu && suuQuestion && (
+          <SuuSidePanel
+            context={{
+              kind: 'question',
+              id: suuQuestion.id,
+              title: suuQuestion.skill,
+              problem: suuQuestion.text,
+              chosen: suu.checked ? suu.chosen : undefined,
+            }}
+            revealed={suu.checked}
+            onClose={() => setSuu(null)}
+          />
         )}
-      </section>
+      </div>
 
       {data.pageCount > 1 && (
         <nav aria-label={t('official.pagination')} className="flex items-center justify-center gap-3">

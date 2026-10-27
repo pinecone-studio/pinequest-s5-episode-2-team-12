@@ -11,6 +11,8 @@ import { Bar } from '@/components/ui/Bar';
 import { Button } from '@/components/ui/Button';
 import { Confetti } from '@/components/ui/Confetti';
 import { toast } from '@/components/ui/toast';
+import { SuuSidePanel, SuuTutorButton, splitLayout } from '@/features/tutor/components/SuuSidePanel';
+import { chosenText, questionProblem } from '@/features/tutor/lib/suu-panel';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
@@ -73,6 +75,7 @@ export function StopPlayer({
   const [value, setValue] = useState('');
   const [revealed, setRevealed] = useState(false);
   const [hint, setHint] = useState(false);
+  const [showSuu, setShowSuu] = useState(false);
   const [answers, setAnswers] = useState<SubmittedAnswer[]>([]);
   const [outcome, setOutcome] = useState<StopOutcome | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -298,115 +301,134 @@ export function StopPlayer({
 
   const correct = revealed && isCorrect(q, value.trim());
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-5">
-      {header}
-      <div className="flex items-center gap-3">
-        <Bar
-          value={(i + (revealed ? 1 : 0)) / total}
-          tone="lime"
-          h={10}
-          className="flex-1"
-          label={t('stop.problem', { i: i + 1, n: total })}
-        />
-        <span className="shrink-0 text-[13px] font-semibold text-ink-2 tnum">
-          {t('stop.problem', { i: i + 1, n: total })}
-        </span>
-      </div>
-      {intro.length > 0 && i === 0 && !revealed && !testOut && (
-        <button
-          type="button"
-          onClick={() => setPhase('intro')}
-          className="self-start text-sm font-bold text-leaf-2 underline underline-offset-4"
-        >
-          {t('stop.introOpen')}
-        </button>
-      )}
-
-      <section
-        className="soft-card flex flex-col gap-5 p-5 sm:p-7"
-        aria-label={t('stop.problem', { i: i + 1, n: total })}
-      >
-        {!q.reviewed && (
-          <p className="self-start rounded-full bg-amber-soft px-2.5 py-0.5 text-[11px] font-bold text-amber">
-            {t('stop.unreviewed')}
-          </p>
-        )}
-        <QuestionView
-          key={`${round}-${i}`}
-          q={q}
-          value={value}
-          onChange={setValue}
-          revealed={revealed}
-          onSubmit={check}
-        />
-
-        {hint && !revealed && (
-          <p className="rounded-2xl bg-teal-soft px-4 py-3 text-sm text-teal">
-            <Rich text={q.hint} />
-          </p>
-        )}
-
-        {revealed && (
-          <div
-            role="status"
-            className={cn('flex flex-col gap-3 rounded-2xl p-4', correct ? 'bg-sage' : 'bg-danger-soft')}
+    <div className={cn('mx-auto w-full', splitLayout(showSuu, 'max-w-2xl'))}>
+      <div className="flex min-w-0 flex-col gap-5">
+        {header}
+        <div className="flex items-center gap-3">
+          <Bar
+            value={(i + (revealed ? 1 : 0)) / total}
+            tone="lime"
+            h={10}
+            className="flex-1"
+            label={t('stop.problem', { i: i + 1, n: total })}
+          />
+          <span className="shrink-0 text-[13px] font-semibold text-ink-2 tnum">
+            {t('stop.problem', { i: i + 1, n: total })}
+          </span>
+        </div>
+        {intro.length > 0 && i === 0 && !revealed && !testOut && (
+          <button
+            type="button"
+            onClick={() => setPhase('intro')}
+            className="self-start text-sm font-bold text-leaf-2 underline underline-offset-4"
           >
-            <p className={cn('font-bold', correct ? 'text-leaf-2' : 'text-danger')}>
-              {correct ? t('stop.correct') : t('stop.wrong')}
+            {t('stop.introOpen')}
+          </button>
+        )}
+
+        <section
+          className="soft-card flex flex-col gap-5 p-5 sm:p-7"
+          aria-label={t('stop.problem', { i: i + 1, n: total })}
+        >
+          {!q.reviewed && (
+            <p className="self-start rounded-full bg-amber-soft px-2.5 py-0.5 text-[11px] font-bold text-amber">
+              {t('stop.unreviewed')}
+            </p>
+          )}
+          <QuestionView
+            key={`${round}-${i}`}
+            q={q}
+            value={value}
+            onChange={setValue}
+            revealed={revealed}
+            onSubmit={check}
+          />
+
+          {hint && !revealed && (
+            <p className="rounded-2xl bg-teal-soft px-4 py-3 text-sm text-teal">
+              <Rich text={q.hint} />
+            </p>
+          )}
+
+          {revealed && (
+            <div
+              role="status"
+              className={cn('flex flex-col gap-3 rounded-2xl p-4', correct ? 'bg-sage' : 'bg-danger-soft')}
+            >
+              <p className={cn('font-bold', correct ? 'text-leaf-2' : 'text-danger')}>
+                {correct ? t('stop.correct') : t('stop.wrong')}
+                {!correct && (
+                  <span className="ml-2 font-semibold text-ink-2">
+                    <Rich text={t('stop.answerWas', { a: correctAnswerText(q) })} />
+                  </span>
+                )}
+              </p>
+              {!correct && q.why?.[Number(value)] && (
+                <p className="text-sm text-ink-2">
+                  <Rich text={q.why[Number(value)]} />
+                </p>
+              )}
+              <p className="text-[15px] leading-relaxed text-ink">
+                <Rich text={q.explain} />
+              </p>
+              {q.desmos?.tip && (
+                <details className="text-sm text-ink-2">
+                  <summary className="cursor-pointer font-bold text-teal">{t('stop.desmosTip')}</summary>
+                  <p className="mt-2">
+                    <Rich text={q.desmos.tip} />
+                  </p>
+                </details>
+              )}
               {!correct && (
-                <span className="ml-2 font-semibold text-ink-2">
-                  <Rich text={t('stop.answerWas', { a: correctAnswerText(q) })} />
+                <Link
+                  href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}
+                  className="inline-flex min-h-11 items-center gap-2 self-start rounded-2xl border border-line bg-paper px-4 text-sm font-bold text-ink hover:bg-paper-2"
+                >
+                  {t('stop.askSuu')}
+                </Link>
+              )}
+            </div>
+          )}
+
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              {!revealed ? (
+                <Button variant="ghost" size="sm" onClick={() => setHint(true)} disabled={hint}>
+                  {t('stop.hint')}
+                </Button>
+              ) : (
+                <span className="text-sm text-ink-3 tnum">
+                  {right}/{answers.length}
                 </span>
               )}
-            </p>
-            {!correct && q.why?.[Number(value)] && (
-              <p className="text-sm text-ink-2">
-                <Rich text={q.why[Number(value)]} />
-              </p>
-            )}
-            <p className="text-[15px] leading-relaxed text-ink">
-              <Rich text={q.explain} />
-            </p>
-            {q.desmos?.tip && (
-              <details className="text-sm text-ink-2">
-                <summary className="cursor-pointer font-bold text-teal">{t('stop.desmosTip')}</summary>
-                <p className="mt-2">
-                  <Rich text={q.desmos.tip} />
-                </p>
-              </details>
-            )}
-            {!correct && (
-              <Link
-                href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}
-                className="inline-flex min-h-11 items-center gap-2 self-start rounded-2xl border border-line bg-paper px-4 text-sm font-bold text-ink hover:bg-paper-2"
-              >
-                {t('stop.askSuu')}
-              </Link>
+              <SuuTutorButton open={showSuu} onClick={() => setShowSuu((v) => !v)} />
+            </div>
+            {!revealed ? (
+              <Button variant="lime" onClick={check} disabled={!value.trim()}>
+                {t('stop.check')}
+              </Button>
+            ) : (
+              <Button variant="lime" onClick={next}>
+                {i < total - 1 ? t('stop.next') : t('stop.finish')}
+              </Button>
             )}
           </div>
-        )}
+        </section>
+      </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          {!revealed ? (
-            <Button variant="ghost" size="sm" onClick={() => setHint(true)} disabled={hint}>
-              {t('stop.hint')}
-            </Button>
-          ) : (
-            <span className="text-sm text-ink-3 tnum">
-              {right}/{answers.length}
-            </span>
-          )}
-          {!revealed ? (
-            <Button variant="lime" onClick={check} disabled={!value.trim()}>
-              {t('stop.check')}
-            </Button>
-          ) : (
-            <Button variant="lime" onClick={next}>
-              {i < total - 1 ? t('stop.next') : t('stop.finish')}
-            </Button>
-          )}
-        </div>
-      </section>
+      {showSuu && (
+        <SuuSidePanel
+          context={{
+            kind: 'question',
+            id: q.id,
+            title: q.skill,
+            problem: questionProblem(q),
+            chosen: revealed ? chosenText(q, value) : undefined,
+          }}
+          revealed={revealed}
+          onClose={() => setShowSuu(false)}
+        />
+      )}
     </div>
   );
 }

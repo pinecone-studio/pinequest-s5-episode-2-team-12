@@ -10,7 +10,9 @@ import {
   tickTimedSession,
 } from '@/features/practice/lib/timed-session';
 import { DesmosCatButton, DesmosSidePanel } from '@/features/tutor/components/DesmosSidePanel';
+import { SuuSidePanel, SuuTutorButton, splitLayout } from '@/features/tutor/components/SuuSidePanel';
 import { panelInput } from '@/features/tutor/lib/desmos-panel';
+import { chosenText, questionProblem } from '@/features/tutor/lib/suu-panel';
 import type { Question } from '@/types';
 
 type Props = {
@@ -64,6 +66,7 @@ export function PracticePlayer({ questions }: Props) {
   const [hintVisible, setHintVisible] = useState(false);
   const [marked, setMarked] = useState<string[]>([]);
   const [showDesmos, setShowDesmos] = useState(false);
+  const [showSuu, setShowSuu] = useState(false);
 
   // Timed Mode state
   const [timedMode, setTimedMode] = useState(false);
@@ -76,6 +79,8 @@ export function PracticePlayer({ questions }: Props) {
   const question = activeQuestions[index];
   // what the Desmos side panel sends to Суу for this problem (stable per question, so it asks once)
   const desmosInput = useMemo(() => (question ? panelInput(question) : null), [question]);
+  // the «AI багш Суу» side panel's problem text (stable per question; a new question starts a new chat)
+  const suuProblem = useMemo(() => (question ? questionProblem(question) : ''), [question]);
 
   // Countdown: one tick per second while the timed session is running.
   useEffect(() => {
@@ -273,11 +278,7 @@ export function PracticePlayer({ questions }: Props) {
 
   return (
     <main
-      className={`mx-auto w-full p-6 text-ink ${
-        showDesmos && desmosInput
-          ? 'max-w-[1280px] lg:grid lg:grid-cols-2 lg:items-start lg:gap-6'
-          : 'max-w-3xl'
-      }`}
+      className={`mx-auto w-full p-6 text-ink ${splitLayout((showDesmos && !!desmosInput) || showSuu, 'max-w-3xl')}`}
     >
       <div className="min-w-0 space-y-5">
         {/* Page header */}
@@ -471,9 +472,21 @@ export function PracticePlayer({ questions }: Props) {
               {hintVisible ? 'Сэжүүр нуух' : '🐈 Hint · Сэжүүр'}
             </button>
 
+            <SuuTutorButton
+              open={showSuu}
+              onClick={() => {
+                setShowDesmos(false);
+                setShowSuu((visible) => !visible);
+              }}
+              disabled={!timedSessionRunning}
+            />
+
             <DesmosCatButton
               open={showDesmos}
-              onClick={() => setShowDesmos((visible) => !visible)}
+              onClick={() => {
+                setShowSuu(false);
+                setShowDesmos((visible) => !visible);
+              }}
               disabled={!timedSessionRunning}
             />
           </div>
@@ -548,6 +561,20 @@ export function PracticePlayer({ questions }: Props) {
 
       {showDesmos && desmosInput && (
         <DesmosSidePanel input={desmosInput} revealed={submitted} onClose={() => setShowDesmos(false)} />
+      )}
+
+      {showSuu && question && (
+        <SuuSidePanel
+          context={{
+            kind: 'question',
+            id: question.id,
+            title: question.skill,
+            problem: suuProblem,
+            chosen: submitted ? chosenText(question, answer) : undefined,
+          }}
+          revealed={submitted}
+          onClose={() => setShowSuu(false)}
+        />
       )}
     </main>
   );

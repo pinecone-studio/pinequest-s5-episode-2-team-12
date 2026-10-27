@@ -430,7 +430,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
   );
 }
 
-function SuuBubble({ msg, onRetry }: { msg: ChatMsg; onRetry: () => void }) {
+export function SuuBubble({ msg, onRetry }: { msg: ChatMsg; onRetry: () => void }) {
   const t = useT('tutor');
   if (msg.status === 'pending') {
     return (

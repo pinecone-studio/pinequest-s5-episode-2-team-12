@@ -1,6 +1,7 @@
 'use client';
 
-import { type FormEvent, useId, useState } from 'react';
+import { type FormEvent, useEffect, useId, useState } from 'react';
+import { SuuTutorButton } from '@/features/tutor/components/SuuSidePanel';
 import { checkGridInAnswer } from '@/lib/check-answer';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
@@ -18,7 +19,22 @@ export function CbHtml({ html, scope, className }: { html: string; scope: string
   );
 }
 
-export function OfficialQuestionCard({ question, index }: { question: OfficialQuestion; index: number }) {
+/** What the bank's «AI багш Суу» panel needs from the card that opened it. */
+export type SuuState = { checked: boolean; chosen?: string };
+
+export function OfficialQuestionCard({
+  question,
+  index,
+  suuOpen = false,
+  onSuu,
+}: {
+  question: OfficialQuestion;
+  index: number;
+  /** This card's problem is open in the Суу side panel. */
+  suuOpen?: boolean;
+  /** Opens (state) or closes (null) the Суу side panel for this card. */
+  onSuu?: (state: SuuState | null) => void;
+}) {
   const t = useT('practice');
   const inputId = useId();
   const [choice, setChoice] = useState<string | null>(null);
@@ -30,6 +46,13 @@ export function OfficialQuestionCard({ question, index }: { question: OfficialQu
   const correct = isMcq ? choice === question.answer : checkGridInAnswer(typed, question.accepted);
   const canCheck = isMcq ? choice !== null : typed.trim() !== '';
   const answerText = isMcq ? question.answer : question.accepted.join(', ');
+  const chosen = checked ? (isMcq ? (choice ?? undefined) : typed.trim() || undefined) : undefined;
+
+  // keep the open panel in step with this card: checking unlocks the full explanation
+  // biome-ignore lint/correctness/useExhaustiveDependencies: onSuu is a fresh closure on every render
+  useEffect(() => {
+    if (suuOpen) onSuu?.({ checked, chosen });
+  }, [suuOpen, checked, chosen]);
 
   function check(event?: FormEvent) {
     event?.preventDefault();
@@ -163,6 +186,9 @@ export function OfficialQuestionCard({ question, index }: { question: OfficialQu
           >
             {t(showExplanation ? 'official.hideExplanation' : 'official.showExplanation')}
           </button>
+          {onSuu && (
+            <SuuTutorButton open={suuOpen} onClick={() => onSuu(suuOpen ? null : { checked, chosen })} />
+          )}
         </div>
       </form>
 

@@ -121,3 +121,16 @@ describe('PracticePlayer Desmos side panel', () => {
     expect(container.querySelector('main')?.className).not.toContain('lg:grid-cols-2');
   });
 });
+
+describe('PracticePlayer «AI багш Суу»', () => {
+  test('the button splits the page: the problem on one side, Суу on the other; Desmos takes its place', () => {
+    render(<PracticePlayer questions={questions} />);
+    fireEvent.click(screen.getByRole('button', { name: 'AI багш Суу-г хажууд нээх' }));
+    const panel = screen.getByRole('complementary', { name: 'AI багш Суу' });
+    expect(panel).toBeTruthy();
+    expect(screen.getByRole('main').className).toContain('lg:grid-cols-2');
+    // only one side panel at a time
+    fireEvent.click(screen.getByRole('button', { name: 'Desmos-ийг хажууд нээх' }));
+    expect(screen.queryByRole('complementary', { name: 'AI багш Суу' })).toBeNull();
+  });
+});
