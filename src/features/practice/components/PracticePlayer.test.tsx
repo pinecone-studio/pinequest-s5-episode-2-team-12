@@ -43,7 +43,8 @@ describe('PracticePlayer timed mode', () => {
 
     expect(screen.getByText('Хугацаа дууссан тул сорил автоматаар дууслаа.')).toBeTruthy();
 
-    expect(screen.getByText('0 / 5')).toBeTruthy();
+    // the score is split across elements for styling, so read the results panel's text
+    expect(screen.getByRole('status').textContent).toContain('0 / 5');
   });
 
   test('manual finish shows results and stops the countdown', async () => {

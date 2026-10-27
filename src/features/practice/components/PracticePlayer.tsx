@@ -319,9 +319,10 @@ export function PracticePlayer({ questions }: Props) {
               type="button"
               onClick={startTimedMode}
               disabled={questions.length < 5}
+              aria-label="6 минутын сорил эхлүүлэх"
               className={`${btnPrimary} !px-4 !py-1.5 !text-xs`}
             >
-              ⚡ Эхлүүлэх
+              <span aria-hidden="true">⚡</span> Эхлүүлэх
             </button>
           </div>
         )}

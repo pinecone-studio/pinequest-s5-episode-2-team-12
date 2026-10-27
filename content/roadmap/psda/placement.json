@@ -9,17 +9,13 @@
     "pool": "placement",
     "prompt": "A school in Darkhan has $640$ students. Of these students, $35\\%$ walk to school. How many students walk to school?",
     "mn": "Дарханы нэгэн сургууль $640$ сурагчтай. Тэдний $35\\%$ нь сургуульдаа явганаар ирдэг. Хэдэн сурагч явганаар ирдэг вэ?",
-    "answer": [
-      "224"
-    ],
+    "answer": ["224"],
     "explain": "$35\\% = 0.35$. $0.35\\cdot 640 = 224$.",
     "hint": "Хувийг аравтын бутархай болгоод тоогоор үржүүл.",
     "verify": {
       "value": "0.35*640"
     },
-    "vocab": [
-      "of these"
-    ],
+    "vocab": ["of these"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -35,19 +31,12 @@
     "pool": "placement",
     "prompt": "A coat was on sale for $25\\%$ off its original price. A sales tax of $8\\%$ was then applied to the sale price, and the total amount paid was \\$$81$. What was the original price of the coat, in dollars?",
     "mn": "Хүрэм анхны үнээсээ $25\\%$-ийн хямдралтай зарагдаж байв. Хямдралтай үнэ дээр $8\\%$-ийн татвар нэмэгдэж, нийт \\$$81$ төлсөн. Хүрмний анхны үнэ хэдэн доллар байсан бэ?",
-    "choices": [
-      "$108$",
-      "$81$",
-      "$100$",
-      "$92$"
-    ],
+    "choices": ["$108$", "$81$", "$100$", "$92$"],
     "answer": 2,
     "explain": "Анхны үнэ $x$ бол $x\\cdot 0.75\\cdot 1.08 = 81$, өөрөөр хэлбэл $0.81x = 81$, $x = 100$.",
     "hint": "Төлсөн үнийг анхны үнээр илэрхийлж, тэгшитгэл зохио.",
     "desmos": {
-      "rows": [
-        "0.75*1.08x=81"
-      ],
+      "rows": ["0.75*1.08x=81"],
       "tip": "Desmos-д тэгшитгэлийг бичвэл $x$-ийн утгыг шууд гаргана."
     },
     "why": {
@@ -57,10 +46,7 @@
     "verify": {
       "value": "81/(0.75*1.08)"
     },
-    "vocab": [
-      "sales tax",
-      "original price"
-    ],
+    "vocab": ["sales tax", "original price"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -76,12 +62,7 @@
     "pool": "placement",
     "prompt": "A recipe for buuz dough uses $3$ cups of flour for every $2$ cups of water. How many cups of flour are needed if $8$ cups of water are used?",
     "mn": "Бууз хийх гурилан зуурмагийн жоронд $2$ аяга усанд $3$ аяга гурил ордог. $8$ аяга ус хэрэглэвэл хэдэн аяга гурил хэрэгтэй вэ?",
-    "choices": [
-      "$10$",
-      "$16$",
-      "$12$",
-      "$6$"
-    ],
+    "choices": ["$10$", "$16$", "$12$", "$6$"],
     "answer": 2,
     "explain": "Харьцаа $3:2$. Ус $8 = 2\\cdot 4$ тул гурил $3\\cdot 4 = 12$ аяга.",
     "hint": "Ус хэдэн дахин нэмэгдсэн бэ? Гурилыг мөн адил дахин нэмэгдүүл.",
@@ -92,10 +73,7 @@
     "verify": {
       "value": "3/2*8"
     },
-    "vocab": [
-      "for every",
-      "cups"
-    ],
+    "vocab": ["for every", "cups"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -111,12 +89,7 @@
     "pool": "placement",
     "prompt": "The ratio of $a$ to $b$ is $3:5$, and the ratio of $b$ to $c$ is $2:7$. What is the value of $\\frac{a}{c}$?",
     "mn": "$a$ ба $b$-ийн харьцаа $3:5$, $b$ ба $c$-ийн харьцаа $2:7$. $\\frac{a}{c}$-ийн утга хэд вэ?",
-    "choices": [
-      "$\\frac{3}{7}$",
-      "$\\frac{5}{14}$",
-      "$\\frac{21}{10}$",
-      "$\\frac{6}{35}$"
-    ],
+    "choices": ["$\\frac{3}{7}$", "$\\frac{5}{14}$", "$\\frac{21}{10}$", "$\\frac{6}{35}$"],
     "answer": 3,
     "explain": "$\\frac{a}{c} = \\frac{a}{b}\\cdot\\frac{b}{c} = \\frac{3}{5}\\cdot\\frac{2}{7} = \\frac{6}{35}$.",
     "hint": "$\\frac{a}{b}$ ба $\\frac{b}{c}$-г үржүүлбэл $b$ хураагдана.",
@@ -141,12 +114,7 @@
     "pool": "placement",
     "prompt": "A scatterplot shows the number of visitors $y$, in hundreds, at a museum in Ulaanbaatar and the number of days $x$ since an exhibit opened. The line of best fit is $y = 2.5x + 40$. According to the line of best fit, what is the predicted number of visitors, in hundreds, on day $12$?",
     "mn": "Цэгэн график нь Улаанбаатарын нэгэн музейн зочдын тоо $y$ (зуугаар) ба үзэсгэлэн нээгдсэнээс хойших өдрийн тоо $x$-ийг харуулна. Хамгийн тохиромжтой шулуун $y = 2.5x + 40$. Энэ шулуунаар $12$ дахь өдрийн зочдын тоо (зуугаар) хэд гэж таамаглагдах вэ?",
-    "choices": [
-      "$30$",
-      "$52$",
-      "$70$",
-      "$82$"
-    ],
+    "choices": ["$30$", "$52$", "$70$", "$82$"],
     "answer": 2,
     "explain": "$x = 12$ орлуулбал $y = 2.5\\cdot 12 + 40 = 30 + 40 = 70$.",
     "hint": "$x$-ийн оронд $12$-ыг орлуул.",
@@ -156,10 +124,7 @@
     "verify": {
       "value": "2.5*12+40"
     },
-    "vocab": [
-      "line of best fit",
-      "predicted"
-    ],
+    "vocab": ["line of best fit", "predicted"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -175,21 +140,12 @@
     "pool": "placement",
     "prompt": "A line of best fit for a scatterplot passes through the points $(2, 31)$ and $(10, 79)$. Based on this line, what is the predicted value of $y$ when $x = 15$?",
     "mn": "Цэгэн графикийн хамгийн тохиромжтой шулуун $(2, 31)$ ба $(10, 79)$ цэгүүдийг дайрна. Энэ шулуунаар $x = 15$ үед $y$-ийн таамагласан утга хэд вэ?",
-    "choices": [
-      "$94$",
-      "$109$",
-      "$115$",
-      "$103$"
-    ],
+    "choices": ["$94$", "$109$", "$115$", "$103$"],
     "answer": 1,
     "explain": "Налалт $\\frac{79-31}{10-2} = \\frac{48}{8} = 6$. $y = 6x + b$: $31 = 12 + b$, $b = 19$. $x = 15$ үед $y = 90 + 19 = 109$.",
     "hint": "Хоёр цэгээр налалт, дараа нь сул гишүүнийг ол.",
     "desmos": {
-      "rows": [
-        "(2,31)",
-        "(10,79)",
-        "y=6x+19"
-      ],
+      "rows": ["(2,31)", "(10,79)", "y=6x+19"],
       "tip": "Хоёр цэгийг хүснэгтэд оруулаад y_1~mx_1+b гэж регресс хийвэл шулуун шууд гарна."
     },
     "why": {
@@ -199,9 +155,7 @@
     "verify": {
       "value": "6*15+19"
     },
-    "vocab": [
-      "passes through"
-    ],
+    "vocab": ["passes through"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -217,12 +171,7 @@
     "pool": "placement",
     "prompt": "In a survey, $200$ students were asked whether they plan to watch the Naadam horse races. Of the $100$ students in grade 10, $48$ answered yes and $52$ answered no. Of the $100$ students in grade 11, $66$ answered yes and $34$ answered no. If one of the students who answered yes is selected at random, what is the probability that the student is in grade 11?",
     "mn": "Судалгаагаар $200$ сурагчаас Наадмын морин уралдааныг үзэх эсэхийг асуужээ. 10-р ангийн $100$ сурагчаас $48$ нь тийм, $52$ нь үгүй гэсэн. 11-р ангийн $100$ сурагчаас $66$ нь тийм, $34$ нь үгүй гэсэн. \\\"Тийм\\\" гэж хариулсан сурагчдаас санамсаргүйгээр нэгийг сонгоход 11-р ангийнх байх магадлал хэд вэ?",
-    "choices": [
-      "$\\frac{33}{50}$",
-      "$\\frac{33}{100}$",
-      "$\\frac{11}{19}$",
-      "$\\frac{57}{100}$"
-    ],
+    "choices": ["$\\frac{33}{50}$", "$\\frac{33}{100}$", "$\\frac{11}{19}$", "$\\frac{57}{100}$"],
     "answer": 2,
     "explain": "\\\"Тийм\\\" гэсэн нийт $48+66 = 114$. Тэдний $66$ нь 11-р анги. $\\frac{66}{114} = \\frac{11}{19}$.",
     "hint": "Нөхцөл (\\\"тийм\\\" гэсэн) нь хуваарийг тодорхойлно.",
@@ -234,10 +183,7 @@
     "verify": {
       "value": "66/114"
     },
-    "vocab": [
-      "at random",
-      "selected"
-    ],
+    "vocab": ["at random", "selected"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -253,19 +199,12 @@
     "pool": "placement",
     "prompt": "The list shows the number of books read last month by $5$ students: $4, 7, 7, 9, 13$. What is the mean number of books read?",
     "mn": "Жагсаалтад $5$ сурагчийн өнгөрсөн сард уншсан номын тоо байна: $4, 7, 7, 9, 13$. Уншсан номын дундаж хэд вэ?",
-    "choices": [
-      "$7$",
-      "$8$",
-      "$9$",
-      "$40$"
-    ],
+    "choices": ["$7$", "$8$", "$9$", "$40$"],
     "answer": 1,
     "explain": "Нийлбэр $4+7+7+9+13 = 40$. Дундаж $40\\div 5 = 8$.",
     "hint": "Бүх утгыг нэмээд тоонд нь хуваа.",
     "desmos": {
-      "rows": [
-        "mean([4,7,7,9,13])"
-      ],
+      "rows": ["mean([4,7,7,9,13])"],
       "tip": "Desmos-д mean([...]) гэж бичвэл дунджийг шууд бодно."
     },
     "why": {
@@ -275,9 +214,7 @@
     "verify": {
       "value": "(4+7+7+9+13)/5"
     },
-    "vocab": [
-      "mean"
-    ],
+    "vocab": ["mean"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -293,12 +230,7 @@
     "pool": "placement",
     "prompt": "A data set of $10$ numbers has a mean of $18$ and a median of $17$. The greatest number in the data set, $30$, is replaced with $50$. What is the mean of the new data set?",
     "mn": "$10$ тооноос бүрдэх өгөгдлийн дундаж $18$, медиан $17$. Хамгийн их тоо болох $30$-ыг $50$-аар сольжээ. Шинэ өгөгдлийн дундаж хэд вэ?",
-    "choices": [
-      "$20$",
-      "$18$",
-      "$19$",
-      "$38$"
-    ],
+    "choices": ["$20$", "$18$", "$19$", "$38$"],
     "answer": 0,
     "explain": "Нийлбэр $10\\cdot 18 = 180$. Солисны дараа $180-30+50 = 200$. Дундаж $200\\div 10 = 20$. Медиан харин өөрчлөгдөхгүй ($17$) — хамгийн их утга медианд нөлөөлдөггүй.",
     "hint": "Нийлбэр хэдээр өөрчлөгдсөн бэ?",
@@ -309,10 +241,7 @@
     "verify": {
       "value": "(10*18-30+50)/10"
     },
-    "vocab": [
-      "replaced",
-      "greatest"
-    ],
+    "vocab": ["replaced", "greatest"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
@@ -341,10 +270,7 @@
       "0": "Түүвэр багасвал алдааны хязгаар ихэснэ.",
       "1": "Санамсаргүй бус түүвэр хазайлттай."
     },
-    "vocab": [
-      "margin of error",
-      "randomly selected"
-    ],
+    "vocab": ["margin of error", "randomly selected"],
     "source": "original",
     "reviewed": false,
     "author": "suprep-seed",
