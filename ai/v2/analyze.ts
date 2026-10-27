@@ -146,7 +146,9 @@ export const WORDS = [
 const SOURCES: Source[] = ['practice', 'practice', 'lesson', 'checkpoint', 'hard'];
 
 export function randomMistakes(r: Rng): AnalyzeInput {
-  const n = r() < 0.1 ? int(r, 0, 3) : int(r, 4, 15);
+  // the app sends the student's 30 most recent mistakes
+  const x = r();
+  const n = x < 0.1 ? int(r, 0, 3) : x < 0.85 ? int(r, 4, 15) : int(r, 16, 30);
   const pool = shuffle(
     r,
     Array.from({ length: 26 }, (_, i) => i + 1),
@@ -171,7 +173,8 @@ export function randomMistakes(r: Rng): AnalyzeInput {
           ? int(r, 151, 260)
           : int(r, 31, 150);
     const src: Source = plant.exam && r() < 0.6 ? 'exam' : pick(r, SOURCES);
-    const desmos = DESMOS_TOPICS.has(topic) && r() < (plant.desmos ? 0.8 : 0.25);
+    // the app flags a question that has Desmos rows; most of them are in the Desmos topics
+    const desmos = DESMOS_TOPICS.has(topic) ? r() < (plant.desmos ? 0.8 : 0.25) : r() < 0.05;
     const words = new Set<string>();
     if (plant.word && r() < 0.4) words.add(plant.word);
     if (r() < 0.15) words.add(pick(r, WORDS));
