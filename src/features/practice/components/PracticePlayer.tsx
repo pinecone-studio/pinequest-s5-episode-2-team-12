@@ -191,7 +191,8 @@ export function PracticePlayer({ questions }: Props) {
           <div className="space-y-2">
             <h2 className="text-base font-bold">Зөв хариулт</h2>
             <p className="font-display text-5xl font-bold text-leaf-2">
-              {correctCount} <span className="text-2xl font-semibold text-ink-3">/ {activeQuestions.length}</span>
+              {correctCount}{' '}
+              <span className="text-2xl font-semibold text-ink-3">/ {activeQuestions.length}</span>
             </p>
             <p className="text-sm text-ink-3">
               {activeQuestions.length > 0
@@ -283,7 +284,11 @@ export function PracticePlayer({ questions }: Props) {
         <div className={`${infoPill} flex flex-wrap items-center justify-between gap-3`}>
           <span>Timed Mode</span>
 
-          <span role="timer" aria-live="off" className="tnum font-mono text-xl font-bold tracking-wider text-leaf-2">
+          <span
+            role="timer"
+            aria-live="off"
+            className="tnum font-mono text-xl font-bold tracking-wider text-leaf-2"
+          >
             {formatTime(session.remainingSeconds)}
           </span>
 

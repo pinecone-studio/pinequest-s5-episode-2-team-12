@@ -29,7 +29,7 @@ describe('PracticePlayer timed mode', () => {
 
     fireEvent.click(
       screen.getByRole('button', {
-        name: '6 минутын сорил эхлүүлэх',
+        name: '⚡ Эхлүүлэх',
       }),
     );
 
@@ -43,7 +43,7 @@ describe('PracticePlayer timed mode', () => {
 
     expect(screen.getByText('Хугацаа дууссан тул сорил автоматаар дууслаа.')).toBeTruthy();
 
-    expect(screen.getByText('0 / 5')).toBeTruthy();
+    expect(screen.getByRole('status').textContent).toContain('0 / 5');
   });
 
   test('manual finish shows results and stops the countdown', async () => {
@@ -51,7 +51,7 @@ describe('PracticePlayer timed mode', () => {
 
     fireEvent.click(
       screen.getByRole('button', {
-        name: '6 минутын сорил эхлүүлэх',
+        name: '⚡ Эхлүүлэх',
       }),
     );
 
