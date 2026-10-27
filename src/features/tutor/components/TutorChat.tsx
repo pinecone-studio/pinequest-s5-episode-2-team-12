@@ -81,9 +81,9 @@ function SuuAvatar({ size = 34, className }: { size?: number; className?: string
       style={{ width: size, height: size }}
       aria-hidden="true"
     >
-      {/* biome-ignore lint/performance/noImgElement: static transparent PNG */}
+      {/* biome-ignore lint/performance/noImgElement: static transparent image */}
       <img
-        src="/brand/suu-logo-head.png"
+        src="/brand/suu-logo-head.webp"
         alt=""
         width={size}
         height={size}

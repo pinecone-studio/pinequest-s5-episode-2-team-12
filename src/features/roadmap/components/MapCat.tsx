@@ -21,7 +21,7 @@ export function MapCat({ outfit }: { outfit?: string }) {
         }}
       >
         <AnimatedCatImage
-          href="/brand/suu-outfits.png"
+          href="/brand/suu-outfits.webp"
           width={1402}
           height={1122}
           bounds={clothing.art}
@@ -38,7 +38,7 @@ export function MapCat({ outfit }: { outfit?: string }) {
   return (
     <svg viewBox="130 20 970 1220" aria-hidden="true" focusable="false">
       <AnimatedCatImage
-        href="/brand/suu-sitting.png"
+        href="/brand/suu-sitting.webp"
         width={1254}
         height={1254}
         bounds={[130, 20, 970, 1220]}
