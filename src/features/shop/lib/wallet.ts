@@ -57,6 +57,13 @@ export function equip(w: Wallet, itemId: string): Wallet {
   return { ...w, equipped };
 }
 
+/** Return to the free original map without changing purchases or other cosmetics. */
+export function resetMapSkin(w: Wallet): Wallet {
+  const equipped = { ...w.equipped };
+  delete equipped.skin;
+  return { ...w, equipped };
+}
+
 /** Uses one consumable (a hint token); false when none are left. */
 export function consume(w: Wallet, itemId: string): Wallet | null {
   if (!(w.owned[itemId] > 0)) return null;

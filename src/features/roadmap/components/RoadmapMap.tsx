@@ -297,7 +297,7 @@ export function RoadmapMap({
   const fixedView = box ? fitView(box, CONTENT) : null;
   const view =
     fullBleed && box && fixedView
-      ? { ...fixedView, x: fixedView.x + 20, y: box.h - CONTENT.h * fixedView.scale + 28 }
+      ? { ...fixedView, x: fixedView.x + 20, y: box.h - CONTENT.h * fixedView.scale + 18 }
       : camera;
   const [hover, setHover] = useState<number | null>(null);
   const [dragging, setDragging] = useState(false);
@@ -528,7 +528,7 @@ export function RoadmapMap({
 
   // labels: all of them when zoomed in, otherwise only the current / hovered stop; callouts when crowded
   const labels = useMemo(() => {
-    if (flying) return new Map();
+    if (fullBleed || flying) return new Map();
     const want = order.filter(
       (v) =>
         visible.has(v.stop.no) &&
@@ -556,7 +556,21 @@ export function RoadmapMap({
       chips,
       !narrow,
     );
-  }, [order, views, visible, zoom, frontierNo, hover, singles, screen, flying, floatNo, narrow, selectedNo]);
+  }, [
+    order,
+    views,
+    visible,
+    zoom,
+    frontierNo,
+    hover,
+    singles,
+    screen,
+    flying,
+    floatNo,
+    narrow,
+    selectedNo,
+    fullBleed,
+  ]);
 
   const placeName = (no: number) => STOPS.find((s) => s.no === no)?.place ?? '';
 
@@ -881,6 +895,7 @@ export function RoadmapMap({
         </div>
       )}
       <p
+        style={skin === 'night' ? { color: '#ffffff' } : undefined}
         className={cn(
           'pointer-events-none absolute left-4 max-w-[60%] text-[10.5px] leading-tight text-ink-3',
           fullBleed ? 'bottom-[max(4px,env(safe-area-inset-bottom))] max-sm:hidden' : 'bottom-2',

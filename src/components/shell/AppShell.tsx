@@ -193,6 +193,7 @@ export function AppShell({
   variant?: 'map' | 'page';
 }) {
   const t = useT('common');
+  const roadmapT = useT('roadmap');
   const pathname = usePathname() ?? '/';
   const { open, setOpen } = useSidebar();
   const closeSidebar = useCallback(() => setOpen(false), [setOpen]);
@@ -212,6 +213,16 @@ export function AppShell({
       </a>
 
       <header
+        style={
+          map
+            ? {
+                borderBottom: `1px solid ${w.equipped.skin === 'skin-night' ? 'rgba(255,255,255,0.18)' : 'var(--c-line)'}`,
+                backgroundColor: 'transparent',
+                backdropFilter: 'blur(14px)',
+                WebkitBackdropFilter: 'blur(14px)',
+              }
+            : undefined
+        }
         className={cn(
           'z-30 gutter py-3 flex items-center gap-3',
           map
@@ -230,8 +241,30 @@ export function AppShell({
           <Icon name="menu" size={22} />
         </button>
         <Link href={routes.home} aria-label="Suprep" className="hidden sm:block">
-          <Logo />
+          <Logo light={map && w.equipped.skin === 'skin-night'} />
         </Link>
+        {map && (
+          <div
+            className="hidden md:flex"
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              marginInline: 'auto',
+              width: 'min(640px, calc(100% - 600px))',
+              justifyContent: 'center',
+              alignItems: 'center',
+              whiteSpace: 'nowrap',
+              pointerEvents: 'none',
+              color: w.equipped.skin === 'skin-night' ? '#fff' : 'var(--c-leaf-ink)',
+              fontSize: 'clamp(12px, 1.1vw, 16px)',
+              fontWeight: 800,
+              letterSpacing: '.05em',
+            }}
+          >
+            {roadmapT('heading.title')}
+          </div>
+        )}
         <div className="ml-auto flex items-center gap-2.5">
           <ExamChip initial={settings} demo={demo} />
           {/* no viewport prefetch: on the map home its bytes would compete with the first paint */}

@@ -46,7 +46,7 @@ export function RoadmapView({
   const closePanel = useCallback(() => setSelected(null), []);
 
   return (
-    <div className="absolute inset-0">
+    <div className="roadmap-home absolute inset-0" data-map-skin={skin}>
       <RoadmapMap
         views={views}
         frontierNo={fr ?? (sample ? 5 : null)}
@@ -61,6 +61,7 @@ export function RoadmapView({
       {sel && (
         <StopPanel
           inline
+          night={skin === 'night'}
           v={sel}
           views={views}
           state={state}

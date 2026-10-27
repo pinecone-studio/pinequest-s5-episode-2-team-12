@@ -30,7 +30,8 @@ function Preview({ item, name, avatarId }: { item: ShopItem; name: string; avata
         alt=""
         className={cn(
           'h-14 w-full rounded-xl object-cover',
-          item.look === 'winter' ? 'saturate-[.25] brightness-125' : 'brightness-50 hue-rotate-[195deg]',
+          item.look === 'winter' && 'saturate-[.25] brightness-125',
+          item.look === 'night' && 'brightness-50 hue-rotate-[195deg]',
         )}
       />
     );
@@ -99,6 +100,41 @@ export function ShopView({
               g === 'outfit' ? 'grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-2 lg:grid-cols-3',
             )}
           >
+            {g === 'skin' && (
+              <li className="soft-card wardrobe-card grid content-between gap-4 p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-24 shrink-0">
+                    <Preview
+                      item={{ id: 'skin-default', kind: 'skin', price: 0, look: 'default' }}
+                      name={name}
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-bold text-ink">{t('defaultMap.name')}</p>
+                    <p className="text-[13px] text-ink-2">{t('defaultMap.desc')}</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Pill tone="leaf">{!w.equipped.skin ? t('equipped') : t('defaultMap.free')}</Pill>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    disabled={!w.equipped.skin || busy}
+                    onClick={async () => {
+                      setBusy(true);
+                      try {
+                        const result = await w.selectDefaultMap();
+                        if (!result.ok) toast(t('failed'));
+                      } finally {
+                        setBusy(false);
+                      }
+                    }}
+                  >
+                    {t('defaultMap.use')}
+                  </Button>
+                </div>
+              </li>
+            )}
             {ITEMS.filter((i) => i.kind === g).map((item) => {
               const owned = w.owned[item.id] ?? 0;
               const isOn = item.kind !== 'consumable' && w.equipped[item.kind] === item.id;

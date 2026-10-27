@@ -8,18 +8,24 @@ import { demoEarnings, emptyWallet, type GemEvent, type Wallet } from './wallet'
 const KEY = 'suprep:wallet:v1';
 const DAILY_DAYS = 'suprep:daily:days';
 
-type Stored = { spent: GemEvent[]; owned: Wallet['owned']; equipped: Wallet['equipped'] };
+type Stored = {
+  credits: GemEvent[];
+  spent: GemEvent[];
+  owned: Wallet['owned'];
+  equipped: Wallet['equipped'];
+};
 
 function readStored(): Stored {
   try {
     return {
+      credits: [],
       spent: [],
       owned: {},
       equipped: {},
       ...(JSON.parse(localStorage.getItem(KEY) ?? '{}') as Partial<Stored>),
     };
   } catch {
-    return { spent: [], owned: {}, equipped: {} };
+    return { credits: [], spent: [], owned: {}, equipped: {} };
   }
 }
 
@@ -42,13 +48,14 @@ export function loadLocalWallet(): Wallet {
     bestStreak: 0,
   });
   const s = readStored();
-  return { events: [...earned, ...s.spent], owned: s.owned, equipped: s.equipped };
+  return { events: [...earned, ...s.credits, ...s.spent], owned: s.owned, equipped: s.equipped };
 }
 
 export function saveLocalWallet(w: Wallet) {
   try {
     const spent = w.events.filter((e) => e.amount < 0);
-    localStorage.setItem(KEY, JSON.stringify({ spent, owned: w.owned, equipped: w.equipped }));
+    const credits = w.events.filter((e) => e.amount > 0 && e.reason === 'local-gift');
+    localStorage.setItem(KEY, JSON.stringify({ credits, spent, owned: w.owned, equipped: w.equipped }));
     window.dispatchEvent(new Event('suprep-wallet'));
   } catch {
     // storage blocked

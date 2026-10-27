@@ -177,3 +177,30 @@
 @media (max-width: 767px) {
   .roadmap-stop-overview { width: calc(100% - 32px); top: 80px; max-height: 40dvh; gap: 10px 12px; }
 }
+
+
+/* Plain navigation centered between the brand and account controls. */
+.roadmap-heading {
+  position: fixed;
+  z-index: 45;
+  top: 20px;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: min(640px, calc(100% - 600px));
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  color: var(--c-leaf-ink);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: .05em;
+}
+@media (max-width: 1100px) {
+  .roadmap-heading { width: max-content; font-size: 13px; gap: 20px; }
+}
+@media (max-width: 767px) {
+  .roadmap-heading { display: none; }
+}

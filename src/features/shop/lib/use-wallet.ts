@@ -3,11 +3,11 @@
 // go through purchase_item). Demo: localStorage (local-wallet.ts), updated across components by an event.
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { buyItem, equipItem } from '../actions';
+import { buyItem, equipItem, resetMapSkin as resetServerMapSkin } from '../actions';
 import type { Slot } from '../catalog';
 import type { ServerWallet } from '../queries';
 import { loadLocalWallet, saveLocalWallet } from './local-wallet';
-import { balance, equip as equipLocal, purchase } from './wallet';
+import { balance, equip as equipLocal, purchase, resetMapSkin } from './wallet';
 
 export type WalletView = {
   balance: number;
@@ -64,5 +64,15 @@ export function useWallet(demo: boolean, server: ServerWallet | null) {
     [demo, router],
   );
 
-  return { ...view, buy, equip };
+  const selectDefaultMap = useCallback(async () => {
+    if (demo) {
+      saveLocalWallet(resetMapSkin(loadLocalWallet()));
+      return { ok: true } as const;
+    }
+    const result = await resetServerMapSkin();
+    if (result.ok) router.refresh();
+    return result;
+  }, [demo, router]);
+
+  return { ...view, buy, equip, selectDefaultMap };
 }

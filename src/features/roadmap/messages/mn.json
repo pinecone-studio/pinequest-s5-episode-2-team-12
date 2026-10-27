@@ -232,5 +232,9 @@
     "loading": "Ачаалж байна…",
     "failed": "Агуулгыг ачаалж чадсангүй.",
     "close": "Хаах"
+  },
+  "heading": {
+    "title": "ХИЧЭЭЛҮҮД · ROADMAP",
+    "guidebook": "GUIDEBOOK"
   }
 }
