@@ -51,6 +51,13 @@ H1 дээр ашиглах нөхцөлийг шалгаж, зөвшөөрөлг
 4. `export` → `ai/data/tuning/feedback.jsonl` → notebook-д `MODE = "update"`: өмнөх Суу (`suu_lora.zip`)-аас үргэлжлүүлж,
    шинэ санал + хуучин 300 жишээгээр ~5–10 минут сургана. 👎 бөгөөд тайлбаргүй саналууд багшид "хэцүү тохиолдол" болж үлдэнэ.
 
+## Суу-г вэбсайтад холбох
+
+`/api/tutor` (чат) ба `/api/desmos/lesson` (Desmos Академи, `/desmos/ai`) нь `src/server/ai/ollama-client.ts`-ээр
+Ollama-тай ярьна. Чадвар бүр өөрийн system prompt-той (`src/server/ai/prompts.ts` = сургалтын prompt, тест шалгана).
+Desmos хичээлийг сурагчид харуулахаас өмнө `desmos-lesson-parse.ts` шалгана. Laptop дээр ажиллуулж tunnel-ээр
+холбох: [`ai/serve/README.md`](serve/README.md) — `bash ai/serve/start.sh`.
+
 ## Суу v2 — хоёр дахь сургалт
 
 Апп-ын хэсэг бүрт (AI багш, AI төлөвлөгөө, Алдааны дэвтэр, Desmos Академи) хэрэгтэй чадваруудыг нэг загварт сургана:
