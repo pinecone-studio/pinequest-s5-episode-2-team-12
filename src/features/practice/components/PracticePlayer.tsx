@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Rich } from '@/components/math';
 import { toast } from '@/components/ui/toast';
 import {
@@ -9,6 +9,8 @@ import {
   formatTime,
   tickTimedSession,
 } from '@/features/practice/lib/timed-session';
+import { DesmosCatButton, DesmosSidePanel } from '@/features/tutor/components/DesmosSidePanel';
+import { panelInput } from '@/features/tutor/lib/desmos-panel';
 import type { Question } from '@/types';
 
 type Props = {
@@ -72,6 +74,8 @@ export function PracticePlayer({ questions }: Props) {
   const activeQuestions = timedMode ? questions.slice(0, 5) : questions;
 
   const question = activeQuestions[index];
+  // what the Desmos side panel sends to Суу for this problem (stable per question, so it asks once)
+  const desmosInput = useMemo(() => (question ? panelInput(question) : null), [question]);
 
   // Countdown: one tick per second while the timed session is running.
   useEffect(() => {
@@ -268,299 +272,283 @@ export function PracticePlayer({ questions }: Props) {
   const timedSessionRunning = !timedMode || session.status === 'running';
 
   return (
-    <main className="mx-auto w-full max-w-3xl space-y-5 p-6 text-ink">
-      {/* Page header */}
-      <header className="space-y-2">
-        <h1 className="font-display flex items-center gap-3 text-3xl font-bold tracking-tight md:text-4xl">
-          <span>🐈‍⬛</span> Дасгал
-        </h1>
-        <p className="text-ink-2">
-          SAT Math асуултуудыг бод, XP цуглуул. {index + 1} / {activeQuestions.length}
-        </p>
-      </header>
+    <main
+      className={`mx-auto w-full p-6 text-ink ${
+        showDesmos && desmosInput
+          ? 'max-w-[1280px] lg:grid lg:grid-cols-2 lg:items-start lg:gap-6'
+          : 'max-w-3xl'
+      }`}
+    >
+      <div className="min-w-0 space-y-5">
+        {/* Page header */}
+        <header className="space-y-2">
+          <h1 className="font-display flex items-center gap-3 text-3xl font-bold tracking-tight md:text-4xl">
+            <span>🐈‍⬛</span> Дасгал
+          </h1>
+          <p className="text-ink-2">
+            SAT Math асуултуудыг бод, XP цуглуул. {index + 1} / {activeQuestions.length}
+          </p>
+        </header>
 
-      {/* Timed mode banner (teal info pill) */}
-      {timedMode ? (
-        <div className={`${infoPill} flex flex-wrap items-center justify-between gap-3`}>
-          <span>Timed Mode</span>
+        {/* Timed mode banner (teal info pill) */}
+        {timedMode ? (
+          <div className={`${infoPill} flex flex-wrap items-center justify-between gap-3`}>
+            <span>Timed Mode</span>
 
-          <span
-            role="timer"
-            aria-live="off"
-            className="tnum font-mono text-xl font-bold tracking-wider text-leaf-2"
-          >
-            {formatTime(session.remainingSeconds)}
-          </span>
-
-          <button
-            type="button"
-            onClick={finishTimedMode}
-            disabled={session.status !== 'running'}
-            className={`${btnSecondary} !px-4 !py-1.5 !text-xs`}
-          >
-            Дуусгах
-          </button>
-        </div>
-      ) : (
-        <div className={`${infoPill} flex flex-wrap items-center justify-between gap-3`}>
-          <span>Хугацаатай сорил: 5 асуулт, 6 минут</span>
-          <button
-            type="button"
-            onClick={startTimedMode}
-            disabled={questions.length < 5}
-            aria-label="6 минутын сорил эхлүүлэх"
-            className={`${btnPrimary} !px-4 !py-1.5 !text-xs`}
-          >
-            <span aria-hidden="true">⚡</span> Эхлүүлэх
-          </button>
-        </div>
-      )}
-
-      {/* Question picker */}
-      <section className={`${card} space-y-4`}>
-        <h2 className={sectionLabel}>Асуулт сонгох</h2>
-
-        <nav className="flex flex-wrap gap-2" aria-label="Асуулт сонгох">
-          {activeQuestions.map((item, i) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => goTo(i)}
-              disabled={!timedSessionRunning}
-              aria-label={`${i + 1}-р асуулт`}
-              aria-current={i === index ? 'step' : undefined}
-              className={`${chipBase} flex h-10 min-w-12 items-center justify-center gap-1 ${
-                i === index ? chipActive : marked.includes(item.id) ? chipMarked : chipIdle
-              }`}
+            <span
+              role="timer"
+              aria-live="off"
+              className="tnum font-mono text-xl font-bold tracking-wider text-leaf-2"
             >
-              {marked.includes(item.id) ? (
-                <span>⚑ {i + 1}</span>
-              ) : (
-                <span className="flex items-center gap-0.5">
-                  {i % 2 === 0 ? '🐈' : '🐈‍⬛'} {i + 1}
-                </span>
-              )}
+              {formatTime(session.remainingSeconds)}
+            </span>
+
+            <button
+              type="button"
+              onClick={finishTimedMode}
+              disabled={session.status !== 'running'}
+              className={`${btnSecondary} !px-4 !py-1.5 !text-xs`}
+            >
+              Дуусгах
             </button>
-          ))}
-        </nav>
-      </section>
-
-      {/* Question card */}
-      <section className={`${card} space-y-5`}>
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-base font-bold text-ink">{question.skill}</h2>
-          <span className="rounded-full bg-teal-soft px-3 py-1 text-xs font-bold text-teal">
-            Difficulty {question.difficulty}
-          </span>
-        </div>
-
-        <div className="text-[17px] font-medium leading-relaxed text-ink">
-          <Rich text={question.prompt} />
-        </div>
-
-        <div>
-          <button
-            type="button"
-            onClick={() =>
-              setMarked((previous) =>
-                previous.includes(question.id)
-                  ? previous.filter((id) => id !== question.id)
-                  : [...previous, question.id],
-              )
-            }
-            disabled={!timedSessionRunning}
-            aria-pressed={marked.includes(question.id)}
-            className={`${chipBase} px-4 ${marked.includes(question.id) ? chipMarked : chipIdle}`}
-          >
-            {marked.includes(question.id) ? '⚑ Тэмдэглэгээг авах' : '⚑ Асуултыг тэмдэглэх'}
-          </button>
-        </div>
-
-        {question.choices ? (
-          <div className="grid gap-3">
-            {question.choices.map((choice, i) => {
-              const isSelected = answer === String(i);
-              const isRight = question.answer === i;
-
-              return (
-                <button
-                  key={`${question.id}-${i}`}
-                  type="button"
-                  disabled={submitted || !timedSessionRunning}
-                  onClick={() => submitAnswer(String(i))}
-                  className={`flex items-center gap-3.5 rounded-2xl border p-4 text-left transition ${
-                    submitted && isRight
-                      ? 'border-leaf bg-sage text-leaf-2'
-                      : submitted && isSelected
-                        ? 'border-danger bg-danger-soft text-danger'
-                        : isSelected
-                          ? 'border-leaf bg-leaf/10 text-ink'
-                          : 'border-line bg-paper-2 text-ink hover:border-leaf'
-                  }`}
-                >
-                  <span
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-xs font-bold ${
-                      submitted && isRight
-                        ? 'bg-leaf text-white'
-                        : submitted && isSelected
-                          ? 'bg-danger text-white'
-                          : isSelected
-                            ? 'bg-leaf text-white'
-                            : 'border border-line bg-paper text-ink-3'
-                    }`}
-                  >
-                    {String.fromCharCode(65 + i)}
-                  </span>
-                  <div className="flex-1 text-[15px]">
-                    <Rich text={choice} />
-                  </div>
-                </button>
-              );
-            })}
           </div>
         ) : (
-          <form
-            className="flex flex-wrap gap-3"
-            onSubmit={(event) => {
-              event.preventDefault();
-
-              if (answer.trim() && !submitted) {
-                submitAnswer(answer);
-              }
-            }}
-          >
-            <input
-              value={answer}
-              onChange={(event) => setAnswer(event.target.value)}
-              disabled={submitted || !timedSessionRunning}
-              aria-label="Хариулт"
-              placeholder="Хариултаа бичнэ үү"
-              className="min-w-0 flex-1 rounded-2xl border border-line bg-paper-2 px-5 py-3.5 font-mono text-lg text-ink placeholder:text-sm placeholder:uppercase placeholder:tracking-[0.15em] disabled:opacity-60"
-            />
-
-            {!submitted && (
-              <button type="submit" disabled={!answer.trim() || !timedSessionRunning} className={btnPrimary}>
-                Шалгах
-              </button>
-            )}
-          </form>
-        )}
-
-        <div className="flex flex-wrap gap-2.5">
-          <button
-            type="button"
-            onClick={() => setHintVisible((visible) => !visible)}
-            disabled={!timedSessionRunning}
-            className={btnSecondary}
-          >
-            {hintVisible ? 'Сэжүүр нуух' : '🐈 Hint · Сэжүүр'}
-          </button>
-
-          {question.desmos && (
+          <div className={`${infoPill} flex flex-wrap items-center justify-between gap-3`}>
+            <span>Хугацаатай сорил: 5 асуулт, 6 минут</span>
             <button
               type="button"
-              onClick={() => setShowDesmos((visible) => !visible)}
+              onClick={startTimedMode}
+              disabled={questions.length < 5}
+              aria-label="6 минутын сорил эхлүүлэх"
+              className={`${btnPrimary} !px-4 !py-1.5 !text-xs`}
+            >
+              <span aria-hidden="true">⚡</span> Эхлүүлэх
+            </button>
+          </div>
+        )}
+
+        {/* Question picker */}
+        <section className={`${card} space-y-4`}>
+          <h2 className={sectionLabel}>Асуулт сонгох</h2>
+
+          <nav className="flex flex-wrap gap-2" aria-label="Асуулт сонгох">
+            {activeQuestions.map((item, i) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => goTo(i)}
+                disabled={!timedSessionRunning}
+                aria-label={`${i + 1}-р асуулт`}
+                aria-current={i === index ? 'step' : undefined}
+                className={`${chipBase} flex h-10 min-w-12 items-center justify-center gap-1 ${
+                  i === index ? chipActive : marked.includes(item.id) ? chipMarked : chipIdle
+                }`}
+              >
+                {marked.includes(item.id) ? (
+                  <span>⚑ {i + 1}</span>
+                ) : (
+                  <span className="flex items-center gap-0.5">
+                    {i % 2 === 0 ? '🐈' : '🐈‍⬛'} {i + 1}
+                  </span>
+                )}
+              </button>
+            ))}
+          </nav>
+        </section>
+
+        {/* Question card */}
+        <section className={`${card} space-y-5`}>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-base font-bold text-ink">{question.skill}</h2>
+            <span className="rounded-full bg-teal-soft px-3 py-1 text-xs font-bold text-teal">
+              Difficulty {question.difficulty}
+            </span>
+          </div>
+
+          <div className="text-[17px] font-medium leading-relaxed text-ink">
+            <Rich text={question.prompt} />
+          </div>
+
+          <div>
+            <button
+              type="button"
+              onClick={() =>
+                setMarked((previous) =>
+                  previous.includes(question.id)
+                    ? previous.filter((id) => id !== question.id)
+                    : [...previous, question.id],
+                )
+              }
+              disabled={!timedSessionRunning}
+              aria-pressed={marked.includes(question.id)}
+              className={`${chipBase} px-4 ${marked.includes(question.id) ? chipMarked : chipIdle}`}
+            >
+              {marked.includes(question.id) ? '⚑ Тэмдэглэгээг авах' : '⚑ Асуултыг тэмдэглэх'}
+            </button>
+          </div>
+
+          {question.choices ? (
+            <div className="grid gap-3">
+              {question.choices.map((choice, i) => {
+                const isSelected = answer === String(i);
+                const isRight = question.answer === i;
+
+                return (
+                  <button
+                    key={`${question.id}-${i}`}
+                    type="button"
+                    disabled={submitted || !timedSessionRunning}
+                    onClick={() => submitAnswer(String(i))}
+                    className={`flex items-center gap-3.5 rounded-2xl border p-4 text-left transition ${
+                      submitted && isRight
+                        ? 'border-leaf bg-sage text-leaf-2'
+                        : submitted && isSelected
+                          ? 'border-danger bg-danger-soft text-danger'
+                          : isSelected
+                            ? 'border-leaf bg-leaf/10 text-ink'
+                            : 'border-line bg-paper-2 text-ink hover:border-leaf'
+                    }`}
+                  >
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-xs font-bold ${
+                        submitted && isRight
+                          ? 'bg-leaf text-white'
+                          : submitted && isSelected
+                            ? 'bg-danger text-white'
+                            : isSelected
+                              ? 'bg-leaf text-white'
+                              : 'border border-line bg-paper text-ink-3'
+                      }`}
+                    >
+                      {String.fromCharCode(65 + i)}
+                    </span>
+                    <div className="flex-1 text-[15px]">
+                      <Rich text={choice} />
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <form
+              className="flex flex-wrap gap-3"
+              onSubmit={(event) => {
+                event.preventDefault();
+
+                if (answer.trim() && !submitted) {
+                  submitAnswer(answer);
+                }
+              }}
+            >
+              <input
+                value={answer}
+                onChange={(event) => setAnswer(event.target.value)}
+                disabled={submitted || !timedSessionRunning}
+                aria-label="Хариулт"
+                placeholder="Хариултаа бичнэ үү"
+                className="min-w-0 flex-1 rounded-2xl border border-line bg-paper-2 px-5 py-3.5 font-mono text-lg text-ink placeholder:text-sm placeholder:uppercase placeholder:tracking-[0.15em] disabled:opacity-60"
+              />
+
+              {!submitted && (
+                <button
+                  type="submit"
+                  disabled={!answer.trim() || !timedSessionRunning}
+                  className={btnPrimary}
+                >
+                  Шалгах
+                </button>
+              )}
+            </form>
+          )}
+
+          <div className="flex flex-wrap gap-2.5">
+            <button
+              type="button"
+              onClick={() => setHintVisible((visible) => !visible)}
               disabled={!timedSessionRunning}
               className={btnSecondary}
             >
-              {showDesmos ? 'Desmos нуух' : '📈 Desmos арга'}
+              {hintVisible ? 'Сэжүүр нуух' : '🐈 Hint · Сэжүүр'}
             </button>
+
+            <DesmosCatButton
+              open={showDesmos}
+              onClick={() => setShowDesmos((visible) => !visible)}
+              disabled={!timedSessionRunning}
+            />
+          </div>
+
+          {hintVisible && (
+            <aside className="rounded-2xl border border-amber/40 bg-amber-soft p-4 text-sm text-amber">
+              <p className="mb-1 flex items-center gap-1.5 font-bold">
+                <span>🐈‍⬛</span> Hint
+              </p>
+              <Rich text={question.hint} />
+            </aside>
           )}
-        </div>
 
-        {hintVisible && (
-          <aside className="rounded-2xl border border-amber/40 bg-amber-soft p-4 text-sm text-amber">
-            <p className="mb-1 flex items-center gap-1.5 font-bold">
-              <span>🐈‍⬛</span> Hint
-            </p>
-            <Rich text={question.hint} />
-          </aside>
-        )}
-
-        {showDesmos && question.desmos && (
-          <aside className="space-y-3 rounded-2xl border border-leaf/40 bg-sage p-4 text-sm text-ink">
-            <p className="font-bold text-leaf-2">Desmos арга</p>
-            <p className="text-ink-2">{question.desmos.tip}</p>
-
-            <ol className="list-inside list-decimal space-y-2 text-ink">
-              {question.desmos.rows.map((desmosRow, i) => (
-                <li
-                  key={`${question.id}-row-${i}`}
-                  className="rounded-xl border border-line bg-paper-2 p-2.5 font-mono"
-                >
-                  {desmosRow}
-                </li>
-              ))}
-            </ol>
-
-            <a
-              href="https://www.desmos.com/calculator?lang=mn"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-block pt-1 font-semibold text-leaf-2 underline hover:brightness-110"
+          {submitted && (
+            <section
+              role="status"
+              className={`space-y-3 rounded-2xl border p-5 ${
+                correct ? 'border-leaf bg-sage text-leaf-2' : 'border-danger bg-danger-soft text-danger'
+              }`}
             >
-              Desmos тооцоолуур нээх ↗
-            </a>
-          </aside>
-        )}
+              <h2 className="flex items-center gap-2 text-base font-bold">
+                <span>{correct ? '✨ Зөв хариулт! +5 XP' : '❌ Буруу хариулт'}</span>
+              </h2>
 
-        {submitted && (
-          <section
-            role="status"
-            className={`space-y-3 rounded-2xl border p-5 ${
-              correct ? 'border-leaf bg-sage text-leaf-2' : 'border-danger bg-danger-soft text-danger'
-            }`}
-          >
-            <h2 className="flex items-center gap-2 text-base font-bold">
-              <span>{correct ? '✨ Зөв хариулт! +5 XP' : '❌ Буруу хариулт'}</span>
-            </h2>
-
-            {!correct && (
-              <div className="space-y-1.5 text-sm">
-                <p className="font-bold">Яагаад?</p>
-                <div className="text-ink">
-                  <Rich
-                    text={
-                      question.choices && question.why?.[Number(answer)]
-                        ? question.why[Number(answer)]
-                        : question.explain
-                    }
-                  />
+              {!correct && (
+                <div className="space-y-1.5 text-sm">
+                  <p className="font-bold">Яагаад?</p>
+                  <div className="text-ink">
+                    <Rich
+                      text={
+                        question.choices && question.why?.[Number(answer)]
+                          ? question.why[Number(answer)]
+                          : question.explain
+                      }
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {correct && (
-              <div className="space-y-1.5 text-sm">
-                <p className="font-bold">Тайлбар</p>
-                <div className="text-ink">
-                  <Rich text={question.explain} />
+              {correct && (
+                <div className="space-y-1.5 text-sm">
+                  <p className="font-bold">Тайлбар</p>
+                  <div className="text-ink">
+                    <Rich text={question.explain} />
+                  </div>
                 </div>
-              </div>
-            )}
-          </section>
-        )}
+              )}
+            </section>
+          )}
 
-        <footer className="flex items-center justify-between gap-3 border-t border-line pt-5">
-          <button
-            type="button"
-            disabled={index === 0 || !timedSessionRunning}
-            onClick={() => goTo(index - 1)}
-            className={btnSecondary}
-          >
-            Өмнөх
-          </button>
+          <footer className="flex items-center justify-between gap-3 border-t border-line pt-5">
+            <button
+              type="button"
+              disabled={index === 0 || !timedSessionRunning}
+              onClick={() => goTo(index - 1)}
+              className={btnSecondary}
+            >
+              Өмнөх
+            </button>
 
-          <button
-            type="button"
-            disabled={last || !timedSessionRunning}
-            onClick={() => goTo(index + 1)}
-            className={btnPrimary}
-          >
-            Дараагийн асуулт 🐾
-          </button>
-        </footer>
-      </section>
+            <button
+              type="button"
+              disabled={last || !timedSessionRunning}
+              onClick={() => goTo(index + 1)}
+              className={btnPrimary}
+            >
+              Дараагийн асуулт 🐾
+            </button>
+          </footer>
+        </section>
+      </div>
+
+      {showDesmos && desmosInput && (
+        <DesmosSidePanel input={desmosInput} revealed={submitted} onClose={() => setShowDesmos(false)} />
+      )}
     </main>
   );
 }

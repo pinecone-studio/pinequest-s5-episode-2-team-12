@@ -34,6 +34,21 @@ export type TutorContext = {
   title: string;
   problem?: string;
   chosen?: string;
+  /** A bank problem: what the cat «Desmos» side panel sends to Суу (features/tutor/lib/desmos-panel.ts). */
+  desmos?: DesmosPanelInput;
+};
+export type DesmosPanelInput = {
+  /** What Суу reads: the prompt without $…$ delimiters, plus the choices as "A) …" lines. */
+  question: string;
+  /**
+   * The correct answer the lesson must reach: a choice's value when it is a plain number, fraction or point
+   * (Desmos lessons check those), otherwise its letter; for grid-in, the first accepted answer.
+   */
+  answer?: string;
+  /** Hand-written Desmos rows (Question.desmos.rows), drawn when Суу has no lesson. */
+  rows?: string[];
+  /** Hand-written tip. It often names the answer, so the panel shows it only once the answer is in. */
+  tip?: string;
 };
 export type ChatMessage = {
   role: 'user' | 'suu';

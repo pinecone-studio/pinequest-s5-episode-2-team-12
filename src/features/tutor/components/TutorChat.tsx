@@ -22,6 +22,7 @@ import {
   requestFor,
   userBubbleText,
 } from '../lib/chat';
+import { DesmosCatButton, DesmosSidePanel } from './DesmosSidePanel';
 import { FeedbackButtons } from './FeedbackButtons';
 
 type Props = {
@@ -100,6 +101,9 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
   const [sessions, setSessions] = useState<Session[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [draft, setDraft] = useState('');
+  // the cat «Desmos» side panel for a bank problem; its last step unlocks once the student has answered
+  const [desmosOpen, setDesmosOpen] = useState(false);
+  const [desmosRevealed, setDesmosRevealed] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const inputId = useId();
   const busy = messages.some((m) => m.status === 'pending');
@@ -181,6 +185,8 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
     setMessages([]);
     setCtx(ctx.problem ? GENERAL : ctx);
     setDraft('');
+    setDesmosOpen(false);
+    setDesmosRevealed(false);
   }
 
   function openChat(s: Session) {
@@ -188,6 +194,8 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
     setActiveId(s.id);
     setCtx(s.context);
     setMessages(s.messages);
+    setDesmosOpen(false);
+    setDesmosRevealed(false);
   }
 
   function deleteChat(id: string) {
@@ -215,11 +223,23 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
   }
 
   const empty = messages.length === 0;
+  const desmos = desmosOpen && ctx.desmos ? ctx.desmos : null;
 
   return (
-    <div className="soft-card mx-auto w-full max-w-6xl overflow-hidden border border-line md:grid md:grid-cols-[250px_minmax(0,1fr)] md:h-[calc(100dvh-124px)] min-h-[calc(100dvh-180px)]">
+    <div
+      className={cn(
+        'soft-card mx-auto w-full overflow-hidden border border-line md:grid md:grid-cols-[250px_minmax(0,1fr)] md:h-[calc(100dvh-124px)] min-h-[calc(100dvh-180px)]',
+        // Desmos open: the screen splits in half (chat | Desmos); the chat history steps aside
+        desmos ? 'max-w-[1280px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]' : 'max-w-6xl',
+      )}
+    >
       {/* recent chats */}
-      <aside className="hidden md:flex flex-col gap-3 border-r border-line bg-paper-2/60 p-3 min-h-0">
+      <aside
+        className={cn(
+          'hidden md:flex flex-col gap-3 border-r border-line bg-paper-2/60 p-3 min-h-0',
+          desmos && 'lg:hidden',
+        )}
+      >
         <button
           type="button"
           onClick={newChat}
@@ -294,6 +314,13 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
                       {t(`modes.${m}`)}
                     </Button>
                   ))}
+                  {ctx.desmos && (
+                    <DesmosCatButton
+                      open={desmosOpen}
+                      onClick={() => setDesmosOpen((o) => !o)}
+                      className="!py-1 !rounded-xl"
+                    />
+                  )}
                 </div>
               </section>
             )}
@@ -388,6 +415,17 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
           </div>
         </div>
       </div>
+
+      {desmos && (
+        <DesmosSidePanel
+          inset
+          input={desmos}
+          revealed={Boolean(ctx.chosen) || desmosRevealed}
+          onReveal={() => setDesmosRevealed(true)}
+          onClose={() => setDesmosOpen(false)}
+          fetchImpl={fetchImpl}
+        />
+      )}
     </div>
   );
 }

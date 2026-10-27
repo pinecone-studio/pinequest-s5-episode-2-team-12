@@ -75,5 +75,18 @@
     "answerByModel": "Suu worked out the answer itself — double-check it.",
     "modelFailed": "Suu couldn't write a Desmos lesson that passes the checks for this question. Add the correct answer and ask again, or pick an example above.",
     "error": "Connection lost. Please try again."
+  },
+  "desmosPanel": {
+    "button": "Desmos",
+    "open": "Open Desmos on the side",
+    "close": "Close Desmos",
+    "title": "Desmos · Suu",
+    "thinking": "Suu is writing the Desmos steps for this problem…",
+    "locked": "The last step (the answer) unlocks after you submit your answer.",
+    "reveal": "Show the last step",
+    "own": "Hand-written method",
+    "ownNote": "Suu hasn't written a lesson yet — the problem's Desmos rows are drawn on the calculator.",
+    "free": "No ready steps for this problem. The calculator is yours — try it yourself.",
+    "tip": "Tip"
   }
 }

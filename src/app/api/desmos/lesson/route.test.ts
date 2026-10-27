@@ -25,7 +25,7 @@ function fakeOllama(...replies: string[]) {
 
 test('400 on a bad body', async () => {
   expect((await call({ question: '' })).status).toBe(400);
-  expect((await call({ question: 'x'.repeat(601) })).status).toBe(400);
+  expect((await call({ question: 'x'.repeat(1201) })).status).toBe(400);
   expect((await call({ question: 'If x = 2, what is x?', answer: 'x'.repeat(41) })).status).toBe(400);
   expect((await POST(new Request('http://x', { method: 'POST', body: 'not json' }))).status).toBe(400);
 });
@@ -37,10 +37,45 @@ test('a pitch question gets its sample lesson without calling the model', async 
   expect(calls()).toBe(0);
 });
 
+test('a keyword-matched sample with a different answer is not used for another problem', async () => {
+  process.env.OLLAMA_URL = '';
+  const q = 'A practice problem: if 3x + 5 = 20 and y = 2x, what is y?';
+  expect(await (await call({ question: q, answer: '10' })).json()).toEqual({
+    lesson: null,
+    source: 'none',
+    reason: 'off',
+  });
+  expect(await (await call({ question: q, answer: '5' })).json()).toMatchObject({ source: 'sample' });
+});
+
 test('model off → no lesson, reason off', async () => {
   process.env.OLLAMA_URL = '';
   const res = await call({ question: good.question, answer: good.answer });
   expect(await res.json()).toEqual({ lesson: null, source: 'none', reason: 'off' });
+});
+
+test('Desmos skill off (OLLAMA_SKILLS without desmos) → reason off, no model call', async () => {
+  const calls = fakeOllama(good.output);
+  process.env.OLLAMA_SKILLS = 'chat';
+  const res = await call({ question: good.question, answer: good.answer });
+  expect(await res.json()).toEqual({ lesson: null, source: 'none', reason: 'off' });
+  expect(calls()).toBe(0);
+});
+
+test('Suu v1 (OLLAMA_SKILLS=desmos): lesson with the answer, no chat solving without it', async () => {
+  const calls = fakeOllama(good.output);
+  process.env.OLLAMA_SKILLS = 'desmos';
+  expect(await (await call({ question: good.question, answer: good.answer })).json()).toMatchObject({
+    source: 'model',
+    answerFrom: 'student',
+  });
+  expect(calls()).toBe(1);
+  expect(await (await call({ question: good.question })).json()).toEqual({
+    lesson: null,
+    source: 'none',
+    reason: 'failed',
+  });
+  expect(calls()).toBe(1);
 });
 
 test('model on → the checked model lesson', async () => {

@@ -16,6 +16,18 @@ test('null when OLLAMA_URL is empty', async () => {
   expect(await ollamaReply('hint', '2x=4')).toBeNull();
 });
 
+test('null without a request when the chat skill is off (Suu v1 only learned Desmos lessons)', async () => {
+  process.env.OLLAMA_URL = 'http://ollama:11434';
+  process.env.OLLAMA_SKILLS = 'desmos';
+  let called = false;
+  const fake = (async () => {
+    called = true;
+    return Response.json({ message: { content: 'x' } });
+  }) as unknown as typeof fetch;
+  expect(await ollamaReply('hint', '2x=4', fake)).toBeNull();
+  expect(called).toBe(false);
+});
+
 test('sends system + user message and returns the reply', async () => {
   process.env.OLLAMA_URL = 'http://ollama:11434/';
   process.env.OLLAMA_MODEL = 'suu';

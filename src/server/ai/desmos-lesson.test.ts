@@ -11,6 +11,7 @@ const saved = { ...process.env };
 beforeEach(() => {
   process.env.OLLAMA_URL = 'http://ollama:11434';
   process.env.OLLAMA_TOKEN = '';
+  process.env.OLLAMA_SKILLS = '';
 });
 afterEach(() => {
   process.env = { ...saved };
@@ -101,6 +102,22 @@ describe('modelDesmosLesson', () => {
     expect(await modelDesmosLesson(good.question, good.answer, fetchImpl)).toBeNull();
     expect(calls).toHaveLength(0);
   });
+});
+
+test('Suu v1 (OLLAMA_SKILLS=desmos): lessons from the student answer only; Desmos off → nothing', async () => {
+  process.env.OLLAMA_SKILLS = 'desmos';
+  const withAnswer = ollama(good.output);
+  expect((await modelDesmosLesson(good.question, good.answer, withAnswer.fetchImpl))?.answerFrom).toBe(
+    'student',
+  );
+  expect(withAnswer.calls).toHaveLength(1);
+  const noAnswer = ollama(`Хариу: ${good.answer}`, good.output);
+  expect(await modelDesmosLesson(good.question, undefined, noAnswer.fetchImpl)).toBeNull();
+  expect(noAnswer.calls).toHaveLength(0);
+  process.env.OLLAMA_SKILLS = 'chat';
+  const off = ollama(good.output);
+  expect(await modelDesmosLesson(good.question, good.answer, off.fetchImpl)).toBeNull();
+  expect(off.calls).toHaveLength(0);
 });
 
 test('no model call starts without enough time left in the budget', async () => {

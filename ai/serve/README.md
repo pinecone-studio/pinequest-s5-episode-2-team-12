@@ -1,31 +1,37 @@
 # ai/serve — Суу-г laptop дээр ажиллуулж вэбсайтад холбох
 
-Вэбсайт Суу-тай `OLLAMA_URL`-аар ярьдаг (`src/server/ai/ollama-client.ts`). Загварын файл (~2 GB) git-д орохгүй —
-Colab-ийн `suu_v2.zip`-ээс авна (Google Drive → `suu_training/v2/suu_v2.zip`).
+Вэбсайт Суу-тай `OLLAMA_URL`-аар ярьдаг (`src/server/ai/ollama-client.ts`). Загвар git-д байна:
+[`ai/models/suu-v1/`](../models/suu-v1/README.md) — сургасан adapter (60 MB). Бүтэн загварыг (`suu.gguf`, ~6.2 GB)
+`build-model.sh` анх удаа нэг л удаа угсарна (Qwen-ий албан ёсны файлыг татаад adapter-тай нэгтгэнэ).
 
 ## Нэг удаа
 
-1. Mac-д [Homebrew](https://brew.sh) суулгасан байх.
-2. `suu_v2.zip`-ээ **Downloads** дотор задална → `~/Downloads/suu-v2/` (`Modelfile`, `suu.gguf`, `prompts.json`).
-3. Mac-ийг унтуулахгүй: System Settings → Battery → Options → *Prevent automatic sleeping on power adapter when
+1. Mac-д [Homebrew](https://brew.sh) суулгасан байх (Xcode Command Line Tools хамт ирнэ).
+2. Mac-ийг унтуулахгүй: System Settings → Battery → Options → *Prevent automatic sleeping on power adapter when
    the display is off*. Цэнэглэгчтэй байлга.
 
 ## Асаах
 
 ```bash
-cd pinequest-s5-episode-2-team-12
-bash ai/serve/start.sh            # tunnel-тэй (вэбсайт өөр газар байршсан бол)
-bash ai/serve/start.sh --local    # вэбсайт энэ Mac дээр `bun dev`-ээр ажиллаж байвал
+cd pinequest-s5-episode-2-team-12 && git pull
+bash ai/serve/start.sh                       # git-ийн suu-v1, tunnel-тэй (вэбсайт өөр газар байршсан бол)
+bash ai/serve/start.sh --local               # вэбсайт энэ Mac дээр `bun dev`-ээр ажиллаж байвал
+bash ai/serve/start.sh ~/Downloads/suu-v1    # Drive-аас татсан бэлэн хавтас (Modelfile + suu.gguf)
 ```
 
-Скрипт: Ollama, cloudflared, Bun байхгүй бол суулгана → `ollama create suu` → туршилтын асуулт → нууц түлхүүртэй
+Скрипт: Ollama, cloudflared, Bun байхгүй бол суулгана → (анх удаа) `build-model.sh`: llama.cpp-ийн merge хэрэгсэл
+бүтээх ~2–5 мин, Qwen татах ~3.6 GB, нэгтгэх ~1–3 мин → `ollama create suu` → туршилтын асуулт → нууц түлхүүртэй
 хаалга (`proxy.ts`) → Cloudflare tunnel → эцэст нь:
 
 ```
 OLLAMA_URL=https://….trycloudflare.com
 OLLAMA_TOKEN=…
 OLLAMA_MODEL=suu
+OLLAMA_SKILLS=desmos
 ```
+
+`OLLAMA_SKILLS` = загварын сурсан чадварууд (`build.env`-ийн `SKILLS`). v1 зөвхөн Desmos хичээл сурсан тул AI багшийн
+чат демо хариугаа хэвээр өгнө, Desmos Академи (`/desmos/ai`) Суу-гаар хичээл бичнэ (сурагч зөв хариугаа оруулна).
 
 Эдгээрийг вэбсайтын хостинг дээр (Vercel → Settings → Environment Variables) тавиад **redeploy** хийнэ.
 `~/.suu/website.env`-д хадгалагдана. Terminal цонхыг хаавал Суу унтарна, вэбсайт демо хариу руу буцна.

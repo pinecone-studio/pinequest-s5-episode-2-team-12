@@ -4,6 +4,7 @@
 // 2. Otherwise Suu writes the lesson live (OLLAMA_URL), checked by parseModelLesson before it is sent.
 // 3. Model off or every try failed the checks → { lesson: null } and the page says so.
 import { z } from 'zod';
+import { answersMatch } from '@/features/tutor/lib/desmos-lesson-parse';
 import { findLesson } from '@/features/tutor/lib/desmos-lessons';
 import { modelDesmosLesson } from '@/server/ai/desmos-lesson';
 import { hasOllama } from '@/server/ai/ollama-client';
@@ -12,7 +13,7 @@ import { hasOllama } from '@/server/ai/ollama-client';
 export const maxDuration = 60;
 
 const Body = z.object({
-  question: z.string().trim().min(3).max(600),
+  question: z.string().trim().min(3).max(1200),
   answer: z.string().trim().max(40).optional(),
 });
 
@@ -34,8 +35,10 @@ export async function POST(req: Request) {
   const { question, answer } = parsed.data;
 
   // With the model on, only the 6 sample questions themselves get a sample; everything else goes to Suu.
-  const modelOn = hasOllama();
-  const sample = findLesson(question, { exact: modelOn });
+  const modelOn = hasOllama('desmos');
+  const found = findLesson(question, { exact: modelOn });
+  // a keyword match is only trusted when it teaches the same answer (the Desmos panel always sends one)
+  const sample = found && (!answer || answersMatch(found.answer, answer)) ? found : null;
   if (sample) {
     await new Promise((r) => setTimeout(r, SAMPLE_DELAY_MS));
     return Response.json({ lesson: sample, source: 'sample' } satisfies DesmosLessonResponse);

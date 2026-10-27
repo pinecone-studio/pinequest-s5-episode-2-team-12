@@ -73,3 +73,64 @@ describe('TutorChat', () => {
     expect((screen.getByText('Илгээх').closest('button') as HTMLButtonElement).disabled).toBe(true);
   });
 });
+
+describe('TutorChat Desmos side panel', () => {
+  const lesson = {
+    id: 'ai',
+    title: 'Огтлолцол',
+    question: 'If 3x+5\\le 20, greatest x?',
+    answer: '5',
+    check: '3·5+5 = 20 ✓',
+    match: [],
+    steps: [
+      { text: 'y = 3x + 5 ба y = 20-ийг зур.', desmos: [{ latex: 'y=3x+5' }, { latex: 'y=20' }] },
+      { text: 'Огтлолцлын x = 5.', desmos: [{ latex: '(5,20)' }] },
+    ],
+  };
+  const withDesmos: TutorContext = {
+    ...question,
+    desmos: { question: 'If 3x+5\\le 20, greatest x?', answer: '5', rows: ['y=3x+5', 'y=20'] },
+  };
+  /** Both endpoints: /api/desmos/lesson gets the lesson, nothing else is asked here. */
+  function api() {
+    const urls: string[] = [];
+    const fn = (async (url: string) => {
+      urls.push(url);
+      return Response.json({ lesson, source: 'model' });
+    }) as unknown as typeof fetch;
+    return { fn, urls };
+  }
+
+  test('a bank problem has the cat Desmos button; the panel splits the chat and hides the history', async () => {
+    const { fn, urls } = api();
+    window.Desmos = {
+      GraphingCalculator: () => ({ setBlank() {}, setExpression() {}, setMathBounds() {}, destroy() {} }),
+    };
+    const { container } = render(<TutorChat context={withDesmos} fetchImpl={fn} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Desmos-ийг хажууд нээх' }));
+    expect(await screen.findByText('y = 3x + 5 ба y = 20-ийг зур.')).toBeTruthy();
+    expect(urls).toEqual(['/api/desmos/lesson']);
+    const root = container.firstElementChild as HTMLElement;
+    expect(root.className).toContain('lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]');
+    expect(container.querySelector('aside')?.className).toContain('lg:hidden');
+    // not answered yet: the student can unlock the last step from the panel
+    expect(screen.queryByText('Огтлолцлын x = 5.')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Сүүлийн алхмыг харах' }));
+    expect(screen.getByText('Огтлолцлын x = 5.')).toBeTruthy();
+    window.Desmos = undefined;
+  });
+
+  test('coming from a wrong answer (chosen), the whole lesson is open; no button without a bank problem', async () => {
+    const { fn } = api();
+    window.Desmos = {
+      GraphingCalculator: () => ({ setBlank() {}, setExpression() {}, setMathBounds() {}, destroy() {} }),
+    };
+    const { unmount } = render(<TutorChat context={{ ...withDesmos, chosen: '4' }} fetchImpl={fn} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Desmos-ийг хажууд нээх' }));
+    expect(await screen.findByText('Огтлолцлын x = 5.')).toBeTruthy();
+    unmount();
+    render(<TutorChat context={question} fetchImpl={fn} />);
+    expect(screen.queryByRole('button', { name: 'Desmos-ийг хажууд нээх' })).toBeNull();
+    window.Desmos = undefined;
+  });
+});

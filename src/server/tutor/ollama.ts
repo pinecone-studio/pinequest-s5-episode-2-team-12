@@ -2,7 +2,7 @@
 // Server-only. When OLLAMA_URL is empty or Ollama is down, the route falls back to demo replies.
 // The HTTP call itself lives in src/server/ai/ollama-client.ts (shared with the Desmos lessons).
 
-import { ollamaChat } from '@/server/ai/ollama-client';
+import { hasOllama, ollamaChat } from '@/server/ai/ollama-client';
 import type { TutorMode } from '@/types';
 
 /** Same system prompt the model was fine-tuned with (ai/train/export.ts). Keep them in sync. */
@@ -28,13 +28,14 @@ export function buildUserMessage(mode: TutorMode, message: string, raw = false):
 /** True when OLLAMA_URL is set (the tutor and the Desmos lessons then try the model first). */
 export { hasOllama } from '@/server/ai/ollama-client';
 
-/** Returns the model's reply, or null if Ollama is not configured / not reachable / too slow. */
+/** Returns the model's reply, or null if Ollama is not configured / the chat skill is off / down / too slow. */
 export async function ollamaReply(
   mode: TutorMode,
   message: string,
   fetchImpl: typeof fetch = fetch,
   raw = false,
 ): Promise<string | null> {
+  if (!hasOllama('chat')) return null;
   return ollamaChat(
     [
       { role: 'system', content: SUU_SYSTEM_PROMPT },
