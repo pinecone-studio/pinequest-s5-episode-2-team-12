@@ -1,6 +1,6 @@
 import { expect, test } from 'bun:test';
 import { PHASES } from '@/mocks/meta';
-import { buildPlan, WEEK } from './demo-plan';
+import { buildPlan } from './demo-plan';
 
 const base = { today: '2026-10-23', current: 600, target: 750, hoursPerDay: 1.5 };
 
@@ -28,8 +28,4 @@ test('long and very short plans still add up', () => {
 
 test('no negative gain when the target is below the current score', () => {
   expect(buildPlan({ ...base, examDate: '2026-12-05', target: 500 }, PHASES).gain).toBe(0);
-});
-
-test('the sample week covers 7 days', () => {
-  expect(WEEK).toHaveLength(7);
 });

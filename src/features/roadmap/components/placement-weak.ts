@@ -12,6 +12,13 @@ type Props = { demo: boolean; server: RoadmapState | null };
  * topics the placement marked «weak». Titles in Mongolian.
  */
 export function usePlacementWeak(p: Props & { ids: number[] }): string[] {
+  return usePlacementWeakIds(p)
+    .map((id) => topicById(id)?.title)
+    .filter((x): x is string => Boolean(x));
+}
+
+/** Same as usePlacementWeak, as roadmap topic ids (what Суу's planner gets). */
+export function usePlacementWeakIds(p: Props & { ids: number[] }): number[] {
   const { state, ready } = useRoadmapState(p.demo, p.server);
   const open = ready && isOpen(state);
   const ids = p.ids.length
@@ -22,5 +29,5 @@ export function usePlacementWeak(p: Props & { ids: number[] }): string[] {
           .map(([k]) => Number(k))
           .slice(0, 3)
       : [];
-  return ids.map((id) => topicById(id)?.title).filter((x): x is string => Boolean(x));
+  return ids.filter((id) => Boolean(topicById(id)));
 }

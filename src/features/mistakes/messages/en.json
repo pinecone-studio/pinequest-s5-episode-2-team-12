@@ -35,5 +35,25 @@
   "due": "Due",
   "later": "Later",
   "learned": "Learned",
-  "list": "All mistakes"
+  "list": "All mistakes",
+  "insights": {
+    "title": "Suu's analysis",
+    "model": "Suu (AI)",
+    "rules": "Made by rules",
+    "thinking": "Suu is looking at your mistakes…",
+    "error": "Couldn't make the analysis. Try again later.",
+    "none": "No mistakes to analyze.",
+    "patterns": "Repeating patterns",
+    "next": "Next steps",
+    "basis": "Based on your last {mistakes} mistakes and {answered} answers",
+    "toPlanner": "Put it in my plan",
+    "vocab": "the word “{word}”",
+    "type": {
+      "rushed": "Rushed (under 30 s)",
+      "slow": "Slow (over 2.5 min)",
+      "desmos": "Could use Desmos",
+      "repeat": "Missed again",
+      "late": "Last questions of a test"
+    }
+  }
 }
