@@ -1,15 +1,23 @@
 import type { Metadata, Viewport } from 'next';
-import { Caveat, JetBrains_Mono, Onest, Roboto_Slab, Unbounded } from 'next/font/google';
+import { Caveat, JetBrains_Mono, Onest, Oranienbaum, Roboto_Slab, Yeseva_One } from 'next/font/google';
 import type { ReactNode } from 'react';
 import { THEME_SCRIPT } from '@/lib/theme';
 import './globals.css';
 import './emerald-workspace.css';
 import { Providers } from './providers';
 
-const onest = Onest({ subsets: ['latin', 'cyrillic'], variable: '--font-onest', display: 'swap' });
-const unbounded = Unbounded({
+const oranienbaum = Oranienbaum({
+  weight: '400',
   subsets: ['latin', 'cyrillic'],
-  variable: '--font-unbounded',
+  variable: '--font-oranienbaum',
+  display: 'swap',
+});
+
+const onest = Onest({ subsets: ['latin', 'cyrillic'], variable: '--font-onest', display: 'swap' });
+const display = Yeseva_One({
+  weight: '400',
+  subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
+  variable: '--font-yeseva-one',
   display: 'swap',
 });
 // accent faces load when a page uses them, so the home screen's bandwidth goes to the map and the app code
@@ -49,7 +57,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="mn"
       suppressHydrationWarning
-      className={`${onest.variable} ${unbounded.variable} ${mono.variable} ${slab.variable} ${caveat.variable}`}
+      className={`${onest.variable} ${oranienbaum.variable} ${display.variable} ${mono.variable} ${slab.variable} ${caveat.variable}`}
     >
       <head>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: constant script that applies the saved theme before paint */}

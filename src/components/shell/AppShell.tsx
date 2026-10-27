@@ -259,7 +259,8 @@ export function AppShell({
               pointerEvents: 'none',
               color: w.equipped.skin === 'skin-night' ? '#fff' : 'var(--c-leaf-ink)',
               fontSize: 'clamp(12px, 1.1vw, 16px)',
-              fontWeight: 800,
+              fontFamily: 'var(--font-oranienbaum), Georgia, serif',
+              fontWeight: 400,
               letterSpacing: '.05em',
             }}
           >

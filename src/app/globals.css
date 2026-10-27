@@ -170,9 +170,9 @@
   --color-amber-soft: var(--c-amber-soft);
   --color-gold: var(--c-gold);
   --font-sans: var(--font-onest), "Onest", "Segoe UI", system-ui, sans-serif;
-  --font-display: var(--font-unbounded), "Unbounded", "Onest", "Segoe UI", sans-serif;
+  --font-display: var(--font-yeseva-one), var(--font-roboto-slab), Georgia, serif;
   --font-slab: var(--font-roboto-slab), "Roboto Slab", Georgia, "Times New Roman", serif;
-  --font-thin: "Unbounded", "Onest", system-ui, sans-serif;
+  --font-thin: var(--font-yeseva-one), var(--font-roboto-slab), Georgia, serif;
   --font-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, Menlo, monospace;
   --font-script: var(--font-caveat), "Caveat", "Segoe Print", cursive;
   --shadow-card: var(--shadow-card);
@@ -573,4 +573,23 @@ button:disabled { cursor: not-allowed; }
   .workspace-page .wardrobe-card .wardrobe-preview { padding-block: 16px; }
   .workspace-page .wardrobe-card .font-bold { font-size: 14px; }
 }
+}
+
+/* ───────── Official question bank (College Board HTML: MathML, SVG figures, tables) ───────── */
+.cb-html { overflow-wrap: anywhere; }
+.cb-html p { margin: 0 0 0.6em; }
+.cb-html p:last-child { margin-bottom: 0; }
+.cb-html math { font-size: 1.08em; }
+.cb-html math[display="block"] { margin: 0.4em 0; }
+.cb-html img.math-img { display: inline-block; vertical-align: middle; max-height: 2.6em; }
+.cb-html figure, .cb-html svg, .cb-html img:not(.math-img) { max-width: 100%; height: auto; margin: 0.5em auto; display: block; }
+.cb-html table { border-collapse: collapse; margin: 0.6em 0; font-size: 0.92em; display: block; overflow-x: auto; max-width: 100%; }
+.cb-html th, .cb-html td { border: 1px solid var(--c-line-2); padding: 0.35em 0.7em; text-align: center; }
+.cb-html th { background: var(--c-paper-2); font-weight: 700; }
+.cb-html ul, .cb-html ol { padding-left: 1.4em; list-style: revert; }
+.cb-html .italic, .cb-html em { font-style: italic; }
+.official-question [role="radio"] .cb-html p { margin: 0; }
+:root[data-theme="dark"] .cb-html :is(svg, img) { background: #fff; border-radius: 8px; padding: 4px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .cb-html :is(svg, img) { background: #fff; border-radius: 8px; padding: 4px; }
 }

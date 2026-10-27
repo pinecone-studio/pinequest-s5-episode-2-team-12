@@ -197,33 +197,6 @@ const MapOverlay = memo(function MapOverlay({ frontierIndex }: { frontierIndex: 
   );
 });
 
-/** Slowly drifting clouds over the terrain (static with reduced motion). */
-const Clouds = memo(function Clouds() {
-  const clouds = [
-    { x: 0.34, y: 0.3, w: 120, d: 0 },
-    { x: 0.68, y: 0.22, w: 90, d: -18 },
-    { x: 0.52, y: 0.62, w: 140, d: -34 },
-  ];
-  return (
-    <>
-      {clouds.map((c) => (
-        <span
-          key={c.x}
-          className="roadmap-cloud"
-          aria-hidden="true"
-          style={{
-            left: c.x * CONTENT.w,
-            top: c.y * CONTENT.h,
-            width: c.w,
-            height: c.w * 0.45,
-            animationDelay: `${c.d}s`,
-          }}
-        />
-      ))}
-    </>
-  );
-});
-
 /** The classic red map pin with the stop's glyph in its white head. */
 function PinGlyph({ v }: { v: StopView }) {
   return (
@@ -301,7 +274,7 @@ export function RoadmapMap({
   const fixedView = box ? fitView(box, CONTENT) : null;
   const view =
     fullBleed && box && fixedView
-      ? { ...fixedView, x: fixedView.x + 20, y: box.h - CONTENT.h * fixedView.scale + 18 }
+      ? { ...fixedView, x: fixedView.x + 20, y: box.h - CONTENT.h * fixedView.scale + 8 }
       : camera;
   const [hover, setHover] = useState<number | null>(null);
   const [dragging, setDragging] = useState(false);
@@ -494,15 +467,8 @@ export function RoadmapMap({
   };
 
   const frontierIndex = frontierNo ?? 27;
-  // the hover card covers too much of a phone screen; there the ring + red label mark the current stop
-  const floatNo =
-    narrow || selectedNo !== null
-      ? null
-      : fullBleed
-        ? hover !== frontierNo
-          ? hover
-          : null
-        : (hover ?? frontierNo);
+  // Hover and keyboard focus show stop cards even in the fixed overview.
+  const floatNo = fullBleed ? hover : narrow || selectedNo !== null ? null : (hover ?? frontierNo);
   const zoom = fit ? view.scale / fit.scale : 1;
 
   // in layer px (scale applied, offset not): priority = current stop, then route order
@@ -676,7 +642,7 @@ export function RoadmapMap({
                     <span className="roadmap-shadow" aria-hidden="true" />
                     {isFrontier && <span className="roadmap-ring" aria-hidden="true" />}
                     {floatNo === v.stop.no &&
-                      zoom >= 1 &&
+                      (fullBleed || zoom >= 1) &&
                       (fullBleed ? (
                         createPortal(
                           <div
