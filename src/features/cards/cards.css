@@ -31,7 +31,7 @@
 }
 
 .cd-display {
-  font-family: var(--font-unbounded), var(--font-onest), ui-sans-serif, sans-serif;
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
   letter-spacing: -0.02em;
 }
 

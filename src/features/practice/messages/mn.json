@@ -35,5 +35,29 @@
       "psda": "Өгөгдөл ба бодлого",
       "geo": "Геометр"
     }
+  },
+  "official": {
+    "lead": "College Board-ийн SAT асуултын сангийн албан ёсны бодлогууд. Сэдэв, чадвар, түвшнээр шүүгээд бодоод үзээрэй.",
+    "source": "Эх сурвалж: College Board SAT Suite Question Bank",
+    "skill": "Чадвар",
+    "allSkills": "Бүх чадвар",
+    "searchButton": "Хайх",
+    "clear": "Шүүлтүүрийг арилгах",
+    "pageOf": "{page} / {pages}-р хуудас",
+    "prev": "Өмнөх",
+    "next": "Дараах",
+    "pagination": "Хуудаслалт",
+    "check": "Шалгах",
+    "tryAgain": "Дахин оролдох",
+    "correct": "Зөв! Сайн байна.",
+    "incorrect": "Буруу. Зөв хариулт: {answer}",
+    "showExplanation": "Хариу ба тайлбар",
+    "hideExplanation": "Тайлбарыг нуух",
+    "answerIs": "Зөв хариулт: {answer}",
+    "explanation": "Тайлбар",
+    "gridIn": "Хариугаа бичнэ",
+    "yourAnswer": "Таны хариулт",
+    "answerPlaceholder": "жишээ нь 12, 3/4, -2.5",
+    "choicesLabel": "Хариултын сонголтууд"
   }
 }

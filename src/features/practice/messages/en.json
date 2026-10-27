@@ -35,5 +35,29 @@
       "psda": "PSDA",
       "geo": "Geometry"
     }
+  },
+  "official": {
+    "lead": "Official SAT Math questions from the College Board question bank. Filter by topic, skill and difficulty, then solve.",
+    "source": "Source: College Board SAT Suite Question Bank",
+    "skill": "Skill",
+    "allSkills": "All skills",
+    "searchButton": "Search",
+    "clear": "Clear filters",
+    "pageOf": "Page {page} of {pages}",
+    "prev": "Previous",
+    "next": "Next",
+    "pagination": "Pagination",
+    "check": "Check",
+    "tryAgain": "Try again",
+    "correct": "Correct! Nice work.",
+    "incorrect": "Not quite. The answer is {answer}",
+    "showExplanation": "Answer & explanation",
+    "hideExplanation": "Hide explanation",
+    "answerIs": "Answer: {answer}",
+    "explanation": "Explanation",
+    "gridIn": "Type your answer",
+    "yourAnswer": "Your answer",
+    "answerPlaceholder": "e.g. 12, 3/4, -2.5",
+    "choicesLabel": "Answer choices"
   }
 }

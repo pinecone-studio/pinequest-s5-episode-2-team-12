@@ -116,14 +116,6 @@
 .roadmap-leader line { stroke: color-mix(in srgb, var(--c-ink) 70%, transparent); stroke-width: 1.4; }
 .roadmap-leader circle { fill: var(--c-paper); stroke: color-mix(in srgb, var(--c-ink) 70%, transparent); stroke-width: 1.4; }
 
-/* soft clouds drifting east */
-.roadmap-cloud {
-  position: absolute; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.25) 60%, transparent);
-  filter: blur(4px); opacity: 0.5;
-  animation: roadmap-cloud 60s linear infinite alternate;
-}
-
 .roadmap-float { position: absolute; left: -100px; bottom: 58px; pointer-events: none; animation: rise 0.25s ease both; }
 .roadmap-float::after {
   content: "";
@@ -144,11 +136,10 @@
 }
 @keyframes roadmap-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -4px; } }
 @keyframes roadmap-ring { 0% { opacity: 0.9; transform: scale(0.5); } 100% { opacity: 0; transform: scale(1.8); } }
-@keyframes roadmap-cloud { from { translate: -40px 0; } to { translate: 60px 6px; } }
 @keyframes roadmap-dash { to { stroke-dashoffset: -16; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .roadmap-pulse, .roadmap-dash, .roadmap-coin[data-status="current"], .roadmap-float, .roadmap-cloud { animation: none; }
+  .roadmap-pulse, .roadmap-dash, .roadmap-coin[data-status="current"], .roadmap-float { animation: none; }
   .roadmap-ring { animation: none; opacity: 0.8; }
   .roadmap-layer.is-flying { transition: none; }
 }
