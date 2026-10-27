@@ -1,3 +1,4 @@
+
 'use client';
 import { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import { Rich, Tex } from '@/components/math';
@@ -117,7 +118,9 @@ export function FlashcardsView({
 
   const intervals = card ? preview(states[card.key] ?? newState(now), now) : null;
   const stop = current ? stopByNo(current) : null;
-  const draft = card && !card.reviewed && !approved.has(card.key);
+
+  // Reviewed logic
+  const draft = card ? !card.reviewed && !approved.has(card.key) : false;
 
   return (
     <div className="workspace-page max-w-4xl">
