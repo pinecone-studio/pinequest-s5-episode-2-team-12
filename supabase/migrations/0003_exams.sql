@@ -113,7 +113,7 @@ set search_path = ''
 as $$
 declare
   current_exam public.exams%rowtype;
-  current_time timestamptz;
+  exam_clock timestamptz;
   next_phase text;
   next_module integer;
   next_ends_at timestamptz;
@@ -147,13 +147,13 @@ begin
     raise exception 'Exam not found';
   end if;
 
-  current_time := clock_timestamp();
+  exam_clock := clock_timestamp();
 
   -- Recover every expired phase using original deadlines.
   loop
     exit when current_exam.phase in ('intro', 'results');
     exit when current_exam.ends_at is null;
-    exit when current_time < current_exam.ends_at;
+    exit when exam_clock < current_exam.ends_at;
 
     if current_exam.phase = 'module1' then
       next_phase := 'break';
@@ -195,8 +195,8 @@ begin
     update public.exams
     set phase = 'module1',
         module = 1,
-        started_at = current_time,
-        ends_at = current_time + interval '35 minutes'
+        started_at = exam_clock,
+        ends_at = exam_clock + interval '35 minutes'
     where id = p_exam_id
     returning * into current_exam;
 
@@ -206,7 +206,7 @@ begin
     update public.exams
     set phase = 'break',
         module = 1,
-        ends_at = current_time + interval '10 minutes'
+        ends_at = exam_clock + interval '10 minutes'
     where id = p_exam_id
     returning * into current_exam;
 

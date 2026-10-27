@@ -85,15 +85,15 @@ export function Logo({
   tagline?: string;
 }) {
   return (
-    <div className="flex items-center gap-3 select-none">
-      <MascotArt size={compact ? 28 : 34} className="logo-cat shrink-0" />
+    <div className="flex items-center gap-1.5 select-none">
+      <MascotArt size={compact ? 28 : 34} className="logo-cat block shrink-0" />
       {!compact && (
-        <span className="grid leading-none">
+        <span className="grid content-center leading-none">
           <span
-            className="font-sans font-bold tracking-[0.32em] text-[17px]"
+            className="block font-sans text-[17px] font-bold leading-none tracking-[0.08em] [word-spacing:-0.08em]"
             style={{ color: light ? 'var(--c-on-forest)' : 'var(--c-ink)' }}
           >
-            SUPREP
+            SuPrep
           </span>
           {tagline && (
             <span className="mt-1.5 text-[11px] font-medium tracking-wide text-ink-3">{tagline}</span>

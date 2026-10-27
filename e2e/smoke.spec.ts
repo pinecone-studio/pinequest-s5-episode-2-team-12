@@ -42,14 +42,15 @@ test.describe('signed out', () => {
 
   test('entry screen → demo → map', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('link', { name: 'Нэвтрэх / Бүртгүүлэх' })).toBeVisible();
+    await expect(page).toHaveURL(/\/login$/);
+    await expect(page.getByRole('heading', { name: 'Нэвтрэх', exact: true })).toBeVisible();
     await page.getByRole('button', { name: 'Демо сурагчаар орох' }).click();
     await expect(page.getByRole('application', { name: /газрын зураг/i })).toBeVisible();
   });
 
   test('app pages send signed-out visitors to the entry screen', async ({ page }) => {
     await page.goto('/profile');
-    await expect(page).toHaveURL(/:\d+\/$/);
+    await expect(page).toHaveURL(/\/login$/);
     await expect(page.getByRole('button', { name: 'Демо сурагчаар орох' })).toBeVisible();
   });
 });

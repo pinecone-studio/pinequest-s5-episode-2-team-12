@@ -3,5 +3,56 @@
     "onboarding": {
       "title": "Get started"
     }
-  }
+  },
+  "title": "Let’s get to know you",
+  "lead": "A few quick questions to help you choose the right starting point.",
+  "step": "Step {n} of {total}",
+  "back": "Back",
+  "next": "Continue",
+  "finish": "Save and start my journey",
+  "saving": "Saving…",
+  "optional": "Optional",
+  "demo": "Demo preview. Answers are saved only on this device.",
+  "steps": {
+    "about": "About you",
+    "goals": "Your goal",
+    "study": "Study preferences",
+    "review": "You’re ready!"
+  },
+  "name": "What should we call you?",
+  "namePlaceholder": "Name or nickname",
+  "experience": "Have you taken the Digital SAT before?",
+  "sat": {
+    "none": "Not yet",
+    "some": "Only a practice test",
+    "taken": "Yes, the official Digital SAT"
+  },
+  "previous": "Previous SAT Math score (200–800)",
+  "previousHint": "Math section only. Leave blank if you don’t remember.",
+  "target": "Your target SAT Math score",
+  "mathHint": "This is the 200–800 Math section score, not the 1600 total SAT score.",
+  "examDate": "Your planned test date",
+  "unknownDate": "I haven’t chosen a date yet",
+  "confidence": "How confident do you feel in math?",
+  "confidenceLow": "I could use support",
+  "confidenceHigh": "Very confident",
+  "desmos": "Have you used the Desmos calculator?",
+  "desmosOptions": {
+    "never": "Never used it",
+    "little": "I know a little",
+    "often": "I use it regularly"
+  },
+  "minutes": "How much time can you study each day?",
+  "minuteOption": "{n} minutes",
+  "focus": "Where would you like to start?",
+  "focusOptions": {
+    "foundations": "Math foundations",
+    "english": "Math vocabulary",
+    "desmos": "Desmos strategies"
+  },
+  "reviewLead": "These answers will be saved to your profile. You can then take the placement test to find your starting level.",
+  "noDate": "Not decided",
+  "invalid": "Please check your name, scores, and test date.",
+  "failed": "Could not save. Please try again.",
+  "signedOut": "Your session expired. Please sign in again."
 }

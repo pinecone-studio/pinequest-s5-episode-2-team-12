@@ -2,7 +2,14 @@
 import { useState, useTransition } from 'react';
 import { Button } from '@/components/ui/Button';
 import { useT } from '@/lib/i18n-client';
-import { type AuthResult, enterDemo, sendEmailCode, signInWithGoogle, verifyEmailCode } from '../actions';
+import {
+  type AuthResult,
+  enterDemo,
+  previewOnboarding,
+  sendEmailCode,
+  signInWithGoogle,
+  verifyEmailCode,
+} from '../actions';
 
 const field =
   'h-12 w-full rounded-2xl border border-line bg-paper px-4 text-[15px] text-ink outline-none focus:border-leaf';
@@ -11,12 +18,17 @@ export function LoginForm({
   configured,
   next,
   callbackError,
+  initialMode = 'login',
+  googleEnabled = false,
 }: {
   configured: boolean;
   next?: string;
   callbackError?: boolean;
+  initialMode?: 'login' | 'signup';
+  googleEnabled?: boolean;
 }) {
   const t = useT('auth');
+  const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(callbackError ? t('login.callbackError') : '');
@@ -31,50 +43,78 @@ export function LoginForm({
     });
 
   const demo = (
-    <form action={enterDemo}>
+    <form key={mode} action={mode === 'signup' ? previewOnboarding : enterDemo}>
       <Button type="submit" variant="secondary" size="lg" className="w-full">
-        {t('login.demo')}
+        {mode === 'signup' ? t('login.previewSetup') : t('login.demo')}
       </Button>
     </form>
   );
 
-  if (!configured) {
-    return (
-      <div className="grid gap-4">
-        <p className="rounded-2xl bg-amber-soft px-4 py-3 text-sm font-semibold text-amber">
+  return (
+    <div className="grid gap-5">
+      <div
+        className="grid grid-cols-2 gap-1 rounded-2xl border border-line bg-paper-2 p-1"
+        role="group"
+        aria-label={t('login.title')}
+      >
+        {(['login', 'signup'] as const).map((value) => (
+          <button
+            key={value}
+            type="button"
+            aria-pressed={mode === value}
+            disabled={pending}
+            onClick={() => {
+              setMode(value);
+              setSent(false);
+              setError('');
+            }}
+            className={`rounded-xl px-3 py-3 text-sm font-bold ${mode === value ? 'bg-paper text-ink shadow-sm' : 'text-ink-3'}`}
+          >
+            {t(value === 'login' ? 'login.signIn' : 'login.signUp')}
+          </button>
+        ))}
+      </div>
+      <header className="grid gap-2">
+        <h1 className="font-display text-2xl font-bold text-ink">
+          {t(mode === 'login' ? 'login.signIn' : 'login.signUp')}
+        </h1>
+        <p className="text-sm leading-relaxed text-ink-2">
+          {t(mode === 'login' ? 'login.signInLead' : 'login.signUpLead')}
+        </p>
+      </header>
+      {!configured && (
+        <p role="status" className="rounded-2xl bg-amber-soft p-3 text-xs leading-relaxed text-amber">
           {t('login.notConfigured')}
         </p>
-        {demo}
-      </div>
-    );
-  }
+      )}
+      {googleEnabled && (
+        <>
+          <Button
+            type="button"
+            variant="secondary"
+            size="lg"
+            disabled={pending || !configured}
+            onClick={() => run(() => signInWithGoogle(next))}
+            className="disabled:opacity-50"
+            icon={<GoogleMark />}
+          >
+            {t('login.google')}
+          </Button>
 
-  return (
-    <div className="grid gap-4">
-      <Button
-        type="button"
-        variant="secondary"
-        size="lg"
-        disabled={pending}
-        onClick={() => run(() => signInWithGoogle(next))}
-        icon={<GoogleMark />}
-      >
-        {t('login.google')}
-      </Button>
-
-      <div className="flex items-center gap-3 text-[13px] text-ink-3" aria-hidden="true">
-        <span className="h-px flex-1 bg-line" />
-        {t('login.or')}
-        <span className="h-px flex-1 bg-line" />
-      </div>
-
+          <div className="flex items-center gap-3 text-[13px] text-ink-3" aria-hidden="true">
+            <span className="h-px flex-1 bg-line" />
+            {t('login.or')}
+            <span className="h-px flex-1 bg-line" />
+          </div>
+        </>
+      )}
       {!sent ? (
         <form
           className="grid gap-3"
           onSubmit={(e) => {
             e.preventDefault();
             run(
-              () => sendEmailCode(email),
+              () => sendEmailCode(email, mode, next),
               () => setSent(true),
             );
           }}
@@ -82,6 +122,7 @@ export function LoginForm({
           <label className="grid gap-1.5 text-[13px] font-semibold text-ink-2">
             {t('login.email')}
             <input
+              disabled={pending || !configured}
               type="email"
               name="email"
               required
@@ -93,8 +134,8 @@ export function LoginForm({
               className={field}
             />
           </label>
-          <Button type="submit" size="lg" disabled={pending}>
-            {t('login.send')}
+          <Button type="submit" size="lg" className="disabled:opacity-50" disabled={pending || !configured}>
+            {pending ? t('login.busy') : t(mode === 'signup' ? 'login.sendSignup' : 'login.send')}
           </Button>
         </form>
       ) : (
@@ -107,21 +148,33 @@ export function LoginForm({
           }}
         >
           <p className="text-sm text-ink-2">{t('login.codeSent', { email })}</p>
-          <label className="grid gap-1.5 text-[13px] font-semibold text-ink-2">
-            {t('login.code')}
-            <input
-              name="code"
-              required
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              pattern="\d{6,8}"
-              maxLength={8}
-              className={`${field} tnum tracking-[0.3em]`}
-            />
-          </label>
-          <Button type="submit" size="lg" disabled={pending}>
-            {t('login.verify')}
-          </Button>
+          <details className="grid gap-3">
+            <summary className="cursor-pointer text-sm font-semibold text-leaf-2">
+              {t('login.useCode')}
+            </summary>
+            <div className="mt-3 grid gap-3">
+              <label className="grid gap-1.5 text-[13px] font-semibold text-ink-2">
+                {t('login.code')}
+                <input
+                  name="code"
+                  required
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  pattern="\d{6,8}"
+                  maxLength={8}
+                  className={`${field} tnum tracking-[0.3em]`}
+                />
+              </label>
+              <Button
+                type="submit"
+                size="lg"
+                className="disabled:opacity-50"
+                disabled={pending || !configured}
+              >
+                {t('login.verify')}
+              </Button>
+            </div>
+          </details>
           <Button type="button" variant="ghost" size="sm" onClick={() => setSent(false)}>
             {t('login.changeEmail')}
           </Button>
@@ -134,6 +187,7 @@ export function LoginForm({
         </p>
       )}
 
+      <p className="text-xs leading-relaxed text-ink-3">{t('login.passwordless')}</p>
       <div className="mt-2 border-t border-line pt-4">{demo}</div>
     </div>
   );

@@ -43,7 +43,7 @@ export function profileFromRow(r: ProfileRow): Profile {
     satExp: r.sat_exp ?? undefined,
     desmos: r.desmos ?? undefined,
     target: r.target ?? DEMO_PROFILE.target,
-    examDate: r.exam_date ?? DEMO_PROFILE.examDate,
+    examDate: r.exam_date ?? '',
     start: r.start ?? undefined,
     tz: r.tz ?? TZ,
     hidePublic: r.hide_public ?? false,

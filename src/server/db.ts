@@ -27,3 +27,8 @@ export async function getQuestionsDb(): Promise<SupabaseClient | null> {
   const { getDb } = await import('@/lib/supabase/server');
   return getDb();
 }
+
+/** Legacy projects keep their original questions table; the compatible app bank is separate. */
+export function getQuestionsTable(): string {
+  return serverEnv().supabaseQuestionsTable;
+}

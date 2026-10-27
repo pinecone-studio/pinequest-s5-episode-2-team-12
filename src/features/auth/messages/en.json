@@ -11,8 +11,8 @@
     "or": "or",
     "email": "Email",
     "emailPlaceholder": "name@example.com",
-    "send": "Send code",
-    "codeSent": "We sent a 6-digit code to {email}. The link in the email works too.",
+    "send": "Send sign-in email",
+    "codeSent": "Check {email} and open the one-time link to continue. If the email includes a code, you can enter it below.",
     "code": "Login code",
     "verify": "Log in",
     "changeEmail": "Use another email",
@@ -21,7 +21,23 @@
     "invalid": "The email or code is not valid.",
     "failed": "Something went wrong. Please try again.",
     "callbackError": "The login link is invalid or has expired.",
-    "back": "Back"
+    "back": "Back",
+    "signIn": "Log in",
+    "signUp": "Sign up",
+    "signInLead": "Welcome back. Continue your learning journey.",
+    "signUpLead": "Verify your email and start your own learning journey.",
+    "sendSignup": "Send verification email",
+    "previewSetup": "Preview the new-member setup",
+    "heroTitle": "Prepare for SAT Math at your own pace.",
+    "heroLead": "Build your foundations, practice with Suu, and work toward your goal one step at a time.",
+    "benefits": {
+      "map": "A learning journey across 26 stops in Mongolia",
+      "practice": "Practice by topic and difficulty",
+      "progress": "Your progress, reviews, and goals in one place"
+    },
+    "passwordless": "No password to remember. Sign in using the one-time link in your email.",
+    "busy": "Please wait…",
+    "useCode": "Have a code instead?"
   },
   "signOut": "Log out"
 }
