@@ -151,3 +151,27 @@ For local email login, allow `http://localhost:3000/auth/callback**` in Auth red
 The default email templates send a sign-in link. Public email delivery needs custom
 SMTP in Supabase; Google login needs its own provider credentials. Add the production
 site URL and callback allow-list entry when deploying.
+
+
+### Password accounts
+
+Registration collects email, username, and password. Supabase Auth stores the email and password
+hash in `auth.users`; `public.profiles.username` stores the normalized unique handle.
+Apply `0015_password_usernames.sql` before releasing this flow. The auth-user trigger creates
+the profile atomically, and onboarding keeps the handle while saving study preferences.
+Email confirmation remains enabled. Configure SMTP before opening public registration.
+Returning members can sign in using email or username plus password. Username-to-email
+resolution runs only on the server; passwords are verified by Supabase Auth.
+
+Usernames accept 1–40 characters in any language, including spaces, emojis and symbols. Matching
+is case-insensitive, and Unicode NFC normalization prevents equivalent spellings from duplicating
+a handle. Apply `0016_flexible_usernames.sql` to remove the earlier Latin-only constraint.
+
+### Password recovery
+
+Login links to `/auth/forgot-password`. Supabase sends a recovery email whose callback
+returns to `/auth/update-password`; existing callback URL allow-list entries already cover it.
+The callback verifies the recovery token or exchanges the PKCE code before showing the form.
+The update action requires a verified non-anonymous session, validates both password fields,
+and updates only that session's user via Supabase Auth. Successful updates sign out and
+return to login with confirmation. SMTP must be configured for actual email delivery.

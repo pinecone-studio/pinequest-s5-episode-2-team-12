@@ -53,6 +53,7 @@ export function RoadmapView({
         onOpen={setSelected}
         selectedNo={selected}
         skin={skin}
+        outfit={equipped.outfit}
         showTopicHeading={false}
         className="h-full w-full"
         fullBleed

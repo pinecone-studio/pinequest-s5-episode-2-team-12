@@ -71,7 +71,7 @@ function fromLocal(s: LocalSocial): SocialOverview {
   };
 }
 
-const section = 'soft-card grid content-start gap-3 p-5';
+const section = 'soft-card min-w-0 grid content-start gap-3 p-5';
 
 export function FriendsView({
   demo,
@@ -225,7 +225,7 @@ export function FriendsView({
         </p>
       )}
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-2">
         <section className={section} aria-labelledby={`${uid}-code`}>
           <h2 id={`${uid}-code`} className="font-bold text-ink">
             {t('friends.code')}
@@ -291,7 +291,7 @@ export function FriendsView({
                 {t('friends.incoming')}
               </p>
               {view.incoming.map((u) => (
-                <div key={u.id} className="flex items-center gap-3">
+                <div key={u.id} className="flex flex-wrap items-center gap-2">
                   <Avatar name={u.name} avatarId={u.avatarId} size={36} />
                   <span className="flex-1 font-semibold text-ink">{u.name}</span>
                   <Button size="sm" onClick={() => respond(u.id, true)}>

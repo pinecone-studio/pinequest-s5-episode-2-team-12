@@ -36,6 +36,7 @@ import { CHIP, clusterPins, FLOAT, labelWidth, placeLabels } from '../lib/labels
 import { type StopView, stopAriaLabel } from '../lib/view';
 import { MAP } from '../map/mongolia.generated';
 import { STOPS } from '../stops';
+import { MapCat } from './MapCat';
 import { StopCard } from './StopCard';
 import { StarRow } from './TopicIcon';
 
@@ -271,6 +272,7 @@ export function RoadmapMap({
   cluster = true,
   selectedNo = null,
   skin,
+  outfit,
   showTopicHeading = true,
 }: {
   views: StopView[];
@@ -286,6 +288,8 @@ export function RoadmapMap({
   selectedNo?: number | null;
   /** Shop map skin: 'winter' | 'night'. */
   skin?: string;
+  /** The user’s equipped shop outfit. */
+  outfit?: string;
   showTopicHeading?: boolean;
 }) {
   const t = useT('roadmap');
@@ -639,6 +643,20 @@ export function RoadmapMap({
             <>
               <MapOverlay frontierIndex={frontierIndex} />
               <Clouds />
+              <div className="roadmap-map-cat" style={{ left: POINTS[17][0] + 82, top: POINTS[17][1] + 25 }}>
+                <MapCat outfit={outfit} />
+                <div className="roadmap-cat-message" aria-hidden="true">
+                  <svg viewBox="0 0 200 100" focusable="false">
+                    <path
+                      d="M99 5C151 3 190 7 192 42 197 73 170 83 133 80 129 92 117 97 104 96 114 90 116 86 116 80 72 89 23 86 12 69-8 36 16 8 62 6Z"
+                      fill="var(--c-paper)"
+                      stroke="var(--c-ink)"
+                      strokeWidth="1.8"
+                    />
+                  </svg>
+                  <span>{t('catEncouragement')}</span>
+                </div>
+              </div>
               {views.map((v) => {
                 if (!visible.has(v.stop.no)) return null;
                 const [x, y] = POINTS[v.stop.no];

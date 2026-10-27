@@ -1,5 +1,7 @@
 // Service-role Supabase client for trusted writes (XP, badges, roadmap progress) from Server Actions.
-// It bypasses RLS, so call it only after the action has authenticated the user and validated the input.
+// It bypasses RLS. Feature writes require an authenticated user and validated input.
+// Password login may resolve a validated username here; it never returns the email to the client
+// and still verifies the password with Supabase Auth.
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { publicEnv } from '@/lib/env';
 import { serverEnv } from './env';

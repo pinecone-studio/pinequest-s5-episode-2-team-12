@@ -115,7 +115,7 @@ function Header({
   };
 
   return (
-    <section className="soft-card relative grid gap-5 overflow-hidden p-5 md:p-6">
+    <section className="profile-identity soft-card relative grid gap-5 overflow-hidden p-5 md:p-6">
       {look.banner && (
         <div
           aria-hidden="true"
