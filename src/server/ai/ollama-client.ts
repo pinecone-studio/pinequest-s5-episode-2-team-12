@@ -17,7 +17,7 @@ export type OllamaOptions = {
 type OllamaChat = { message?: { content?: string } };
 
 /** What Suu can be asked to do. A model version may know only some of them (Suu v1 learned only 'desmos'). */
-export type SuuSkill = 'chat' | 'desmos';
+export type SuuSkill = 'chat' | 'desmos' | 'planner' | 'analyze';
 
 /**
  * True when OLLAMA_URL is set and, if a skill is given, OLLAMA_SKILLS allows it (empty OLLAMA_SKILLS = all).
