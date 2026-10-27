@@ -13,14 +13,14 @@ describe('flashcard decks', () => {
     expect(formulas.length).toBeGreaterThanOrEqual(16);
     expect(new Set(FLASHCARDS.map((c) => c.key)).size).toBe(FLASHCARDS.length);
     expect(FLASHCARDS.find((c) => c.key === 'algebra/slope')?.topicIds).toEqual(
-      expect.arrayContaining([2, 3]),
+      expect.arrayContaining([6, 7]),
     );
     expect(formulas.every((c) => c.tex)).toBe(true);
     expect(FLASHCARDS.every((c) => c.reviewed === false)).toBe(true);
   });
 
   test('filters by deck and topic', () => {
-    const slopeTopic = FLASHCARDS.filter((c) => matches(c, { topicId: 2 }));
+    const slopeTopic = FLASHCARDS.filter((c) => matches(c, { topicId: 6 }));
     expect(slopeTopic.map((c) => c.key)).toContain('algebra/slope');
     expect(
       FLASHCARDS.filter((c) => matches(c, { deck: 'formulas' })).every((c) => c.deck === 'formulas'),

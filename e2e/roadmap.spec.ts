@@ -138,7 +138,7 @@ test('exiting placement restores the topic and a fully visible prompt', async ({
   await prompt.getByRole('link', { name: 'Түвшин тогтоох тест өгөх' }).click();
   await expect(page).toHaveURL(/\/roadmap\/placement$/);
   await page.goBack();
-  await expect(page.locator('.roadmap-featured-topic h2')).toHaveText('Нэг хувьсагчтай шугаман тэгшитгэл');
+  await expect(page.locator('.roadmap-featured-topic h2')).toHaveText('Зэрэг ба язгуур');
   await expect(prompt).toBeVisible();
   // A shadow alone can look visible: verify the prompt is actually above the map background.
   await expect(async () => {

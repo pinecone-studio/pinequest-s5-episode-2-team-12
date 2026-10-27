@@ -1,5 +1,5 @@
 // Section G · chat history and context for a lesson/question/mistake.
-import { roadmapQuestionById } from '@/features/roadmap/content/bank';
+import { INTROS, roadmapQuestionById } from '@/features/roadmap/content/bank';
 import { topicById } from '@/features/roadmap/topics';
 import { getDb } from '@/lib/supabase/server';
 import { DESMOS } from '@/mocks/desmos';
@@ -42,7 +42,20 @@ export async function getContext(kind: TutorContextKind = 'general', id?: string
     // a roadmap stop: Суу knows which SAT topic the student is looking at
     const topic = topicById(Number(id));
     return topic
-      ? { kind, id, title: topic.title, problem: `${topic.cbDomain} · ${topic.cbSkill}` }
+      ? {
+          kind,
+          id,
+          title: topic.title,
+          problem: [
+            `${topic.cbDomain} · ${topic.cbSkill}`,
+            topic.englishTitle,
+            ...(INTROS[topic.id] ?? []).map(
+              (s) => `${s.title}: ${s.body}${s.checkAnswer ? `\nБодолт: ${s.checkAnswer}` : ''}`,
+            ),
+          ]
+            .filter(Boolean)
+            .join('\n\n'),
+        }
       : general;
   }
   if (kind === 'lesson') {
