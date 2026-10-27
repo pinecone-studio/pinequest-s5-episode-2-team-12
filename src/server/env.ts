@@ -18,6 +18,8 @@ export function serverEnv() {
     ollamaModel: process.env.OLLAMA_MODEL ?? 'suu',
     // Bearer token for ai/serve/proxy.ts (the gate in front of Ollama when it is reached through a tunnel)
     ollamaToken: process.env.OLLAMA_TOKEN ?? '',
+    // Skills the served model really learned, comma separated (Suu v1: "desmos"). Empty = every skill.
+    ollamaSkills: process.env.OLLAMA_SKILLS ?? '',
   };
 }
 

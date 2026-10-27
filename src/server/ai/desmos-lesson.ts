@@ -5,7 +5,7 @@
 
 import { normAnswer, parseModelLesson } from '@/features/tutor/lib/desmos-lesson-parse';
 import type { DesmosAiLesson } from '@/features/tutor/lib/desmos-lessons';
-import { type ChatMessage, ollamaChat } from './ollama-client';
+import { type ChatMessage, hasOllama, ollamaChat } from './ollama-client';
 import { CHAT_PROMPT, DESMOS_PROMPT, desmosUserMessage, EXPLAIN_ASK } from './prompts';
 
 export type ModelLesson = {
@@ -62,9 +62,12 @@ export async function modelDesmosLesson(
   const left = () => deadline - Date.now();
   let correct = answer?.trim() ?? '';
   let answerFrom: ModelLesson['answerFrom'] = 'student';
+  if (!hasOllama('desmos')) return null;
   if (correct && !checkableAnswer(correct)) return null;
 
   if (!correct) {
+    // Solving needs the chat skill; with it off the page asks the student to add the answer.
+    if (!hasOllama('chat')) return null;
     const explanation = await ollamaChat(
       [
         { role: 'system', content: CHAT_PROMPT },

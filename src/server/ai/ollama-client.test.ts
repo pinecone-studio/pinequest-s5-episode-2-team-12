@@ -78,3 +78,18 @@ test('null on HTTP error, network error and empty reply', async () => {
   }) as unknown as typeof fetch;
   expect(await ollamaChat(msgs, {}, down)).toBeNull();
 });
+
+test('OLLAMA_SKILLS turns single skills on and off (empty = every skill)', () => {
+  process.env.OLLAMA_URL = 'http://ollama:11434';
+  process.env.OLLAMA_SKILLS = '';
+  expect(hasOllama('chat')).toBe(true);
+  expect(hasOllama('desmos')).toBe(true);
+  process.env.OLLAMA_SKILLS = ' Desmos ';
+  expect(hasOllama()).toBe(true);
+  expect(hasOllama('desmos')).toBe(true);
+  expect(hasOllama('chat')).toBe(false);
+  process.env.OLLAMA_SKILLS = 'chat,desmos';
+  expect(hasOllama('chat')).toBe(true);
+  process.env.OLLAMA_URL = '';
+  expect(hasOllama('desmos')).toBe(false);
+});

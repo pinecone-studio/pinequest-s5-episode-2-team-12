@@ -34,7 +34,7 @@ export async function POST(req: Request) {
   const { question, answer } = parsed.data;
 
   // With the model on, only the 6 sample questions themselves get a sample; everything else goes to Suu.
-  const modelOn = hasOllama();
+  const modelOn = hasOllama('desmos');
   const sample = findLesson(question, { exact: modelOn });
   if (sample) {
     await new Promise((r) => setTimeout(r, SAMPLE_DELAY_MS));

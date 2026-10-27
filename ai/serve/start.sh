@@ -1,21 +1,23 @@
 #!/usr/bin/env bash
 # Суу-г энэ Mac дээр ажиллуулж, вэбсайтад холбоно.  Run Suu on this Mac and connect it to the website.
 #
-#   bash ai/serve/start.sh [model folder]      # default: ~/Downloads/suu-v2 (suu_v2.zip задалсан хавтас)
+#   bash ai/serve/start.sh [model folder]      # default: ai/models/suu-v1 (git дэх загвар)
 #   bash ai/serve/start.sh --local [folder]    # tunnel-гүй: вэбсайт энэ Mac дээр `bun dev`-ээр ажиллаж байвал
 #
+# Model folder: either a git model folder (build.env + adapter; suu.gguf is built once by ai/serve/build-model.sh)
+# or a folder that already holds Modelfile + suu.gguf (e.g. downloaded from Drive).
 # What it does: Ollama → `ollama create suu` → token gate (ai/serve/proxy.ts) → Cloudflare quick tunnel →
 # prints OLLAMA_URL / OLLAMA_TOKEN for the website. Keeps the Mac awake while it runs. Ctrl+C stops everything.
 set -euo pipefail
 
+REPO="$(cd "$(dirname "$0")/../.." && pwd)"
 LOCAL=0
 if [[ "${1:-}" == "--local" ]]; then LOCAL=1; shift; fi
-MODEL_DIR="${1:-$HOME/Downloads/suu-v2}"
+MODEL_DIR="${1:-$REPO/ai/models/suu-v1}"
 MODEL_NAME="${OLLAMA_MODEL:-suu}"
 OLLAMA="http://127.0.0.1:11434"
 GATE_PORT="${SUU_PROXY_PORT:-11435}"
 STATE="$HOME/.suu"
-REPO="$(cd "$(dirname "$0")/../.." && pwd)"
 mkdir -p "$STATE" && chmod 700 "$STATE"
 
 say() { printf '\n\033[1;32m▸ %s\033[0m\n' "$*"; }
@@ -35,8 +37,15 @@ need bun || { curl -fsSL https://bun.sh/install | bash; export PATH="$HOME/.bun/
 
 # 2 · model files
 say "2/6 Загварын файлууд: $MODEL_DIR"
-[[ -f "$MODEL_DIR/Modelfile" ]] || die "$MODEL_DIR/Modelfile алга. suu_v2.zip-ээ Downloads дотор задлаад дахин ажиллуулна уу."
-[[ -f "$MODEL_DIR/suu.gguf" ]] || die "$MODEL_DIR/suu.gguf алга. suu_v2.zip бүрэн татагдсан эсэхийг шалгана уу."
+[[ -d "$MODEL_DIR" ]] || die "$MODEL_DIR хавтас алга."
+if [[ ! -f "$MODEL_DIR/suu.gguf" && -f "$MODEL_DIR/build.env" ]]; then
+  # git model folder: build suu.gguf once from the adapter (cached in ~/.suu/models)
+  MODEL_DIR="$(bash "$REPO/ai/serve/build-model.sh" "$MODEL_DIR" | tail -n 1)"
+fi
+[[ -f "$MODEL_DIR/Modelfile" ]] || die "$MODEL_DIR/Modelfile алга."
+[[ -f "$MODEL_DIR/suu.gguf" ]] || die "$MODEL_DIR/suu.gguf алга (git-ийн загварын хавтас эсвэл Drive-аас татсан хавтас өгнө үү)."
+# what this model version learned (build.env SKILLS, e.g. "desmos" for v1); empty = every skill
+SKILLS="$(sed -n 's/^SKILLS=//p' "$MODEL_DIR/build.env" 2>/dev/null | tail -n 1)"
 
 # 3 · Ollama server
 say "3/6 Ollama асааж байна"
@@ -64,7 +73,7 @@ PIDS+=($!)
 
 if [[ $LOCAL -eq 1 ]]; then
   say "Бэлэн (local). Вэбсайтын .env.local:"
-  printf 'OLLAMA_URL=%s\nOLLAMA_MODEL=%s\nOLLAMA_TOKEN=\n' "$OLLAMA" "$MODEL_NAME"
+  printf 'OLLAMA_URL=%s\nOLLAMA_MODEL=%s\nOLLAMA_TOKEN=\nOLLAMA_SKILLS=%s\n' "$OLLAMA" "$MODEL_NAME" "$SKILLS"
   wait
   exit 0
 fi
@@ -103,7 +112,8 @@ for _ in $(seq 1 20); do
 done
 [[ $ok -eq 1 ]] || die "Tunnel нээгдсэн ч хариу ирэхгүй байна: $URL"
 
-printf 'OLLAMA_URL=%s\nOLLAMA_TOKEN=%s\nOLLAMA_MODEL=%s\n' "$URL" "$TOKEN" "$MODEL_NAME" >"$STATE/website.env"
+printf 'OLLAMA_URL=%s\nOLLAMA_TOKEN=%s\nOLLAMA_MODEL=%s\nOLLAMA_SKILLS=%s\n' "$URL" "$TOKEN" "$MODEL_NAME" "$SKILLS" \
+  >"$STATE/website.env"
 chmod 600 "$STATE/website.env"
 say "Бэлэн! Вэбсайтын environment variables-д эдгээрийг тавиад redeploy хийнэ үү:"
 cat "$STATE/website.env"
