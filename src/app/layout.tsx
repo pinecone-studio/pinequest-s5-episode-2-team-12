@@ -3,6 +3,7 @@ import { Caveat, JetBrains_Mono, Onest, Roboto_Slab, Unbounded } from 'next/font
 import type { ReactNode } from 'react';
 import { THEME_SCRIPT } from '@/lib/theme';
 import './globals.css';
+import './emerald-workspace.css';
 import { Providers } from './providers';
 
 const onest = Onest({ subsets: ['latin', 'cyrillic'], variable: '--font-onest', display: 'swap' });

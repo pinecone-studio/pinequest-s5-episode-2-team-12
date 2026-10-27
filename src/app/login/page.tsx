@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Logo } from '@/components/brand';
-import { MascotArt } from '@/components/brand/MascotArt';
 import { LoginForm } from '@/features/auth/components/LoginForm';
+import { callbackFailure } from '@/features/auth/lib/errors';
 import { hasGoogleProvider } from '@/features/auth/providers';
 import { hasSupabase } from '@/lib/env';
 import { getT } from '@/lib/i18n';
@@ -17,9 +17,9 @@ export default async function LoginPage({
   const sp = await searchParams;
   const t = getT('auth');
   return (
-    <main className="shell-bg min-h-dvh gutter py-8 sm:py-12 grid content-center">
-      <div className="mx-auto grid w-full max-w-5xl items-center gap-8 lg:grid-cols-[1fr_420px] lg:gap-16">
-        <section className="grid justify-items-start gap-6">
+    <main className="emerald-workspace auth-workspace min-h-dvh gutter py-8 sm:py-12 grid content-center">
+      <div className="mx-auto grid w-full max-w-6xl items-stretch gap-6 lg:grid-cols-[1.15fr_1fr] lg:gap-8">
+        <section className="auth-story grid content-start justify-items-start gap-6">
           <Link href={routes.home} aria-label="SuPrep">
             <Logo />
           </Link>
@@ -37,16 +37,18 @@ export default async function LoginPage({
               </li>
             ))}
           </ul>
-          <div className="hidden lg:grid size-28 place-items-center rounded-3xl border border-line bg-paper/70">
-            <MascotArt size={76} />
-          </div>
         </section>
-        <section className="soft-card p-6 sm:p-8">
+        <section className="auth-form-panel soft-card p-6 sm:p-10">
+          {sp.password === 'updated' && (
+            <p role="status" className="mb-5 rounded-xl border border-line bg-sage p-4 text-sm text-ink">
+              {t('recovery.updated')}
+            </p>
+          )}
           <LoginForm
             configured={hasSupabase()}
             googleEnabled={await hasGoogleProvider()}
             next={typeof sp.next === 'string' ? sp.next : undefined}
-            callbackError={sp.error === '1'}
+            callbackError={callbackFailure(sp.error)}
             initialMode={sp.mode === 'signup' ? 'signup' : 'login'}
           />
         </section>

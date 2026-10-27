@@ -1,15 +1,18 @@
 'use client';
+import Link from 'next/link';
 import { useState, useTransition } from 'react';
 import { Button } from '@/components/ui/Button';
 import { useT } from '@/lib/i18n-client';
+import { routes } from '@/lib/routes';
 import {
   type AuthResult,
   enterDemo,
   previewOnboarding,
-  sendEmailCode,
   signInWithGoogle,
-  verifyEmailCode,
+  signInWithPassword,
+  signUpWithPassword,
 } from '../actions';
+import type { AuthFailure } from '../lib/errors';
 
 const field =
   'h-12 w-full rounded-2xl border border-line bg-paper px-4 text-[15px] text-ink outline-none focus:border-leaf';
@@ -23,23 +26,38 @@ export function LoginForm({
 }: {
   configured: boolean;
   next?: string;
-  callbackError?: boolean;
+  callbackError?: AuthFailure;
   initialMode?: 'login' | 'signup';
   googleEnabled?: boolean;
 }) {
   const t = useT('auth');
   const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
   const [email, setEmail] = useState('');
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState(callbackError ? t('login.callbackError') : '');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirmationRequired, setConfirmationRequired] = useState(false);
+  const [error, setError] = useState(callbackError ? t(`login.errors.${callbackError}`) : '');
+  const [errorCode, setErrorCode] = useState('');
+  const [failure, setFailure] = useState<AuthFailure | undefined>(callbackError);
   const [pending, start] = useTransition();
 
-  const run = (fn: () => Promise<AuthResult>, onOk?: () => void) =>
+  const run = (fn: () => Promise<AuthResult>, onOk?: (result: Extract<AuthResult, { ok: true }>) => void) =>
     start(async () => {
       setError('');
-      const r = await fn();
-      if (r.ok) onOk?.();
-      else setError(r.reason === 'invalid_input' ? t('login.invalid') : t('login.failed'));
+      setErrorCode('');
+      setFailure(undefined);
+      try {
+        const r = await fn();
+        if (r.ok) onOk?.(r);
+        else {
+          setFailure(r.reason);
+          setError(t(`login.errors.${r.reason}`));
+          setErrorCode(r.code ?? '');
+        }
+      } catch {
+        setError(t('login.errors.network'));
+      }
     });
 
   const demo = (
@@ -65,8 +83,11 @@ export function LoginForm({
             disabled={pending}
             onClick={() => {
               setMode(value);
-              setSent(false);
+              setConfirmationRequired(false);
+              setPassword('');
               setError('');
+              setErrorCode('');
+              setFailure(undefined);
             }}
             className={`rounded-xl px-3 py-3 text-sm font-bold ${mode === value ? 'bg-paper text-ink shadow-sm' : 'text-ink-3'}`}
           >
@@ -108,86 +129,150 @@ export function LoginForm({
           </div>
         </>
       )}
-      {!sent ? (
+      {confirmationRequired ? (
+        <div
+          role="status"
+          className="rounded-2xl border border-line bg-sage p-4 text-sm leading-relaxed text-ink"
+        >
+          {t('login.confirmEmail', { email })}
+        </div>
+      ) : (
         <form
-          className="grid gap-3"
-          onSubmit={(e) => {
-            e.preventDefault();
+          className="grid gap-4"
+          onSubmit={(event) => {
+            event.preventDefault();
             run(
-              () => sendEmailCode(email, mode, next),
-              () => setSent(true),
+              () =>
+                mode === 'signup'
+                  ? signUpWithPassword({ email, username, password }, next)
+                  : signInWithPassword(email, password, next),
+              (result) => {
+                if (result.confirmationRequired) {
+                  setConfirmationRequired(true);
+                  setPassword('');
+                }
+              },
             );
           }}
         >
           <label className="grid gap-1.5 text-[13px] font-semibold text-ink-2">
-            {t('login.email')}
+            {t(mode === 'signup' ? 'login.email' : 'login.identifier')}
             <input
               disabled={pending || !configured}
-              type="email"
-              name="email"
+              type={mode === 'signup' ? 'email' : 'text'}
+              name={mode === 'signup' ? 'email' : 'identifier'}
               required
-              autoComplete="email"
-              inputMode="email"
+              autoComplete={mode === 'signup' ? 'email' : 'username'}
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={t('login.emailPlaceholder')}
+              onChange={(event) => setEmail(event.target.value)}
+              maxLength={254}
+              placeholder={t(mode === 'signup' ? 'login.emailPlaceholder' : 'login.identifierPlaceholder')}
               className={field}
             />
           </label>
-          <Button type="submit" size="lg" className="disabled:opacity-50" disabled={pending || !configured}>
-            {pending ? t('login.busy') : t(mode === 'signup' ? 'login.sendSignup' : 'login.send')}
-          </Button>
-        </form>
-      ) : (
-        <form
-          className="grid gap-3"
-          onSubmit={(e) => {
-            e.preventDefault();
-            const code = String(new FormData(e.currentTarget).get('code') ?? '');
-            run(() => verifyEmailCode(email, code, next));
-          }}
-        >
-          <p className="text-sm text-ink-2">{t('login.codeSent', { email })}</p>
-          <details className="grid gap-3">
-            <summary className="cursor-pointer text-sm font-semibold text-leaf-2">
-              {t('login.useCode')}
-            </summary>
-            <div className="mt-3 grid gap-3">
-              <label className="grid gap-1.5 text-[13px] font-semibold text-ink-2">
-                {t('login.code')}
-                <input
-                  name="code"
-                  required
-                  inputMode="numeric"
-                  autoComplete="one-time-code"
-                  pattern="\d{6,8}"
-                  maxLength={8}
-                  className={`${field} tnum tracking-[0.3em]`}
-                />
-              </label>
-              <Button
-                type="submit"
-                size="lg"
-                className="disabled:opacity-50"
+          {mode === 'signup' && (
+            <label className="grid gap-1.5 text-[13px] font-semibold text-ink-2">
+              {t('login.username')}
+              <input
                 disabled={pending || !configured}
+                name="username"
+                aria-label={t('login.username')}
+                required
+                autoComplete="username"
+                autoCapitalize="none"
+                spellCheck={false}
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+                minLength={1}
+                maxLength={40}
+                placeholder={t('login.usernamePlaceholder')}
+                className={field}
+              />
+              <span className="text-xs font-normal leading-relaxed text-ink-3">
+                {t('login.usernameHint')}
+              </span>
+            </label>
+          )}
+          <label className="grid gap-1.5 text-[13px] font-semibold text-ink-2">
+            {t('login.password')}
+            <span className="relative block">
+              <input
+                disabled={pending || !configured}
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                aria-label={t('login.password')}
+                required
+                autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                minLength={mode === 'signup' ? 8 : 1}
+                maxLength={mode === 'signup' ? 72 : 256}
+                className={`${field} pr-20`}
+              />
+              <button
+                type="button"
+                disabled={pending}
+                aria-label={t(showPassword ? 'login.hidePassword' : 'login.showPassword')}
+                aria-pressed={showPassword}
+                onClick={() => setShowPassword((value) => !value)}
+                className="absolute inset-y-0 right-3 text-xs font-semibold text-leaf-2"
               >
-                {t('login.verify')}
-              </Button>
-            </div>
-          </details>
-          <Button type="button" variant="ghost" size="sm" onClick={() => setSent(false)}>
-            {t('login.changeEmail')}
+                {t(showPassword ? 'login.hide' : 'login.show')}
+              </button>
+            </span>
+            {mode === 'signup' && (
+              <span className="text-xs font-normal text-ink-3">{t('login.passwordHint')}</span>
+            )}
+          </label>
+          {mode === 'login' && (
+            <Link
+              href={routes.forgotPassword}
+              className="justify-self-end text-xs font-semibold text-leaf-2 hover:underline"
+            >
+              {t('recovery.forgot')}
+            </Link>
+          )}
+          <Button type="submit" size="lg" className="disabled:opacity-50" disabled={pending || !configured}>
+            {pending ? t('login.busy') : t(mode === 'signup' ? 'login.createAccount' : 'login.signIn')}
           </Button>
         </form>
       )}
 
       {error && (
-        <p role="alert" className="rounded-2xl bg-danger-soft px-4 py-3 text-sm font-semibold text-danger">
+        <div role="alert" className="rounded-2xl bg-danger-soft px-4 py-3 text-sm font-semibold text-danger">
           {error}
-        </p>
+          {(failure === 'account_exists' || failure === 'invalid_credentials') && (
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              {failure === 'account_exists' && mode === 'signup' && (
+                <button
+                  type="button"
+                  className="underline underline-offset-4"
+                  onClick={() => {
+                    setMode('login');
+                    setPassword('');
+                    setConfirmationRequired(false);
+                    setError('');
+                    setErrorCode('');
+                    setFailure(undefined);
+                  }}
+                >
+                  {t('login.useExistingAccount')}
+                </button>
+              )}
+              <Link href={routes.forgotPassword} className="underline underline-offset-4">
+                {t('login.resetExistingPassword')}
+              </Link>
+            </div>
+          )}
+          {errorCode && (
+            <span className="mt-2 block font-mono text-xs font-normal">
+              {t('login.errorCode', { code: errorCode })}
+            </span>
+          )}
+        </div>
       )}
 
-      <p className="text-xs leading-relaxed text-ink-3">{t('login.passwordless')}</p>
+      <p className="text-xs leading-relaxed text-ink-3">{t('login.passwordPrivacy')}</p>
       <div className="mt-2 border-t border-line pt-4">{demo}</div>
     </div>
   );

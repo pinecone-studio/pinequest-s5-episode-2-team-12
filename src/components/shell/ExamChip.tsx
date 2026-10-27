@@ -67,13 +67,14 @@ export function ExamChip({ initial, demo }: { initial: StudentSettings; demo: bo
     <div ref={wrap} className="relative">
       <button
         type="button"
+        aria-label={label}
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 h-10 px-3.5 rounded-full bg-paper/90 backdrop-blur border border-line text-[13.5px] font-bold text-ink shadow-[0_6px_18px_-12px_rgba(12,40,22,.5)] hover:border-leaf tnum"
+        className="exam-chip flex items-center gap-2 h-10 px-3.5 rounded-full bg-paper/90 backdrop-blur border border-line text-[13.5px] font-bold text-ink shadow-[0_6px_18px_-12px_rgba(12,40,22,.5)] hover:border-leaf tnum"
       >
         <Icon name="mock" size={17} className="text-leaf-2" />
-        {label}
+        <span className="exam-chip-label">{label}</span>
       </button>
 
       {open && (

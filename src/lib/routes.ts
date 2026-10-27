@@ -20,6 +20,8 @@ export const routes = {
   /** The map («Монголын аялал») for students; the entry screen for signed-out visitors. */
   home: '/',
   login: (next?: string) => `/login${qs({ next })}`,
+  forgotPassword: '/auth/forgot-password',
+  updatePassword: '/auth/update-password',
   onboarding: '/onboarding',
   planner: '/planner',
   help: '/help',

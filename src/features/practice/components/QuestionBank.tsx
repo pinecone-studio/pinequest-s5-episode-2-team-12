@@ -64,7 +64,7 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
       )}
 
       {/* Filters */}
-      <section className={`${card} space-y-5 p-5 sm:p-6`}>
+      <section className={`${card} bank-filters space-y-5 p-5 sm:p-6`}>
         <div className="space-y-2.5">
           <h2 className={fieldLabel}>{t('bank.domain')}</h2>
 
@@ -143,7 +143,7 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
       </p>
 
       {/* Questions */}
-      <section className="space-y-3">
+      <section className="bank-results space-y-4">
         {visibleQuestions.map((question) => (
           <article key={question.id} className={`${card} bank-question space-y-4`}>
             <div className="flex flex-wrap items-center gap-2">

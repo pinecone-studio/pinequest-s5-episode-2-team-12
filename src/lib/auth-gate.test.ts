@@ -3,7 +3,15 @@ import { gate, isPublicPath, safeNext } from './auth-gate';
 
 describe('auth gate', () => {
   test('public paths', () => {
-    for (const p of ['/', '/login', '/auth/callback', '/api/tutor']) expect(isPublicPath(p)).toBe(true);
+    for (const p of [
+      '/',
+      '/login',
+      '/auth/callback',
+      '/auth/forgot-password',
+      '/auth/update-password',
+      '/api/tutor',
+    ])
+      expect(isPublicPath(p)).toBe(true);
     for (const p of ['/profile', '/roadmap/stop/1', '/loginx', '/settings'])
       expect(isPublicPath(p)).toBe(false);
   });
