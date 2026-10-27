@@ -25,7 +25,7 @@ function fakeOllama(...replies: string[]) {
 
 test('400 on a bad body', async () => {
   expect((await call({ question: '' })).status).toBe(400);
-  expect((await call({ question: 'x'.repeat(601) })).status).toBe(400);
+  expect((await call({ question: 'x'.repeat(1201) })).status).toBe(400);
   expect((await call({ question: 'If x = 2, what is x?', answer: 'x'.repeat(41) })).status).toBe(400);
   expect((await POST(new Request('http://x', { method: 'POST', body: 'not json' }))).status).toBe(400);
 });
@@ -35,6 +35,17 @@ test('a pitch question gets its sample lesson without calling the model', async 
   const res = await call({ question: 'If 3x + 5 = 20, what is the value of x?' });
   expect(await res.json()).toMatchObject({ source: 'sample', lesson: { id: 'intersection' } });
   expect(calls()).toBe(0);
+});
+
+test('a keyword-matched sample with a different answer is not used for another problem', async () => {
+  process.env.OLLAMA_URL = '';
+  const q = 'A practice problem: if 3x + 5 = 20 and y = 2x, what is y?';
+  expect(await (await call({ question: q, answer: '10' })).json()).toEqual({
+    lesson: null,
+    source: 'none',
+    reason: 'off',
+  });
+  expect(await (await call({ question: q, answer: '5' })).json()).toMatchObject({ source: 'sample' });
 });
 
 test('model off → no lesson, reason off', async () => {

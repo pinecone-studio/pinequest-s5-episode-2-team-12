@@ -17,3 +17,11 @@ test('topic context from a roadmap stop', async () => {
   expect(c.problem).toContain('Percentages');
   expect((await getContext('topic', '99')).kind).toBe('general');
 });
+
+test('a bank problem carries what the Desmos side panel needs; other contexts do not', async () => {
+  const q = await getContext('question', 'a1');
+  expect(q.desmos).toMatchObject({ answer: '5', rows: ['y=3x+5', 'y=20'] });
+  expect(q.desmos?.question).toContain('greatest possible value of x');
+  expect((await getContext('mistake', 'a1')).desmos).toBeTruthy();
+  expect((await getContext('general')).desmos).toBeUndefined();
+});

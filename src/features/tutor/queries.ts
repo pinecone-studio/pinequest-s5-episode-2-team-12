@@ -6,6 +6,7 @@ import { DESMOS } from '@/mocks/desmos';
 import { QUESTIONS } from '@/mocks/questions';
 import { ALL_NODES } from '@/mocks/stages';
 import type { ChatMessage, TutorContext, TutorContextKind } from '@/types';
+import { panelInput } from './lib/desmos-panel';
 
 export async function listMessages(threadId: string): Promise<ChatMessage[]> {
   const db = await getDb();
@@ -32,7 +33,7 @@ export async function getContext(kind: TutorContextKind = 'general', id?: string
     // roadmap stops send their own (rm…) questions; the topic title is more useful to Суу than the CB skill
     const q = QUESTIONS.find((x) => x.id === id) ?? roadmapQuestionById(id);
     const title = (q?.topicId && topicById(q.topicId)?.title) || q?.skill;
-    return q && title ? { kind, id, title, problem: q.prompt } : general;
+    return q && title ? { kind, id, title, problem: q.prompt, desmos: panelInput(q) } : general;
   }
   if (kind === 'desmos') {
     const d = DESMOS.find((x) => x.id === id);
