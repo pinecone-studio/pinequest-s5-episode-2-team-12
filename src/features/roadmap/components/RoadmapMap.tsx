@@ -608,7 +608,6 @@ export function RoadmapMap({
           {box && laidOut && (
             <>
               <MapOverlay frontierIndex={frontierIndex} />
-              <Clouds />
               <div className="roadmap-map-cat" style={{ left: POINTS[17][0] + 82, top: POINTS[17][1] + 25 }}>
                 <MapCat outfit={outfit} />
                 <div className="roadmap-cat-message" aria-hidden="true">
