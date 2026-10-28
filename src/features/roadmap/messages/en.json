@@ -98,7 +98,12 @@
     "routeHard": "Module 2: harder version",
     "routeEasy": "Module 2: easier version",
     "answerPlaceholder": "Type your answer (e.g. 3/4 or 0.75)",
-    "desmos": "Open Desmos"
+    "desmos": "Open Desmos",
+    "closeCalculator": "Close calculator",
+    "calculatorLoading": "Loading calculator…",
+    "calculatorFailed": "The calculator could not load. Check your connection and try again.",
+    "calculatorRetry": "Retry",
+    "markReview": "Mark for Review"
   },
   "results": {
     "eyebrow": "TEST RESULTS",

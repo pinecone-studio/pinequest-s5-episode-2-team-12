@@ -5,6 +5,17 @@ import { getQuestionsDb, getQuestionsTable } from '@/server/db';
 import type { Question, QuestionFilter } from '@/types';
 import { filterQuestions } from './lib/filter-questions';
 
+/** Logged once per error message so a misconfigured project doesn't flood the dev console. */
+const warned = new Set<string>();
+function warnBank(error: { message: string }) {
+  if (warned.has(error.message)) return;
+  warned.add(error.message);
+  console.warn(
+    `[practice] questions table unreadable (${error.message}); showing sample questions. ` +
+      'Set SUPABASE_SERVICE_ROLE_KEY and, on the legacy project, SUPABASE_QUESTIONS_TABLE=learning_questions.',
+  );
+}
+
 export async function listQuestions(filter: QuestionFilter = {}): Promise<Question[]> {
   const db = await getQuestionsDb();
 
@@ -24,7 +35,11 @@ export async function listQuestions(filter: QuestionFilter = {}): Promise<Questi
 
   const { data, error } = await query;
 
-  if (error) throw error;
+  // e.g. no service-role key (the table is admin-only since 0009) or a legacy table without `content`
+  if (error) {
+    warnBank(error);
+    return filterQuestions(QUESTIONS, filter);
+  }
 
   return filterQuestions(
     (data ?? []).map((row) => row.content as Question),
@@ -46,7 +61,10 @@ export async function getQuestion(id: string): Promise<Question | null> {
     .eq('reviewed', true)
     .maybeSingle();
 
-  if (error) throw error;
+  if (error) {
+    warnBank(error);
+    return QUESTIONS.find((question) => question.id === id) ?? null;
+  }
 
   return (data?.content as Question) ?? null;
 }
@@ -58,7 +76,8 @@ export async function getSaved(userId: string): Promise<string[]> {
 
   const { data, error } = await db.from('saved_questions').select('question_id').eq('user_id', userId);
 
-  if (error) throw error;
+  // No migration creates saved_questions yet; treat a missing table as "nothing saved".
+  if (error) return [];
 
   return (data ?? []).map((row) => row.question_id as string);
 }

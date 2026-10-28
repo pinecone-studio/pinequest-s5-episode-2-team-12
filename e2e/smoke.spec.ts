@@ -76,7 +76,8 @@ for (const path of PAGES) {
   });
 }
 
-test('drawer opens from ☰, traps focus and closes on Escape', async ({ page }) => {
+test('drawer opens from ☰, traps focus and closes on Escape', async ({ page }, info) => {
+  test.skip(info.project.name !== 'phone', 'desktop uses the rail (e2e/sidebar.spec.ts)');
   await page.goto('/');
   const menu = page.getByRole('button', { name: 'Цэс', exact: true });
   await expect(menu).toHaveAttribute('aria-expanded', 'false');
@@ -90,10 +91,15 @@ test('drawer opens from ☰, traps focus and closes on Escape', async ({ page })
   await expect(drawer).toBeHidden();
 });
 
-test('theme switch in the drawer recolors the page', async ({ page }) => {
+test('theme switch in the drawer recolors the page', async ({ page }, info) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Цэс', exact: true }).click();
-  await page.getByRole('dialog', { name: 'Цэс' }).getByRole('radio', { name: 'Бараан' }).click();
+  if (info.project.name === 'phone') {
+    await page.getByRole('button', { name: 'Цэс', exact: true }).click();
+    await page.getByRole('dialog', { name: 'Цэс' }).getByRole('radio', { name: 'Бараан' }).click();
+  } else {
+    await page.getByRole('button', { name: 'Цэсийг дэлгэх', exact: true }).click();
+    await page.getByRole('complementary', { name: 'Цэс' }).getByRole('radio', { name: 'Бараан' }).click();
+  }
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });
 

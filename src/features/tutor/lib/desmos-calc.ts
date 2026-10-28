@@ -22,6 +22,7 @@ export type Calc = {
   setExpression: (e: Record<string, unknown>) => void;
   setMathBounds: (b: { left: number; right: number; bottom: number; top: number }) => void;
   destroy: () => void;
+  resize?: () => void;
 };
 export type DesmosGlobal = { GraphingCalculator: (el: HTMLElement, opts?: Record<string, unknown>) => Calc };
 declare global {

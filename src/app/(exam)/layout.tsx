@@ -1,12 +1,6 @@
 import type { ReactNode } from 'react';
-import { AppShell } from '@/components/shell/AppShell';
-import { loadShell } from '@/components/shell/load-shell';
 
-/** Keep navigation available in exam mode while preserving the calm exam styling. */
-export default async function ExamLayout({ children }: { children: ReactNode }) {
-  return (
-    <AppShell {...(await loadShell())}>
-      <div className="calm min-h-dvh py-6">{children}</div>
-    </AppShell>
-  );
+/** Tests have their own full-page workspace, separate from app navigation. */
+export default function ExamLayout({ children }: { children: ReactNode }) {
+  return <main className="calm min-h-dvh bg-white px-3 py-6 sm:px-6">{children}</main>;
 }

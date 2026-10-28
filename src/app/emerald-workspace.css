@@ -97,7 +97,7 @@
   letter-spacing: -0.025em;
 }
 .emerald-workspace .workspace-topbar {
-  height: 76px;
+  height: var(--topbar-h);
   border-bottom: 1px solid var(--c-line);
   background: var(--workspace-elevated);
 }
@@ -106,7 +106,7 @@
   background: var(--c-paper);
 }
 .emerald-workspace .workspace-topbar .btn3d { box-shadow: none; }
-.emerald-workspace > main { padding-top: 20px; }
+.emerald-workspace main#main { padding-top: 20px; }
 .emerald-workspace .workspace-page { gap: 24px; padding-top: 8px; }
 .emerald-workspace :is(.card, .soft-card, .section-panel, .filter-panel) {
   border: 1px solid var(--c-line);
@@ -236,8 +236,14 @@
 .emerald-workspace .wardrobe-card:hover { box-shadow: var(--shadow-pop); border-color: var(--c-line-2); }
 .emerald-workspace .stat-card { border-radius: 10px; background: var(--c-paper-2); box-shadow: none; }
 
-/* Drawer stays open across links, with the same behavior as before. */
-.emerald-workspace .workspace-drawer {
+/* Drawer stays open across links, with the same behavior as before.
+   Not scoped to .emerald-workspace: the map page has no such ancestor but uses the same green drawer. */
+.workspace-drawer {
+  --c-forest: #062c24;
+  --c-leaf-2: #105a47;
+  --c-lime: #c7e6a1;
+  --c-on-lime: #153c2d;
+  --c-teal: #94d3c3;
   --c-paper: #092f26;
   --c-paper-2: #123e31;
   --c-ink: #f1f8ef;
@@ -253,12 +259,146 @@
   border-radius: 0;
   border-right: 1px solid #3d6450;
   box-shadow: 20px 0 80px #001c2440;
+  color: var(--c-ink);
+  font-family: var(--font-sans);
   color-scheme: dark;
 }
-.emerald-workspace .workspace-drawer > :first-child { padding-block: 6px 20px; border-bottom: 1px solid var(--c-line); }
-.emerald-workspace .workspace-nav-link { border-radius: 9px; font-size: 13px; font-weight: 500; }
-.emerald-workspace .workspace-nav-link[aria-current='page'] { border: 1px solid #557b50; box-shadow: none; }
-.emerald-workspace .workspace-drawer .logo-cat { filter: drop-shadow(0 0 1px #c7dfd0); }
+.workspace-drawer > :first-child { padding-block: 6px 20px; border-bottom: 1px solid var(--c-line); }
+.workspace-nav-link { border-radius: 9px; font-size: 13px; font-weight: 500; }
+.workspace-nav-link[aria-current='page'] { border: 1px solid #557b50; box-shadow: none; }
+.workspace-drawer .logo-cat { filter: drop-shadow(0 0 1px #c7dfd0); }
+
+/* Top-bar height: the same on the map and every other page, shared with the rail's logo row so the lines meet. */
+.app-frame { --topbar-h: 76px; }
+@media (max-width: 767px) { .app-frame.emerald-workspace { --topbar-h: 66px; } }
+/* The map's top bar draws its bottom line in the same colour as the other pages' top bar. */
+.app-frame:not(.emerald-workspace) .app-panel > header { --c-line: #dce6e2; }
+:root[data-theme='dark'] .app-frame:not(.emerald-workspace) .app-panel > header { --c-line: #28483a; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .app-frame:not(.emerald-workspace) .app-panel > header { --c-line: #28483a; }
+}
+
+/* Desktop (md+) frame: the green rail is the window's frame and the page sits in one rounded panel beside it.
+   The rail is icons only by default and widens smoothly to icons + labels. */
+.app-frame {
+  --rail-gap: 12px;
+  /* page colours, read inside the rail (which recolours itself) for the tab that joins the panel */
+  --panel-bg: var(--c-bg);
+  --panel-ink: var(--c-ink);
+}
+/* the map's stage is paper-2, so its tab matches the stage rather than the page background */
+.app-frame:not(.emerald-workspace) { --panel-bg: var(--c-paper-2); }
+.workspace-drawer.workspace-rail {
+  width: var(--rail-w, 76px);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  transition: width 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.workspace-rail .rail-label,
+.workspace-rail .rail-logo .logo-cat + span,
+.workspace-rail .rail-extra {
+  transition: opacity 0.2s ease 0.08s;
+}
+.workspace-rail[data-expanded='false'] .rail-label,
+.workspace-rail[data-expanded='false'] .rail-logo .logo-cat + span,
+.workspace-rail[data-expanded='false'] .rail-extra {
+  opacity: 0;
+  pointer-events: none;
+  transition-delay: 0s;
+}
+.workspace-drawer.workspace-rail > .rail-head {
+  box-sizing: border-box;
+  height: calc(var(--topbar-h) + var(--rail-gap, 12px));
+  flex-shrink: 0;
+  padding: var(--rail-gap, 12px) 0 0;
+  border-bottom: 0;
+}
+.workspace-rail .rail-logo { padding-left: 10px; }
+.workspace-rail .rail-logo > div { width: max-content; }
+.workspace-rail .rail-group { white-space: nowrap; }
+/* Links: rounded on the left; the current page becomes a tab in the panel's colour that runs into the panel. */
+.workspace-rail .workspace-nav-link {
+  position: relative;
+  white-space: nowrap;
+  border-radius: 14px;
+}
+.workspace-rail .workspace-nav-link[aria-current='page'] {
+  margin-right: -12px;
+  border: 0;
+  border-radius: 16px 0 0 16px;
+  background: var(--panel-bg);
+  color: var(--panel-ink);
+  box-shadow: none;
+}
+.workspace-rail .workspace-nav-link[aria-current='page'] svg { color: var(--panel-ink); }
+.workspace-rail .workspace-nav-link[aria-current='page']::before,
+.workspace-rail .workspace-nav-link[aria-current='page']::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+.workspace-rail .workspace-nav-link[aria-current='page']::before {
+  bottom: 100%;
+  background: radial-gradient(circle at 0 0, transparent 15.5px, var(--panel-bg) 16px);
+}
+.workspace-rail .workspace-nav-link[aria-current='page']::after {
+  top: 100%;
+  background: radial-gradient(circle at 0 100%, transparent 15.5px, var(--panel-bg) 16px);
+}
+.workspace-rail .rail-profile { transition: padding 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.2s; }
+.workspace-rail[data-expanded='false'] .rail-profile { padding: 4px 3px; border-color: transparent; background: transparent; }
+.workspace-rail[data-expanded='false'] .rail-extra { visibility: hidden; }
+/* The round toggle sits where the rail meets the panel and moves with it. */
+.workspace-rail-toggle {
+  top: calc(var(--rail-gap, 12px) + var(--topbar-h, 76px) / 2 - 13px);
+  left: calc(var(--rail-w, 76px) - 13px);
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid #3d6450;
+  background: #c7e6a1;
+  color: #153c2d;
+  box-shadow: 0 2px 8px #001c2433;
+  transition: left 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.15s;
+}
+.workspace-rail-toggle:hover { transform: scale(1.08); }
+.workspace-rail-toggle:focus-visible { outline: 2px solid #c7e6a1; outline-offset: 2px; }
+@media (min-width: 768px) {
+  .app-frame { background: #092f26; }
+  .app-panel {
+    position: fixed;
+    z-index: 0;
+    top: var(--rail-gap);
+    right: var(--rail-gap);
+    bottom: var(--rail-gap);
+    left: var(--rail-w, 76px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 28px;
+    clip-path: inset(0 round 28px);
+    background: var(--panel-bg);
+    transition: left 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  /* The map's stop card is fixed to the window; keep it centred over the panel. */
+  .app-frame .roadmap-stop-overview {
+    top: calc(var(--rail-gap) + clamp(88px, 12dvh, 150px));
+    left: var(--rail-w, 76px);
+    right: var(--rail-gap);
+    width: min(780px, calc(100% - var(--rail-w, 76px) - var(--rail-gap) - 64px));
+    transition: left 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), width 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-drawer.workspace-rail,
+  .workspace-rail-toggle,
+  .app-panel,
+  .app-frame .roadmap-stop-overview { transition: none; }
+}
 
 /* Profile and entry flows share the cover art without putting imagery behind form fields. */
 .emerald-workspace .profile-identity {
@@ -319,7 +459,7 @@
 
 @media (max-width: 767px) {
   .emerald-workspace .workspace-topbar { height: 66px; gap: 10px; }
-  .emerald-workspace > main { padding-top: 12px; }
+  .emerald-workspace main#main { padding-top: 12px; }
   .emerald-workspace .page-heading { min-height: 190px; padding: 24px; gap: 18px; }
   .emerald-workspace .page-heading-copy { gap: 12px; flex-basis: 240px; }
   .emerald-workspace .page-heading h1 { font-size: 28px; }
