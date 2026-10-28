@@ -90,3 +90,28 @@ export function revealStep(lesson: DesmosAiLesson): number {
 export function visibleSteps(lesson: DesmosAiLesson, revealed: boolean): number {
   return revealed ? lesson.steps.length : revealStep(lesson);
 }
+
+/** What the chat may know about the panel: only the visible steps, each with its Desmos rows as text. */
+export function panelView(
+  lesson: DesmosAiLesson,
+  shown: number,
+  step: number,
+): { technique?: string; step: number; steps: { text: string; latex: string[] }[] } {
+  const rows = (items: DesmosAiLesson['steps'][number]['desmos']) =>
+    items
+      .map((it) =>
+        it.type === 'table'
+          ? `table(${(it.columns ?? []).map((c) => `${c.latex}=[${c.values.join(',')}]`).join('; ')})`
+          : (it.latex ?? ''),
+      )
+      .filter(Boolean)
+      .map((r) => r.slice(0, 200))
+      .slice(0, 12);
+  return {
+    ...(lesson.title ? { technique: lesson.title.slice(0, 60) } : {}),
+    step: Math.max(0, Math.min(step, shown - 1)),
+    steps: lesson.steps
+      .slice(0, Math.min(shown, 12))
+      .map((s) => ({ text: s.text.slice(0, 600), latex: rows(s.desmos) })),
+  };
+}

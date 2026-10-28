@@ -35,7 +35,9 @@
     "you": "Та",
     "deleteChat": "Чатыг устгах",
     "sample": "Жишээ хариу",
-    "openDesmos": "Desmos дээр алхам алхмаар харах"
+    "openDesmos": "Desmos дээр алхам алхмаар харах",
+    "bySuu": "Суу (манай загвар)",
+    "byGemini": "Gemini чат"
   },
   "modes": {
     "hint": "Зөвлөгөө",
