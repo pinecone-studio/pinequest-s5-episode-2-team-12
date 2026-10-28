@@ -11,6 +11,8 @@ export function serverEnv() {
     gcpProject: process.env.GOOGLE_CLOUD_PROJECT ?? '',
     gcpLocation: process.env.GOOGLE_CLOUD_LOCATION ?? 'us-central1',
     geminiModel: process.env.GEMINI_MODEL ?? 'gemini-2.5-flash',
+    // The tutor's free chat (src/server/ai/gemini-chat.ts). "latest" follows Google's current stable Flash.
+    geminiChatModel: process.env.GEMINI_CHAT_MODEL || 'gemini-flash-latest',
     promptVersion: process.env.TUTOR_PROMPT_VERSION ?? 'v1',
     supabaseServiceRole: process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
     supabaseQuestionsTable:
