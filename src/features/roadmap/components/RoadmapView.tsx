@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
 import { itemById } from '@/features/shop/catalog';
 import { useWallet } from '@/features/shop/lib/use-wallet';
@@ -10,7 +11,7 @@ import { stopViews } from '../lib/view';
 import type { RoadmapState } from '../types';
 import { RoadmapMap } from './RoadmapMap';
 
-import { StopPanel } from './StopPanel';
+import { StopPanel, startHref } from './StopPanel';
 
 import { useRoadmapState } from './store';
 
@@ -44,13 +45,27 @@ export function RoadmapView({
   const sel = views.find((v) => v.stop.no === (selected ?? fr ?? (sample ? 5 : 26)));
 
   const closePanel = useCallback(() => setSelected(null), []);
+  const router = useRouter();
+  const currentNo = fr ?? (sample ? 5 : null);
+  // Other pins open their card. The current stop's pin first brings its own card back if another stop's
+  // card is showing; when its card is already showing, it does what that card's «Эхлэх» does.
+  const openStop = useCallback(
+    (no: number) => {
+      const showingCurrent = selected === null || selected === currentNo;
+      const v = no === currentNo && showingCurrent ? views.find((x) => x.stop.no === no) : undefined;
+      const href = v ? startHref(v, open || sample) : null;
+      if (href) router.push(href);
+      else setSelected(no);
+    },
+    [selected, currentNo, views, open, sample, router],
+  );
 
   return (
     <div className="roadmap-home absolute inset-0" data-map-skin={skin}>
       <RoadmapMap
         views={views}
         frontierNo={fr ?? (sample ? 5 : null)}
-        onOpen={setSelected}
+        onOpen={openStop}
         selectedNo={selected}
         skin={skin}
         outfit={equipped.outfit}

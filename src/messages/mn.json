@@ -29,7 +29,9 @@
     "shop": "Дэлгүүр",
     "settings": "Тохиргоо",
     "menu": "Цэс",
-    "closeMenu": "Цэс хаах"
+    "closeMenu": "Цэс хаах",
+    "expandMenu": "Цэсийг дэлгэх",
+    "collapseMenu": "Цэсийг хураах"
   },
   "placeholder": {
     "title": "Энэ хэсгийг бэлдэж байна",

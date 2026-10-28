@@ -152,6 +152,13 @@
 .roadmap-stage[data-skin="winter"] { --rm-lip: #e5edf2; --rm-tree: #3f5f55; }
 .roadmap-stage[data-skin="night"] .roadmap-terrain { filter: brightness(0.5) saturate(0.7) hue-rotate(195deg); }
 .roadmap-stage[data-skin="night"] { --rm-lip: #1e3a5f; --rm-border: rgba(191, 219, 254, 0.75); background: radial-gradient(70% 60% at 50% 45%, #1e293b, #020617 70%); }
+/* In light mode the night skin is a softer dusk, so the page doesn't read as dark mode. */
+:root[data-theme="light"] .roadmap-stage[data-skin="night"] { background: radial-gradient(75% 65% at 50% 45%, #5b6b86, #2f3b55 78%); }
+:root[data-theme="light"] .roadmap-stage[data-skin="night"] .roadmap-terrain { filter: brightness(0.66) saturate(0.75) hue-rotate(195deg); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .roadmap-stage[data-skin="night"] { background: radial-gradient(75% 65% at 50% 45%, #5b6b86, #2f3b55 78%); }
+  :root:not([data-theme="dark"]) .roadmap-stage[data-skin="night"] .roadmap-terrain { filter: brightness(0.66) saturate(0.75) hue-rotate(195deg); }
+}
 
 /* Center the stop text above the map, with Start alongside it. */
 .roadmap-stop-overview {

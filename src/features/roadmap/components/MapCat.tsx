@@ -16,6 +16,9 @@ export function MapCat({ outfit }: { outfit?: string }) {
         focusable="false"
         data-outfit={clothing.id}
         style={{
+          display: 'block',
+          width: '100%',
+          height: 'auto',
           clipPath: trimGap
             ? 'polygon(0 0, 32% 0, 32% 3%, 66% 3%, 66% 0, 100% 0, 100% 100%, 0 100%)'
             : undefined,
@@ -36,7 +39,12 @@ export function MapCat({ outfit }: { outfit?: string }) {
     );
   }
   return (
-    <svg viewBox="130 20 970 1220" aria-hidden="true" focusable="false">
+    <svg
+      viewBox="130 20 970 1220"
+      aria-hidden="true"
+      focusable="false"
+      style={{ display: 'block', width: '100%', height: 'auto' }}
+    >
       <AnimatedCatImage
         href="/brand/suu-sitting.webp"
         width={1254}

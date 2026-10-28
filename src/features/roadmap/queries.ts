@@ -75,7 +75,13 @@ async function curriculumPool(pool: 'stop' | 'placement', topicId?: number): Pro
       'id',
       active.map((q) => q.id),
     );
-  if (error) throw error;
+  if (error) {
+    // Outside production the bundled content is servable anyway, so a table the request can't read
+    // (no SUPABASE_SERVICE_ROLE_KEY locally — learning_questions is admin-only) shouldn't break the page.
+    if (!ROADMAP.allowUnreviewed) throw error;
+    console.warn(`[roadmap] ${getQuestionsTable()} unreadable (${error.message}); using bundled questions.`);
+    return fallback;
+  }
   const rows = (data ?? [])
     .filter((r) => ROADMAP.allowUnreviewed || r.reviewed)
     .map((r) => withTopic(r.content as Question));
