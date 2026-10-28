@@ -1,9 +1,28 @@
 import { describe, expect, test } from 'bun:test';
 import { newState, review } from '@/lib/sm2';
 import { DAY_MS } from '@/lib/time';
-import { counts, FLASHCARDS, matches, queue } from './decks';
+import { CUSTOM_KEY, counts, customFlashcard, FLASHCARDS, matches, queue } from './decks';
 
 const NOW = Date.parse('2026-10-26T02:00:00Z');
+
+describe('admin-written cards', () => {
+  const id = '3f2b8c1e-9d4a-4b6f-8e2a-1c0d9e7f6a5b';
+
+  test('become reviewed «words» cards keyed custom/<uuid>', () => {
+    const card = customFlashcard({ id, front: 'slope', back: 'налалт', ex: null, hook: 'h' }, 'More');
+    expect(card).toMatchObject({ key: `custom/${id}`, deck: 'words', group: 'More', reviewed: true });
+    expect(card.ex).toBeUndefined();
+    expect(matches(card, { deck: 'words' })).toBe(true);
+    expect(matches(card, { topicId: 3 })).toBe(false);
+  });
+
+  test('only a well-formed custom key passes', () => {
+    expect(CUSTOM_KEY.test(`custom/${id}`)).toBe(true);
+    expect(CUSTOM_KEY.test('custom/not-a-uuid')).toBe(false);
+    expect(CUSTOM_KEY.test(`ops/${id}`)).toBe(false);
+    expect(FLASHCARDS.some((c) => CUSTOM_KEY.test(c.key))).toBe(false);
+  });
+});
 
 describe('flashcard decks', () => {
   test('words and formulas, every card keyed and linked to topics where a guide uses it', () => {

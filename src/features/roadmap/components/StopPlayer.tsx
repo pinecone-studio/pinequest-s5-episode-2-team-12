@@ -12,7 +12,6 @@ import { toast } from '@/components/ui/toast';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
-import { BADGES } from '@/mocks/meta';
 import type { Question } from '@/types';
 import type { StopOutcome } from '../actions';
 import { ROADMAP } from '../config';
@@ -55,7 +54,6 @@ export function StopPlayer({
   const t = useT('roadmap');
   const router = useRouter();
   const loaded = useRoadmapState(demo, server);
-  const stop = stopByNo(no)!;
   const topic = topicById(no)!;
   const state = loaded.state;
   const mastery = masteryAt(state, no);
@@ -75,6 +73,8 @@ export function StopPlayer({
   const [error, setError] = useState<string | null>(null);
   const started = useRef(Date.now());
 
+  // draw the set once the state is known; a new round (retry) draws a fresh one
+  // biome-ignore lint/correctness/useExhaustiveDependencies: draw only when readiness or the round changes, not on every state update
   useEffect(() => {
     if (!loaded.ready || !allowed) return;
     const history = demo ? loaded.history : serverHistory;
@@ -109,15 +109,21 @@ export function StopPlayer({
   const total = qs.length;
   const right = answers.filter((a, j) => isCorrect(qs[j], a.answer)).length;
 
-  if (!loaded.ready) return <div className="h-48 w-full animate-pulse rounded-2xl bg-sage/20" aria-busy="true" />;
+  if (!loaded.ready)
+    return <div className="h-48 w-full animate-pulse rounded-2xl bg-sage/20" aria-busy="true" />;
 
   if (!allowed) {
     return (
       <section className="mx-auto flex max-w-xl flex-col items-center gap-4 p-6 text-center">
-        <div className="w-24"><CatHead mood="sleep" /></div>
+        <div className="w-24">
+          <CatHead mood="sleep" />
+        </div>
         <h1 className="font-display text-2xl font-extrabold text-ink">{t('stop.lockedTitle')}</h1>
         <p className="text-base text-ink-2">{isOpen(state) ? t('sheet.locked') : t('sheet.closedRoadmap')}</p>
-        <Link href={isOpen(state) ? routes.home : routes.placement} className="text-base font-bold text-leaf-2 underline">
+        <Link
+          href={isOpen(state) ? routes.home : routes.placement}
+          className="text-base font-bold text-leaf-2 underline"
+        >
           {isOpen(state) ? t('stop.toMap') : t('gate.take')}
         </Link>
       </section>
@@ -127,7 +133,10 @@ export function StopPlayer({
   // Header - Том тод гарчиг
   const header = (
     <header className="flex items-center gap-4 px-1 py-1 shrink-0">
-      <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-sage/80 text-leaf-2" aria-hidden="true">
+      <span
+        className="grid size-12 shrink-0 place-items-center rounded-2xl bg-sage/80 text-leaf-2"
+        aria-hidden="true"
+      >
         <TopicIcon name={topic.icon} size={26} />
       </span>
       <div className="min-w-0">
@@ -196,32 +205,67 @@ export function StopPlayer({
     return (
       <div className="w-full max-w-4xl mx-auto flex flex-col gap-4 h-full justify-between py-1 overflow-hidden">
         {header}
-        <section className="relative flex flex-col items-center justify-center gap-4 p-4 text-center flex-1 my-auto overflow-hidden" aria-live="polite">
+        <section
+          className="relative flex flex-col items-center justify-center gap-4 p-4 text-center flex-1 my-auto overflow-hidden"
+          aria-live="polite"
+        >
           {o?.passed && <Confetti />}
           {phase === 'saving' || !o ? (
-            error ? <p className="text-2xl text-danger font-bold">{error}</p> : <p className="text-3xl text-ink-2" aria-busy="true">…</p>
+            error ? (
+              <p className="text-2xl text-danger font-bold">{error}</p>
+            ) : (
+              <p className="text-3xl text-ink-2" aria-busy="true">
+                …
+              </p>
+            )
           ) : (
             <>
-              <div className="w-28"><CatHead mood={o.passed ? 'happy' : 'think'} /></div>
+              <div className="w-28">
+                <CatHead mood={o.passed ? 'happy' : 'think'} />
+              </div>
               <h2 className="font-display text-4xl font-black text-ink">
                 {o.finishedAll ? t('celebrate.title') : o.passed ? t('stop.passed') : t('stop.failed')}
               </h2>
-              <p className="text-xl font-bold text-ink-2 tnum">{t('stop.scoreLine', { c: o.correct, n: o.total, pct })}</p>
+              <p className="text-xl font-bold text-ink-2 tnum">
+                {t('stop.scoreLine', { c: o.correct, n: o.total, pct })}
+              </p>
               {o.passed && !o.testOut && <StarRow stars={o.stars} size={36} />}
-              {!o.passed && <p className="max-w-md text-base text-ink-2">{t('stop.failedBody', { need: neededToPass(o.total), n: o.total })}</p>}
+              {!o.passed && (
+                <p className="max-w-md text-base text-ink-2">
+                  {t('stop.failedBody', { need: neededToPass(o.total), n: o.total })}
+                </p>
+              )}
               {o.xp > 0 && <p className="text-xl font-bold text-leaf-2">{t('stop.xp', { n: o.xp })}</p>}
               <div className="mt-3 flex flex-wrap justify-center gap-3">
                 {o.passed && nextStop && (
-                  <Link href={routes.roadmapStop(nextStop.no)} className="btn3d inline-flex h-14 items-center rounded-2xl px-8 text-base font-bold shadow-lg" style={{ '--face': 'var(--c-lime)', '--edge': 'var(--c-lime-2)', color: 'var(--c-on-lime)' } as React.CSSProperties}>
+                  <Link
+                    href={routes.roadmapStop(nextStop.no)}
+                    className="btn3d inline-flex h-14 items-center rounded-2xl px-8 text-base font-bold shadow-lg"
+                    style={
+                      {
+                        '--face': 'var(--c-lime)',
+                        '--edge': 'var(--c-lime-2)',
+                        color: 'var(--c-on-lime)',
+                      } as React.CSSProperties
+                    }
+                  >
                     {t('stop.nextStop', { place: nextStop.place })}
                   </Link>
                 )}
                 {!o.passed && (
-                  <Button variant="lime" size="xl" className="text-base h-14 px-8 rounded-2xl" onClick={() => setRound((r) => r + 1)}>
+                  <Button
+                    variant="lime"
+                    size="xl"
+                    className="text-base h-14 px-8 rounded-2xl"
+                    onClick={() => setRound((r) => r + 1)}
+                  >
                     {t('stop.retry')}
                   </Button>
                 )}
-                <Link href={routes.home} className="inline-flex h-14 items-center rounded-2xl px-6 text-base font-bold text-ink-2 hover:bg-paper-2 transition-colors">
+                <Link
+                  href={routes.home}
+                  className="inline-flex h-14 items-center rounded-2xl px-6 text-base font-bold text-ink-2 hover:bg-paper-2 transition-colors"
+                >
                   {t('stop.toMap')}
                 </Link>
               </div>
@@ -239,15 +283,33 @@ export function StopPlayer({
       <div className="flex flex-col gap-2 shrink-0">
         {header}
         <div className="flex items-center gap-3 px-1">
-          <Bar value={(i + (revealed ? 1 : 0)) / total} tone="lime" h={10} className="flex-1" label={t('stop.problem', { i: i + 1, n: total })} />
-          <span className="shrink-0 text-sm font-extrabold text-ink-2 tnum">{i + 1} / {total}</span>
+          <Bar
+            value={(i + (revealed ? 1 : 0)) / total}
+            tone="lime"
+            h={10}
+            className="flex-1"
+            label={t('stop.problem', { i: i + 1, n: total })}
+          />
+          <span className="shrink-0 text-sm font-extrabold text-ink-2 tnum">
+            {i + 1} / {total}
+          </span>
         </div>
       </div>
 
       {/* Main Question Box - Tom, tod fontoooor, yamar ch holhiltguigeer baikh bolovch horigdohgui */}
-      <section className="relative flex flex-col justify-center flex-1 my-auto gap-3 py-1 transition-all text-foreground overflow-hidden" aria-label={t('stop.problem', { i: i + 1, n: total })}>
+      <section
+        className="relative flex flex-col justify-center flex-1 my-auto gap-3 py-1 transition-all text-foreground overflow-hidden"
+        aria-label={t('stop.problem', { i: i + 1, n: total })}
+      >
         <div className="relative z-10 text-xl sm:text-2xl md:text-3xl leading-snug text-ink font-bold max-h-[38vh] overflow-hidden pr-1">
-          <QuestionView key={`${round}-${i}`} q={q} value={value} onChange={setValue} revealed={revealed} onSubmit={check} />
+          <QuestionView
+            key={`${round}-${i}`}
+            q={q}
+            value={value}
+            onChange={setValue}
+            revealed={revealed}
+            onSubmit={check}
+          />
         </div>
 
         {/* Hint - Tom, tod text */}
@@ -259,7 +321,13 @@ export function StopPlayer({
 
         {/* Explanation - Tom, tod text */}
         {revealed && (
-          <div role="status" className={cn('relative z-10 flex flex-col gap-2 rounded-2xl p-4 max-h-[24vh] overflow-hidden transition-all duration-300 shadow-sm', correct ? 'bg-sage/90 border border-leaf-2/30' : 'bg-danger-soft/90 border border-danger/30')}>
+          <div
+            role="status"
+            className={cn(
+              'relative z-10 flex flex-col gap-2 rounded-2xl p-4 max-h-[24vh] overflow-hidden transition-all duration-300 shadow-sm',
+              correct ? 'bg-sage/90 border border-leaf-2/30' : 'bg-danger-soft/90 border border-danger/30',
+            )}
+          >
             <p className={cn('text-lg sm:text-xl font-black', correct ? 'text-leaf-2' : 'text-danger')}>
               {correct ? t('stop.correct') : t('stop.wrong')}
               {!correct && (
@@ -278,20 +346,48 @@ export function StopPlayer({
       {/* Footer Navigation Buttons - Tom, darsan baihad amar tovchnuud */}
       <div className="relative z-10 flex items-center justify-between gap-4 pt-2 border-t border-border/20 shrink-0">
         {!revealed ? (
-          <Button variant="ghost" size="lg" className="text-base font-bold px-5 py-2" onClick={() => setHint(true)} disabled={hint}>
+          <Button
+            variant="ghost"
+            size="lg"
+            className="text-base font-bold px-5 py-2"
+            onClick={() => setHint(true)}
+            disabled={hint}
+          >
             {t('stop.hint')}
           </Button>
         ) : (
-          <span className="text-sm font-extrabold text-ink-3 tnum">
-            Зөв: {right}/{answers.length}
-          </span>
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-sm font-extrabold text-ink-3 tnum">
+              Зөв: {right}/{answers.length}
+            </span>
+            {/* a wrong answer goes to Суу with the problem and what the student chose */}
+            {!correct && (
+              <Link
+                href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}
+                className="inline-flex min-h-11 items-center rounded-2xl border border-line bg-paper px-4 text-sm font-bold text-ink hover:bg-paper-2"
+              >
+                {t('stop.askSuu')}
+              </Link>
+            )}
+          </div>
         )}
         {!revealed ? (
-          <Button variant="lime" size="xl" className="text-lg px-8 py-3 rounded-2xl font-black shadow-md" onClick={check} disabled={!value.trim()}>
+          <Button
+            variant="lime"
+            size="xl"
+            className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
+            onClick={check}
+            disabled={!value.trim()}
+          >
             {t('stop.check')}
           </Button>
         ) : (
-          <Button variant="lime" size="xl" className="text-lg px-8 py-3 rounded-2xl font-black shadow-md" onClick={next}>
+          <Button
+            variant="lime"
+            size="xl"
+            className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
+            onClick={next}
+          >
             {i < total - 1 ? t('stop.next') : t('stop.finish')}
           </Button>
         )}

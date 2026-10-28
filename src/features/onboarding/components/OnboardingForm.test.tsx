@@ -2,7 +2,11 @@ import { expect, mock, test } from 'bun:test';
 
 const replace = mock(() => {});
 const save = mock(async () => ({ ok: true, demo: true }));
-mock.module('next/navigation', () => ({ useRouter: () => ({ replace, refresh: () => {} }) }));
+// Bun keeps module mocks across test files, so mock everything other files' components import from here too.
+mock.module('next/navigation', () => ({
+  useRouter: () => ({ replace, refresh: () => {}, push: () => {}, back: () => {} }),
+  usePathname: () => '/onboarding',
+}));
 mock.module('../actions', () => ({ completeOnboarding: save }));
 const { render, screen, fireEvent, waitFor } = await import('@/test/render');
 const { OnboardingForm } = await import('./OnboardingForm');

@@ -1,0 +1,193 @@
+{
+  "title": "Admin",
+  "tabs": {
+    "label": "Admin sections",
+    "overview": "Overview",
+    "users": "Users",
+    "reports": "Reports",
+    "feedback": "Suu feedback",
+    "content": "Add content",
+    "questions": "Review questions",
+    "flashcards": "Review cards"
+  },
+  "notice": {
+    "demo_mode": "Supabase isn't connected, so there is no admin data. Add the Supabase keys to .env.local.",
+    "not_installed": "The admin functions aren't in the database yet. Run supabase/migrations/0017_admin.sql in the Supabase SQL Editor.",
+    "forbidden": "This section is for admins only.",
+    "database_error": "Couldn't load the data. Try again."
+  },
+  "overview": {
+    "title": "Admin overview",
+    "lead": "Students, activity and everything waiting for review, in one place.",
+    "stats": {
+      "users": "Students",
+      "new7d": "New (7 days)",
+      "active1d": "Active (today)",
+      "active7d": "Active (7 days)",
+      "answers7d": "Answers (7 days)",
+      "mocks": "Finished mock tests",
+      "ai7d": "Suu requests (7 days)",
+      "xp": "Total XP"
+    },
+    "sub": {
+      "guests": "{n} demo guests",
+      "admins": "{n} admins",
+      "onboarded": "{n} finished onboarding"
+    },
+    "chart": {
+      "title": "Last 14 days",
+      "signups": "Sign-ups",
+      "active": "Active students",
+      "day": "{day}: {signups} sign-ups, {active} active"
+    },
+    "todo": {
+      "title": "To review",
+      "reports": "Open reports",
+      "feedback": "New Suu feedback",
+      "review": "Unreviewed questions",
+      "open": "Open",
+      "none": "All caught up 🎉"
+    }
+  },
+  "users": {
+    "title": "Users",
+    "lead": "Find students, grant admin access, send gems.",
+    "search": "Search by name, username or email",
+    "searchButton": "Search",
+    "count": "{n} users",
+    "empty": "No users found",
+    "guest": "Demo guest",
+    "you": "You",
+    "role": {
+      "admin": "Admin",
+      "student": "Student"
+    },
+    "joined": "Joined {date}",
+    "lastSeen": "Last sign-in {date}",
+    "never": "never",
+    "notOnboarded": "Not onboarded",
+    "reports": "{n} reports",
+    "makeAdmin": "Make admin",
+    "removeAdmin": "Remove admin",
+    "confirmAdmin": "Give {name} admin access? They will be able to see and manage every student.",
+    "confirmRemove": "Remove admin access from {name}?",
+    "roleSaved": "Role updated",
+    "selfDemote": "You can't remove your own admin access",
+    "gems": {
+      "button": "Gems",
+      "title": "Send gems",
+      "amount": "Amount (-1000 … 1000)",
+      "note": "Note (optional)",
+      "give": "Send",
+      "cancel": "Cancel",
+      "done": "Sent {n} gems",
+      "invalid": "Enter a whole number from -1000 to 1000, not 0"
+    }
+  },
+  "reports": {
+    "title": "Reports",
+    "lead": "Reports students sent about each other.",
+    "open": "Open",
+    "all": "All",
+    "empty": "No open reports",
+    "emptyAll": "No reports yet",
+    "reporter": "Reported by",
+    "target": "Reported",
+    "unknown": "No name",
+    "against": "{n} open reports against this student",
+    "resolve": "Resolve",
+    "reopen": "Reopen",
+    "resolved": "Resolved",
+    "saved": "Saved",
+    "context": {
+      "profile": "Profile",
+      "friend": "Friend",
+      "leaderboard": "Leaderboard",
+      "duel": "Duel",
+      "group": "Group test"
+    },
+    "reason": {
+      "name": "Inappropriate name",
+      "avatar": "Inappropriate avatar",
+      "cheating": "Cheating",
+      "harassment": "Harassment",
+      "other": "Other"
+    }
+  },
+  "feedback": {
+    "title": "Suu feedback",
+    "lead": "Students' 👍/👎 ratings. Only approved rows go into Suu's training data.",
+    "filter": {
+      "new": "New",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "all": "All"
+    },
+    "empty": "No feedback here",
+    "anonymous": "Anonymous student",
+    "prompt": "Question",
+    "reply": "Suu's reply",
+    "correction": "Student's correction",
+    "note": "Reviewer note",
+    "notePlaceholder": "Why it was approved / rejected (optional)",
+    "approve": "Approve",
+    "reject": "Reject",
+    "reset": "Back to new",
+    "saved": "Saved"
+  },
+  "content": {
+    "title": "Add content",
+    "lead": "Add SAT questions to the question bank and word cards to Flashcards. Students see them right away.",
+    "domains": {
+      "alg": "Algebra",
+      "adv": "Advanced Math",
+      "psda": "Problem-Solving & Data",
+      "geo": "Geometry & Trig"
+    },
+    "sat": {
+      "title": "Add an SAT question",
+      "lead": "Goes into the question bank (/bank).",
+      "domain": "Domain",
+      "skill": "Skill",
+      "difficulty": "Difficulty",
+      "level": {
+        "1": "Easy",
+        "2": "Medium",
+        "3": "Hard"
+      },
+      "format": "Format",
+      "mcq": "Multiple choice",
+      "spr": "Grid-in",
+      "prompt": "Question",
+      "choices": "Choices",
+      "choice": "Choice {letter}",
+      "correct": "{letter} is correct",
+      "pickCorrect": "Pick the circle next to the correct choice.",
+      "accepted": "Correct answer (separate several with |)",
+      "explanation": "Explanation (optional)",
+      "submit": "Add question",
+      "added": "Question added",
+      "list": "Added SAT questions ({n})"
+    },
+    "card": {
+      "title": "New word card",
+      "lead": "Shows up in Flashcards under «More words».",
+      "front": "English word",
+      "back": "Mongolian meaning",
+      "ex": "Example (optional, $…$ and **…** work)",
+      "hook": "Memory hook (optional)",
+      "submit": "Add card",
+      "added": "Card added",
+      "list": "Added cards ({n})"
+    },
+    "empty": "Nothing yet",
+    "delete": "Delete",
+    "deleted": "Deleted",
+    "confirmDelete": "Delete «{name}»? This can't be undone."
+  },
+  "errors": {
+    "failed": "Couldn't save",
+    "invalid_input": "Invalid input",
+    "not_found": "Not found — refresh the page"
+  }
+}

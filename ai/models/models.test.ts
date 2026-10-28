@@ -9,6 +9,9 @@ const MODELS = readdirSync(import.meta.dir, { withFileTypes: true })
   .filter((d) => d.isDirectory())
   .map((d) => join(import.meta.dir, d.name));
 
+/** File text with LF endings: a Windows checkout (core.autocrlf) turns them into CRLF. */
+const readText = async (path: string) => (await Bun.file(path).text()).replaceAll('\r\n', '\n');
+
 function readEnv(text: string) {
   const env: Record<string, string> = {};
   for (const line of text.split('\n')) {
@@ -25,7 +28,7 @@ test('there is at least one model', () => {
 for (const dir of MODELS) {
   describe(dir.split('/').pop() ?? dir, () => {
     test('build.env pins everything build-model.sh needs', async () => {
-      const env = readEnv(await Bun.file(join(dir, 'build.env')).text());
+      const env = readEnv(await readText(join(dir, 'build.env')));
       expect(env.BASE_URL).toStartWith('https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/');
       expect(env.BASE_SHA256).toMatch(/^[0-9a-f]{64}$/);
       expect(env.ADAPTER_SHA256).toMatch(/^[0-9a-f]{64}$/);
@@ -35,13 +38,13 @@ for (const dir of MODELS) {
     });
 
     test('the adapter in git is the exact file that was tested', async () => {
-      const env = readEnv(await Bun.file(join(dir, 'build.env')).text());
+      const env = readEnv(await readText(join(dir, 'build.env')));
       const bytes = await Bun.file(join(dir, env.ADAPTER)).arrayBuffer();
       expect(createHash('sha256').update(new Uint8Array(bytes)).digest('hex')).toBe(env.ADAPTER_SHA256);
     });
 
     test('Modelfile loads the locally built suu.gguf with the Qwen chat template and the chat prompt', async () => {
-      const mf = await Bun.file(join(dir, 'Modelfile')).text();
+      const mf = await readText(join(dir, 'Modelfile'));
       expect(mf.split('\n')[0]).toBe('FROM ./suu.gguf');
       expect(mf).not.toContain('ADAPTER');
       expect(mf).toContain('<|im_start|>');

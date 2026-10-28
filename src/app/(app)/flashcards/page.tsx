@@ -1,5 +1,5 @@
 import { FlashcardsView } from '@/features/flashcards/components/FlashcardsView';
-import { listFlashStates, listReviewedCards } from '@/features/flashcards/queries';
+import { listCustomCards, listFlashStates, listReviewedCards } from '@/features/flashcards/queries';
 import { frontier } from '@/features/roadmap/lib/unlock';
 import { getRoadmap } from '@/features/roadmap/queries';
 import { getT } from '@/lib/i18n';
@@ -16,10 +16,11 @@ export default async function FlashcardsPage({
   const sp = await searchParams;
   const session = await getSession().catch(() => null);
   const userId = session?.kind === 'user' ? session.userId : null;
-  const [states, roadmap, reviewed] = await Promise.all([
+  const [states, roadmap, reviewed, extra] = await Promise.all([
     userId ? listFlashStates(userId).catch(() => ({})) : Promise.resolve({}),
     userId ? getRoadmap(userId).catch(() => null) : Promise.resolve(null),
     listReviewedCards().catch(() => []),
+    listCustomCards(getT('flashcards')('customGroup')).catch(() => []),
   ]);
   const topic = Number(sp.topic);
   return (
@@ -28,6 +29,7 @@ export default async function FlashcardsPage({
       serverStates={states}
       currentStop={roadmap?.placement ? frontier(roadmap.stops) : null}
       reviewed={reviewed}
+      extra={extra}
       initialTopic={Number.isInteger(topic) && topic >= 1 && topic <= 26 ? topic : undefined}
     />
   );
