@@ -66,15 +66,24 @@ export const RoadmapQuestionSchema = z
 
 export type RoadmapQuestion = z.infer<typeof RoadmapQuestionSchema>;
 
+export const IntroCardSchema = z.object({
+  title: z.string().min(1),
+  body: z.string().min(1),
+});
+
 export const IntroScreenSchema = z.object({
   title: z.string().min(2),
+  subtitle: z.string().optional(),
   /** Rich text: $…$ TeX and **bold**. */
-  body: z.string().min(10),
-  kind: z.enum(['idea', 'example', 'desmos']),
+  body: z.string().optional(),
+  kind: z.enum(['idea', 'example', 'desmos']).optional(),
+  cards: z.array(IntroCardSchema).optional(),
   /** A self-check solution revealed only when the learner asks. */
   checkAnswer: z.string().min(10).optional(),
 });
+
 export const IntrosSchema = z.record(z.string().regex(/^\d+$/), z.array(IntroScreenSchema).min(2).max(4));
+export type IntroCard = z.infer<typeof IntroCardSchema>;
 export type IntroScreen = z.infer<typeof IntroScreenSchema>;
 
 /** Validate a whole bank; returns readable problems (empty = valid). */
