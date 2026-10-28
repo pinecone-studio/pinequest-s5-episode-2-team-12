@@ -3,7 +3,7 @@ import { routes } from './routes';
 
 export type NavItem = { key: string; href: string; section: string };
 export type NavGroup = {
-  key: 'main' | 'materials' | 'me';
+  key: 'main' | 'materials' | 'me' | 'admin';
   items: NavItem[];
   /** Folded under its title; opens on click. */
   collapsible?: boolean;
@@ -28,6 +28,12 @@ export const NAV: NavGroup[] = [
     items: [{ key: 'settings', href: routes.settings, section: 'I' }],
   },
 ];
+
+/** Shown below NAV only to admins (profiles.role = 'admin'); /admin itself checks the role again. */
+export const ADMIN_NAV: NavGroup = {
+  key: 'admin',
+  items: [{ key: 'admin', href: routes.admin, section: 'admin' }],
+};
 
 /** Active when the path is the item or below it (/cards/ops → cards). Home is active only on itself. */
 export function isActive(pathname: string, href: string): boolean {

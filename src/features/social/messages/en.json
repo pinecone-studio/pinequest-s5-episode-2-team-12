@@ -3,6 +3,7 @@
     "title": "Friends & duels",
     "lead": "Invite friends, challenge them, and take a full test together.",
     "demo": "Demo mode: these friends are sample «Demo friends», not real people.",
+    "unavailable": "Couldn't load your friends right now. Please try again in a moment.",
     "demoFriend": "Demo friend",
     "code": "Your friend code",
     "copy": "Copy link",

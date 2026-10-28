@@ -24,6 +24,8 @@ export type Profile = {
   /** Home aimag (lib/aimags.ts), for the aimag leaderboard. */
   aimag?: string;
   school?: string;
+  /** Only an admin (or the service role) can change it — see protect_profile_role in migration 0006. */
+  role?: 'student' | 'admin';
 };
 
 export type TutorMode = 'hint' | 'explain' | 'desmos' | 'similar' | 'translate';

@@ -1,6 +1,12 @@
 // /flashcards reads for a signed-in student, and which drafted cards an admin approved.
 import { getDb } from '@/lib/supabase/server';
-import { FLASHCARDS, type FlashState } from './lib/decks';
+import {
+  type CustomCardRow,
+  customFlashcard,
+  FLASHCARDS,
+  type FlashCard,
+  type FlashState,
+} from './lib/decks';
 
 type Row = {
   card_id: string;
@@ -24,7 +30,9 @@ export async function listFlashStates(userId: string): Promise<Record<string, Fl
   const out: Record<string, FlashState> = {};
   for (const r of (data ?? []) as Row[]) {
     // the old /cards screens stored bare card ids («sum»); /flashcards keys are «deck/card»
-    const key = r.card_id.includes('/') ? r.card_id : FLASHCARDS.find((c) => c.id === r.card_id)?.key;
+    const key = r.card_id.includes('/')
+      ? r.card_id
+      : FLASHCARDS.find((c) => c.id === r.card_id)?.key;
     if (!key || out[key]) continue;
     const due = Date.parse(r.due_at);
     out[key] =
@@ -34,6 +42,19 @@ export async function listFlashStates(userId: string): Promise<Record<string, Fl
     if (r.first_seen_at) out[key].first = Date.parse(r.first_seen_at);
   }
   return out;
+}
+
+/** Admin-written word cards (custom_cards), oldest first so new ones join the end of the deck. */
+export async function listCustomCards(group: string): Promise<FlashCard[]> {
+  const db = await getDb();
+  if (!db) return [];
+  const { data, error } = await db
+    .from('custom_cards')
+    .select('id, front, back, ex, hook')
+    .order('created_at')
+    .limit(500);
+  if (error) return [];
+  return ((data ?? []) as CustomCardRow[]).map((r) => customFlashcard(r, group));
 }
 
 export async function listReviewedCards(): Promise<string[]> {

@@ -291,7 +291,7 @@ describe('StopPlayer (demo mode)', () => {
 
     // skipped placement → «ok» mastery → 8 problems
     for (let n = 1; n <= 8; n++) {
-      await screen.findByText(`Бодлого ${n} / 8`, { selector: 'span' });
+      await screen.findByRole('region', { name: `Бодлого ${n} / 8` });
       fireEvent.click(screen.getByRole('radio', { name: /^A/ }));
       fireEvent.click(screen.getByRole('button', { name: 'Шалгах' }));
       expect(screen.getByText('Зөв!')).toBeTruthy();
@@ -311,7 +311,7 @@ describe('StopPlayer (demo mode)', () => {
     render(
       <StopPlayer no={1} testOut={false} pool={pool} intro={[]} demo server={null} serverHistory={[]} />,
     );
-    await screen.findByText('Бодлого 1 / 8', { selector: 'span' });
+    await screen.findByRole('region', { name: 'Бодлого 1 / 8' });
     fireEvent.click(screen.getByRole('radio', { name: /^B/ }));
     fireEvent.click(screen.getByRole('button', { name: 'Шалгах' }));
     expect(screen.getByText('Буруу')).toBeTruthy();

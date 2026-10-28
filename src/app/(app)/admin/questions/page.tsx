@@ -15,11 +15,19 @@ export default async function AdminQuestionsPage() {
   const who = await adminUserId();
   let questions: RoadmapQuestion[] = [...AUTHORED, ...PLACEMENT];
   if ('id' in who) {
+    // stored rows (edited / approved) replace their bundled copy; questions never saved stay as bundled drafts
     const db = await getDb();
-    const { data } = (await db?.from(getQuestionsTable()).select('content').not('topic_id', 'is', null)) ?? {
-      data: null,
-    };
-    if (data?.length) questions = data.map((r) => r.content as RoadmapQuestion);
+    const { data } = (await db
+      ?.from(getQuestionsTable())
+      .select('content')
+      .in(
+        'id',
+        questions.map((q) => q.id),
+      )) ?? { data: null };
+    const saved = new Map(
+      (data ?? []).map((r) => [(r.content as RoadmapQuestion).id, r.content as RoadmapQuestion]),
+    );
+    questions = questions.map((q) => saved.get(q.id) ?? q);
   }
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-5">

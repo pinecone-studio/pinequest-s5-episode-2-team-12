@@ -112,7 +112,18 @@ export function FriendsView({
   const update = (fn: (s: LocalSocial) => LocalSocial) => local && saveSocial(fn(local));
   const done = () => (demo ? undefined : router.refresh());
 
-  if (!view) return <p className="text-ink-3">…</p>;
+  // demo: localStorage is read after mount. Signed in: the server couldn't load the overview (see socialOverview).
+  if (!view)
+    return demo ? (
+      <p className="text-ink-3">…</p>
+    ) : (
+      <div className="workspace-page max-w-5xl">
+        <PageHeader title={t('friends.title')} description={t('friends.lead')} icon="friends" />
+        <p role="alert" className="soft-card p-6 text-center text-ink-2">
+          {t('friends.unavailable')}
+        </p>
+      </div>
+    );
 
   const add = async () => {
     const parsed = parseFriendCode(code);

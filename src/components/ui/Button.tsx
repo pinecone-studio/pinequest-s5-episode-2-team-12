@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'dark' | 'soft' | 'danger' | 'lime' | 'teal';
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
 
 /** [face, extruded edge, text] — all tokens, so dark/light switch automatically. */
 const FACE: Record<Exclude<ButtonVariant, 'ghost'>, [string, string, string]> = {
@@ -23,6 +23,8 @@ const SIZE: Record<ButtonSize, string> = {
   sm: 'h-9 px-4 text-[13px] rounded-xl gap-1.5',
   md: 'h-11 px-5 text-[14px] rounded-2xl gap-2',
   lg: 'h-[52px] px-7 text-[15px] rounded-2xl gap-2.5',
+  /** The roadmap stop's main call to action. */
+  xl: 'h-14 px-8 text-[16px] rounded-2xl gap-3',
 };
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {

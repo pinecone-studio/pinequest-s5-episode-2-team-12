@@ -19,6 +19,7 @@ import {
   counts,
   type DeckId,
   FLASHCARDS,
+  type FlashCard,
   type FlashState,
   matches,
   queue,
@@ -69,12 +70,15 @@ export function FlashcardsView({
   serverStates,
   currentStop: serverStop,
   reviewed,
+  extra = [],
   initialTopic,
 }: {
   demo: boolean;
   serverStates: Record<string, FlashState>;
   currentStop: number | null;
   reviewed: string[];
+  /** Admin-written word cards (custom_cards), after the bundled decks. */
+  extra?: FlashCard[];
   initialTopic?: number;
 }) {
   const t = useT('flashcards');
@@ -102,13 +106,13 @@ export function FlashcardsView({
 
   const cards = useMemo(
     () =>
-      FLASHCARDS.filter((item) =>
+      [...FLASHCARDS, ...extra].filter((item) =>
         matches(item, {
           deck: deck === 'all' ? undefined : deck,
           topicId,
         }),
       ),
-    [deck, topicId],
+    [deck, topicId, extra],
   );
 
   const q = useMemo(
@@ -329,7 +333,14 @@ export function FlashcardsView({
         <section className="space-y-6">
           <div
             className="relative h-[340px] w-full cursor-pointer [perspective:1000px] sm:h-[380px]"
+            role="button"
+            tabIndex={0}
+            aria-pressed={flipped}
             onClick={() => setFlipped((previous) => !previous)}
+            // Space already flips through the page-wide shortcut above
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') setFlipped((previous) => !previous);
+            }}
           >
             <div
               className={cn(

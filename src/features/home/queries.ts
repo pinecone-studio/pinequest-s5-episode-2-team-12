@@ -31,6 +31,7 @@ export type ProfileRow = {
   avatar_id?: string | null;
   aimag?: string | null;
   school?: string | null;
+  role?: Profile['role'] | null;
 };
 
 /** profiles row (snake_case, nullable) → Profile with the demo defaults filled in. */
@@ -51,6 +52,7 @@ export function profileFromRow(r: ProfileRow): Profile {
     avatarId: r.avatar_id ?? undefined,
     aimag: r.aimag ?? undefined,
     school: r.school ?? undefined,
+    role: r.role ?? undefined,
   };
 }
 
