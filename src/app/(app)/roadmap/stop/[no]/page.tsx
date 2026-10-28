@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import Link from 'next/link'; // <-- 1. Link импортлох
 import { StopPlayer } from '@/features/roadmap/components/StopPlayer';
 import { INTROS } from '@/features/roadmap/content/bank';
 import { currentUserId, getHistory, getRoadmap, listStopQuestions } from '@/features/roadmap/queries';
@@ -7,8 +8,6 @@ import { getT } from '@/lib/i18n';
 
 export const metadata = { title: getT('roadmap')('pages.stop.title') };
 
-// Section A · one roadmap stop. ?testout=1 starts «Шалгалтаар давах» (strong mastery only); ?intro=1 opens
-// the short lesson first («Товч хичээл үзэх» on the stop panel).
 export default async function StopPage({
   params,
   searchParams,
@@ -25,16 +24,33 @@ export default async function StopPage({
     userId ? getRoadmap(userId) : Promise.resolve(null),
     userId ? getHistory(userId, no) : Promise.resolve([]),
   ]);
+
   return (
-    <StopPlayer
-      no={no}
-      testOut={sp.testout === '1'}
-      forceIntro={sp.intro === '1'}
-      pool={pool}
-      intro={INTROS[no] ?? []}
-      demo={!userId}
-      server={server}
-      serverHistory={history}
-    />
+    <div className="relative min-h-screen bg-background p-4 md:p-6">
+      {/* 2. Буцах товч (Байрлалыг өөрийн UI дизайнтайгаа тааруулан өөрчилж болно) */}
+      <div className="max-w-5xl mx-auto mb-4">
+        <Link
+          href="/roadmap" // Roadmap хуудасны руут эсвэл өмнөх хуудас руу чиглүүлэх зам
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors border border-border/40"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Буцах
+        </Link>
+      </div>
+
+      {/* 3. Үндсэн StopPlayer компонент */}
+      <StopPlayer
+        no={no}
+        testOut={sp.testout === '1'}
+        forceIntro={sp.intro === '1'}
+        pool={pool}
+        intro={INTROS[no] ?? []}
+        demo={!userId}
+        server={server}
+        serverHistory={history}
+      />
+    </div>
   );
 }

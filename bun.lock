@@ -7,7 +7,7 @@
       "dependencies": {
         "@google/genai": "^1.20.0",
         "@supabase/ssr": "^0.7.0",
-        "@supabase/supabase-js": "^2.57.0",
+        "@supabase/supabase-js": "^2.118.0",
         "katex": "^0.16.22",
         "next": "^16.4.2",
         "react": "^19.3.1",
