@@ -158,3 +158,31 @@ test('drawRows draws expressions, tables and a regression', () => {
     { id: 'r1reg', latex: 'y_1\\sim mx_1+b' },
   ]);
 });
+
+describe('panelView (what the chat may know about the panel)', () => {
+  test('only visible steps, Desmos rows as text, tables summarised', async () => {
+    const { panelView } = await import('./desmos-panel');
+    const lesson = {
+      id: 'x',
+      title: 'Огтлолцол',
+      question: 'q',
+      answer: '2',
+      check: '',
+      match: [],
+      steps: [
+        { text: 'Хоёр шулуун', desmos: [{ latex: 'y=2x+1' }, { latex: 'y=-x+7' }] },
+        {
+          text: 'Хүснэгт',
+          desmos: [{ type: 'table' as const, columns: [{ latex: 'x_1', values: ['1', '2'] }] }],
+        },
+        { text: 'Хариу: x=2', desmos: [{ latex: '(2,5)' }] },
+      ],
+    };
+    const v = panelView(lesson, 2, 5);
+    expect(v.steps).toHaveLength(2);
+    expect(v.step).toBe(1);
+    expect(v.steps[0].latex).toEqual(['y=2x+1', 'y=-x+7']);
+    expect(v.steps[1].latex).toEqual(['table(x_1=[1,2])']);
+    expect(JSON.stringify(v)).not.toContain('(2,5)');
+  });
+});

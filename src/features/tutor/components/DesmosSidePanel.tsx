@@ -12,7 +12,7 @@ import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { type Calc, drawLesson, drawRows, loadDesmos } from '../lib/desmos-calc';
 import type { DesmosAiLesson } from '../lib/desmos-lessons';
-import { type DesmosPanelInput, visibleSteps } from '../lib/desmos-panel';
+import { type DesmosPanelInput, panelView, visibleSteps } from '../lib/desmos-panel';
 
 type LessonReply =
   | { lesson: DesmosAiLesson; source: 'sample' | 'model' }
@@ -28,6 +28,8 @@ type Props = {
   fetchImpl?: typeof fetch;
   /** Fills a column of its parent on wide screens (the tutor chat card) instead of being its own sticky card. */
   inset?: boolean;
+  /** Tells the chat which steps the student sees (never the locked one), so it can talk about the same graph. */
+  onView?: (view: ReturnType<typeof panelView> | null) => void;
 };
 
 /** The cat button that opens the panel. */
@@ -70,7 +72,7 @@ export function DesmosCatButton({
   );
 }
 
-export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl, inset }: Props) {
+export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl, inset, onView }: Props) {
   const t = useT('tutor');
   const [lesson, setLesson] = useState<DesmosAiLesson | null>(null);
   const [source, setSource] = useState<'sample' | 'model' | null>(null);
@@ -144,6 +146,13 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
     else if (!lesson && !thinking && input.rows?.length) drawRows(calc.current, input.rows);
     else calc.current.setBlank();
   }, [graph, lesson, shown, step, thinking, input.rows]);
+
+  const viewRef = useRef(onView);
+  viewRef.current = onView;
+  useEffect(() => {
+    viewRef.current?.(lesson && shown > 0 ? panelView(lesson, shown, step) : null);
+  }, [lesson, shown, step]);
+  useEffect(() => () => viewRef.current?.(null), []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
