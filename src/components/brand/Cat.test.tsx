@@ -1,26 +1,20 @@
 import { describe, expect, test } from 'bun:test';
 import { render } from '@/test/render';
-import { CatHead, type CatMood, CatSitting } from './Cat';
+import { CatHead, type CatMood, CatPeek, CatSitting, CatSleeping } from './Cat';
 
 const MOODS: CatMood[] = ['idle', 'happy', 'think', 'wow', 'sleep', 'wink', 'focus'];
 
-describe('CatHead', () => {
-  test.each(MOODS)('renders mood %s with an accessible label', (mood) => {
-    const { getByRole } = render(<CatHead mood={mood} size={80} />);
-    const svg = getByRole('img', { name: 'Суу муур' });
-    expect(svg.getAttribute('width')).toBe('80');
+describe('current Suu artwork', () => {
+  test.each(MOODS)('legacy mood %s uses the new logo cat', (mood) => {
+    const { container, getByRole } = render(<CatHead mood={mood} size={80} />);
+    expect(getByRole('img', { name: 'Суу муур' })).toBeTruthy();
+    expect(container.querySelector('svg')?.getAttribute('width')).toBe('80');
+    expect(container.querySelector('image')?.getAttribute('href')).toBe('/brand/suu-logo-head.png');
+    expect(container.querySelector('path')).toBeNull();
   });
 
-  test('happy and sleep draw arcs instead of open eyes', () => {
-    const open = render(<CatHead mood="idle" />).container.querySelectorAll('.cat-eye').length;
-    const happy = render(<CatHead mood="happy" />).container.querySelectorAll('.cat-eye').length;
-    expect(open).toBe(2);
-    expect(happy).toBe(0);
-  });
-
-  test('CatSitting can hide the scarf', () => {
-    const withScarf = render(<CatSitting />).container.querySelectorAll('path').length;
-    const without = render(<CatSitting scarf={false} />).container.querySelectorAll('path').length;
-    expect(withScarf).toBeGreaterThan(without);
+  test.each([CatSitting, CatPeek, CatSleeping])('legacy illustration uses the current mascot', (Cat) => {
+    const { container } = render(<Cat size={120} />);
+    expect(container.querySelector('image')?.getAttribute('href')).toBe('/brand/suu-logo-head.png');
   });
 });

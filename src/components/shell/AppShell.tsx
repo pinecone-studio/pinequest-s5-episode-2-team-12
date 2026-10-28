@@ -420,17 +420,12 @@ export function AppShell({
             <div
               className="hidden md:flex"
               style={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                marginInline: 'auto',
-                width: 'min(640px, calc(100% - 600px))',
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
                 alignItems: 'center',
                 whiteSpace: 'nowrap',
                 pointerEvents: 'none',
                 color: w.equipped.skin === 'skin-night' ? '#fff' : 'var(--c-leaf-ink)',
-                fontSize: 'clamp(12px, 1.1vw, 16px)',
+                fontSize: 'clamp(16px, 1.4vw, 20px)',
                 fontFamily: 'var(--font-oranienbaum), Georgia, serif',
                 fontWeight: 400,
                 letterSpacing: '.05em',

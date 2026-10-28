@@ -30,6 +30,7 @@ type Calc = {
   setExpression: (e: Record<string, unknown>) => void;
   setMathBounds: (b: { left: number; right: number; bottom: number; top: number }) => void;
   destroy: () => void;
+  resize?: () => void;
 };
 type DesmosGlobal = { GraphingCalculator: (el: HTMLElement, opts?: Record<string, unknown>) => Calc };
 declare global {
@@ -39,7 +40,7 @@ declare global {
 }
 
 /** Loads the Desmos script once (tries a second version if the first fails). */
-function loadDesmos(): Promise<DesmosGlobal> {
+export function loadDesmos(): Promise<DesmosGlobal> {
   if (window.Desmos) return Promise.resolve(window.Desmos);
   const tryLoad = (i: number): Promise<DesmosGlobal> =>
     new Promise((resolve, reject) => {

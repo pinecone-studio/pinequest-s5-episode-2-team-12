@@ -1,9 +1,11 @@
 'use client';
+import './placement.css';
 // «Түвшин тогтоох тест»: intro → module 1 (13 medium) → module 2 (13 easy or hard, routed by module 1)
 // → save → results. One 35-minute clock for both modules; when it runs out the test is submitted as is.
 // No feedback during the test, like the real SAT.
 import { useRouter } from 'next/navigation';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { Logo } from '@/components/brand';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
@@ -13,6 +15,7 @@ import { ROADMAP } from '../config';
 import { isCorrect } from '../lib/grade';
 import { module1, module2, routeModule2 } from '../lib/placement';
 import type { SubmittedAnswer } from '../lib/submit';
+import { PlacementCalculator } from './PlacementCalculator';
 import { QuestionView } from './QuestionView';
 import { savePlacement } from './store';
 
@@ -48,6 +51,9 @@ export function PlacementFlow({ items, demo }: { items: Question[]; demo: boolea
   const [values, setValues] = useState<Record<string, string>>({});
   const [spent, setSpent] = useState<Record<string, number>>({});
   const [confirm, setConfirm] = useState(false);
+  const [calculatorOpen, setCalculatorOpen] = useState(false);
+  const [calculatorLoaded, setCalculatorLoaded] = useState(false);
+  const [marked, setMarked] = useState<Record<string, boolean>>({});
   const [left, setLeft] = useState(ROADMAP.placement.minutes * 60);
   const [error, setError] = useState<string | null>(null);
   const deadline = useRef(0);
@@ -198,7 +204,7 @@ export function PlacementFlow({ items, demo }: { items: Question[]; demo: boolea
   };
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-4">
+    <div className="sat-placement mx-auto flex flex-col gap-4">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
         <div>
           <p className="eyebrow">{t('placement.intro.title')}</p>
@@ -211,15 +217,22 @@ export function PlacementFlow({ items, demo }: { items: Question[]; demo: boolea
             )}
           </h1>
         </div>
+        <div className="sat-header-brand">
+          <Logo />
+        </div>
         <div className="flex items-center gap-2">
-          <a
-            href="https://www.desmos.com/calculator?lang=mn"
-            target="_blank"
-            rel="noreferrer"
+          <button
+            type="button"
+            aria-expanded={calculatorOpen}
+            aria-controls={`${uid}-calculator`}
+            onClick={() => {
+              setCalculatorLoaded(true);
+              setCalculatorOpen((open) => !open);
+            }}
             className="inline-flex h-11 items-center rounded-2xl border border-line px-3 text-sm font-bold text-ink-2"
           >
             {t('placement.desmos')}
-          </a>
+          </button>
           <p
             className={cn(
               'rounded-2xl px-3 py-2 font-mono text-lg font-bold tnum',
@@ -233,76 +246,110 @@ export function PlacementFlow({ items, demo }: { items: Question[]; demo: boolea
         </div>
       </header>
 
-      <nav
-        aria-label={t('placement.module', { n: phase === 'm1' ? 1 : 2 })}
-        className="flex flex-wrap gap-1.5"
-      >
-        {qs.map((x, j) => (
-          <button
-            key={x.id}
-            type="button"
-            onClick={() => go(j)}
-            aria-current={j === i ? 'step' : undefined}
-            aria-label={`${t('placement.question', { i: j + 1, n: qs.length })}${values[x.id] ? ' ✓' : ''}`}
-            className={cn(
-              'grid size-11 place-items-center rounded-xl border-[1.5px] text-sm font-bold tnum',
-              j === i ? 'border-leaf text-ink' : 'border-line text-ink-2',
-              values[x.id] && 'bg-sage',
-            )}
+      <div className="sat-test-layout" data-calculator={calculatorOpen ? 'open' : 'closed'}>
+        {calculatorLoaded && (
+          <section
+            id={`${uid}-calculator`}
+            aria-label="Desmos"
+            hidden={!calculatorOpen}
+            className="sat-calculator"
           >
-            {j + 1}
-          </button>
-        ))}
-      </nav>
-
-      <section
-        className="soft-card flex flex-col gap-5 p-5 sm:p-7"
-        aria-label={t('placement.question', { i: i + 1, n: qs.length })}
-      >
-        <p className="text-[13px] font-semibold text-ink-3 tnum">
-          {t('placement.question', { i: i + 1, n: qs.length })}
-        </p>
-        <QuestionView
-          key={q.id}
-          q={q}
-          value={values[q.id] ?? ''}
-          onChange={(v) => setValues((s) => ({ ...s, [q.id]: v }))}
-          placeholder={t('placement.answerPlaceholder')}
-        />
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <Button variant="ghost" onClick={() => go(Math.max(0, i - 1))} disabled={i === 0}>
-            {t('placement.prev')}
-          </Button>
-          {i < qs.length - 1 ? (
-            <Button variant="lime" onClick={() => go(i + 1)}>
-              {t('placement.next')}
-            </Button>
-          ) : (
-            <Button variant="lime" onClick={() => (unanswered ? setConfirm(true) : finishModule())}>
-              {phase === 'm1' ? t('placement.finishModule') : t('placement.finishTest')}
-            </Button>
-          )}
-        </div>
-        {confirm && (
-          <div
-            role="alertdialog"
-            aria-labelledby={`${uid}-confirm`}
-            className="rounded-2xl bg-amber-soft p-4"
-          >
-            <p id={`${uid}-confirm`} className="font-semibold text-amber">
-              {t('placement.unanswered', { n: unanswered })}
-            </p>
-            <div className="mt-3 flex gap-2">
-              <Button variant="primary" size="sm" onClick={finishModule}>
-                {t('placement.confirm')}
-              </Button>
-              <Button variant="ghost" size="sm" onClick={() => setConfirm(false)}>
-                {t('placement.cancel')}
-              </Button>
+            <div className="sat-calculator-bar">
+              <span>Calculator</span>
+              <button
+                type="button"
+                aria-label={t('placement.closeCalculator')}
+                onClick={() => setCalculatorOpen(false)}
+                className="rounded-xl px-3 py-2"
+              >
+                ✕
+              </button>
             </div>
-          </div>
+            <PlacementCalculator />
+          </section>
         )}
-      </section>
+
+        <div className="sat-question-column">
+          <nav
+            aria-label={t('placement.module', { n: phase === 'm1' ? 1 : 2 })}
+            className="sat-question-nav flex flex-wrap gap-1.5"
+          >
+            {qs.map((x, j) => (
+              <button
+                key={x.id}
+                type="button"
+                onClick={() => go(j)}
+                aria-current={j === i ? 'step' : undefined}
+                aria-label={`${t('placement.question', { i: j + 1, n: qs.length })}${values[x.id] ? ' ✓' : ''}`}
+                className={cn(
+                  'grid size-11 place-items-center rounded-xl border-[1.5px] text-sm font-bold tnum',
+                  j === i ? 'border-leaf text-ink' : 'border-line text-ink-2',
+                  values[x.id] && 'bg-sage',
+                )}
+              >
+                {j + 1}
+              </button>
+            ))}
+          </nav>
+
+          <section
+            className="sat-question flex flex-col gap-5"
+            aria-label={t('placement.question', { i: i + 1, n: qs.length })}
+          >
+            <div className="sat-question-bar">
+              <span className="sat-question-number">{i + 1}</span>
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={!!marked[q.id]}
+                  onChange={(e) => setMarked((m) => ({ ...m, [q.id]: e.target.checked }))}
+                />
+                {t('placement.markReview')}
+              </label>
+            </div>
+            <QuestionView
+              key={q.id}
+              q={q}
+              value={values[q.id] ?? ''}
+              onChange={(v) => setValues((s) => ({ ...s, [q.id]: v }))}
+              placeholder={t('placement.answerPlaceholder')}
+            />
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <Button variant="ghost" onClick={() => go(Math.max(0, i - 1))} disabled={i === 0}>
+                {t('placement.prev')}
+              </Button>
+              {i < qs.length - 1 ? (
+                <Button variant="lime" onClick={() => go(i + 1)}>
+                  {t('placement.next')}
+                </Button>
+              ) : (
+                <Button variant="lime" onClick={() => (unanswered ? setConfirm(true) : finishModule())}>
+                  {phase === 'm1' ? t('placement.finishModule') : t('placement.finishTest')}
+                </Button>
+              )}
+            </div>
+            {confirm && (
+              <div
+                role="alertdialog"
+                aria-labelledby={`${uid}-confirm`}
+                className="rounded-2xl bg-amber-soft p-4"
+              >
+                <p id={`${uid}-confirm`} className="font-semibold text-amber">
+                  {t('placement.unanswered', { n: unanswered })}
+                </p>
+                <div className="mt-3 flex gap-2">
+                  <Button variant="primary" size="sm" onClick={finishModule}>
+                    {t('placement.confirm')}
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={() => setConfirm(false)}>
+                    {t('placement.cancel')}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </section>
+        </div>
+      </div>
     </div>
   );
 }
