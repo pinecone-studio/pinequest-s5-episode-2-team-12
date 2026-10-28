@@ -81,8 +81,6 @@ export function StopPlayer({
   const [error, setError] = useState<string | null>(null);
   const started = useRef(Date.now());
 
-  // draw the set once the state is known; a new round (retry) draws a fresh one
-  // biome-ignore lint/correctness/useExhaustiveDependencies: draw only when readiness or the round changes, not on every state update
   useEffect(() => {
     if (!loaded.ready || !allowed) return;
     const history = demo ? loaded.history : serverHistory;
@@ -117,19 +115,20 @@ export function StopPlayer({
   const total = qs.length;
   const right = answers.filter((a, j) => isCorrect(qs[j], a.answer)).length;
 
-  if (!loaded.ready) return <div className="soft-card h-64 animate-pulse" aria-busy="true" />;
+  if (!loaded.ready)
+    return <div className="h-64 w-full animate-pulse rounded-3xl bg-sage/20" aria-busy="true" />;
 
   if (!allowed) {
     return (
-      <section className="soft-card mx-auto flex max-w-xl flex-col items-center gap-4 p-8 text-center">
-        <div className="w-24">
+      <section className="mx-auto flex max-w-3xl flex-col items-center gap-8 p-10 text-center">
+        <div className="w-32">
           <CatHead mood="sleep" />
         </div>
-        <h1 className="font-display text-2xl font-bold text-ink">{t('stop.lockedTitle')}</h1>
-        <p className="text-ink-2">{isOpen(state) ? t('sheet.locked') : t('sheet.closedRoadmap')}</p>
+        <h1 className="font-display text-4xl font-extrabold text-ink">{t('stop.lockedTitle')}</h1>
+        <p className="text-2xl text-ink-2">{isOpen(state) ? t('sheet.locked') : t('sheet.closedRoadmap')}</p>
         <Link
           href={isOpen(state) ? routes.home : routes.placement}
-          className="font-bold text-leaf-2 underline"
+          className="text-2xl font-bold text-leaf-2 underline underline-offset-4"
         >
           {isOpen(state) ? t('stop.toMap') : t('gate.take')}
         </Link>
@@ -137,19 +136,17 @@ export function StopPlayer({
     );
   }
 
+  // Асар том, тод харагдах Header
   const header = (
-    <header className="flex items-center gap-3">
+    <header className="flex items-center gap-5 px-1 py-3">
       <span
-        className="grid size-12 shrink-0 place-items-center rounded-2xl bg-sage text-leaf-2"
+        className="grid size-16 shrink-0 place-items-center rounded-2xl bg-sage/80 text-leaf-2 transition-transform hover:scale-105"
         aria-hidden="true"
       >
-        <TopicIcon name={topic.icon} size={26} />
+        <TopicIcon name={topic.icon} size={38} />
       </span>
       <div className="min-w-0">
-        <p className="eyebrow">
-          {t('stopNo', { n: no })} · {stop.place}
-        </p>
-        <h1 className="font-display text-lg font-bold leading-tight text-ink sm:text-xl">
+        <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-ink">
           {testOut ? `${t('stop.testOutTitle')}: ` : ''}
           {topic.title}
         </h1>
@@ -159,16 +156,16 @@ export function StopPlayer({
 
   if (!total) {
     return (
-      <div className="mx-auto flex max-w-2xl flex-col gap-5">
+      <div className="w-full max-w-5xl mx-auto flex flex-col gap-10">
         {header}
-        <p className="soft-card p-6 text-ink-2">{t('stop.noQuestions')}</p>
+        <p className="p-10 text-center text-3xl text-ink-2">{t('stop.noQuestions')}</p>
       </div>
     );
   }
 
   if (phase === 'intro') {
     return (
-      <div className="mx-auto flex max-w-2xl flex-col gap-5">
+      <div className="w-full max-w-5xl mx-auto flex flex-col gap-10">
         {header}
         <StopIntro screens={intro} onDone={() => setPhase('play')} />
       </div>
@@ -212,55 +209,57 @@ export function StopPlayer({
     const nextStop = stopByNo(no + 1);
     const pct = o ? Math.round((o.correct / o.total) * 100) : 0;
     return (
-      <div className="mx-auto flex max-w-2xl flex-col gap-5">
+      <div className="w-full max-w-5xl mx-auto flex flex-col gap-10">
         {header}
         <section
-          className={cn(
-            'soft-card relative flex flex-col items-center gap-4 overflow-hidden p-6 text-center sm:p-8',
-          )}
+          className="relative flex flex-col items-center gap-8 p-8 text-center sm:p-14"
           aria-live="polite"
         >
           {o?.passed && <Confetti />}
           {phase === 'saving' || !o ? (
             error ? (
-              <p className="text-danger">{error}</p>
+              <p className="text-3xl text-danger font-bold">{error}</p>
             ) : (
-              <p className="text-ink-2" aria-busy="true">
+              <p className="text-4xl text-ink-2" aria-busy="true">
                 …
               </p>
             )
           ) : (
             <>
-              <div className="w-24">
+              <div className="w-44 transition-transform hover:scale-110">
                 <CatHead mood={o.passed ? 'happy' : 'think'} />
               </div>
-              <h2 className="font-display text-2xl font-bold text-ink">
+              <h2 className="font-display text-5xl sm:text-6xl font-black text-ink">
                 {o.finishedAll ? t('celebrate.title') : o.passed ? t('stop.passed') : t('stop.failed')}
               </h2>
-              <p className="text-ink-2 tnum">{t('stop.scoreLine', { c: o.correct, n: o.total, pct })}</p>
-              {o.passed && !o.testOut && <StarRow stars={o.stars} size={30} />}
+              <p className="text-3xl font-bold text-ink-2 tnum">
+                {t('stop.scoreLine', { c: o.correct, n: o.total, pct })}
+              </p>
+              {o.passed && !o.testOut && <StarRow stars={o.stars} size={54} />}
               {o.passed && o.testOut && (
-                <span className="rounded-full border border-sage-2 bg-sage px-3 py-1 text-sm font-bold text-leaf-2">
+                <span className="rounded-full bg-sage px-8 py-3 text-2xl font-bold text-leaf-2">
                   {t('testedOutChip')}
                 </span>
               )}
               {!o.passed && (
-                <p className="max-w-md text-sm text-ink-2">
+                <p className="max-w-2xl text-xl sm:text-2xl text-ink-2 leading-relaxed">
                   {t('stop.failedBody', { need: neededToPass(o.total), n: o.total })}
                 </p>
               )}
-              {o.xp > 0 && <p className="font-bold text-leaf-2">{t('stop.xp', { n: o.xp })}</p>}
+              {o.xp > 0 && <p className="text-3xl font-black text-leaf-2">{t('stop.xp', { n: o.xp })}</p>}
               {o.badges.map((b) => (
-                <p key={b} className="rounded-2xl bg-sage px-4 py-2 font-bold text-leaf-2">
+                <p key={b} className="rounded-3xl bg-sage px-8 py-4 text-2xl font-bold text-leaf-2">
                   {t('stop.region', { name: BADGES.find((x) => x.id === b)?.mn ?? b })}
                 </p>
               ))}
-              {o.finishedAll && <p className="max-w-md text-ink-2">{t('celebrate.body')}</p>}
-              <div className="mt-2 flex flex-wrap justify-center gap-2">
+              {o.finishedAll && (
+                <p className="max-w-2xl text-2xl text-ink-2 leading-relaxed">{t('celebrate.body')}</p>
+              )}
+              <div className="mt-8 flex flex-wrap justify-center gap-5">
                 {o.passed && nextStop && (
                   <Link
                     href={routes.roadmapStop(nextStop.no)}
-                    className="btn3d mb-[5px] inline-flex h-11 items-center rounded-2xl px-5 text-[14px] font-bold"
+                    className="btn3d mb-[5px] inline-flex h-16 items-center rounded-2xl px-10 text-xl font-bold shadow-lg"
                     style={
                       {
                         '--face': 'var(--c-lime)',
@@ -275,19 +274,24 @@ export function StopPlayer({
                 {o.finishedAll && (
                   <Link
                     href={routes.mock}
-                    className="inline-flex h-11 items-center rounded-2xl px-4 font-bold text-leaf-2"
+                    className="inline-flex h-16 items-center rounded-2xl px-8 text-xl font-bold text-leaf-2 hover:bg-sage/40 transition-colors"
                   >
                     {t('celebrate.mock')}
                   </Link>
                 )}
                 {!o.passed && (
-                  <Button variant="lime" onClick={() => setRound((r) => r + 1)}>
+                  <Button
+                    variant="lime"
+                    size="xl"
+                    className="text-xl h-16 px-10 rounded-2xl"
+                    onClick={() => setRound((r) => r + 1)}
+                  >
                     {t('stop.retry')}
                   </Button>
                 )}
                 <Link
                   href={routes.home}
-                  className="inline-flex h-11 items-center rounded-2xl px-4 font-bold text-ink-2 hover:bg-paper-2"
+                  className="inline-flex h-16 items-center rounded-2xl px-8 text-xl font-bold text-ink-2 hover:bg-paper-2 transition-colors"
                 >
                   {t('stop.toMap')}
                 </Link>
@@ -301,80 +305,95 @@ export function StopPlayer({
 
   const correct = revealed && isCorrect(q, value.trim());
   return (
-    <div className={cn('mx-auto w-full', splitLayout(showSuu, 'max-w-2xl'))}>
-      <div className="flex min-w-0 flex-col gap-5">
+    <div className={cn('mx-auto w-full', splitLayout(showSuu, 'max-w-5xl'))}>
+      <div className="flex min-w-0 flex-col gap-10">
         {header}
-        <div className="flex items-center gap-3">
+
+        {/* Явцын прогресс бар (Улам өндөр, том заалттай) */}
+        <div className="flex items-center gap-5 px-1">
           <Bar
             value={(i + (revealed ? 1 : 0)) / total}
             tone="lime"
-            h={10}
+            h={16}
             className="flex-1"
             label={t('stop.problem', { i: i + 1, n: total })}
           />
-          <span className="shrink-0 text-[13px] font-semibold text-ink-2 tnum">
-            {t('stop.problem', { i: i + 1, n: total })}
+          <span className="shrink-0 text-xl font-black text-ink-2 tnum">
+            {i + 1} / {total}
           </span>
         </div>
+
         {intro.length > 0 && i === 0 && !revealed && !testOut && (
           <button
             type="button"
             onClick={() => setPhase('intro')}
-            className="self-start text-sm font-bold text-leaf-2 underline underline-offset-4"
+            className="self-start text-lg font-bold text-leaf-2 underline underline-offset-4 transition-colors hover:text-leaf"
           >
             {t('stop.introOpen')}
           </button>
         )}
 
+        {/* 🚀 Асар том тексттэй, хайрцаггүй интерактив талбар */}
         <section
-          className="soft-card flex flex-col gap-5 p-5 sm:p-7"
+          className="relative flex flex-col gap-10 py-2 transition-all text-foreground"
           aria-label={t('stop.problem', { i: i + 1, n: total })}
         >
           {!q.reviewed && (
-            <p className="self-start rounded-full bg-amber-soft px-2.5 py-0.5 text-[11px] font-bold text-amber">
+            <p className="self-start rounded-full bg-amber-soft px-5 py-1.5 text-sm font-bold text-amber">
               {t('stop.unreviewed')}
             </p>
           )}
-          <QuestionView
-            key={`${round}-${i}`}
-            q={q}
-            value={value}
-            onChange={setValue}
-            revealed={revealed}
-            onSubmit={check}
-          />
 
+          {/* Асуултын бичвэр: Асар том (text-2xl sm:text-3xl md:text-4xl) */}
+          <div className="relative z-10 text-2xl sm:text-3xl md:text-4xl leading-relaxed text-ink font-semibold tracking-normal">
+            <QuestionView
+              key={`${round}-${i}`}
+              q={q}
+              value={value}
+              onChange={setValue}
+              revealed={revealed}
+              onSubmit={check}
+            />
+          </div>
+
+          {/* Санамж / Hint */}
           {hint && !revealed && (
-            <p className="rounded-2xl bg-teal-soft px-4 py-3 text-sm text-teal">
+            <div className="relative z-10 animate-fade-in rounded-3xl bg-teal-soft/90 p-8 text-xl sm:text-2xl font-medium text-teal border border-teal/20">
               <Rich text={q.hint} />
-            </p>
+            </div>
           )}
 
+          {/* Шалгасны дараах хариу/тайлбар (Том, тод) */}
           {revealed && (
             <div
               role="status"
-              className={cn('flex flex-col gap-3 rounded-2xl p-4', correct ? 'bg-sage' : 'bg-danger-soft')}
+              className={cn(
+                'relative z-10 flex flex-col gap-6 rounded-3xl p-8 sm:p-10 transition-all duration-300 shadow-sm',
+                correct ? 'bg-sage/90 border border-leaf-2/30' : 'bg-danger-soft/90 border border-danger/30',
+              )}
             >
-              <p className={cn('font-bold', correct ? 'text-leaf-2' : 'text-danger')}>
+              <p className={cn('text-2xl sm:text-3xl font-black', correct ? 'text-leaf-2' : 'text-danger')}>
                 {correct ? t('stop.correct') : t('stop.wrong')}
                 {!correct && (
-                  <span className="ml-2 font-semibold text-ink-2">
+                  <span className="ml-3 font-bold text-ink-2">
                     <Rich text={t('stop.answerWas', { a: correctAnswerText(q) })} />
                   </span>
                 )}
               </p>
               {!correct && q.why?.[Number(value)] && (
-                <p className="text-sm text-ink-2">
+                <p className="text-xl sm:text-2xl font-medium text-ink-2">
                   <Rich text={q.why[Number(value)]} />
                 </p>
               )}
-              <p className="text-[15px] leading-relaxed text-ink">
+              <p className="text-xl sm:text-2xl leading-relaxed text-ink">
                 <Rich text={q.explain} />
               </p>
               {q.desmos?.tip && (
-                <details className="text-sm text-ink-2">
-                  <summary className="cursor-pointer font-bold text-teal">{t('stop.desmosTip')}</summary>
-                  <p className="mt-2">
+                <details className="text-lg sm:text-xl text-ink-2">
+                  <summary className="cursor-pointer font-bold text-teal hover:underline">
+                    {t('stop.desmosTip')}
+                  </summary>
+                  <p className="mt-3">
                     <Rich text={q.desmos.tip} />
                   </p>
                 </details>
@@ -382,7 +401,7 @@ export function StopPlayer({
               {!correct && (
                 <Link
                   href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}
-                  className="inline-flex min-h-11 items-center gap-2 self-start rounded-2xl border border-line bg-paper px-4 text-sm font-bold text-ink hover:bg-paper-2"
+                  className="inline-flex min-h-14 items-center gap-3 self-start rounded-2xl border border-line bg-paper px-6 text-lg font-bold text-ink transition-transform hover:scale-102 shadow-sm"
                 >
                   {t('stop.askSuu')}
                 </Link>
@@ -390,25 +409,43 @@ export function StopPlayer({
             </div>
           )}
 
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex flex-wrap items-center gap-2">
+          {/* Доод навигаци ба Товчлуур (Илүү том, дарахад хялбар) */}
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-6 pt-8 border-t border-border/20">
+            <div className="flex flex-wrap items-center gap-3">
               {!revealed ? (
-                <Button variant="ghost" size="sm" onClick={() => setHint(true)} disabled={hint}>
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  className="text-lg font-bold px-6 py-3"
+                  onClick={() => setHint(true)}
+                  disabled={hint}
+                >
                   {t('stop.hint')}
                 </Button>
               ) : (
-                <span className="text-sm text-ink-3 tnum">
-                  {right}/{answers.length}
+                <span className="text-lg font-black text-ink-3 tnum">
+                  Зөв: {right}/{answers.length}
                 </span>
               )}
               <SuuTutorButton open={showSuu} onClick={() => setShowSuu((v) => !v)} />
             </div>
             {!revealed ? (
-              <Button variant="lime" onClick={check} disabled={!value.trim()}>
+              <Button
+                variant="lime"
+                size="xl"
+                className="text-xl sm:text-2xl px-10 py-4 rounded-2xl font-bold"
+                onClick={check}
+                disabled={!value.trim()}
+              >
                 {t('stop.check')}
               </Button>
             ) : (
-              <Button variant="lime" onClick={next}>
+              <Button
+                variant="lime"
+                size="xl"
+                className="text-xl sm:text-2xl px-10 py-4 rounded-2xl font-bold"
+                onClick={next}
+              >
                 {i < total - 1 ? t('stop.next') : t('stop.finish')}
               </Button>
             )}
