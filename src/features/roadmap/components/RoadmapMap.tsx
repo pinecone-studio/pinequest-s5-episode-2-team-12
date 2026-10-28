@@ -270,12 +270,10 @@ export function RoadmapMap({
   const boxRef = useRef<HTMLDivElement>(null);
   const [box, setBox] = useState<Size | null>(null);
   const [camera, setView] = useState<View>({ scale: 1, x: 0, y: 0 });
-  // The home map stays fitted and anchored to the bottom, including after a resize.
+  // The home map stays fitted, centred horizontally and anchored to the bottom, including after a resize.
   const fixedView = box ? fitView(box, CONTENT) : null;
   const view =
-    fullBleed && box && fixedView
-      ? { ...fixedView, x: fixedView.x + 20, y: box.h - CONTENT.h * fixedView.scale + 8 }
-      : camera;
+    fullBleed && box && fixedView ? { ...fixedView, y: box.h - CONTENT.h * fixedView.scale + 8 } : camera;
   const [hover, setHover] = useState<number | null>(null);
   const [dragging, setDragging] = useState(false);
   const [flying, setFlying] = useState(false);
@@ -468,7 +466,16 @@ export function RoadmapMap({
 
   const frontierIndex = frontierNo ?? 27;
   // Hover and keyboard focus show stop cards even in the fixed overview.
-  const floatNo = fullBleed ? hover : narrow || selectedNo !== null ? null : (hover ?? frontierNo);
+  // Home (fullBleed): the current stop's hover card only shows while another stop's card is open
+  // (its own title is already on screen otherwise); other pins always show theirs.
+  const currentShown = selectedNo === null || selectedNo === frontierNo;
+  const floatNo = fullBleed
+    ? hover === frontierNo && currentShown
+      ? null
+      : hover
+    : narrow || selectedNo !== null
+      ? null
+      : (hover ?? frontierNo);
   const zoom = fit ? view.scale / fit.scale : 1;
 
   // in layer px (scale applied, offset not): priority = current stop, then route order
@@ -608,10 +615,37 @@ export function RoadmapMap({
           {box && laidOut && (
             <>
               <MapOverlay frontierIndex={frontierIndex} />
-              <div className="roadmap-map-cat" style={{ left: POINTS[17][0] + 82, top: POINTS[17][1] + 25 }}>
+              <div
+                className="roadmap-map-cat"
+                style={{
+                  position: 'absolute',
+                  left: POINTS[17][0] + 82,
+                  top: POINTS[17][1] + 25,
+                  width: 'calc(100px * var(--inv, 1))',
+                  transform: 'translate(-50%, -100%)',
+                  pointerEvents: 'none',
+                }}
+              >
                 <MapCat outfit={outfit} />
-                <div className="roadmap-cat-message" aria-hidden="true">
-                  <svg viewBox="0 0 200 100" focusable="false">
+                <div
+                  className="roadmap-cat-message"
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    left: '50%',
+                    bottom: 'calc(100% + 8px * var(--inv, 1))',
+                    transform: 'translateX(-50%)',
+                    width: 'calc(174px * var(--inv, 1))',
+                    height: 'calc(87px * var(--inv, 1))',
+                    display: 'grid',
+                    placeItems: 'center',
+                  }}
+                >
+                  <svg
+                    viewBox="0 0 200 100"
+                    focusable="false"
+                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+                  >
                     <path
                       d="M99 5C151 3 190 7 192 42 197 73 170 83 133 80 129 92 117 97 104 96 114 90 116 86 116 80 72 89 23 86 12 69-8 36 16 8 62 6Z"
                       fill="var(--c-paper)"
@@ -619,7 +653,20 @@ export function RoadmapMap({
                       strokeWidth="1.8"
                     />
                   </svg>
-                  <span>{t('catEncouragement')}</span>
+                  <span
+                    style={{
+                      position: 'relative',
+                      maxWidth: '78%',
+                      paddingBottom: 'calc(15px * var(--inv, 1))',
+                      textAlign: 'center',
+                      fontSize: 'calc(12px * var(--inv, 1))',
+                      fontWeight: 700,
+                      lineHeight: 1.4,
+                      color: 'var(--c-ink)',
+                    }}
+                  >
+                    {t('catEncouragement')}
+                  </span>
                 </div>
               </div>
               {views.map((v) => {

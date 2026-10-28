@@ -1,7 +1,13 @@
 import { beforeEach, describe, expect, mock, test } from 'bun:test';
 
+const pushed: string[] = [];
 mock.module('next/navigation', () => ({
-  useRouter: () => ({ push: () => {}, refresh: () => {}, replace: () => {}, back: () => {} }),
+  useRouter: () => ({
+    push: (url: string) => pushed.push(url),
+    refresh: () => {},
+    replace: () => {},
+    back: () => {},
+  }),
   usePathname: () => '/roadmap',
 }));
 
@@ -100,6 +106,53 @@ describe('RoadmapView', () => {
   });
 });
 
+describe('RoadmapView current pin', () => {
+  test("the current pin goes where the card's Эхлэх goes; other pins open their card", () => {
+    localStorage.clear();
+    pushed.length = 0;
+    const { container } = render(<RoadmapView demo server={null} />);
+    const start = container.querySelector('.roadmap-stop-start a')?.getAttribute('href');
+    expect(start).toBe('/roadmap/placement');
+    fireEvent.click(screen.getByRole('button', { name: /^1-р зогсоол/ }));
+    expect(pushed).toEqual([start as string]);
+    fireEvent.click(screen.getByRole('button', { name: /^2-р зогсоол/ }));
+    expect(pushed).toHaveLength(1);
+    expect(container.querySelector('.roadmap-featured-topic h2')?.textContent).toBe('Алгебрын илэрхийлэл');
+  });
+
+  test('coming back from another stop, the first click shows the current card and the second starts', () => {
+    localStorage.clear();
+    pushed.length = 0;
+    const { container } = render(<RoadmapView demo server={null} />);
+    const title = () => container.querySelector('.roadmap-featured-topic h2')?.textContent;
+    fireEvent.click(screen.getByRole('button', { name: /^2-р зогсоол/ }));
+    expect(title()).toBe('Алгебрын илэрхийлэл');
+    const current = screen.getByRole('button', { name: /^1-р зогсоол/ });
+    fireEvent.click(current);
+    expect(pushed).toEqual([]);
+    expect(title()).toBe('Зэрэг ба язгуур');
+    fireEvent.click(current);
+    expect(pushed).toEqual(['/roadmap/placement']);
+  });
+});
+
+describe('RoadmapMap current-stop hover card', () => {
+  test('hidden while the current card is showing, shown while another stop is selected', () => {
+    const views = stopViews(sampleState(), true);
+    const props = { views, frontierNo: 5, onOpen: () => {}, fullBleed: true } as const;
+    const { rerender } = render(<RoadmapMap {...props} selectedNo={null} />);
+    const current = screen.getByRole('button', { name: /^5-р зогсоол/ });
+    fireEvent.focus(current);
+    expect(document.querySelector('.roadmap-float')).toBeNull();
+    fireEvent.blur(current);
+    rerender(<RoadmapMap {...props} selectedNo={6} />);
+    fireEvent.focus(screen.getByRole('button', { name: /^5-р зогсоол/ }));
+    expect(document.querySelector('.roadmap-float')?.textContent).toContain(
+      views.find((v) => v.stop.no === 5)!.stop.place,
+    );
+  });
+});
+
 describe('RoadmapMap', () => {
   test('every stop is a keyboard-focusable button with a descriptive label', () => {
     const views = stopViews(sampleState(), true);
@@ -145,6 +198,8 @@ describe('RoadmapMap', () => {
     const heading = container.querySelector('.roadmap-featured-topic h2')!;
     const title = views.find((v) => v.stop.no === 5)!.topic.title;
     expect(heading.textContent).toBe(title);
+    fireEvent.focus(screen.getByRole('button', { name: /^5-р зогсоол/ }));
+    expect(document.querySelector('.roadmap-float')).toBeNull();
     const other = screen.getByRole('button', { name: /^6-р зогсоол/ });
     fireEvent.focus(other);
     expect(document.querySelector('.roadmap-float')?.textContent).toContain(

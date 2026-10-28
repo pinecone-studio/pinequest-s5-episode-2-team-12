@@ -98,7 +98,12 @@
     "routeHard": "2-р модуль: хэцүү хувилбар",
     "routeEasy": "2-р модуль: хялбар хувилбар",
     "answerPlaceholder": "Хариугаа бичнэ үү (жишээ: 3/4 эсвэл 0.75)",
-    "desmos": "Desmos нээх"
+    "desmos": "Desmos нээх",
+    "closeCalculator": "Тооцоолуур хаах",
+    "calculatorLoading": "Тооцоолуур ачаалж байна…",
+    "calculatorFailed": "Тооцоолуур ачаалсангүй. Интернэт холболтоо шалгаад дахин оролдоно уу.",
+    "calculatorRetry": "Дахин оролдох",
+    "markReview": "Дахин хянах"
   },
   "results": {
     "eyebrow": "ТЕСТИЙН ДҮН",

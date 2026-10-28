@@ -29,7 +29,9 @@
     "shop": "Shop",
     "settings": "Settings",
     "menu": "Menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "expandMenu": "Expand menu",
+    "collapseMenu": "Collapse menu"
   },
   "placeholder": {
     "title": "This section is being built",

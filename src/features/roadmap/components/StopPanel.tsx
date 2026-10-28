@@ -83,6 +83,13 @@ function Section({ title, children, id }: { title: string; children: ReactNode; 
   );
 }
 
+/** Where the overview card's «Эхлэх» goes: the placement test until the map is open, then the stop.
+ *  null while that stop is still locked (the button is disabled). The current pin on the map uses it too. */
+export function startHref(v: StopView, open: boolean): string | null {
+  if (v.status === 'locked' && open) return null;
+  return open ? routes.roadmapStop(v.stop.no) : routes.placement;
+}
+
 export function StopPanel({
   v,
   views,
@@ -183,16 +190,12 @@ export function StopPanel({
           </ul>
         )}
         <div className="roadmap-stop-start">
-          {locked && open ? (
+          {startHref(v, open) === null ? (
             <button type="button" disabled className={cta} style={lime}>
               {t('sheet.start')}
             </button>
           ) : (
-            <Link
-              href={!open ? routes.placement : routes.roadmapStop(v.stop.no)}
-              className={cta}
-              style={lime}
-            >
+            <Link href={startHref(v, open) as string} className={cta} style={lime}>
               {t('sheet.start')}
             </Link>
           )}
