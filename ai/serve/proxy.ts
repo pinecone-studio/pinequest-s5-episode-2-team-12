@@ -16,7 +16,20 @@ export type ProxyConfig = {
    * so the website shows its sample lesson / demo reply instead of making a student wait ~55 s in a queue.
    */
   maxInflight?: number;
+  /**
+   * Remembered answers for repeated greedy requests (temperature 0 gives the same answer every time), so a
+   * question asked again — the demo's prepared problems — is answered at once instead of ~20 s. 0 = off.
+   */
+  cacheSize?: number;
 };
+
+type Cached = { status: number; type: string; text: string };
+
+/** The key of a request whose answer can be reused: only greedy (temperature 0) requests. */
+export function cacheKey(parsed: { options?: { temperature?: unknown } }, body: string): string | null {
+  const t = parsed.options?.temperature;
+  return t === 0 ? new Bun.CryptoHasher('sha256').update(body).digest('hex') : null;
+}
 
 /** Constant-time string compare, so the token can't be guessed byte by byte from response times. */
 export function sameSecret(a: string, b: string): boolean {
@@ -34,6 +47,8 @@ export function makeHandler(cfg: ProxyConfig, fetchImpl: typeof fetch = fetch) {
   const maxBody = cfg.maxBody ?? 64_000;
   const maxInflight = cfg.maxInflight ?? 2;
   let inflight = 0;
+  const cacheSize = cfg.cacheSize ?? 200;
+  const cache = new Map<string, Cached>(); // insertion order = least recently used first
   return async (req: Request): Promise<Response> => {
     const { pathname } = new URL(req.url);
     const route = `${req.method} ${pathname}`;
@@ -51,13 +66,23 @@ export function makeHandler(cfg: ProxyConfig, fetchImpl: typeof fetch = fetch) {
 
     const body = await req.text();
     if (body.length > maxBody) return json(413, { error: 'too_large' });
-    let parsed: { model?: unknown; stream?: unknown };
+    let parsed: { model?: unknown; stream?: unknown; options?: { temperature?: unknown } };
     try {
       parsed = JSON.parse(body);
     } catch {
       return json(400, { error: 'bad_json' });
     }
     if (parsed.model !== cfg.model) return json(403, { error: 'model_not_allowed' });
+    const key = cacheSize > 0 && parsed.stream === false ? cacheKey(parsed, body) : null;
+    const hit = key ? cache.get(key) : undefined;
+    if (key && hit) {
+      cache.delete(key);
+      cache.set(key, hit); // most recently used
+      return new Response(hit.text, {
+        status: hit.status,
+        headers: { 'content-type': hit.type, 'x-suu-cache': 'hit' },
+      });
+    }
     if (inflight >= maxInflight) return json(503, { error: 'busy' });
     inflight++;
     try {
@@ -70,10 +95,12 @@ export function makeHandler(cfg: ProxyConfig, fetchImpl: typeof fetch = fetch) {
       if (!res) return json(502, { error: 'down' });
       // read the whole answer before freeing the slot (the app never streams)
       const text = await res.text();
-      return new Response(text, {
-        status: res.status,
-        headers: { 'content-type': res.headers.get('content-type') ?? 'application/json' },
-      });
+      const type = res.headers.get('content-type') ?? 'application/json';
+      if (key && res.ok) {
+        cache.set(key, { status: res.status, type, text });
+        if (cache.size > cacheSize) cache.delete(cache.keys().next().value as string);
+      }
+      return new Response(text, { status: res.status, headers: { 'content-type': type } });
     } finally {
       inflight--;
     }
@@ -95,6 +122,7 @@ if (import.meta.main) {
       target: process.env.OLLAMA_LOCAL ?? 'http://127.0.0.1:11434',
       model: process.env.OLLAMA_MODEL ?? 'suu',
       maxInflight: Number(process.env.SUU_MAX_INFLIGHT ?? 2),
+      cacheSize: Number(process.env.SUU_CACHE ?? 200),
     }),
   });
   console.log(`Suu gate: http://127.0.0.1:${server.port} → Ollama (POST /api/chat, GET /api/version)`);
