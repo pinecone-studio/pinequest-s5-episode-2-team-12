@@ -69,6 +69,7 @@ export function RoadmapView({
         selectedNo={selected}
         skin={skin}
         outfit={equipped.outfit}
+        accessories={{ head: equipped.head, eyes: equipped.eyes, neck: equipped.neck }}
         showTopicHeading={false}
         className="h-full w-full"
         fullBleed

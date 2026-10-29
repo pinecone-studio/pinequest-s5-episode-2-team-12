@@ -1,6 +1,21 @@
 {
   "title": "Shop",
   "lead": "Spend the gems (💎) you earn by studying. Nothing here costs real money.",
+  "hero": {
+    "eyebrow": "The learning rewards shop",
+    "title": "A little reward for every big step.",
+    "desc": "Dress up Suu, protect your streak, and bring a new look to your journey across Mongolia.",
+    "browse": "Explore Suu’s outfits",
+    "powerups": "See study helpers",
+    "scenes": {
+      "label": "Choose shop background scene",
+      "title": "Backdrop",
+      "steppe": "Golden steppe",
+      "winter": "Snow country",
+      "night": "Starry night"
+    }
+  },
+  "browse": { "label": "Browse shop categories", "search": "Find an item…", "affordable": "Within my gems" },
   "balance": "Your 💎",
   "earn": {
     "title": "How to earn 💎",
@@ -171,7 +186,12 @@
     "title": "Suu’s wardrobe",
     "lead": "Find a new look for your Suu.",
     "preview": "Try it on Suu",
+    "tryOnTitle": "Dressing room",
+    "dressingHint": "Choose an outfit or accessory from the collection to see it on Suu.",
+    "clearAccessories": "Remove accessories",
     "tryOn": "Try the {name} outfit on Suu",
+    "selectOutfit": "Try this outfit",
+    "selectedOutfit": "Selected outfit",
     "tryOnAccessory": "Try the {name} accessory with Suu’s outfit",
     "tryOnAccessoryUnavailableWinter": "Winter Warm already includes a scarf",
     "tryOnAccessoryUnavailableGlasses": "This outfit already has glasses",

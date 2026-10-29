@@ -15,6 +15,7 @@ import {
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
+import type { AccessorySlot } from '@/features/shop/catalog';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import {
@@ -246,6 +247,7 @@ export function RoadmapMap({
   selectedNo = null,
   skin,
   outfit,
+  accessories = {},
   showTopicHeading = true,
 }: {
   views: StopView[];
@@ -263,6 +265,8 @@ export function RoadmapMap({
   skin?: string;
   /** The user’s equipped shop outfit. */
   outfit?: string;
+  /** Shop accessories worn over the selected outfit. */
+  accessories?: Partial<Record<AccessorySlot, string>>;
   showTopicHeading?: boolean;
 }) {
   const t = useT('roadmap');
@@ -626,7 +630,7 @@ export function RoadmapMap({
                   pointerEvents: 'none',
                 }}
               >
-                <MapCat outfit={outfit} />
+                <MapCat outfit={outfit} accessories={accessories} />
                 <div
                   className="roadmap-cat-message"
                   aria-hidden="true"

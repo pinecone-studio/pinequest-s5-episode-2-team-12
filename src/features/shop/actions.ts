@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { getDb } from '@/lib/supabase/server';
 import { getAdminDb } from '@/server/db';
-import { ITEMS, itemById } from './catalog';
+import { equipmentSlot, ITEMS, itemById, outfitHasAccessory } from './catalog';
 
 export type ShopResult = { ok: true; repeated?: boolean } | { ok: false; reason: string };
 
@@ -49,8 +49,33 @@ export async function equipItem(itemId: string): Promise<ShopResult> {
     .eq('item_id', itemId)
     .maybeSingle();
   if (!own || own.qty < 1) return { ok: false, reason: 'not_owned' };
-  const sameSlot = ITEMS.filter((i) => i.kind === item.kind).map((i) => i.id);
+  const { data: equippedRows, error: equippedError } = await admin
+    .from('inventory')
+    .select('item_id')
+    .eq('user_id', u.id)
+    .eq('equipped', true);
+  if (equippedError) return { ok: false, reason: 'database_error' };
+  const currentOutfit = equippedRows
+    ?.map((row) => itemById(row.item_id))
+    .find((equippedItem) => equippedItem?.kind === 'outfit' && !equippedItem.accessorySlot);
+  if (item.accessorySlot && outfitHasAccessory(currentOutfit?.id, item.accessorySlot)) {
+    return { ok: false, reason: 'incompatible' };
+  }
+  const slot = equipmentSlot(item);
+  const sameSlot = ITEMS.filter((i) => i.kind !== 'consumable' && equipmentSlot(i) === slot).map((i) => i.id);
   await admin.from('inventory').update({ equipped: false }).eq('user_id', u.id).in('item_id', sameSlot);
+  if (item.kind === 'outfit' && !item.accessorySlot) {
+    const conflictingAccessories = ITEMS.filter(
+      (i) => i.accessorySlot && outfitHasAccessory(item.id, i.accessorySlot),
+    ).map((i) => i.id);
+    if (conflictingAccessories.length) {
+      await admin
+        .from('inventory')
+        .update({ equipped: false })
+        .eq('user_id', u.id)
+        .in('item_id', conflictingAccessories);
+    }
+  }
   if (!own.equipped)
     await admin.from('inventory').update({ equipped: true }).eq('user_id', u.id).eq('item_id', itemId);
   revalidatePath('/', 'layout');
