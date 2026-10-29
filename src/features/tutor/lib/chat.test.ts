@@ -122,3 +122,16 @@ describe('chat state sent along (history, reveal, Desmos panel)', () => {
     expect(req?.history?.map((h) => h.text)).toEqual(many.slice(-8).map((m) => m.text));
   });
 });
+
+describe('desmosRows (chat → Desmos panel)', () => {
+  test('backticked Desmos input only, cleaned, unique, max 6', async () => {
+    const { desmosRows } = await import('./chat');
+    const text =
+      'Эхлээд `y=2x+1` ба `y=-x+7` гэж бич. Огтлолцол `(2, 5)`. ' +
+      'Тэнцэтгэл биш: `y ≤ x-3`. Энэ `хариу` биш, `npm install` ч биш, `y=2x+1` давтагдсан.';
+    expect(desmosRows(text)).toEqual(['y=2x+1', 'y=-x+7', '(2, 5)', 'y \\le  x-3']);
+    expect(desmosRows('no rows here')).toEqual([]);
+    const many = Array.from({ length: 9 }, (_, i) => `\`y=${i}x\``).join(' ');
+    expect(desmosRows(many)).toHaveLength(6);
+  });
+});

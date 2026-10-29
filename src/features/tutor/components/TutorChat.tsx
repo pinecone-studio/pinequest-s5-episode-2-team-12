@@ -16,6 +16,7 @@ import {
   askSuu,
   type ChatAction,
   type ChatMsg,
+  desmosRows,
   newId,
   type PanelView,
   patch,
@@ -107,6 +108,8 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
   const [desmosRevealed, setDesmosRevealed] = useState(false);
   // what the Desmos panel shows right now, so the chat (Gemini) talks about the same graph
   const [panel, setPanel] = useState<PanelView | null>(null);
+  // rows a chat reply suggested, drawn on the panel on top of the lesson
+  const [extra, setExtra] = useState<string[]>([]);
   const endRef = useRef<HTMLDivElement>(null);
   const inputId = useId();
   const busy = messages.some((m) => m.status === 'pending');
@@ -198,6 +201,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
     setDraft('');
     setDesmosOpen(false);
     setDesmosRevealed(false);
+    setExtra([]);
   }
 
   function openChat(s: Session) {
@@ -207,6 +211,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
     setMessages(s.messages);
     setDesmosOpen(false);
     setDesmosRevealed(false);
+    setExtra([]);
   }
 
   function deleteChat(id: string) {
@@ -356,7 +361,18 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
                   ) : (
                     <>
                       <SuuAvatar size={34} className="mt-0.5" />
-                      <SuuBubble msg={m} onRetry={() => retry(m)} />
+                      <SuuBubble
+                        msg={m}
+                        onRetry={() => retry(m)}
+                        onDraw={
+                          ctx.desmos
+                            ? (rows) => {
+                                setExtra(rows);
+                                setDesmosOpen(true);
+                              }
+                            : undefined
+                        }
+                      />
                     </>
                   )}
                 </li>
@@ -435,6 +451,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
           onReveal={() => setDesmosRevealed(true)}
           onClose={() => setDesmosOpen(false)}
           onView={setPanel}
+          extra={extra}
           fetchImpl={fetchImpl}
         />
       )}
@@ -442,8 +459,18 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
   );
 }
 
-function SuuBubble({ msg, onRetry }: { msg: ChatMsg; onRetry: () => void }) {
+function SuuBubble({
+  msg,
+  onRetry,
+  onDraw,
+}: {
+  msg: ChatMsg;
+  onRetry: () => void;
+  /** Present when the problem has a Desmos panel: draws the reply's `rows` there. */
+  onDraw?: (rows: string[]) => void;
+}) {
   const t = useT('tutor');
+  const rows = onDraw && !msg.status ? desmosRows(msg.text) : [];
   if (msg.status === 'pending') {
     return (
       <div className="rounded-2xl rounded-tl-md bg-paper-2 px-4 py-3 text-[15px] text-ink-3" role="status">
@@ -479,6 +506,11 @@ function SuuBubble({ msg, onRetry }: { msg: ChatMsg; onRetry: () => void }) {
         </Pill>
       )}
       <Rich text={msg.text} className="text-[15px] leading-relaxed text-ink" />
+      {rows.length > 0 && onDraw && (
+        <Button size="sm" variant="soft" className="w-fit" onClick={() => onDraw(rows)}>
+          {t('chat.drawDesmos', { n: rows.length })}
+        </Button>
+      )}
       {msg.lesson && (
         <Link
           href={`${routes.desmosHome}/ai?l=${encodeURIComponent(msg.lesson)}`}
