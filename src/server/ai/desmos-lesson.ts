@@ -7,13 +7,37 @@ import { normAnswer, parseModelLesson } from '@/features/tutor/lib/desmos-lesson
 import type { DesmosAiLesson } from '@/features/tutor/lib/desmos-lessons';
 import { type ChatMessage, hasOllama, ollamaChat } from './ollama-client';
 import { CHAT_PROMPT, DESMOS_PROMPT, desmosUserMessage, EXPLAIN_ASK } from './prompts';
+import { type Hit, similarExamples } from './rag/retrieve';
 
 export type ModelLesson = {
   lesson: DesmosAiLesson;
   technique: string | null;
   /** 'student': the answer was typed by the student. 'model': Suu solved the question first. */
   answerFrom: 'student' | 'model';
+  /** Library lessons Suu was shown as worked examples (RAG), most similar first. */
+  examples: { id: string; technique: string; score: number }[];
 };
+
+/**
+ * RAG: the retrieved lessons go in as earlier turns of the same conversation — the exact format Suu was
+ * fine-tuned on (question + correct answer → lesson JSON) — so Suu sees how this kind of problem is solved in
+ * Desmos before writing its own lesson. An example with the very same question is skipped (it would just be copied).
+ */
+export function lessonMessages(question: string, answer: string, hits: Hit[]): ChatMessage[] {
+  const same = (q: string) =>
+    q.replace(/\s+/g, ' ').trim().toLowerCase() === question.replace(/\s+/g, ' ').trim().toLowerCase();
+  const shots = hits
+    .filter((h) => !same(h.question))
+    .flatMap((h): ChatMessage[] => [
+      { role: 'user', content: desmosUserMessage(h.question, h.answer) },
+      { role: 'assistant', content: h.lesson },
+    ]);
+  return [
+    { role: 'system', content: DESMOS_PROMPT },
+    ...shots,
+    { role: 'user', content: desmosUserMessage(question, answer) },
+  ];
+}
 
 /**
  * The final answer from a chat explanation ("…\n\nХариу: A) $5$" → "A"; "Хариу: $\frac{33}{2}$" → "33/2").
@@ -82,17 +106,20 @@ export async function modelDesmosLesson(
     answerFrom = 'model';
   }
 
-  const messages: ChatMessage[] = [
-    { role: 'system', content: DESMOS_PROMPT },
-    { role: 'user', content: desmosUserMessage(question, correct) },
-  ];
+  const { hits } = await similarExamples(question, undefined, fetchImpl);
+  const messages = lessonMessages(question, correct, hits);
+  const examples = hits.map((h) => ({
+    id: h.id,
+    technique: h.technique,
+    score: Math.round(h.score * 100) / 100,
+  }));
   // greedy first (what the scores were measured with), then one sampled retry if there is time left
   for (const temperature of [0, 0.4]) {
     if (left() < MIN_CALL_MS) return null;
     const reply = await ollamaChat(messages, { ...DESMOS_OPTS, temperature, timeoutMs: left() }, fetchImpl);
     if (!reply) return null; // model off, down or too slow: no point retrying
     const parsed = parseModelLesson(reply, question.trim(), correct);
-    if (parsed.ok) return { lesson: parsed.lesson, technique: parsed.technique, answerFrom };
+    if (parsed.ok) return { lesson: parsed.lesson, technique: parsed.technique, answerFrom, examples };
   }
   return null;
 }

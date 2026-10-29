@@ -53,7 +53,7 @@ describe('modelDesmosLesson', () => {
     expect(calls[0].format).toBe('json');
     expect(calls[0].options.temperature).toBe(0);
     expect(calls[0].messages[0].content).toBe(DESMOS_PROMPT);
-    expect(calls[0].messages[1].content).toBe(desmosUserMessage(good.question, good.answer));
+    expect(calls[0].messages.at(-1)?.content).toBe(desmosUserMessage(good.question, good.answer));
   });
 
   test('a lesson that fails the checks gets one sampled retry', async () => {
@@ -86,7 +86,7 @@ describe('modelDesmosLesson', () => {
     expect(res?.answerFrom).toBe('model');
     expect(calls[0].messages[0].content).toBe(CHAT_PROMPT);
     expect(calls[0].messages[1].content).toContain('Алхам алхмаар тайлбарлаж өгөөч.');
-    expect(calls[1].messages[1].content).toBe(desmosUserMessage(good.question, good.answer));
+    expect(calls[1].messages.at(-1)?.content).toBe(desmosUserMessage(good.question, good.answer));
   });
 
   test('null when the chat answer has no checkable answer', async () => {
@@ -144,4 +144,34 @@ test('checkableAnswer', () => {
   for (const a of ['5', 'x = 5', '-1', '33/2', 'C', '(2, 21)', '21 meters'])
     expect(checkableAnswer(a)).toBe(true);
   for (const a of ['', 'yes', 'x squared', '1'.repeat(41)]) expect(checkableAnswer(a)).toBe(false);
+});
+
+describe('RAG: similar checked lessons go first, as earlier turns', () => {
+  test('two worked examples in the training format, then the real question', async () => {
+    process.env.RAG_EXAMPLES = '2';
+    const { calls, fetchImpl } = ollama(good.output);
+    const res = await modelDesmosLesson(good.question, good.answer, fetchImpl);
+    const m = calls[0].messages;
+    expect(m[0].content).toBe(DESMOS_PROMPT);
+    expect(m.map((x) => x.role)).toEqual(['system', 'user', 'assistant', 'user', 'assistant', 'user']);
+    expect(m[1].content).toStartWith('Асуулт: ');
+    expect(m[1].content).toContain('Зөв хариу: ');
+    expect(() => JSON.parse(m[2].content)).not.toThrow();
+    expect(res?.examples).toHaveLength(2);
+    expect(res?.examples[0].technique).toBe('intersection_equation');
+  });
+
+  test('RAG_EXAMPLES=0 sends only the question (the way Suu was tested)', async () => {
+    process.env.RAG_EXAMPLES = '0';
+    const { calls, fetchImpl } = ollama(good.output);
+    const res = await modelDesmosLesson(good.question, good.answer, fetchImpl);
+    expect(calls[0].messages).toHaveLength(2);
+    expect(res?.examples).toEqual([]);
+  });
+
+  test('an example with the very same question is not shown (Suu would just copy it)', async () => {
+    const { lessonMessages } = await import('./desmos-lesson');
+    const hit = { id: 'x', technique: 't', question: '  What is X? ', answer: '1', lesson: '{}', score: 1 };
+    expect(lessonMessages('what is  x?', '1', [hit])).toHaveLength(2);
+  });
 });
