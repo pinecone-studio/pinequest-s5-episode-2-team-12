@@ -11,6 +11,11 @@ export type ProxyConfig = {
   model: string;
   /** Biggest request body accepted, in bytes. */
   maxBody?: number;
+  /**
+   * Chats Ollama may work on at once (one Mac answers one at a time). More are refused at once with 503 'busy',
+   * so the website shows its sample lesson / demo reply instead of making a student wait ~55 s in a queue.
+   */
+  maxInflight?: number;
 };
 
 /** Constant-time string compare, so the token can't be guessed byte by byte from response times. */
@@ -27,6 +32,8 @@ const json = (status: number, body: unknown) => Response.json(body, { status });
 export function makeHandler(cfg: ProxyConfig, fetchImpl: typeof fetch = fetch) {
   const target = cfg.target.replace(/\/$/, '');
   const maxBody = cfg.maxBody ?? 64_000;
+  const maxInflight = cfg.maxInflight ?? 2;
+  let inflight = 0;
   return async (req: Request): Promise<Response> => {
     const { pathname } = new URL(req.url);
     const route = `${req.method} ${pathname}`;
@@ -51,17 +58,25 @@ export function makeHandler(cfg: ProxyConfig, fetchImpl: typeof fetch = fetch) {
       return json(400, { error: 'bad_json' });
     }
     if (parsed.model !== cfg.model) return json(403, { error: 'model_not_allowed' });
-    // Ollama refuses requests whose Host isn't local, so the gate sends a fresh request to the local address.
-    const res = await fetchImpl(`${target}/api/chat`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body,
-    }).catch(() => null);
-    if (!res) return json(502, { error: 'down' });
-    return new Response(res.body, {
-      status: res.status,
-      headers: { 'content-type': res.headers.get('content-type') ?? 'application/json' },
-    });
+    if (inflight >= maxInflight) return json(503, { error: 'busy' });
+    inflight++;
+    try {
+      // Ollama refuses requests whose Host isn't local, so the gate sends a fresh request to the local address.
+      const res = await fetchImpl(`${target}/api/chat`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body,
+      }).catch(() => null);
+      if (!res) return json(502, { error: 'down' });
+      // read the whole answer before freeing the slot (the app never streams)
+      const text = await res.text();
+      return new Response(text, {
+        status: res.status,
+        headers: { 'content-type': res.headers.get('content-type') ?? 'application/json' },
+      });
+    } finally {
+      inflight--;
+    }
   };
 }
 
@@ -79,6 +94,7 @@ if (import.meta.main) {
       token,
       target: process.env.OLLAMA_LOCAL ?? 'http://127.0.0.1:11434',
       model: process.env.OLLAMA_MODEL ?? 'suu',
+      maxInflight: Number(process.env.SUU_MAX_INFLIGHT ?? 2),
     }),
   });
   console.log(`Suu gate: http://127.0.0.1:${server.port} → Ollama (POST /api/chat, GET /api/version)`);

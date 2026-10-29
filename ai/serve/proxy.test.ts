@@ -92,3 +92,31 @@ test('sameSecret', () => {
   expect(sameSecret('abc', 'abcd')).toBe(false);
   expect(sameSecret('', '')).toBe(true);
 });
+
+test('a third chat while two are still running gets 503 busy at once; slots free up afterwards', async () => {
+  let release: () => void = () => {};
+  const gate = new Promise<void>((r) => {
+    release = r;
+  });
+  let started = 0;
+  const slow = (async () => {
+    started++;
+    await gate;
+    return Response.json({ message: { content: 'ok' } });
+  }) as unknown as typeof fetch;
+  const handler = makeHandler(
+    { token: TOKEN, target: 'http://127.0.0.1:11434', model: 'suu', maxInflight: 2 },
+    slow,
+  );
+  const a = handler(chat({ model: 'suu', messages: [] }));
+  const b = handler(chat({ model: 'suu', messages: [] }));
+  await Bun.sleep(5);
+  const c = await handler(chat({ model: 'suu', messages: [] }));
+  expect(c.status).toBe(503);
+  expect(await c.json()).toEqual({ error: 'busy' });
+  expect(started).toBe(2);
+  release();
+  expect((await a).status).toBe(200);
+  expect((await b).status).toBe(200);
+  expect((await handler(chat({ model: 'suu', messages: [] }))).status).toBe(200);
+});
