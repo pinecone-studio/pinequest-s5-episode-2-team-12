@@ -112,3 +112,15 @@ test('model off: keyword matches still show the sample (demo mode)', async () =>
   const body = await (await call({ question: 'What is the maximum height of the ball?' })).json();
   expect(body).toMatchObject({ source: 'sample', lesson: { id: 'maxmin' } });
 });
+
+test('another: true skips the sample lesson and asks Suu for a sampled one', async () => {
+  process.env.OLLAMA_URL = 'http://ollama:11434';
+  const temps: number[] = [];
+  globalThis.fetch = (async (_u: string, init: RequestInit) => {
+    temps.push(JSON.parse(String(init.body)).options.temperature);
+    return Response.json({ message: { content: good.output } });
+  }) as unknown as typeof fetch;
+  const body = await (await call({ question: good.question, answer: good.answer, another: true })).json();
+  expect(body.source).toBe('model');
+  expect(temps[0]).toBe(0.7);
+});

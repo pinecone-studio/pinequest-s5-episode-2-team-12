@@ -128,3 +128,20 @@ test('DesmosCatButton says what it does and shows when the panel is open', () =>
   rerender(<DesmosCatButton open onClick={() => clicks++} />);
   expect(screen.getByRole('button', { name: 'Desmos-ийг хаах' }).getAttribute('aria-pressed')).toBe('true');
 });
+
+describe('«Өөр хичээл» (another lesson)', () => {
+  test('a live lesson can be rewritten: the second request says another: true', async () => {
+    const api = fakeApi({ lesson, source: 'model' });
+    render(<DesmosSidePanel input={input} revealed={false} onClose={() => {}} fetchImpl={api.fn} />);
+    fireEvent.click(await screen.findByRole('button', { name: /Өөр хичээл/ }));
+    await waitFor(() => expect(api.sent).toHaveLength(2));
+    expect(api.sent[1]).toEqual({ ...input, another: true });
+  });
+
+  test('a sample lesson has no such button (it is hand-written, not Suu)', async () => {
+    const api = fakeApi({ lesson, source: 'sample' });
+    render(<DesmosSidePanel input={input} revealed={false} onClose={() => {}} fetchImpl={api.fn} />);
+    await screen.findByText(lesson.steps[0].text);
+    expect(screen.queryByRole('button', { name: /Өөр хичээл/ })).toBeNull();
+  });
+});

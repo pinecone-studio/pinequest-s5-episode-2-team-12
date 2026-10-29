@@ -15,6 +15,8 @@ export const maxDuration = 60;
 const Body = z.object({
   question: z.string().trim().min(3).max(1200),
   answer: z.string().trim().max(40).optional(),
+  /** «Өөр хичээл»: a new, sampled lesson instead of the usual one (never a sample lesson). */
+  another: z.boolean().default(false),
 });
 
 /** Same short pause as the tutor, so a sample lesson doesn't appear instantly. */
@@ -32,13 +34,13 @@ export type DesmosLessonResponse =
 export async function POST(req: Request) {
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: 'bad_request' }, { status: 400 });
-  const { question, answer } = parsed.data;
+  const { question, answer, another } = parsed.data;
 
   // With the model on, only the 6 sample questions themselves get a sample; everything else goes to Suu.
   const modelOn = hasOllama('desmos');
   const found = findLesson(question, { exact: modelOn });
   // a keyword match is only trusted when it teaches the same answer (the Desmos panel always sends one)
-  const sample = found && (!answer || answersMatch(found.answer, answer)) ? found : null;
+  const sample = !another && found && (!answer || answersMatch(found.answer, answer)) ? found : null;
   if (sample) {
     await new Promise((r) => setTimeout(r, SAMPLE_DELAY_MS));
     return Response.json({ lesson: sample, source: 'sample' } satisfies DesmosLessonResponse);
@@ -47,7 +49,7 @@ export async function POST(req: Request) {
   if (!modelOn) {
     return Response.json({ lesson: null, source: 'none', reason: 'off' } satisfies DesmosLessonResponse);
   }
-  const res = await modelDesmosLesson(question, answer || undefined);
+  const res = await modelDesmosLesson(question, answer || undefined, fetch, undefined, another);
   if (!res) {
     return Response.json({ lesson: null, source: 'none', reason: 'failed' } satisfies DesmosLessonResponse);
   }
