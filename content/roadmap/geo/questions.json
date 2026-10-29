@@ -953,5 +953,497 @@
     "reviewed": false,
     "author": "suprep-curriculum",
     "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc3-17-1-1",
+    "topicId": 17,
+    "domain": "geo",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "Two angles are complementary. One of the angles measures $38^\\circ$. What is the measure, in degrees, of the other angle?",
+    "mn": "Хоёр өнцөг бие биенээ $90^\\circ$-д хүртэл гүйцээнэ. Нэг нь $38^\\circ$ бол нөгөө өнцгийн хэмжээ (градусаар) хэд вэ?",
+    "answer": ["52"],
+    "explain": "Бие биенээ гүйцээх өнцгүүдийн нийлбэр $90^\\circ$. $90 - 38 = 52$.",
+    "hint": "Complementary — нийлбэр нь $90^\\circ$.",
+    "verify": {
+      "value": "90-38"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-17-2-1",
+    "topicId": 17,
+    "domain": "geo",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "In triangle $ABC$, the measure of angle $A$ is $2x^\\circ$, the measure of angle $B$ is $(3x + 5)^\\circ$, and the measure of angle $C$ is $(x + 25)^\\circ$. What is the measure, in degrees, of the largest angle of the triangle?",
+    "mn": "$ABC$ гурвалжинд $A$ өнцөг $2x^\\circ$, $B$ өнцөг $(3x + 5)^\\circ$, $C$ өнцөг $(x + 25)^\\circ$. Гурвалжны хамгийн том өнцгийн хэмжээ (градусаар) хэд вэ?",
+    "choices": ["$50^\\circ$", "$75^\\circ$", "$80^\\circ$", "$85^\\circ$"],
+    "answer": 2,
+    "explain": "Нийлбэр $180$: $2x + 3x + 5 + x + 25 = 6x + 30 = 180$, $x = 25$. $A = 50$, $B = 80$, $C = 50$. Хамгийн том нь $80^\\circ$.",
+    "hint": "Гурвалжны гурван өнцгийн нийлбэр $180^\\circ$.",
+    "why": {
+      "0": "Энэ бол $A$ ба $C$ өнцгүүд — хамгийн том биш.",
+      "1": "$3x = 75$ — $B$-ийн $+5$-ыг нэмээгүй."
+    },
+    "verify": {
+      "value": "3*25+5"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-17-3-1",
+    "topicId": 17,
+    "domain": "geo",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "In triangle $ABC$, $AB = AC$. The exterior angle at vertex $A$ is formed by extending side $BA$ beyond $A$. If this exterior angle measures $124^\\circ$, what is the measure, in degrees, of angle $B$?",
+    "mn": "$ABC$ гурвалжинд $AB = AC$. $BA$ талыг $A$ оройгоос цааш үргэлжлүүлж $A$ орой дахь гадаад өнцгийг үүсгэв. Энэ гадаад өнцөг $124^\\circ$ бол $B$ өнцгийн хэмжээ (градусаар) хэд вэ?",
+    "answer": ["62"],
+    "explain": "Гадаад өнцөг нь залгаагүй хоёр дотоод өнцгийн нийлбэртэй тэнцүү: $\\angle B + \\angle C = 124^\\circ$. $AB = AC$ тул $\\angle B = \\angle C$, иймд $\\angle B = 62^\\circ$.",
+    "hint": "Гурвалжны гадаад өнцөг = залгаагүй хоёр дотоод өнцгийн нийлбэр.",
+    "verify": {
+      "value": "124/2"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-18-1-1",
+    "topicId": 18,
+    "domain": "geo",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "Triangle $ABC$ is similar to triangle $DEF$, where $A$, $B$, and $C$ correspond to $D$, $E$, and $F$, respectively. If $AB = 6$, $DE = 9$, and $BC = 10$, what is the length of $\\overline{EF}$?",
+    "mn": "$ABC$ гурвалжин $DEF$ гурвалжинтай төстэй, $A$, $B$, $C$ нь $D$, $E$, $F$-д харгалзана. Хэрэв $AB = 6$, $DE = 9$, $BC = 10$ бол $\\overline{EF}$-ийн урт хэд вэ?",
+    "choices": ["$13$", "$15$", "$16$", "$19$"],
+    "answer": 1,
+    "explain": "Төстэй харьцаа $\\frac{DE}{AB} = \\frac{9}{6} = \\frac{3}{2}$. $EF = \\frac{3}{2} \\cdot 10 = 15$.",
+    "hint": "Харгалзах талуудын харьцаа тогтмол.",
+    "why": {
+      "0": "Харьцаагаар биш, зөрүүгээр бодсон ($10 + 3$)."
+    },
+    "verify": {
+      "value": "10*9/6"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-18-2-1",
+    "topicId": 18,
+    "domain": "geo",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "Triangle $ABC$ is similar to triangle $DEF$, where $AB$ corresponds to $DE$. The length of $\\overline{AB}$ is $8$, and the length of $\\overline{DE}$ is $20$. The perimeter of triangle $ABC$ is $30$. What is the perimeter of triangle $DEF$?",
+    "mn": "$ABC$ гурвалжин $DEF$-тэй төстэй ба $AB$ нь $DE$-д харгалзана. $\\overline{AB} = 8$, $\\overline{DE} = 20$. $ABC$ гурвалжны периметр $30$. $DEF$ гурвалжны периметр хэд вэ?",
+    "answer": ["75"],
+    "explain": "Төстэй харьцаа $\\frac{20}{8} = 2.5$. Периметр мөн ижил харьцаагаар өснө: $30 \\cdot 2.5 = 75$.",
+    "hint": "Периметрийн харьцаа нь талуудын харьцаатай тэнцүү.",
+    "verify": {
+      "value": "30*20/8"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-18-3-1",
+    "topicId": 18,
+    "domain": "geo",
+    "skill": "Lines, angles, and triangles",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "In triangle $ABC$, point $D$ lies on $\\overline{AB}$ and point $E$ lies on $\\overline{AC}$ such that $\\overline{DE}$ is parallel to $\\overline{BC}$. If $AD = 6$, $DB = 4$, and $DE = 9$, what is the length of $\\overline{BC}$?",
+    "mn": "$ABC$ гурвалжинд $D$ цэг $\\overline{AB}$ дээр, $E$ цэг $\\overline{AC}$ дээр оршиж $\\overline{DE} \\parallel \\overline{BC}$. Хэрэв $AD = 6$, $DB = 4$, $DE = 9$ бол $\\overline{BC}$-ийн урт хэд вэ?",
+    "choices": ["$13.5$", "$15$", "$18$", "$22.5$"],
+    "answer": 1,
+    "explain": "$DE \\parallel BC$ тул $\\triangle ADE \\sim \\triangle ABC$. $AB = 6 + 4 = 10$. $\\frac{BC}{DE} = \\frac{AB}{AD} = \\frac{10}{6}$, $BC = 9 \\cdot \\frac{10}{6} = 15$.",
+    "hint": "$ABC$ гурвалжны тал нь $AD$ биш, $AB = AD + DB$.",
+    "why": {
+      "0": "$\\frac{AD}{DB}$ харьцааг ашиглаж $9 \\cdot \\frac{6}{4}$ гэж бодсон.",
+      "3": "$9 \\cdot \\frac{10}{4}$ гэж $DB$-тэй харьцуулсан."
+    },
+    "verify": {
+      "value": "9*10/6"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-18-1-2",
+    "topicId": 18,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A right triangle has legs of length $9$ and $12$. What is the length of the hypotenuse of the triangle?",
+    "mn": "Тэгш өнцөгт гурвалжны катетууд $9$ ба $12$. Гипотенузын урт хэд вэ?",
+    "answer": ["15"],
+    "explain": "$c^2 = 9^2 + 12^2 = 81 + 144 = 225$, $c = 15$.",
+    "hint": "Пифагорын теорем: $a^2 + b^2 = c^2$.",
+    "verify": {
+      "value": "sqrt(9^2+12^2)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-18-2-2",
+    "topicId": 18,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A rectangle has a length of $24$ centimeters and a width of $10$ centimeters. What is the length, in centimeters, of a diagonal of the rectangle?",
+    "mn": "Тэгш өнцөгтийн урт $24$ см, өргөн $10$ см. Диагоналийн урт (см) хэд вэ?",
+    "choices": ["$14$", "$26$", "$34$", "$240$"],
+    "answer": 1,
+    "explain": "Диагональ нь тэгш өнцөгт гурвалжны гипотенуз: $\\sqrt{24^2 + 10^2} = \\sqrt{676} = 26$.",
+    "hint": "Диагональ тэгш өнцөгтийг хоёр тэгш өнцөгт гурвалжинд хуваана.",
+    "why": {
+      "0": "Хоёр талын зөрүүг авсан.",
+      "2": "Хоёр талын нийлбэр $24 + 10 = 34$ — диагональ биш."
+    },
+    "verify": {
+      "value": "sqrt(24^2+10^2)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-18-3-2",
+    "topicId": 18,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The legs of a right triangle differ in length by $17$, and the hypotenuse has length $25$. What is the perimeter of the triangle?",
+    "mn": "Тэгш өнцөгт гурвалжны катетуудын урт $17$-оор ялгаатай, гипотенуз $25$. Гурвалжны периметр хэд вэ?",
+    "answer": ["56"],
+    "explain": "Богино катет $x$, урт катет $x + 17$ гэе. $x^2 + (x + 17)^2 = 625$, $2x^2 + 34x - 336 = 0$, $x^2 + 17x - 168 = 0$, $(x + 24)(x - 7) = 0$. $x = 7$. Катетууд $7$ ба $24$. Периметр $7 + 24 + 25 = 56$.",
+    "hint": "Катетуудыг $x$ ба $x + 17$ гэж тэмдэглээд Пифагорын теоремоор бод.",
+    "verify": {
+      "value": "7+24+25"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-19-1-1",
+    "topicId": 19,
+    "domain": "geo",
+    "skill": "Circles",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A circle has a circumference of $18\\pi$. The area of the circle is $k\\pi$. What is the value of $k$?",
+    "mn": "Тойргийн урт $18\\pi$. Тойргийн талбай $k\\pi$ бол $k$-ийн утга хэд вэ?",
+    "answer": ["81"],
+    "explain": "$2\\pi r = 18\\pi$ тул $r = 9$. Талбай $\\pi r^2 = 81\\pi$. Иймд $k = 81$.",
+    "hint": "Эхлээд тойргийн урт $2\\pi r$-аас радиусыг ол.",
+    "verify": {
+      "value": "9^2"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-19-2-1",
+    "topicId": 19,
+    "domain": "geo",
+    "skill": "Circles",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A circle in the $xy$-plane has the equation $(x - 2)^2 + (y + 5)^2 = 36$. Which of the following points lies on the circle?",
+    "mn": "$xy$ хавтгай дээрх тойргийн тэгшитгэл $(x - 2)^2 + (y + 5)^2 = 36$. Дараах цэгүүдийн аль нь тойрог дээр оршино вэ?",
+    "choices": ["$(8, -5)$", "$(2, -5)$", "$(8, 5)$", "$(-2, 5)$"],
+    "answer": 0,
+    "explain": "$(8, -5)$-ыг орлуулбал $(8 - 2)^2 + (-5 + 5)^2 = 36 + 0 = 36$ ✓. $(2, -5)$ нь төв, бусад нь $36$-тай тэнцэхгүй.",
+    "hint": "Цэг бүрийн координатыг тэгшитгэлд орлуулж зүүн тал $36$ болж байгаа эсэхийг шалга.",
+    "why": {
+      "1": "Энэ бол тойргийн төв — тойрог дээр байх ёсгүй.",
+      "2": "$(8-2)^2 + (5+5)^2 = 36 + 100 = 136$."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-19-3-1",
+    "topicId": 19,
+    "domain": "geo",
+    "skill": "Circles",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "Line segment $QP$ is tangent at point $P$ to a circle with center $O$. Point $Q$ lies outside the circle, $OQ = 13$, and $QP = 12$. What is the radius of the circle?",
+    "mn": "$QP$ хэрчим төвтэй $O$ тойргийг $P$ цэгт шүргэнэ. $Q$ цэг тойргийн гадна оршино, $OQ = 13$, $QP = 12$. Тойргийн радиус хэд вэ?",
+    "choices": ["$\\sqrt{313}$", "$5$", "$7$", "$12$"],
+    "answer": 1,
+    "explain": "Шүргэгч нь шүргэлтийн цэгт татсан радиусад перпендикуляр: $\\angle OPQ = 90^\\circ$. Иймд $OP^2 + QP^2 = OQ^2$, $OP^2 = 169 - 144 = 25$, $OP = 5$.",
+    "hint": "Шүргэгч ба шүргэлтийн цэгт татсан радиус перпендикуляр.",
+    "why": {
+      "0": "Катетуудын квадратыг нэмсэн: $13^2 + 12^2$ — гэтэл $OQ = 13$ нь гипотенуз.",
+      "2": "$13 - 12$ гэж хассан."
+    },
+    "verify": {
+      "value": "sqrt(13^2-12^2)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-20-1-1",
+    "topicId": 20,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "An angle has a measure of $150^\\circ$. The measure of the angle, in radians, is $k\\pi$. What is the value of $k$?",
+    "mn": "Өнцгийн хэмжээ $150^\\circ$. Радианаар $k\\pi$ бол $k$ хэд вэ?",
+    "answer": ["5/6", ".8333", "0.8333", ".833", "0.833"],
+    "explain": "$150^\\circ \\cdot \\frac{\\pi}{180^\\circ} = \\frac{5\\pi}{6}$. Иймд $k = \\frac{5}{6}$.",
+    "hint": "$180^\\circ = \\pi$ радиан.",
+    "verify": {
+      "value": "150/180"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-20-2-1",
+    "topicId": 20,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A circle has a radius of $12$ centimeters. A sector of the circle has a central angle of $\\frac{\\pi}{3}$ radians. What is the arc length, in centimeters, of the sector?",
+    "mn": "Тойргийн радиус $12$ см. Тойргийн секторын төв өнцөг $\\frac{\\pi}{3}$ радиан. Секторын нумын урт (см) хэд вэ?",
+    "choices": ["$2\\pi$", "$4\\pi$", "$6\\pi$", "$12\\pi$"],
+    "answer": 1,
+    "explain": "Нумын урт $s = r\\theta = 12 \\cdot \\frac{\\pi}{3} = 4\\pi$.",
+    "hint": "Радианаар өгсөн өнцгийн хувьд $s = r\\theta$.",
+    "why": {
+      "3": "$\\theta = \\pi$ гэж авсан ($12 \\cdot \\pi$)."
+    },
+    "verify": {
+      "value": "12/3"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-20-3-1",
+    "topicId": 20,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A sector of a circle has an arc length of $4\\pi$ and an area of $20\\pi$. What is the radius of the circle?",
+    "mn": "Тойргийн секторын нумын урт $4\\pi$, талбай $20\\pi$. Тойргийн радиус хэд вэ?",
+    "answer": ["10"],
+    "explain": "Секторын талбай $A = \\frac{1}{2} r s$ ($s$ нь нумын урт). $20\\pi = \\frac{1}{2} r (4\\pi) = 2\\pi r$, $r = 10$.",
+    "hint": "Секторын талбай ба нумын уртыг холбосон томьёо: $A = \\frac{1}{2} r s$.",
+    "verify": {
+      "value": "2*20/4"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-21-1-1",
+    "topicId": 21,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "In right triangle $ABC$, angle $C$ is the right angle, $AC = 8$, $BC = 15$, and $AB = 17$. What is the value of $\\cos A$?",
+    "mn": "$ABC$ тэгш өнцөгт гурвалжинд $C$ нь тэгш өнцөг, $AC = 8$, $BC = 15$, $AB = 17$. $\\cos A$-ийн утга хэд вэ?",
+    "choices": ["$\\frac{8}{17}$", "$\\frac{15}{17}$", "$\\frac{8}{15}$", "$\\frac{17}{8}$"],
+    "answer": 0,
+    "explain": "$\\cos A = \\frac{\\text{залгаа катет}}{\\text{гипотенуз}} = \\frac{AC}{AB} = \\frac{8}{17}$.",
+    "hint": "$A$ өнцгийн залгаа катет аль нь вэ?",
+    "why": {
+      "1": "Энэ бол $\\sin A = \\frac{15}{17}$.",
+      "2": "Энэ бол $\\cot A = \\frac{1}{\\tan A}$."
+    },
+    "verify": {
+      "value": "8/17"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-21-2-1",
+    "topicId": 21,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "In a right triangle, $\\theta$ is an acute angle, $\\sin\\theta = 0.6$, and the hypotenuse has length $25$. What is the length of the side adjacent to angle $\\theta$?",
+    "mn": "Тэгш өнцөгт гурвалжинд $\\theta$ нь хурц өнцөг, $\\sin\\theta = 0.6$, гипотенузын урт $25$. $\\theta$ өнцгийн залгаа катетын урт хэд вэ?",
+    "choices": ["$15$", "$18$", "$20$", "$24$"],
+    "answer": 2,
+    "explain": "$\\sin\\theta = \\frac{\\text{эсрэг}}{25} = 0.6$ тул эсрэг катет $15$. Залгаа катет: $\\sqrt{25^2 - 15^2} = \\sqrt{400} = 20$.",
+    "hint": "Эхлээд эсрэг катетыг ол, дараа нь Пифагорын теоремоор залгаа катетыг бод.",
+    "why": {
+      "0": "$15$ нь эсрэг катет."
+    },
+    "verify": {
+      "value": "sqrt(25^2-15^2)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-21-3-1",
+    "topicId": 21,
+    "domain": "geo",
+    "skill": "Right triangles and trigonometry",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "In right triangle $ABC$, angle $C$ is the right angle, $\\tan A = \\frac{7}{24}$, and the hypotenuse $AB$ has length $100$. What is the area of triangle $ABC$?",
+    "mn": "$ABC$ тэгш өнцөгт гурвалжинд $C$ нь тэгш өнцөг, $\\tan A = \\frac{7}{24}$, гипотенуз $AB = 100$. Гурвалжны талбай хэд вэ?",
+    "answer": ["1344"],
+    "explain": "$\\tan A = \\frac{7}{24}$ тул катетууд $7k$ ба $24k$, гипотенуз $25k$ ($7^2 + 24^2 = 25^2$). $25k = 100$, $k = 4$. Катетууд $28$ ба $96$. Талбай $\\frac{1}{2} \\cdot 28 \\cdot 96 = 1{,}344$.",
+    "hint": "$7$-$24$-$25$ гурвалжинтай төстэй. Томруулах коэффициент $k$-г ол.",
+    "verify": {
+      "value": "0.5*28*96"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-22-1-1",
+    "topicId": 22,
+    "domain": "geo",
+    "skill": "Area and volume",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A cylindrical container has a radius of $3$ centimeters and a height of $10$ centimeters. What is the volume, in cubic centimeters, of the container?",
+    "mn": "Цилиндр хэлбэртэй савны радиус $3$ см, өндөр $10$ см. Савны эзлэхүүн (см³) хэд вэ?",
+    "choices": ["$30\\pi$", "$60\\pi$", "$90\\pi$", "$900\\pi$"],
+    "answer": 2,
+    "explain": "$V = \\pi r^2 h = \\pi (3^2)(10) = 90\\pi$.",
+    "hint": "$V = \\pi r^2 h$.",
+    "why": {
+      "1": "Энэ бол хажуугийн гадаргуугийн талбай $2\\pi r h = 60\\pi$.",
+      "3": "$\\pi (3 \\cdot 10)^2$ гэж $rh$ үржвэрийг бүхлээр нь квадрат зэрэгт дэвшүүлсэн."
+    },
+    "verify": {
+      "value": "3^2*10"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-22-2-1",
+    "topicId": 22,
+    "domain": "geo",
+    "skill": "Area and volume",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The volume of a sphere with radius $6$ is $k\\pi$. What is the value of $k$?",
+    "mn": "Радиус нь $6$ бөмбөлгийн эзлэхүүн $k\\pi$ бол $k$-ийн утга хэд вэ?",
+    "answer": ["288"],
+    "explain": "$V = \\frac{4}{3}\\pi r^3 = \\frac{4}{3}\\pi (216) = 288\\pi$. Иймд $k = 288$.",
+    "hint": "$V = \\frac{4}{3}\\pi r^3$.",
+    "verify": {
+      "value": "(4/3)*6^3"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-22-3-1",
+    "topicId": 22,
+    "domain": "geo",
+    "skill": "Area and volume",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A sphere is inscribed in a cube with edge length $10$ so that the sphere touches each face of the cube. What is the volume of the region inside the cube but outside the sphere?",
+    "mn": "Ирмэгийн урт нь $10$ шоонд бөмбөлөг багтсан бөгөөд бөмбөлөг шооны бүх талыг шүргэнэ. Шооны дотор боловч бөмбөлгийн гадна байгаа хэсгийн эзлэхүүн хэд вэ?",
+    "choices": [
+      "$1000 - \\frac{500\\pi}{3}$",
+      "$1000 - \\frac{4000\\pi}{3}$",
+      "$1000 - \\frac{250\\pi}{3}$",
+      "$\\frac{500\\pi}{3}$"
+    ],
+    "answer": 0,
+    "explain": "Бөмбөлгийн диаметр шооны ирмэгтэй тэнцүү ($10$), радиус $5$. Бөмбөлгийн эзлэхүүн $\\frac{4}{3}\\pi(5^3) = \\frac{500\\pi}{3}$. Шооны эзлэхүүн $10^3 = 1000$. Зөрүү $1000 - \\frac{500\\pi}{3}$.",
+    "hint": "Бөмбөлгийн диаметр нь шооны ирмэгтэй тэнцүү.",
+    "why": {
+      "1": "Диаметр $10$-ыг радиус болгон авсан: $\\frac{4}{3}\\pi(10^3)$.",
+      "3": "Энэ бол бөмбөлгийн өөрийнх нь эзлэхүүн."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
   }
 ]

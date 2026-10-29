@@ -8,6 +8,7 @@ import { Rich } from '@/components/math';
 import { Bar } from '@/components/ui/Bar';
 import { Button } from '@/components/ui/Button';
 import { Confetti } from '@/components/ui/Confetti';
+import { Modal } from '@/components/ui/Modal';
 import { toast } from '@/components/ui/toast';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
@@ -57,9 +58,11 @@ export function StopPlayer({
   const topic = topicById(no)!;
   const state = loaded.state;
   const mastery = masteryAt(state, no);
-  const done = isDone(state.stops.find((p) => p.no === no));
+  const stopProgress = state.stops.find((p) => p.no === no);
+  const done = isDone(stopProgress);
   const testOut = wantTestOut && mastery === 'strong' && !done;
   const allowed = isOpen(state) && canOpenStop(state.stops, no);
+  const isFirstAttempt = stopProgress?.attempts === 0;
 
   const [round, setRound] = useState(0);
   const [phase, setPhase] = useState<Phase>('play');
@@ -71,10 +74,11 @@ export function StopPlayer({
   const [answers, setAnswers] = useState<SubmittedAnswer[]>([]);
   const [outcome, setOutcome] = useState<StopOutcome | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showSummary, setShowSummary] = useState(false);
   const started = useRef(Date.now());
 
   // draw the set once the state is known; a new round (retry) draws a fresh one
-  // biome-ignore lint/correctness/useExhaustiveDependencies: draw only when readiness or the round changes, not on every state update
+  // biome-ignore lint/correctness/useExhaustiveDependencies: draw only when readiness, stop number or round changes
   useEffect(() => {
     if (!loaded.ready || !allowed) return;
     const history = demo ? loaded.history : serverHistory;
@@ -89,11 +93,14 @@ export function StopPlayer({
         testOut,
       }),
     );
-    setPhase(
-      round === 0 && !testOut && intro.length && (forceIntro || ROADMAP.autoIntro.includes(mastery))
-        ? 'intro'
-        : 'play',
-    );
+
+    const shouldShowIntro =
+      round === 0 &&
+      !testOut &&
+      intro.length > 0 &&
+      (forceIntro || ROADMAP.autoIntro.includes(mastery) || isFirstAttempt);
+
+    setPhase(shouldShowIntro ? 'intro' : 'play');
     setI(0);
     setValue('');
     setRevealed(false);
@@ -101,7 +108,7 @@ export function StopPlayer({
     setAnswers([]);
     setOutcome(null);
     started.current = Date.now();
-  }, [loaded.ready, allowed, round]);
+  }, [loaded.ready, allowed, round, no, forceIntro, testOut, mastery, intro.length, isFirstAttempt]);
 
   const byId = useMemo(() => new Map(pool.map((q) => [q.id, q])), [pool]);
   const qs = (ids ?? []).map((id) => byId.get(id)!).filter(Boolean);
@@ -139,12 +146,25 @@ export function StopPlayer({
       >
         <TopicIcon name={topic.icon} size={26} />
       </span>
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <h1 className="font-display text-xl sm:text-2xl font-extrabold leading-tight text-ink truncate">
           {testOut ? `${t('stop.testOutTitle')}: ` : ''}
           {topic.title}
         </h1>
       </div>
+      {intro.length > 0 && phase !== 'intro' && (
+        <Button
+          variant="secondary"
+          size="md"
+          className="font-medium gap-2"
+          onClick={() => setShowSummary(true)}
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Товч тайлбар
+        </Button>
+      )}
     </header>
   );
 
@@ -278,7 +298,8 @@ export function StopPlayer({
 
   const correct = revealed && isCorrect(q, value.trim());
   return (
-    <div className="w-full max-w-4xl mx-auto flex flex-col justify-between h-full py-1 overflow-hidden">
+    <>
+      <div className="w-full max-w-4xl mx-auto flex flex-col justify-between h-full py-1 overflow-hidden">
       {/* Header & Прогресс бар */}
       <div className="flex flex-col gap-2 shrink-0">
         {header}
@@ -296,7 +317,7 @@ export function StopPlayer({
         </div>
       </div>
 
-      {/* Main Question Box - Tom, tod fontoooor, yamar ch holhiltguigeer baikh bolovch horigdohgui */}
+      {/* Main Question Box */}
       <section
         className="relative flex flex-col justify-center flex-1 my-auto gap-3 py-1 transition-all text-foreground overflow-hidden"
         aria-label={t('stop.problem', { i: i + 1, n: total })}
@@ -312,14 +333,14 @@ export function StopPlayer({
           />
         </div>
 
-        {/* Hint - Tom, tod text */}
+        {/* Hint */}
         {hint && !revealed && (
           <div className="relative z-10 animate-fade-in rounded-2xl bg-teal-soft/90 p-3 text-base sm:text-lg font-bold text-teal border border-teal/20 max-h-24 overflow-hidden">
             <Rich text={q.hint} />
           </div>
         )}
 
-        {/* Explanation - Tom, tod text */}
+        {/* Explanation */}
         {revealed && (
           <div
             role="status"
@@ -343,7 +364,7 @@ export function StopPlayer({
         )}
       </section>
 
-      {/* Footer Navigation Buttons - Tom, darsan baihad amar tovchnuud */}
+      {/* Footer Navigation Buttons */}
       <div className="relative z-10 flex items-center justify-between gap-4 pt-2 border-t border-border/20 shrink-0">
         {!revealed ? (
           <Button
@@ -360,7 +381,6 @@ export function StopPlayer({
             <span className="text-sm font-extrabold text-ink-3 tnum">
               Зөв: {right}/{answers.length}
             </span>
-            {/* a wrong answer goes to Суу with the problem and what the student chose */}
             {!correct && (
               <Link
                 href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}
@@ -393,5 +413,14 @@ export function StopPlayer({
         )}
       </div>
     </div>
+    <Modal
+      open={showSummary}
+      onClose={() => setShowSummary(false)}
+      label="Товч тайлбар"
+      className="max-w-6xl"
+    >
+      <StopIntro screens={intro} onDone={() => setShowSummary(false)} />
+    </Modal>
+    </>
   );
 }
