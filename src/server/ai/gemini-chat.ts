@@ -8,6 +8,7 @@ import { answersMatch } from '@/features/tutor/lib/desmos-lesson-parse';
 import { questionById } from '@/server/bank';
 import { serverEnv } from '@/server/env';
 import type { Question, TutorMode } from '@/types';
+import { type Hit, similarExamples } from './rag/retrieve';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E'];
 const API = 'https://generativelanguage.googleapis.com/v1beta/models';
@@ -95,8 +96,24 @@ export function statedAnswer(text: string): string | null {
   return m?.[1]?.trim() || null;
 }
 
+/** A retrieved library lesson, short: the problem, its Desmos rows and its answer. */
+export function exampleLine(h: Hit): string {
+  let rows: string[] = [];
+  try {
+    const l = JSON.parse(h.lesson) as { steps?: { desmos?: { latex?: string }[] }[] };
+    rows = (l.steps ?? []).flatMap((s) => (s.desmos ?? []).map((d) => d.latex ?? '')).filter(Boolean);
+  } catch {}
+  const desmos = rows.length
+    ? ` · Desmos: ${rows
+        .slice(0, 6)
+        .map((r) => `\`${r}\``)
+        .join(', ')}`
+    : '';
+  return `- (${h.technique}) ${h.question}${desmos} · хариу: ${h.answer}`;
+}
+
 /** The [Баримт] block the server puts in front of the student's message. */
-export function factsFor(input: GeminiChatInput): string {
+export function factsFor(input: GeminiChatInput, examples: Hit[] = []): string {
   const q = bankQuestion(input.context);
   const lines: string[] = [];
   if (q) {
@@ -122,6 +139,12 @@ export function factsFor(input: GeminiChatInput): string {
       lines.push(`${i + 1}. ${s.text}${rows}`);
     });
   }
+  if (examples.length) {
+    lines.push(
+      'Манай сангаас олдсон төстэй бодлогууд (Desmos-оор бодсон, шалгагдсан) — аргыг нь ашиглаж болно:',
+    );
+    for (const h of examples) lines.push(exampleLine(h));
+  }
   lines.push(`Горим: ${input.mode}${input.raw ? ' (сурагч өөрөө бичсэн)' : ' (товч дарсан)'}`);
   return `[Баримт]\n${lines.join('\n')}`;
 }
@@ -144,6 +167,9 @@ export async function geminiTutorReply(
 ): Promise<string | null> {
   const { geminiApiKey, geminiChatModel } = serverEnv();
   if (!geminiApiKey) return null;
+  // RAG: similar solved problems from our library, found by the problem itself (or what the student typed)
+  const query = bankQuestion(input.context)?.prompt ?? input.message;
+  const { hits } = await similarExamples(query, 2, fetchImpl).catch(() => ({ hits: [] as Hit[] }));
   const history = (input.history ?? []).slice(-8).map((t) => ({
     role: t.role === 'user' ? 'user' : 'model',
     parts: [{ text: t.text.slice(0, 1500) }],
@@ -152,7 +178,7 @@ export async function geminiTutorReply(
     systemInstruction: { parts: [{ text: GEMINI_SYSTEM }] },
     contents: [
       ...history,
-      { role: 'user', parts: [{ text: `${factsFor(input)}\n\n[Сурагч]\n${input.message}` }] },
+      { role: 'user', parts: [{ text: `${factsFor(input, hits)}\n\n[Сурагч]\n${input.message}` }] },
     ],
     generationConfig: { temperature: 0.4, maxOutputTokens: 2048 },
   };
