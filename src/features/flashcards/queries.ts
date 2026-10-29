@@ -30,9 +30,7 @@ export async function listFlashStates(userId: string): Promise<Record<string, Fl
   const out: Record<string, FlashState> = {};
   for (const r of (data ?? []) as Row[]) {
     // the old /cards screens stored bare card ids («sum»); /flashcards keys are «deck/card»
-    const key = r.card_id.includes('/')
-      ? r.card_id
-      : FLASHCARDS.find((c) => c.id === r.card_id)?.key;
+    const key = r.card_id.includes('/') ? r.card_id : FLASHCARDS.find((c) => c.id === r.card_id)?.key;
     if (!key || out[key]) continue;
     const due = Date.parse(r.due_at);
     out[key] =
