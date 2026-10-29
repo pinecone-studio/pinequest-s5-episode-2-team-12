@@ -1,14 +1,14 @@
 // Gems as a ledger (earned +, spent −, each with a unique key), the inventory, and an idempotent purchase.
 // The same rules run in Postgres (purchase_item, migration 0011) for signed-in students; this pure copy runs
 // the demo and is what the tests pin down (wallet.test.ts).
-import { EARN, itemById, type Slot } from '../catalog';
+import { EARN, type EquipmentSlot, equipmentSlot, itemById, outfitHasAccessory } from '../catalog';
 
 export type GemEvent = { amount: number; reason: string; key: string };
 export type Wallet = {
   events: GemEvent[];
   /** item id → quantity owned (cosmetics: 1). */
   owned: Record<string, number>;
-  equipped: Partial<Record<Slot, string>>;
+  equipped: Partial<Record<EquipmentSlot, string>>;
 };
 
 export const emptyWallet = (): Wallet => ({ events: [], owned: {}, equipped: {} });
@@ -50,10 +50,18 @@ export function purchase(w: Wallet, itemId: string, key: string): PurchaseResult
 export function equip(w: Wallet, itemId: string): Wallet {
   const item = itemById(itemId);
   if (!item || item.kind === 'consumable' || !(w.owned[itemId] > 0)) return w;
-  const slot = item.kind;
+  if (item.accessorySlot && outfitHasAccessory(w.equipped.outfit, item.accessorySlot)) return w;
+  const slot = equipmentSlot(item);
   const equipped = { ...w.equipped };
   if (equipped[slot] === itemId) delete equipped[slot];
-  else equipped[slot] = itemId;
+  else {
+    if (item.kind === 'outfit') {
+      if (outfitHasAccessory(item.id, 'head')) delete equipped.head;
+      if (outfitHasAccessory(item.id, 'eyes')) delete equipped.eyes;
+      if (outfitHasAccessory(item.id, 'neck')) delete equipped.neck;
+    }
+    equipped[slot] = itemId;
+  }
   return { ...w, equipped };
 }
 

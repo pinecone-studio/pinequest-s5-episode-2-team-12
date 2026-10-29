@@ -28,6 +28,7 @@ export function OfficialBank({ data, filter }: { data: OfficialPage; filter: Off
   const router = useRouter();
   const pathname = usePathname();
   const [pending, start] = useTransition();
+  const [resetKeys, setResetKeys] = useState<Record<string, number>>({});
   const [search, setSearch] = useState(filter.search ?? '');
   const searchId = useId();
   // the question open in the «AI багш Суу» side panel, and what its card reports (checked, the answer given)
@@ -36,7 +37,7 @@ export function OfficialBank({ data, filter }: { data: OfficialPage; filter: Off
 
   function go(next: Partial<OfficialFilter>) {
     const params = officialFilterToParams({ ...filter, page: 1, ...next });
-    start(() => router.push(params ? `${pathname}?${params}` : pathname));
+    start(() => router.push(`${pathname}?view=official${params ? `&${params}` : ''}`));
   }
 
   function submitSearch(event: FormEvent) {
@@ -166,41 +167,31 @@ export function OfficialBank({ data, filter }: { data: OfficialPage; filter: Off
         )}
       </div>
 
-      <div className={cn(suuQuestion && 'pb-[56dvh] lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:pb-0')}>
-        <section
-          className={cn('min-w-0 space-y-3 transition-opacity', pending && 'opacity-50')}
-          aria-busy={pending}
-        >
-          {data.questions.map((q, i) => (
-            <OfficialQuestionCard
-              key={q.id}
-              question={q}
-              index={firstIndex + i + 1}
-              suuOpen={suuQuestion?.id === q.id}
-              onSuu={(state) => setSuu(state ? { id: q.id, ...state } : null)}
-            />
-          ))}
-
-          {data.questions.length === 0 && (
-            <div className="rounded-3xl border border-dashed border-line-2 bg-paper p-10 text-center">
-              <p className="font-bold text-ink">{t('bank.empty')}</p>
-              <p className="mt-1 text-sm text-ink-3">{t('bank.emptyBody')}</p>
-            </div>
-          )}
-        </section>
-
-        {suu && suuQuestion && (
-          <SuuSidePanel
-            context={{
-              kind: 'question',
-              id: suuQuestion.id,
-              title: suuQuestion.skill,
-              problem: suuQuestion.text,
-              chosen: suu.checked ? suu.chosen : undefined,
+      <section className={cn('space-y-3 transition-opacity', pending && 'opacity-50')} aria-busy={pending}>
+        {data.questions.map((q, i) => (
+          <OfficialQuestionCard
+            key={`${q.id}:${resetKeys[q.id] ?? 0}`}
+            question={q}
+            index={firstIndex + i + 1}
+            lastInTopic={i === data.questions.length - 1 && data.page === data.pageCount}
+            onComplete={() => router.push('/bank')}
+            onNext={() => {
+              const next = data.questions[i + 1];
+              if (!next) {
+                go({ page: data.page + 1 });
+                return;
+              }
+              setResetKeys((previous) => ({ ...previous, [next.id]: (previous[next.id] ?? 0) + 1 }));
+              requestAnimationFrame(() => document.getElementById(`official-question-${next.id}`)?.focus());
             }}
-            revealed={suu.checked}
-            onClose={() => setSuu(null)}
           />
+        ))}
+
+        {data.questions.length === 0 && (
+          <div className="rounded-3xl border border-dashed border-line-2 bg-paper p-10 text-center">
+            <p className="font-bold text-ink">{t('bank.empty')}</p>
+            <p className="mt-1 text-sm text-ink-3">{t('bank.emptyBody')}</p>
+          </div>
         )}
       </div>
 

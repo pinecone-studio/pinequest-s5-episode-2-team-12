@@ -1,4 +1,5 @@
-import { describe, expect, mock, test } from 'bun:test';
+import { afterEach, beforeEach, describe, expect, mock, test } from 'bun:test';
+import { resetAnswerTransport } from '@/test/mock-submissions';
 
 const pushed: string[] = [];
 mock.module('next/navigation', () => ({
@@ -56,11 +57,13 @@ describe('OfficialBank', () => {
     expect(screen.getAllByRole('radio')).toHaveLength(4);
   });
 
-  test('a wrong choice is marked and the explanation opens', () => {
+  test('a wrong answer stays hidden until explicitly revealed', () => {
     render(<OfficialBank data={data} filter={{ page: 1 }} />);
     fireEvent.click(screen.getAllByRole('radio')[1]);
     fireEvent.click(screen.getAllByRole('button', { name: 'Шалгах' })[0]);
-    expect(screen.getByText('Буруу. Зөв хариулт: A')).toBeTruthy();
+    expect(screen.getByText('Буруу байна. Дахин оролдоорой.')).toBeTruthy();
+    expect(screen.queryByText('Choice A is correct because one face shows 2.')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Хариу харах' }));
     expect(screen.getByText('Choice A is correct because one face shows 2.')).toBeTruthy();
   });
 
@@ -91,6 +94,9 @@ describe('OfficialBank', () => {
     pushed.length = 0;
     render(<OfficialBank data={data} filter={{ page: 3, difficulty: 3 }} />);
     fireEvent.click(screen.getByRole('button', { name: 'Геометр' }));
-    expect(pushed).toEqual(['/bank?domain=geo&difficulty=3']);
+    expect(pushed).toEqual(['/bank?view=official&domain=geo&difficulty=3']);
   });
 });
+
+beforeEach(resetAnswerTransport);
+afterEach(resetAnswerTransport);

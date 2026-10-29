@@ -6,8 +6,9 @@
 //   4. otherwise a demo reply that says so (`demo: true`)
 // Suu still writes every Desmos lesson (/api/desmos/lesson). Keys and model URLs stay on the server.
 import { z } from 'zod';
-import { geminiTutorReply, hasGeminiChat } from '@/server/ai/gemini-chat';
+import { geminiTutorReply, hasGeminiChat, verdictFor } from '@/server/ai/gemini-chat';
 import { hasOllama } from '@/server/ai/ollama-client';
+import { withVerdict } from '@/server/ai/verdict';
 import { demoReply } from '@/server/tutor/demo';
 import { ollamaReply } from '@/server/tutor/ollama';
 import { scriptedReply } from '@/server/tutor/scripted';
@@ -60,7 +61,8 @@ export async function POST(req: Request) {
   }
 
   if (hasOllama('chat')) {
-    const text = await ollamaReply(mode, message, fetch, raw);
+    // the server grades the answer with code; Suu (v3 data) is trained to follow the verdict line
+    const text = await ollamaReply(mode, withVerdict(message, verdictFor(parsed.data)), fetch, raw);
     if (text) return Response.json({ text, demo: false, model: 'suu' });
   }
   if (hasGeminiChat()) {

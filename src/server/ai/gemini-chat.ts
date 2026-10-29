@@ -126,6 +126,17 @@ export function factsFor(input: GeminiChatInput): string {
   return `[Баримт]\n${lines.join('\n')}`;
 }
 
+/**
+ * The code-graded verdict on the answer in this message (bank problem + "Миний хариу: X" or a stated answer).
+ * null when there is no bank problem, no answer, or it can't be graded. Used for Gemini's facts and Suu's verdict line.
+ */
+export function verdictFor(input: Pick<GeminiChatInput, 'message' | 'raw' | 'context'>): boolean | null {
+  const q = bankQuestion(input.context);
+  if (!q) return null;
+  const attempt = chosenIn(input.message) ?? (input.raw ? statedAnswer(input.message) : null);
+  return attempt ? gradeAttempt(q, attempt) : null;
+}
+
 /** "Миний хариу: X" that the app itself adds when the student came from a mistake. */
 function chosenIn(message: string): string | null {
   return message.match(/Миний хариу:\s*([^\n]+)/)?.[1]?.trim() ?? null;
@@ -142,7 +153,7 @@ export async function geminiTutorReply(
   input: GeminiChatInput,
   fetchImpl: typeof fetch = fetch,
 ): Promise<string | null> {
-  const { geminiApiKey, geminiChatModel } = serverEnv();
+  const { geminiApiKey, geminiChatModel, geminiChatFallback } = serverEnv();
   if (!geminiApiKey) return null;
   const history = (input.history ?? []).slice(-8).map((t) => ({
     role: t.role === 'user' ? 'user' : 'model',
@@ -156,22 +167,31 @@ export async function geminiTutorReply(
     ],
     generationConfig: { temperature: 0.4, maxOutputTokens: 2048 },
   };
-  try {
-    const res = await fetchImpl(`${API}/${encodeURIComponent(geminiChatModel)}:generateContent`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-goog-api-key': geminiApiKey },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(25_000),
-    });
-    if (!res.ok) return null;
-    const data = (await res.json()) as GeminiReply;
-    const text = (data.candidates?.[0]?.content?.parts ?? [])
-      .filter((p) => !p.thought && p.text)
-      .map((p) => p.text)
-      .join('')
-      .trim();
-    return text || null;
-  } catch {
-    return null;
+  // the main model first; when Google says it's overloaded or over the free quota (429/503), one try on the
+  // lighter fallback model, so a demo doesn't fall back to a canned reply because of a busy minute
+  const deadline = Date.now() + 25_000;
+  for (const model of [geminiChatModel, geminiChatFallback].filter((m, i, a) => m && a.indexOf(m) === i)) {
+    const left = deadline - Date.now();
+    if (left < 3_000) return null;
+    try {
+      const res = await fetchImpl(`${API}/${encodeURIComponent(model)}:generateContent`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-goog-api-key': geminiApiKey },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(left),
+      });
+      if (res.status === 429 || res.status === 503) continue;
+      if (!res.ok) return null;
+      const data = (await res.json()) as GeminiReply;
+      const text = (data.candidates?.[0]?.content?.parts ?? [])
+        .filter((p) => !p.thought && p.text)
+        .map((p) => p.text)
+        .join('')
+        .trim();
+      return text || null;
+    } catch {
+      return null;
+    }
   }
+  return null;
 }

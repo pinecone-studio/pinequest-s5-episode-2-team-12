@@ -1335,5 +1335,658 @@
     "reviewed": false,
     "author": "suprep-curriculum",
     "createdAt": "2026-10-26"
+  },
+  {
+    "id": "rmc3-01-1-1",
+    "topicId": 1,
+    "domain": "adv",
+    "skill": "Equivalent expressions",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "For $x > 0$, which expression is equivalent to $\\sqrt[3]{x^5}$?",
+    "mn": "$x > 0$ үед $\\sqrt[3]{x^5}$-тай тэнцүү илэрхийлэл аль нь вэ?",
+    "choices": ["$x^{\\frac{5}{3}}$", "$x^{\\frac{3}{5}}$", "$x^{8}$", "$x^{\\frac{2}{3}}$"],
+    "answer": 0,
+    "explain": "$\\sqrt[n]{x^m} = x^{m/n}$ тул $\\sqrt[3]{x^5} = x^{5/3}$.",
+    "hint": "Язгуурын зэрэг нь хуваарьт, язгуур доторх зэрэг нь хүртвэрт очно.",
+    "why": {
+      "1": "Хүртвэр, хуваарийг сольсон байна.",
+      "3": "$5 - 3 = 2$ гэж хасах нь буруу."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-01-2-1",
+    "topicId": 1,
+    "domain": "adv",
+    "skill": "Equivalent expressions",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "For $x > 0$, $(9x^4)^{\\frac{3}{2}} = kx^6$, where $k$ is a constant. What is the value of $k$?",
+    "mn": "$x > 0$ үед $(9x^4)^{\\frac{3}{2}} = kx^6$, энд $k$ тогтмол. $k$-ийн утга хэд вэ?",
+    "answer": ["27"],
+    "explain": "$(ab)^n = a^n b^n$ тул $9^{3/2} = (\\sqrt{9})^3 = 27$ ба $(x^4)^{3/2} = x^6$. Иймд $k = 27$.",
+    "hint": "Тоон хэсэг ба хувьсагчийн хэсгийг тусад нь зэрэгт дэвшүүл.",
+    "verify": {
+      "value": "9^(3/2)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-01-3-1",
+    "topicId": 1,
+    "domain": "adv",
+    "skill": "Equivalent expressions",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "For $x \\ne 1$ and $x \\ne -1$, which expression is equivalent to $\\frac{3}{x-1} - \\frac{2}{x+1}$?",
+    "mn": "$x \\ne 1$, $x \\ne -1$ үед $\\frac{3}{x-1} - \\frac{2}{x+1}$-тай тэнцүү илэрхийлэл аль нь вэ?",
+    "choices": ["$\\frac{x+5}{x^2-1}$", "$\\frac{x+1}{x^2-1}$", "$\\frac{5x+1}{x^2-1}$", "$\\frac{1}{x^2-1}$"],
+    "answer": 0,
+    "explain": "Ерөнхий хуваарь $(x-1)(x+1) = x^2 - 1$. $\\frac{3(x+1) - 2(x-1)}{x^2-1} = \\frac{3x + 3 - 2x + 2}{x^2-1} = \\frac{x+5}{x^2-1}$.",
+    "hint": "Ерөнхий хуваарьт аваад, хасах тэмдгийг хаалтанд тарааж бод.",
+    "why": {
+      "1": "$-2(x-1) = -2x - 2$ гэж тэмдгийг буруу тарааж $x + 1$ гаргасан.",
+      "2": "Хасахын оронд нэмсэн: $3(x+1) + 2(x-1)$.",
+      "3": "Хүртвэрүүдийг шууд хасч болохгүй; эхлээд ерөнхий хуваарьт аваачна."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-02-1-1",
+    "topicId": 2,
+    "domain": "adv",
+    "skill": "Equivalent expressions",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "Which expression is equivalent to $(2x^2 + 3x - 1) + (x^2 - 5x + 4)$?",
+    "mn": "$(2x^2 + 3x - 1) + (x^2 - 5x + 4)$-тэй тэнцүү илэрхийлэл аль нь вэ?",
+    "choices": ["$3x^2 - 2x + 3$", "$3x^2 + 8x + 3$", "$3x^4 - 2x + 3$", "$3x^2 - 2x - 3$"],
+    "answer": 0,
+    "explain": "Адил гишүүдийг нэмнэ: $x^2$: $2 + 1 = 3$; $x$: $3 + (-5) = -2$; тогтмол: $-1 + 4 = 3$. Үр дүн $3x^2 - 2x + 3$.",
+    "hint": "Адил зэрэгтэй гишүүдийг бүлэглэж нэм.",
+    "why": {
+      "1": "$3x$ ба $-5x$-ийг нэмэхдээ $-5$-ын тэмдгийг орхисон.",
+      "2": "Нэмэхэд зэрэг өөрчлөгдөхгүй, зөвхөн коэффициентүүд нэмэгдэнэ.",
+      "3": "$-1 + 4 = 3$, $-3$ биш."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-02-2-1",
+    "topicId": 2,
+    "domain": "adv",
+    "skill": "Equivalent expressions",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The expression $(x + 4)(x - 7)$ is equivalent to $x^2 + bx + c$, where $b$ and $c$ are constants. What is the value of $b + c$?",
+    "mn": "$(x + 4)(x - 7)$ нь $x^2 + bx + c$-тэй тэнцүү, энд $b$, $c$ тогтмол. $b + c$-ийн утга хэд вэ?",
+    "answer": ["-31"],
+    "explain": "$(x+4)(x-7) = x^2 - 7x + 4x - 28 = x^2 - 3x - 28$. $b = -3$, $c = -28$ тул $b + c = -31$.",
+    "hint": "Хаалтыг задлаад $x$-ийн коэффициент ба чөлөөт гишүүнийг ол.",
+    "verify": {
+      "value": "(4-7)+(4*(-7))"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-02-2-2",
+    "topicId": 2,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The polynomial $p(x) = x^3 + 4x^2 + kx + 6$, where $k$ is a constant, has $x + 1$ as a factor. What is the value of $k$?",
+    "mn": "$p(x) = x^3 + 4x^2 + kx + 6$ олон гишүүнт ($k$ тогтмол) $x + 1$ хүчин зүйлтэй. $k$-ийн утга хэд вэ?",
+    "answer": ["9"],
+    "explain": "$x + 1$ хүчин зүйл тул $p(-1) = 0$. $-1 + 4 - k + 6 = 0$, $9 - k = 0$, $k = 9$.",
+    "hint": "$x + 1 = x - (-1)$ тул $p(-1)$ хэдтэй тэнцүү байх вэ?",
+    "verify": {
+      "sub": {
+        "var": "k",
+        "eq": "(-1)^3 + 4(-1)^2 + k(-1) + 6 = 0"
+      }
+    },
+    "vocab": ["factor"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-02-3-1",
+    "topicId": 2,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "The polynomial $p(x) = x^3 + ax^2 + bx - 12$ has $x - 1$ and $x + 2$ as factors, where $a$ and $b$ are constants. What is the value of $a$?",
+    "mn": "$p(x) = x^3 + ax^2 + bx - 12$ олон гишүүнт ($a$, $b$ тогтмол) $x - 1$ ба $x + 2$ хүчин зүйлтэй. $a$-ийн утга хэд вэ?",
+    "choices": ["$3$", "$4$", "$7$", "$11$"],
+    "answer": 2,
+    "explain": "$p(1) = 0$: $1 + a + b - 12 = 0$, өөрөөр хэлбэл $a + b = 11$. $p(-2) = 0$: $-8 + 4a - 2b - 12 = 0$, өөрөөр хэлбэл $2a - b = 10$. Хоёр тэгшитгэлийг нэмбэл $3a = 21$, $a = 7$ (мөн $b = 4$).",
+    "hint": "Хүчин зүйл бүрээс $p(1) = 0$ ба $p(-2) = 0$ гэсэн хоёр тэгшитгэл гарна.",
+    "why": {
+      "1": "$4$ бол $b$-ийн утга.",
+      "3": "$11$ бол $a + b$-ийн утга."
+    },
+    "verify": {
+      "value": "(11+10)/3"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-04-1-1",
+    "topicId": 4,
+    "domain": "adv",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "What value of $x$ satisfies the equation $\\sqrt{3x - 2} = 5$?",
+    "mn": "$\\sqrt{3x - 2} = 5$ тэгшитгэлийг ямар $x$ хангах вэ?",
+    "answer": ["9"],
+    "explain": "Хоёр талыг квадрат зэрэгт дэвшүүлбэл $3x - 2 = 25$, $3x = 27$, $x = 9$. Шалгая: $\\sqrt{27 - 2} = 5$ ✓.",
+    "hint": "Язгуураас салахын тулд хоёр талыг квадрат зэрэгт дэвшүүл.",
+    "verify": {
+      "sub": {
+        "var": "x",
+        "eq": "sqrt(3x - 2) = 5"
+      }
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-04-2-1",
+    "topicId": 4,
+    "domain": "adv",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "What is the sum of the solutions to the equation $|2x - 5| = 9$?",
+    "mn": "$|2x - 5| = 9$ тэгшитгэлийн шийдүүдийн нийлбэр хэд вэ?",
+    "choices": ["$-2$", "$5$", "$7$", "$9$"],
+    "answer": 1,
+    "explain": "$2x - 5 = 9$ эсвэл $2x - 5 = -9$. Эхнийхээс $x = 7$, хоёр дахийгаас $x = -2$. Нийлбэр $7 + (-2) = 5$.",
+    "hint": "Абсолют утга нь $9$ бол дотор нь $9$ эсвэл $-9$ байна.",
+    "why": {
+      "0": "$-2$ нь шийдүүдийн нэг, нийлбэр нь биш.",
+      "2": "$7$ нь шийдүүдийн нэг, нийлбэр нь биш."
+    },
+    "verify": {
+      "value": "7+(-2)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-04-3-1",
+    "topicId": 4,
+    "domain": "adv",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "What is the solution to the equation $\\frac{x^2}{x - 4} = \\frac{16}{x - 4}$?",
+    "mn": "$\\frac{x^2}{x - 4} = \\frac{16}{x - 4}$ тэгшитгэлийн шийд юу вэ?",
+    "choices": ["$4$", "$-4$", "$-4$ and $4$", "There is no solution"],
+    "answer": 1,
+    "explain": "$x \\ne 4$ (хуваарь тэг болохгүй). Хуваарь адил тул $x^2 = 16$, $x = 4$ эсвэл $x = -4$. $x = 4$ нь хуваарийг $0$ болгодог гадны шийд. Иймд шийд нь $x = -4$.",
+    "hint": "Шийд бүрийг анхны тэгшитгэлд орлуулж хуваарь $0$ болж байгаа эсэхийг шалга.",
+    "why": {
+      "0": "$x = 4$ үед хуваарь $0$ болно — гадны шийд.",
+      "2": "$x = 4$ нь гадны шийд тул шийдэд орохгүй.",
+      "3": "$x = -4$ нь анхны тэгшитгэлийг хангана."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-05-1-1",
+    "topicId": 5,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The function $f$ is defined by $f(x) = x^2 - 4x + 7$. What is the value of $f(5)$?",
+    "mn": "$f(x) = x^2 - 4x + 7$ функц өгөгджээ. $f(5)$-ын утга хэд вэ?",
+    "answer": ["12"],
+    "explain": "$f(5) = 5^2 - 4(5) + 7 = 25 - 20 + 7 = 12$.",
+    "hint": "$x$-ийн оронд $5$-ыг орлуул.",
+    "verify": {
+      "value": "5^2 - 4*5 + 7"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-05-2-1",
+    "topicId": 5,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "The functions $f$ and $g$ are defined by $f(x) = 2x + 1$ and $g(x) = x^2 - 3$. What is the value of $g(f(2))$?",
+    "mn": "$f(x) = 2x + 1$, $g(x) = x^2 - 3$ функцүүд өгөгджээ. $g(f(2))$-ын утга хэд вэ?",
+    "choices": ["$3$", "$11$", "$22$", "$27$"],
+    "answer": 2,
+    "explain": "Эхлээд $f(2) = 2(2) + 1 = 5$. Дараа нь $g(5) = 5^2 - 3 = 22$.",
+    "hint": "Дотор талын функцээс эхэл: эхлээд $f(2)$-ыг ол.",
+    "why": {
+      "0": "Энэ бол $f(g(2)) = f(1) = 3$ — дарааллыг сольсон.",
+      "1": "$f(5) = 11$ — $g$-ийн оронд $f$-ийг дахин хэрэглэсэн."
+    },
+    "verify": {
+      "value": "(2*2+1)^2 - 3"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-05-3-1",
+    "topicId": 5,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The function $f$ is defined by $f(x) = 3x^2 + bx - 5$, where $b$ is a constant. If $f(-1) = f(3)$, what is the value of $b$?",
+    "mn": "$f(x) = 3x^2 + bx - 5$ функцэд $b$ тогтмол. Хэрэв $f(-1) = f(3)$ бол $b$-ийн утга хэд вэ?",
+    "answer": ["-6"],
+    "explain": "$f(-1) = 3 - b - 5 = -2 - b$, $f(3) = 27 + 3b - 5 = 22 + 3b$. Тэнцүүлбэл $-2 - b = 22 + 3b$, $-24 = 4b$, $b = -6$.",
+    "hint": "$f(-1)$ ба $f(3)$-ыг $b$-ээр илэрхийлээд тэнцүүл.",
+    "verify": {
+      "sub": {
+        "var": "b",
+        "eq": "3 - b - 5 = 27 + 3b - 5"
+      }
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-09-1-1",
+    "topicId": 9,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A population of insects starts with $200$ individuals and triples every week. How many insects will there be after $2$ weeks?",
+    "mn": "Шавьжны популяци $200$-аас эхэлж долоо хоног бүр $3$ дахин өснө. $2$ долоо хоногийн дараа хэдэн шавьж байх вэ?",
+    "choices": ["$600$", "$1{,}200$", "$1{,}800$", "$5{,}400$"],
+    "answer": 2,
+    "explain": "$200 \\cdot 3^2 = 200 \\cdot 9 = 1{,}800$.",
+    "hint": "Долоо хоног бүр $3$-аар үржинэ — $2$ удаа.",
+    "why": {
+      "0": "Энэ бол $1$ долоо хоногийн дараах тоо.",
+      "1": "$200 \\cdot 3 \\cdot 2$ гэж үржүүлсэн — зэрэг биш.",
+      "3": "Энэ бол $3$ долоо хоногийн дараах тоо."
+    },
+    "verify": {
+      "value": "200*3^2"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-09-2-1",
+    "topicId": 9,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The number of bacteria in a culture $t$ hours after the start of an experiment is modeled by $B(t) = 1{,}200(1.5)^{t/4}$. According to the model, how many bacteria are in the culture when $t = 8$?",
+    "mn": "Туршилт эхэлснээс $t$ цагийн дараах өсгөврийн нянгийн тоог $B(t) = 1{,}200(1.5)^{t/4}$ загвараар өгнө. Загвараар $t = 8$ үед нян хэд байх вэ?",
+    "answer": ["2700"],
+    "explain": "$B(8) = 1{,}200(1.5)^{8/4} = 1{,}200(1.5)^2 = 1{,}200 \\cdot 2.25 = 2{,}700$.",
+    "hint": "Эхлээд зэрэг $\\frac{8}{4}$-ийг ол.",
+    "verify": {
+      "value": "1200*1.5^(8/4)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-09-3-1",
+    "topicId": 9,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "The amount of a culture, in grams, $t$ hours after the start of an experiment is given by $A(t) = 60 \\cdot 2^{t/6}$. Which of the following gives the amount of the culture, in grams, $d$ days after the start of the experiment?",
+    "mn": "Туршилт эхэлснээс $t$ цагийн дараах өсгөврийн хэмжээг (граммаар) $A(t) = 60 \\cdot 2^{t/6}$ өгнө. Туршилт эхэлснээс $d$ өдрийн дараах хэмжээг (граммаар) аль илэрхийлэл өгөх вэ?",
+    "choices": ["$60 \\cdot 16^{d}$", "$60 \\cdot 4^{d}$", "$60 \\cdot 8^{d}$", "$60 \\cdot 2^{d/4}$"],
+    "answer": 0,
+    "explain": "$1$ өдөр $= 24$ цаг тул $t = 24d$. $A = 60 \\cdot 2^{24d/6} = 60 \\cdot 2^{4d} = 60 \\cdot (2^4)^d = 60 \\cdot 16^d$.",
+    "hint": "$t$-ийн оронд $24d$-ийг орлуул.",
+    "why": {
+      "1": "$24 \\div 6 = 4$-ийг суурь болгосон; харин зэрэг нь $4d$ тул суурь $2^4 = 16$.",
+      "3": "$d$-ийг цаг болгон хөрвүүлээгүй."
+    },
+    "verify": {
+      "value": "2^(24/6)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-12-1-1",
+    "topicId": 12,
+    "domain": "adv",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "What are the solutions to the equation $x^2 - 5x - 14 = 0$?",
+    "mn": "$x^2 - 5x - 14 = 0$ тэгшитгэлийн шийдүүд юу вэ?",
+    "choices": ["$x = -7$ and $x = 2$", "$x = -7$ and $x = -2$", "$x = 7$ and $x = -2$", "$x = 7$ and $x = 2$"],
+    "answer": 2,
+    "explain": "$x^2 - 5x - 14 = (x - 7)(x + 2) = 0$. Иймд $x = 7$ эсвэл $x = -2$.",
+    "hint": "Үржвэр нь $-14$, нийлбэр нь $-5$ байх хоёр тоог ол.",
+    "why": {
+      "0": "Шийдүүдийн тэмдгийг буруу авсан ($x^2 + 5x - 14 = 0$-ийн шийдүүд).",
+      "3": "$7 \\cdot 2 = 14$, харин үржвэр нь $-14$ байх ёстой."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-12-2-1",
+    "topicId": 12,
+    "domain": "adv",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "What is the positive difference between the solutions to the equation $2x^2 - 12x + 10 = 0$?",
+    "mn": "$2x^2 - 12x + 10 = 0$ тэгшитгэлийн шийдүүдийн эерэг зөрүү хэд вэ?",
+    "answer": ["4"],
+    "explain": "$2$-т хуваавал $x^2 - 6x + 5 = 0$, $(x - 1)(x - 5) = 0$. Шийд $x = 1$, $x = 5$. Зөрүү $5 - 1 = 4$.",
+    "hint": "Эхлээд бүх гишүүнийг $2$-т хуваа.",
+    "verify": {
+      "value": "5-1"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-12-3-1",
+    "topicId": 12,
+    "domain": "adv",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The equation $x^2 - 6x + k = 0$, where $k$ is a constant, has no real solutions. What is the least possible integer value of $k$?",
+    "mn": "$x^2 - 6x + k = 0$ тэгшитгэл ($k$ тогтмол) бодит шийдгүй. $k$-ийн хамгийн бага боломжит бүхэл утга хэд вэ?",
+    "answer": ["10"],
+    "explain": "Бодит шийдгүй бол дискриминант сөрөг: $(-6)^2 - 4(1)(k) < 0$, $36 - 4k < 0$, $k > 9$. Хамгийн бага бүхэл утга $k = 10$.",
+    "hint": "Дискриминант $b^2 - 4ac$ сөрөг байх нөхцөлийг бич.",
+    "verify": {
+      "value": "36/4+1"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-13-1-1",
+    "topicId": 13,
+    "domain": "adv",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The system of equations $y = x + 6$ and $y = x^2$ has two solutions $(x, y)$. What is the $x$-coordinate of the solution with $x > 0$?",
+    "mn": "$y = x + 6$ ба $y = x^2$ системд хоёр шийд $(x, y)$ байна. $x > 0$ байх шийдийн $x$-координат хэд вэ?",
+    "answer": ["3"],
+    "explain": "Тэнцүүлбэл $x^2 = x + 6$, $x^2 - x - 6 = 0$, $(x - 3)(x + 2) = 0$. $x = 3$ эсвэл $x = -2$. $x > 0$ тул $x = 3$.",
+    "hint": "Хоёр илэрхийлэл хоёулаа $y$-тэй тэнцүү тул өөр хоорондоо тэнцүүл.",
+    "verify": {
+      "sub": {
+        "var": "x",
+        "eq": "x^2 = x + 6"
+      }
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-13-2-1",
+    "topicId": 13,
+    "domain": "adv",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "How many distinct real solutions $(x, y)$ does the system of equations $y = x^2 - 4x + 6$ and $y = 2x - 3$ have?",
+    "mn": "$y = x^2 - 4x + 6$ ба $y = 2x - 3$ тэгшитгэлийн систем хэдэн ялгаатай бодит шийдтэй вэ?",
+    "choices": ["$0$", "$1$", "$2$", "Infinitely many"],
+    "answer": 1,
+    "explain": "Тэнцүүлбэл $x^2 - 4x + 6 = 2x - 3$, $x^2 - 6x + 9 = 0$, $(x - 3)^2 = 0$. Дискриминант $36 - 36 = 0$ тул яг нэг шийд ($x = 3$, $y = 3$) — шулуун параболыг шүргэнэ.",
+    "hint": "Тэнцүүлээд гарсан квадрат тэгшитгэлийн дискриминантыг шалга.",
+    "why": {
+      "0": "Дискриминант сөрөг биш, $0$ байна.",
+      "2": "Хоёр шийд гарахын тулд дискриминант эерэг байх ёстой."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-13-3-1",
+    "topicId": 13,
+    "domain": "adv",
+    "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The system of equations $y = x^2 - 6x + 5$ and $y = -x + k$, where $k$ is a constant, has exactly one solution. What is the value of $k$?",
+    "mn": "$y = x^2 - 6x + 5$ ба $y = -x + k$ ($k$ тогтмол) систем яг нэг шийдтэй. $k$-ийн утга хэд вэ?",
+    "answer": ["-5/4", "-1.25"],
+    "explain": "Тэнцүүлбэл $x^2 - 6x + 5 = -x + k$, $x^2 - 5x + (5 - k) = 0$. Яг нэг шийдтэй бол дискриминант $0$: $25 - 4(5 - k) = 0$, $5 + 4k = 0$, $k = -\\frac{5}{4}$.",
+    "hint": "Тэнцүүлээд бүх гишүүнийг нэг тал руу шилжүүл, дараа нь дискриминантыг $0$ болго.",
+    "verify": {
+      "value": "-5/4"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-15-1-1",
+    "topicId": 15,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "The function $g$ is defined by $g(x) = f(x) + 6$. How can the graph of $y = g(x)$ be obtained from the graph of $y = f(x)$?",
+    "mn": "$g(x) = f(x) + 6$ функц өгөгджээ. $y = g(x)$ график нь $y = f(x)$ графикаас хэрхэн гарах вэ?",
+    "choices": ["Shifted up $6$ units", "Shifted down $6$ units", "Shifted left $6$ units", "Shifted right $6$ units"],
+    "answer": 0,
+    "explain": "$f(x)$-д $+6$ нэмэх нь графикийг дээш $6$ нэгжээр шилжүүлнэ.",
+    "hint": "Утгад нэмсэн тоо графикийг босоо чиглэлд шилжүүлнэ.",
+    "why": {
+      "1": "Доош шилжүүлэх нь $f(x) - 6$ хэлбэртэй.",
+      "2": "Зүүн тийш шилжүүлэх нь $f(x + 6)$ хэлбэртэй."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-15-2-1",
+    "topicId": 15,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The graph of $y = f(x)$ in the $xy$-plane contains the point $(6, -2)$. The function $g$ is defined by $g(x) = f(x + 5) - 1$. The graph of $y = g(x)$ contains the point $(a, b)$ that corresponds to $(6, -2)$. What is the value of $a + b$?",
+    "mn": "$xy$ хавтгай дээрх $y = f(x)$ график $(6, -2)$ цэгийг дайрна. $g(x) = f(x + 5) - 1$. $y = g(x)$ график дээрх $(6, -2)$-д харгалзах цэг нь $(a, b)$. $a + b$ хэд вэ?",
+    "answer": ["-2"],
+    "explain": "$f(x + 5)$ нь графикийг зүүн тийш $5$ нэгж, $-1$ нь доош $1$ нэгж шилжүүлнэ. $(6, -2) \\to (6 - 5,\\ -2 - 1) = (1, -3)$. $a + b = 1 + (-3) = -2$.",
+    "hint": "$f(x + 5)$ нь зүүн тийш шилжүүлнэ — $x$-координатаас $5$-ыг хас.",
+    "verify": {
+      "value": "(6-5)+(-2-1)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-15-3-1",
+    "topicId": 15,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "The graph of $y = f(x)$ is a parabola with vertex $(3, -4)$. The function $g$ is defined by $g(x) = -2f(x + 1) + 5$. What are the coordinates of the vertex of the graph of $y = g(x)$?",
+    "mn": "$y = f(x)$ график оройн цэг нь $(3, -4)$ байх парабол. $g(x) = -2f(x + 1) + 5$. $y = g(x)$ графикийн оройн координат юу вэ?",
+    "choices": ["$(2, 13)$", "$(4, 13)$", "$(2, -3)$", "$(2, -13)$"],
+    "answer": 0,
+    "explain": "$x$-координат: $f(x + 1)$ нь зүүн тийш $1$ нэгж шилжүүлэх тул $3 - 1 = 2$. $y$-координат: $-2(-4) + 5 = 13$. Орой $(2, 13)$.",
+    "hint": "$x$-д нөлөөлөх хэсэг ба $y$-д нөлөөлөх хэсгийг тусад нь авч үз.",
+    "why": {
+      "1": "$x + 1$ нь зүүн тийш шилжүүлнэ, баруун тийш биш."
+    },
+    "verify": {
+      "value": "-2*(-4)+5"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-16-1-1",
+    "topicId": 16,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "What is the minimum value of the function $f(x) = x^2 + 6x + 2$?",
+    "mn": "$f(x) = x^2 + 6x + 2$ функцийн хамгийн бага утга хэд вэ?",
+    "answer": ["-7"],
+    "explain": "Орой $x = -\\frac{6}{2(1)} = -3$. $f(-3) = 9 - 18 + 2 = -7$. Бүтэн квадрат хэлбэрээр $(x + 3)^2 - 7$.",
+    "hint": "Бүтэн квадрат гарга эсвэл оройн $x = -\\frac{b}{2a}$ томьёог хэрэглэ.",
+    "verify": {
+      "value": "(-3)^2+6*(-3)+2"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-16-2-1",
+    "topicId": 16,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A ball is thrown upward from a platform. Its height $h$, in feet, $t$ seconds after it is thrown is given by $h(t) = -16t^2 + 64t + 5$. What is the maximum height, in feet, of the ball?",
+    "mn": "Бөмбөгийг тавцангаас дээш шидэв. Шидснээс хойш $t$ секундын дараах өндөр $h$ (футаар) нь $h(t) = -16t^2 + 64t + 5$. Бөмбөгийн хамгийн их өндөр (фут) хэд вэ?",
+    "choices": ["$5$", "$64$", "$69$", "$133$"],
+    "answer": 2,
+    "explain": "Орой: $t = -\\frac{64}{2(-16)} = 2$. $h(2) = -16(4) + 64(2) + 5 = -64 + 128 + 5 = 69$.",
+    "hint": "Хамгийн их утга параболын оройд хүрнэ.",
+    "why": {
+      "0": "$5$ бол шидэх үеийн ($t = 0$) өндөр.",
+      "3": "$64(2) + 5 = 133$ — $-16t^2$ гишүүнийг орхисон."
+    },
+    "verify": {
+      "value": "-16*2^2+64*2+5"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-16-3-1",
+    "topicId": 16,
+    "domain": "adv",
+    "skill": "Nonlinear functions",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The graph of $y = -x^2 + bx + c$ in the $xy$-plane has its vertex at $(3, 10)$, where $b$ and $c$ are constants. What is the value of $c$?",
+    "mn": "$xy$ хавтгай дээрх $y = -x^2 + bx + c$ графикийн орой $(3, 10)$ цэг дээр байна ($b$, $c$ тогтмол). $c$-ийн утга хэд вэ?",
+    "answer": ["1"],
+    "explain": "Оройн хэлбэр: $y = -(x - 3)^2 + 10 = -x^2 + 6x - 9 + 10 = -x^2 + 6x + 1$. Иймд $c = 1$.",
+    "hint": "Эхлээд оройн хэлбэрээр бичиж, дараа нь задал.",
+    "verify": {
+      "value": "10-9"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
   }
 ]

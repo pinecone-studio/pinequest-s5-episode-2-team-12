@@ -6,9 +6,17 @@
 
 ## Нэг удаа
 
-1. Mac-д [Homebrew](https://brew.sh) суулгасан байх (Xcode Command Line Tools хамт ирнэ).
+1. Xcode Command Line Tools (`xcode-select --install`; `git` ажиллаж байвал бий). Homebrew заавал биш: дундын
+   Mac дээр (жишээ нь Pinecone-ийн iMac, Homebrew өөр хэрэглэгчийнх) скрипт Ollama, cloudflared, cmake-ийг албан
+   ёсны GitHub release-ээс `~/.suu/tools` руу татна — admin эрх хэрэггүй.
 2. Mac-ийг унтуулахгүй: System Settings → Battery → Options → *Prevent automatic sleeping on power adapter when
    the display is off*. Цэнэглэгчтэй байлга.
+
+## Асаахаас өмнө шалгах
+
+```bash
+bash ai/serve/doctor.sh   # юу ч өөрчлөхгүй: чип, RAM, зай, SDK, хэрэгслүүд, загвар, Ollama
+```
 
 ## Асаах
 

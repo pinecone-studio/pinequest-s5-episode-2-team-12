@@ -43,6 +43,16 @@ export default async function ProfilePage() {
         xp,
         streak: shell.user?.streak ?? 0,
       }}
+      about={{
+        satExp: profile.satExp,
+        lastMathScore: profile.lastMathScore,
+        target: profile.target,
+        examDate: profile.examDate,
+        confidence: profile.confidence,
+        desmos: profile.desmos,
+        studyMinutes: profile.studyMinutes,
+        start: profile.start,
+      }}
       server={server}
       meta={questionMeta()}
       rank={rank}

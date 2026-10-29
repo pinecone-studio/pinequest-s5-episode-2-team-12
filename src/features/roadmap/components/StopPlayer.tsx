@@ -8,6 +8,7 @@ import { Rich } from '@/components/math';
 import { Bar } from '@/components/ui/Bar';
 import { Button } from '@/components/ui/Button';
 import { Confetti } from '@/components/ui/Confetti';
+import { Modal } from '@/components/ui/Modal';
 import { toast } from '@/components/ui/toast';
 import { SuuSidePanel, SuuTutorButton, splitLayout } from '@/features/tutor/components/SuuSidePanel';
 import { chosenText, questionProblem } from '@/features/tutor/lib/suu-panel';
@@ -59,9 +60,11 @@ export function StopPlayer({
   const topic = topicById(no)!;
   const state = loaded.state;
   const mastery = masteryAt(state, no);
-  const done = isDone(state.stops.find((p) => p.no === no));
+  const stopProgress = state.stops.find((p) => p.no === no);
+  const done = isDone(stopProgress);
   const testOut = wantTestOut && mastery === 'strong' && !done;
   const allowed = isOpen(state) && canOpenStop(state.stops, no);
+  const isFirstAttempt = stopProgress?.attempts === 0;
 
   const [round, setRound] = useState(0);
   const [phase, setPhase] = useState<Phase>('play');
@@ -74,10 +77,11 @@ export function StopPlayer({
   const [answers, setAnswers] = useState<SubmittedAnswer[]>([]);
   const [outcome, setOutcome] = useState<StopOutcome | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showSummary, setShowSummary] = useState(false);
   const started = useRef(Date.now());
 
   // draw the set once the state is known; a new round (retry) draws a fresh one
-  // biome-ignore lint/correctness/useExhaustiveDependencies: draw only when readiness or the round changes, not on every state update
+  // biome-ignore lint/correctness/useExhaustiveDependencies: draw only when readiness, stop number or round changes
   useEffect(() => {
     if (!loaded.ready || !allowed) return;
     const history = demo ? loaded.history : serverHistory;
@@ -92,11 +96,14 @@ export function StopPlayer({
         testOut,
       }),
     );
-    setPhase(
-      round === 0 && !testOut && intro.length && (forceIntro || ROADMAP.autoIntro.includes(mastery))
-        ? 'intro'
-        : 'play',
-    );
+
+    const shouldShowIntro =
+      round === 0 &&
+      !testOut &&
+      intro.length > 0 &&
+      (forceIntro || ROADMAP.autoIntro.includes(mastery) || isFirstAttempt);
+
+    setPhase(shouldShowIntro ? 'intro' : 'play');
     setI(0);
     setValue('');
     setRevealed(false);
@@ -104,7 +111,7 @@ export function StopPlayer({
     setAnswers([]);
     setOutcome(null);
     started.current = Date.now();
-  }, [loaded.ready, allowed, round]);
+  }, [loaded.ready, allowed, round, no, forceIntro, testOut, mastery, intro.length, isFirstAttempt]);
 
   const byId = useMemo(() => new Map(pool.map((q) => [q.id, q])), [pool]);
   const qs = (ids ?? []).map((id) => byId.get(id)!).filter(Boolean);
@@ -142,12 +149,25 @@ export function StopPlayer({
       >
         <TopicIcon name={topic.icon} size={26} />
       </span>
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <h1 className="font-display text-xl sm:text-2xl font-extrabold leading-tight text-ink truncate">
           {testOut ? `${t('stop.testOutTitle')}: ` : ''}
           {topic.title}
         </h1>
       </div>
+      {intro.length > 0 && phase !== 'intro' && (
+        <Button
+          variant="secondary"
+          size="md"
+          className="font-medium gap-2"
+          onClick={() => setShowSummary(true)}
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Товч тайлбар
+        </Button>
+      )}
     </header>
   );
 
@@ -281,55 +301,62 @@ export function StopPlayer({
 
   const correct = revealed && isCorrect(q, value.trim());
   return (
-    <div className={cn('mx-auto h-full w-full', splitLayout(showSuu, 'max-w-4xl'))}>
-      <div className="flex h-full min-w-0 flex-col justify-between py-1 overflow-hidden">
-        {/* Header & Прогресс бар */}
-        <div className="flex flex-col gap-2 shrink-0">
-          {header}
-          <div className="flex items-center gap-3 px-1">
-            <Bar
-              value={(i + (revealed ? 1 : 0)) / total}
-              tone="lime"
-              h={10}
-              className="flex-1"
-              label={t('stop.problem', { i: i + 1, n: total })}
-            />
-            <span className="shrink-0 text-sm font-extrabold text-ink-2 tnum">
-              {i + 1} / {total}
-            </span>
-          </div>
+    <>
+      <div className="w-full max-w-4xl mx-auto flex flex-col justify-between h-full py-1 overflow-hidden">
+      {/* Header & Прогресс бар */}
+      <div className="flex flex-col gap-2 shrink-0">
+        {header}
+        <div className="flex items-center gap-3 px-1">
+          <Bar
+            value={(i + (revealed ? 1 : 0)) / total}
+            tone="lime"
+            h={10}
+            className="flex-1"
+            label={t('stop.problem', { i: i + 1, n: total })}
+          />
+          <span className="shrink-0 text-sm font-extrabold text-ink-2 tnum">
+            {i + 1} / {total}
+          </span>
+        </div>
+      </div>
+
+      {/* Main Question Box */}
+      <section
+        className="relative flex flex-col justify-center flex-1 my-auto gap-3 py-1 transition-all text-foreground overflow-hidden"
+        aria-label={t('stop.problem', { i: i + 1, n: total })}
+      >
+        <div className="relative z-10 text-xl sm:text-2xl md:text-3xl leading-snug text-ink font-bold max-h-[38vh] overflow-hidden pr-1">
+          <QuestionView
+            key={`${round}-${i}`}
+            q={q}
+            value={value}
+            onChange={setValue}
+            revealed={revealed}
+            onSubmit={check}
+          />
         </div>
 
-        {/* Main Question Box - Tom, tod fontoooor, yamar ch holhiltguigeer baikh bolovch horigdohgui */}
-        <section
-          className="relative flex flex-col justify-center flex-1 my-auto gap-3 py-1 transition-all text-foreground overflow-hidden"
-          aria-label={t('stop.problem', { i: i + 1, n: total })}
-        >
-          <div className="relative z-10 text-xl sm:text-2xl md:text-3xl leading-snug text-ink font-bold max-h-[38vh] overflow-hidden pr-1">
-            <QuestionView
-              key={`${round}-${i}`}
-              q={q}
-              value={value}
-              onChange={setValue}
-              revealed={revealed}
-              onSubmit={check}
-            />
+        {/* Hint */}
+        {hint && !revealed && (
+          <div className="relative z-10 animate-fade-in rounded-2xl bg-teal-soft/90 p-3 text-base sm:text-lg font-bold text-teal border border-teal/20 max-h-24 overflow-hidden">
+            <Rich text={q.hint} />
           </div>
 
-          {/* Hint - Tom, tod text */}
-          {hint && !revealed && (
-            <div className="relative z-10 animate-fade-in rounded-2xl bg-teal-soft/90 p-3 text-base sm:text-lg font-bold text-teal border border-teal/20 max-h-24 overflow-hidden">
-              <Rich text={q.hint} />
-            </div>
-          )}
-
-          {/* Explanation - Tom, tod text */}
-          {revealed && (
-            <div
-              role="status"
-              className={cn(
-                'relative z-10 flex flex-col gap-2 rounded-2xl p-4 max-h-[24vh] overflow-hidden transition-all duration-300 shadow-sm',
-                correct ? 'bg-sage/90 border border-leaf-2/30' : 'bg-danger-soft/90 border border-danger/30',
+        {/* Explanation */}
+        {revealed && (
+          <div
+            role="status"
+            className={cn(
+              'relative z-10 flex flex-col gap-2 rounded-2xl p-4 max-h-[24vh] overflow-hidden transition-all duration-300 shadow-sm',
+              correct ? 'bg-sage/90 border border-leaf-2/30' : 'bg-danger-soft/90 border border-danger/30',
+            )}
+          >
+            <p className={cn('text-lg sm:text-xl font-black', correct ? 'text-leaf-2' : 'text-danger')}>
+              {correct ? t('stop.correct') : t('stop.wrong')}
+              {!correct && (
+                <span className="ml-2 font-bold text-ink-2 text-sm sm:text-base">
+                  <Rich text={t('stop.answerWas', { a: correctAnswerText(q) })} />
+                </span>
               )}
             >
               <p className={cn('text-lg sm:text-xl font-black', correct ? 'text-leaf-2' : 'text-danger')}>
@@ -347,16 +374,27 @@ export function StopPlayer({
           )}
         </section>
 
-        {/* Footer Navigation Buttons - Tom, darsan baihad amar tovchnuud */}
-        <div className="relative z-10 flex items-center justify-between gap-4 pt-2 border-t border-border/20 shrink-0">
-          <div className="flex flex-wrap items-center gap-2">
-            {!revealed ? (
-              <Button
-                variant="ghost"
-                size="lg"
-                className="text-base font-bold px-5 py-2"
-                onClick={() => setHint(true)}
-                disabled={hint}
+      {/* Footer Navigation Buttons */}
+      <div className="relative z-10 flex items-center justify-between gap-4 pt-2 border-t border-border/20 shrink-0">
+        {!revealed ? (
+          <Button
+            variant="ghost"
+            size="lg"
+            className="text-base font-bold px-5 py-2"
+            onClick={() => setHint(true)}
+            disabled={hint}
+          >
+            {t('stop.hint')}
+          </Button>
+        ) : (
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-sm font-extrabold text-ink-3 tnum">
+              Зөв: {right}/{answers.length}
+            </span>
+            {!correct && (
+              <Link
+                href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}
+                className="inline-flex min-h-11 items-center rounded-2xl border border-line bg-paper px-4 text-sm font-bold text-ink hover:bg-paper-2"
               >
                 {t('stop.hint')}
               </Button>
@@ -415,5 +453,14 @@ export function StopPlayer({
         />
       )}
     </div>
+    <Modal
+      open={showSummary}
+      onClose={() => setShowSummary(false)}
+      label="Товч тайлбар"
+      className="max-w-6xl"
+    >
+      <StopIntro screens={intro} onDone={() => setShowSummary(false)} />
+    </Modal>
+    </>
   );
 }

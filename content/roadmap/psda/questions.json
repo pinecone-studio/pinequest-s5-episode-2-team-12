@@ -1232,5 +1232,508 @@
     "reviewed": false,
     "author": "suprep-seed",
     "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc3-08-1-1",
+    "topicId": 8,
+    "domain": "psda",
+    "skill": "Percentages",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "Of the $250$ students at a school in Erdenet, $18\\%$ play basketball. How many students at the school play basketball?",
+    "mn": "Эрдэнэт хотын нэгэн сургуулийн $250$ сурагчийн $18\\%$ нь сагсан бөмбөг тоглодог. Сургуулийн хэдэн сурагч сагсан бөмбөг тоглодог вэ?",
+    "answer": ["45"],
+    "explain": "$0.18 \\times 250 = 45$.",
+    "hint": "Хувийг аравтын бутархай болгож үржүүл.",
+    "verify": {
+      "value": "0.18*250"
+    },
+    "vocab": ["percent"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-08-2-1",
+    "topicId": 8,
+    "domain": "psda",
+    "skill": "Percentages",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A winter coat that originally cost ₮60,000 is on sale for ₮45,000. By what percent was the original price reduced?",
+    "mn": "Анх ₮60,000 байсан өвлийн хүрэм ₮45,000-аар хямдарчээ. Анхны үнийг хэдэн хувиар бууруулсан бэ?",
+    "choices": ["$15\\%$", "$20\\%$", "$25\\%$", "$33\\%$"],
+    "answer": 2,
+    "explain": "Бууралт $60{,}000 - 45{,}000 = 15{,}000$. Анхны үнэтэй харьцуулбал $\\frac{15{,}000}{60{,}000} = 0.25 = 25\\%$.",
+    "hint": "Хувийг АНХНЫ үнэтэй харьцуулж бод.",
+    "why": {
+      "3": "Бууралтыг шинэ үнэтэй ($45{,}000$) харьцуулсан: $\\frac{15{,}000}{45{,}000} \\approx 33\\%$."
+    },
+    "verify": {
+      "value": "(60000-45000)/60000*100"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-08-3-1",
+    "topicId": 8,
+    "domain": "psda",
+    "skill": "Percentages",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The price of a product was increased by $20\\%$. By what percent must the new price be decreased to return to the original price? (Round your answer to the nearest tenth. Do not enter the percent sign.)",
+    "mn": "Бүтээгдэхүүний үнийг $20\\%$-иар нэмэгдүүлэв. Анхны үнэдээ эргэн орохын тулд шинэ үнийг хэдэн хувиар бууруулах ёстой вэ? (Хариуг аравны оронгоор нь бөөрөнхийл, хувийн тэмдэг бичихгүй.)",
+    "answer": ["16.7", "16.67", "50/3"],
+    "explain": "Анхны үнийг $100$ гэе. Шинэ үнэ $120$. Буцаж $100$ болгохын тулд $20$ бууруулна. $\\frac{20}{120} = \\frac{1}{6} \\approx 16.7\\%$.",
+    "hint": "Анхны үнийг $100$ гэж авч тооцоол. Бууралтын хувийг ШИНЭ үнээс бод.",
+    "verify": {
+      "value": "(1-1/1.2)*100"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-10-1-1",
+    "topicId": 10,
+    "domain": "psda",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A car travels $150$ kilometers using $10$ liters of fuel. At this rate, how many liters of fuel are needed to travel $420$ kilometers?",
+    "mn": "Машин $10$ литр шатахуунаар $150$ км явна. Энэ хэмжээгээр $420$ км явахад хэдэн литр шатахуун хэрэгтэй вэ?",
+    "choices": ["$24$", "$28$", "$30$", "$32$"],
+    "answer": 1,
+    "explain": "$150$ км-д $10$ л буюу $15$ км/л. $420 \\div 15 = 28$ литр.",
+    "hint": "Нэг литрээр хэдэн км явахыг ол.",
+    "verify": {
+      "value": "420/15"
+    },
+    "vocab": ["rate"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-10-2-1",
+    "topicId": 10,
+    "domain": "psda",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "Water flows into a pool at a constant rate of $12$ liters per minute. How many cubic meters of water flow into the pool in $1$ day? ($1$ cubic meter $= 1{,}000$ liters)",
+    "mn": "Усан санд усыг минутанд $12$ литрийн тогтмол хурдаар цутгана. $1$ өдөрт хэдэн шоо метр ус цутгах вэ? ($1$ шоо метр $= 1{,}000$ литр)",
+    "answer": ["17.28"],
+    "explain": "$1$ өдөр $= 24 \\cdot 60 = 1{,}440$ минут. $12 \\cdot 1{,}440 = 17{,}280$ литр $= 17.28$ шоо метр.",
+    "hint": "Эхлээд өдрийг минут руу, дараа нь литрийг шоо метр рүү хөрвүүл.",
+    "verify": {
+      "value": "12*60*24/1000"
+    },
+    "vocab": ["cubic meter"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-10-3-1",
+    "topicId": 10,
+    "domain": "psda",
+    "skill": "Ratios, rates, proportional relationships, and units",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A club has boys and girls in the ratio $3:5$. After $6$ more boys join the club and $4$ girls leave, the number of boys equals the number of girls. How many members did the club have originally?",
+    "mn": "Клубт хөвгүүд ба охид $3:5$ харьцаатай. Нэмж $6$ хүү элсэж, $4$ охин гарсны дараа хөвгүүдийн тоо охидынхтой тэнцэв. Клуб анх хэдэн гишүүнтэй байсан бэ?",
+    "choices": ["$25$", "$32$", "$40$", "$48$"],
+    "answer": 2,
+    "explain": "Хөвгүүд $3k$, охид $5k$ гэе. $3k + 6 = 5k - 4$, $10 = 2k$, $k = 5$. Анх $8k = 40$ гишүүн.",
+    "hint": "Харьцааг $3k$ ба $5k$ гэж бич.",
+    "why": {
+      "0": "$25$ бол анхны охидын тоо ($5k$)."
+    },
+    "verify": {
+      "value": "8*5"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-23-1-1",
+    "topicId": 23,
+    "domain": "psda",
+    "skill": "Two-variable data: models and scatterplots",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A teacher models the relationship between the number of hours $x$ a student studies and the student's test score $y$ with the line of best fit $y = 6.5x + 48$. According to this model, what is the predicted test score for a student who studies $4$ hours?",
+    "mn": "Багш сурагчийн судалсан цаг $x$ ба шалгалтын оноо $y$-ийн хамаарлыг $y = 6.5x + 48$ шулуунаар загварчилжээ. Загварын дагуу $4$ цаг судалсан сурагчийн таамагласан оноо хэд вэ?",
+    "answer": ["74"],
+    "explain": "$y = 6.5(4) + 48 = 26 + 48 = 74$.",
+    "hint": "$x = 4$-ийг загварт орлуул.",
+    "verify": {
+      "value": "6.5*4+48"
+    },
+    "vocab": ["line of best fit", "predicted"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-23-2-1",
+    "topicId": 23,
+    "domain": "psda",
+    "skill": "Two-variable data: models and scatterplots",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A scatterplot shows the height $y$, in centimeters, of saplings and the number of weeks $x$ since planting. The line of best fit for the data is $y = 1.8x + 22$. Which of the following is the best interpretation of the number $1.8$ in this context?",
+    "mn": "Суулгацын өндөр $y$ (см) ба тарьснаас хойших долоо хоногийн тоо $x$-ийн сарнилын графикт $y = 1.8x + 22$ шулуун хамгийн сайн тохирно. Энэ нөхцөлд $1.8$ тоо юуг илэрхийлэх вэ?",
+    "choices": [
+      "The predicted height, in centimeters, of a sapling when it is planted",
+      "The predicted increase in height, in centimeters, for each additional week",
+      "The predicted number of weeks for a sapling to grow $1$ centimeter",
+      "The predicted height, in centimeters, of a sapling after $1.8$ weeks"
+    ],
+    "answer": 1,
+    "explain": "Налуу $1.8$ нь $x$ (долоо хоног) $1$-ээр нэмэгдэхэд таамагласан өндөр (см) хэдээр нэмэгдэхийг заана. $22$ нь тарих үеийн өндөр.",
+    "hint": "Налуу нь $x$ нэг нэгжээр өөрчлөгдөхөд $y$ хэдээр өөрчлөгдөхийг хэлнэ.",
+    "why": {
+      "0": "Тарих үеийн өндрийг $y$-огтлол $22$ илэрхийлнэ.",
+      "3": "$1.8$ долоо хоногийн дараах өндөр нь $1.8(1.8) + 22$ байна."
+    },
+    "vocab": ["interpretation"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-23-3-1",
+    "topicId": 23,
+    "domain": "psda",
+    "skill": "Two-variable data: models and scatterplots",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The number of visitors to a ger camp is modeled by the function $y = 120(1.05)^x$, where $y$ is the predicted number of visitors in a year, in hundreds, and $x$ is the number of years since the camp opened. According to the model, how many hundreds more visitors are predicted in year $2$ than in year $1$? (Round your answer to the nearest tenth.)",
+    "mn": "Жуулчны баазад ирэх жуулчдын тоог $y = 120(1.05)^x$ функцээр загварчилсан. Энд $y$ нь жилд ирэх жуулчдын таамагласан тоо (зуугаар), $x$ нь баазыг нээснээс хойших жилийн тоо. Загварын дагуу $2$-р жил $1$-р жилээс хэдэн зуугаар илүү жуулчин ирэх вэ? (Аравны оронгоор бөөрөнхийл.)",
+    "answer": ["6.3"],
+    "explain": "$y(2) = 120(1.05)^2 = 132.3$, $y(1) = 120(1.05) = 126$. Зөрүү $132.3 - 126 = 6.3$.",
+    "hint": "Хоёр жилийн утгыг тусад нь тооцоод хас.",
+    "verify": {
+      "value": "120*1.05^2-120*1.05"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-24-1-1",
+    "topicId": 24,
+    "domain": "psda",
+    "skill": "Probability and conditional probability",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A jar contains $4$ red marbles, $6$ blue marbles, and $10$ yellow marbles. If one marble is selected at random from the jar, what is the probability that the marble is not blue?",
+    "mn": "Саванд $4$ улаан, $6$ цэнхэр, $10$ шар бөмбөлөг байна. Савнаас нэг бөмбөлгийг санамсаргүй авахад цэнхэр биш байх магадлал хэд вэ?",
+    "choices": ["$\\frac{3}{10}$", "$\\frac{2}{5}$", "$\\frac{7}{10}$", "$\\frac{3}{5}$"],
+    "answer": 2,
+    "explain": "Нийт $20$ бөмбөлөг. Цэнхэр биш нь $4 + 10 = 14$. Магадлал $\\frac{14}{20} = \\frac{7}{10}$.",
+    "hint": "Цэнхэр биш бөмбөлгийн тоог нийт тоонд хуваа.",
+    "why": {
+      "0": "Энэ бол цэнхэр байх магадлал $\\frac{6}{20}$."
+    },
+    "verify": {
+      "value": "14/20"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-24-2-1",
+    "topicId": 24,
+    "domain": "psda",
+    "skill": "Probability and conditional probability",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "In a class of $30$ students, $18$ study English, $12$ study Chinese, and $5$ study both languages. If a student from the class is selected at random, what is the probability that the student studies neither language?",
+    "mn": "$30$ сурагчтай ангийн $18$ нь англи хэл, $12$ нь хятад хэл, $5$ нь хоёуланг нь сурдаг. Ангиас нэг сурагчийг санамсаргүй сонгоход тэр аль ч хэлийг сурдаггүй байх магадлал хэд вэ?",
+    "answer": ["1/6", ".1666", ".1667", "0.1666", "0.1667"],
+    "explain": "Дор хаяж нэг хэл сурдаг: $18 + 12 - 5 = 25$. Аль ч хэлийг сурдаггүй: $30 - 25 = 5$. Магадлал $\\frac{5}{30} = \\frac{1}{6}$.",
+    "hint": "Хоёуланг нь суралцдаг сурагчийг нэг л удаа тоол.",
+    "verify": {
+      "value": "5/30"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-24-3-1",
+    "topicId": 24,
+    "domain": "psda",
+    "skill": "Probability and conditional probability",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "Of $240$ tourists surveyed in Mongolia, $150$ visited Terelj. Of the tourists who visited Terelj, $60\\%$ also visited Khustai National Park. Of the tourists who did not visit Terelj, $40\\%$ visited Khustai. If a tourist who visited Khustai is selected at random, what is the probability that the tourist also visited Terelj?",
+    "mn": "Монголд судалгаанд хамрагдсан $240$ жуулчны $150$ нь Тэрэлжээр зочилсон. Тэрэлжээр зочилсон жуулчдын $60\\%$ нь Хустайн байгалийн цогцолборт газраар мөн зочилжээ. Тэрэлжээр зочлоогүй жуулчдын $40\\%$ нь Хустайгаар зочилсон. Хустайгаар зочилсон жуулчдаас нэгийг санамсаргүй сонгоход тэр Тэрэлжээр мөн зочилсон байх магадлал хэд вэ?",
+    "choices": ["$\\frac{5}{8}$", "$\\frac{5}{7}$", "$\\frac{3}{5}$", "$\\frac{3}{8}$"],
+    "answer": 1,
+    "explain": "Хоёуланд нь зочилсон: $0.6 \\cdot 150 = 90$. Тэрэлжээр зочлоогүй $240 - 150 = 90$ жуулчны $40\\%$ буюу $36$ нь Хустайгаар зочилсон. Хустайгаар зочилсон нийт $90 + 36 = 126$. Магадлал $\\frac{90}{126} = \\frac{5}{7}$.",
+    "hint": "Нөхцөлт магадлал: хуваагч нь нийт $240$ биш, Хустайгаар зочилсон жуулчдын тоо.",
+    "why": {
+      "0": "Энэ бол Тэрэлжээр зочилсон жуулчдын хувь $\\frac{150}{240}$.",
+      "2": "Энэ бол Тэрэлжээр зочилсон хүмүүсийн дотроос Хустайд очсон хувь ($60\\%$)."
+    },
+    "verify": {
+      "value": "90/126"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-25-1-1",
+    "topicId": 25,
+    "domain": "psda",
+    "skill": "One-variable data: distributions and measures of center and spread",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "What is the range of the data set $14, 3, 22, 9, 17$?",
+    "mn": "$14, 3, 22, 9, 17$ өгөгдлийн хүрээ (range) хэд вэ?",
+    "answer": ["19"],
+    "explain": "Хамгийн их утга $22$, хамгийн бага утга $3$. Хүрээ $22 - 3 = 19$.",
+    "hint": "Хамгийн их утгаас хамгийн багыг хас.",
+    "verify": {
+      "value": "22-3"
+    },
+    "vocab": ["range"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-25-2-1",
+    "topicId": 25,
+    "domain": "psda",
+    "skill": "One-variable data: distributions and measures of center and spread",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "Data set $A$ is $4, 8, 12, 16, 20$. Data set $B$ is $4, 8, 12, 16, 40$. Which of the following statements is true?",
+    "mn": "$A$ өгөгдөл нь $4, 8, 12, 16, 20$, $B$ өгөгдөл нь $4, 8, 12, 16, 40$. Аль мэдэгдэл үнэн вэ?",
+    "choices": [
+      "The mean and the median of data set $B$ are both greater than those of data set $A$.",
+      "The medians of the two data sets are equal, and the mean of data set $B$ is greater.",
+      "The means of the two data sets are equal, and the median of data set $B$ is greater.",
+      "The range of data set $B$ is equal to the range of data set $A$."
+    ],
+    "answer": 1,
+    "explain": "Медиан: хоёулаа $12$. Дундаж: $A$-д $\\frac{60}{5} = 12$, $B$-д $\\frac{80}{5} = 16$. Хүрээ: $A$-д $16$, $B$-д $36$. Иймд медиан тэнцүү, $B$-ийн дундаж их.",
+    "hint": "Дундаж ба медиан хоёрыг тус тусад нь бод.",
+    "why": {
+      "0": "$B$-ийн медиан нь $A$-гийн медианаас их биш — хоёулаа $12$.",
+      "3": "$A$-ийн хүрээ $16$, $B$-ийн хүрээ $36$."
+    },
+    "vocab": ["mean", "median"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-25-3-1",
+    "topicId": 25,
+    "domain": "psda",
+    "skill": "One-variable data: distributions and measures of center and spread",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The mean of the data set $3, 7, 8, 15, x$ is equal to its median. What is the value of $x$?",
+    "mn": "$3, 7, 8, 15, x$ өгөгдлийн дундаж нь медианаа тэнцүү. $x$-ийн утга хэд вэ?",
+    "answer": ["2"],
+    "explain": "Нийлбэр $33 + x$, дундаж $\\frac{33 + x}{5}$. $x$-ийн байрлалаар нь авч үзье. $x \\ge 8$ бол медиан $8$: $\\frac{33 + x}{5} = 8$, $x = 7$ — зөрчил. $7 \\le x \\le 8$ бол медиан $x$: $33 + x = 5x$, $x = 8.25$ — зөрчил. $x < 7$ бол медиан $7$: $33 + x = 35$, $x = 2$ ✓ ($2, 3, 7, 8, 15$-ын медиан $7$, дундаж $7$).",
+    "hint": "$x$ эрэмбэлсэн жагсаалтын аль хэсэгт орох боломжтойг тусад нь авч үз.",
+    "verify": {
+      "value": "5*7-33"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-26-1-1",
+    "topicId": 26,
+    "domain": "psda",
+    "skill": "Evaluating statistical claims: observational studies and experiments",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "Which of the following features of a study is necessary to conclude that a treatment caused the difference in outcomes between two groups?",
+    "mn": "Эмчилгээ нь хоёр бүлгийн үр дүнгийн ялгааг үүсгэсэн гэж дүгнэхэд судалгааны аль шинж чанар зайлшгүй шаардлагатай вэ?",
+    "choices": [
+      "A very large sample size",
+      "Random assignment of participants to the treatment groups",
+      "Random selection of participants from the population",
+      "All participants living in the same city"
+    ],
+    "answer": 1,
+    "explain": "Оролцогчдыг бүлэгт санамсаргүй хуваарилснаар бүлгүүд бусад бүх талаараа ойролцоо болдог тул ялгааг эмчилгээтэй холбон тайлбарлаж болно. Санамсаргүй сонголт нь үр дүнг ерөнхийлөхөд хэрэгтэй.",
+    "hint": "Шалтгаан тогтоох нь санамсаргүй ОНООЛТтой, ерөнхийлөх нь санамсаргүй ТҮҮВЭРтэй холбоотой.",
+    "why": {
+      "2": "Санамсаргүй сонголт нь ерөнхийлөх боломж олгоно, шалтгаан тогтоохгүй."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-26-2-1",
+    "topicId": 26,
+    "domain": "psda",
+    "skill": "Evaluating statistical claims: observational studies and experiments",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A researcher recruited $90$ volunteer university students in Ulaanbaatar and randomly assigned $45$ of them to use a new study app for a month and the other $45$ to continue their usual study methods. The students who used the app had a significantly greater mean improvement in exam scores. Which of the following conclusions is best supported by the study?",
+    "mn": "Судлаач Улаанбаатарын их сургуулийн $90$ сайн дурын оюутныг сонгож, $45$-г нь нэг сарын турш шинэ суралцах апп хэрэглүүлж, үлдсэн $45$-г нь ердийн аргаараа суралцуулахаар санамсаргүй хуваарилав. Апп хэрэглэсэн оюутнуудын шалгалтын онооны дундаж өсөлт мэдэгдэхүйц их байв. Судалгаагаар аль дүгнэлт хамгийн сайн нотлогдох вэ?",
+    "choices": [
+      "The app causes improved exam scores for all university students in Mongolia.",
+      "The app likely caused the improved exam scores among volunteer students like those in the study, but the result cannot be generalized to all students.",
+      "No conclusion about cause can be drawn because the participants were volunteers.",
+      "The app is associated with improved exam scores, but it cannot be the cause of the improvement."
+    ],
+    "answer": 1,
+    "explain": "Санамсаргүй хуваарилалт хийсэн тул апп-ыг шалтгаан гэж үзэж болно. Харин оролцогчид сайн дурынхан (санамсаргүй сонгогдоогүй) тул Монголын бүх оюутанд ерөнхийлж болохгүй.",
+    "hint": "Хуваарилалт ба сонголтыг тус тусад нь шалга.",
+    "why": {
+      "0": "Санамсаргүй сонголт хийгээгүй тул бүх оюутанд ерөнхийлж болохгүй.",
+      "2": "Санамсаргүй хуваарилалт байгаа тул шалтгаан тогтоож болно.",
+      "3": "Санамсаргүй хуваарилалттай туршилтаар шалтгааныг тогтоож болно."
+    },
+    "vocab": ["randomly assigned", "generalized"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-26-3-1",
+    "topicId": 26,
+    "domain": "psda",
+    "skill": "Evaluating statistical claims: observational studies and experiments",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "In an observational study, researchers found that adults who take daily vitamin supplements report fewer colds per year than adults who do not. Which of the following is the most likely confounding variable that could explain this association?",
+    "mn": "Ажиглалтын судалгаагаар өдөр бүр витамин уудаг насанд хүрэгчид витамин уудаггүй хүмүүсээс жилдээ цөөн удаа ханиадладаг гэж гарчээ. Энэ хамаарлыг тайлбарлаж болох хамгийн магадлалтай нөлөөлөгч (confounding) хувьсагч аль нь вэ?",
+    "choices": [
+      "Adults who take vitamins are also more likely to exercise regularly and eat healthy food.",
+      "The number of adults in the study.",
+      "The number of colds reported per year.",
+      "The price of the vitamin supplements."
+    ],
+    "answer": 0,
+    "explain": "Нөлөөлөгч хувьсагч нь судалж буй хоёр хувьсагчтай хоёуланд нь холбоотой гуравдахь хүчин зүйл. Витамин уудаг хүмүүс тогтмол хөдөлгөөн хийж, эрүүл хооллох магадлалтай бөгөөд эдгээр нь өөрөө ханиадыг багасгаж болно.",
+    "hint": "Витамин уухтай ч, ханиадтай ч холбоотой байж болох гуравдахь зүйлийг ол.",
+    "why": {
+      "1": "Түүврийн хэмжээ хоёр хувьсагчийг холбохгүй.",
+      "2": "Энэ бол хариу хувьсагч өөрөө."
+    },
+    "vocab": ["confounding variable", "association"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-26-1-2",
+    "topicId": 26,
+    "domain": "psda",
+    "skill": "Inference from sample statistics and margin of error",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A random sample of $250$ herders from a region with $4{,}000$ herders was surveyed, and $120$ of the herders in the sample reported using solar panels. Based on the sample, what is the best estimate of the number of herders in the region who use solar panels?",
+    "mn": "$4{,}000$ малчинтай бүс нутгаас $250$ малчныг санамсаргүй түүвэрлэн судалгаа хийхэд түүвэрт $120$ малчин нарны хавтан хэрэглэдэг гэж хариулав. Түүвэрт тулгуурлан бүс нутагт нарны хавтан хэрэглэдэг малчдын тоог хамгийн сайн тооцоол.",
+    "answer": ["1920"],
+    "explain": "Түүвэрт $\\frac{120}{250} = 0.48$. $0.48 \\times 4{,}000 = 1{,}920$.",
+    "hint": "Түүврийн хувийг бүх популяцид хэрэгжүүл.",
+    "verify": {
+      "value": "120/250*4000"
+    },
+    "vocab": ["random sample", "estimate"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-26-2-2",
+    "topicId": 26,
+    "domain": "psda",
+    "skill": "Inference from sample statistics and margin of error",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A poll of a random sample of residents of a city found that $54\\%$ of those sampled support building a new library, with a margin of error of $3\\%$. Which of the following is a plausible value for the percent of all residents of the city who support building a new library?",
+    "mn": "Хотын оршин суугчдаас санамсаргүй түүвэр авч асуухад түүвэрт оролцогчдын $54\\%$ нь шинэ номын сан барихыг дэмжсэн бөгөөд алдааны зөвшөөрөгдөх хязгаар $3\\%$. Хотын бүх оршин суугчдын дунд шинэ номын сан барихыг дэмжигчдийн хувийн боломжит утга аль нь вэ?",
+    "choices": ["$49\\%$", "$50\\%$", "$55\\%$", "$58\\%$"],
+    "answer": 2,
+    "explain": "Боломжит завсар $54\\% \\pm 3\\%$ буюу $51\\%$-аас $57\\%$ хүртэл. Үүнд зөвхөн $55\\%$ ордог.",
+    "hint": "Завсрыг $54 - 3$ ба $54 + 3$-аар ол.",
+    "vocab": ["margin of error", "plausible"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-26-3-2",
+    "topicId": 26,
+    "domain": "psda",
+    "skill": "Inference from sample statistics and margin of error",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A random sample of $100$ students from a large university was surveyed about their use of a campus app. Based on the survey, the margin of error for the estimated percentage of all students who use the app was $8$ percentage points. If a random sample of $400$ students had been surveyed instead, using the same method and confidence level, the margin of error would be approximately how many percentage points?",
+    "mn": "Томоохон их сургуулийн $100$ оюутнаас санамсаргүй түүвэр авч кампусын аппыг хэрэглэх эсэхийг асуув. Судалгаагаар аппыг хэрэглэдэг бүх оюутнуудын хувийн тооцооны алдааны зөвшөөрөгдөх хязгаар $8$ хувийн нэгж байв. Хэрэв ижил арга, ижил итгэх түвшинтэй $400$ оюутнаас түүвэр авсан бол алдааны зөвшөөрөгдөх хязгаар ойролцоогоор хэдэн хувийн нэгж байх байсан бэ?",
+    "answer": ["4"],
+    "explain": "Алдааны хязгаар нь түүврийн хэмжээний квадрат язгууртай урвуу пропорциональ. Түүвэр $4$ дахин өссөн тул хязгаар $\\sqrt{4} = 2$ дахин буурна: $\\frac{8}{2} = 4$.",
+    "hint": "Түүвэр $4$ дахин нэмэгдэхэд алдааны хязгаар $4$ дахин биш, $\\sqrt{4}$ дахин багасна.",
+    "verify": {
+      "value": "8/sqrt(4)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
   }
 ]

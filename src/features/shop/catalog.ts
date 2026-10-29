@@ -1,6 +1,8 @@
 // Everything in the shop and how gems are earned — one place to tune the economy. Prices in gems (💎),
 // earned only by studying: there are no real-money purchases.
 export type Slot = 'frame' | 'outfit' | 'skin' | 'banner';
+export type AccessorySlot = 'head' | 'eyes' | 'neck';
+export type EquipmentSlot = Slot | AccessorySlot;
 export type ItemKind = 'consumable' | Slot;
 
 export type ShopItem = {
@@ -11,9 +13,26 @@ export type ShopItem = {
   qty?: number;
   /** Cosmetic look: a CSS color/gradient (frames, banners), an emoji (outfits), a map-skin key. */
   look?: string;
+  /** Accessories layer over an equipped outfit instead of replacing it. */
+  accessorySlot?: AccessorySlot;
   /** Display window into the supplied outfit artwork; x, y, width, height. */
   art?: readonly [number, number, number, number];
 };
+
+const OUTFIT_BUILT_IN_ACCESSORIES: Partial<Record<string, readonly AccessorySlot[]>> = {
+  'outfit-deel-green': ['head'],
+  'outfit-knit-glasses': ['eyes'],
+  'outfit-beret': ['head'],
+  'outfit-varsity': ['head'],
+  'outfit-winter-knit': ['head', 'neck'],
+  'outfit-gardener': ['head'],
+  'outfit-graduate': ['head'],
+  'outfit-summer': ['head', 'eyes'],
+};
+
+export function outfitHasAccessory(outfitId: string | undefined, slot: AccessorySlot): boolean {
+  return Boolean(outfitId && OUTFIT_BUILT_IN_ACCESSORIES[outfitId]?.includes(slot));
+}
 
 export const ITEMS: ShopItem[] = [
   { id: 'streak-freeze', kind: 'consumable', price: 30, qty: 1 },
@@ -44,10 +63,10 @@ export const ITEMS: ShopItem[] = [
   { id: 'outfit-sherpa', kind: 'outfit', price: 140, art: [850, 872, 255, 250] },
   { id: 'outfit-tracksuit', kind: 'outfit', price: 140, art: [1120, 872, 282, 250] },
 
-  { id: 'outfit-hat', kind: 'outfit', price: 120, look: '🎩' },
-  { id: 'outfit-scarf', kind: 'outfit', price: 120, look: '🧣' },
-  { id: 'outfit-glasses', kind: 'outfit', price: 120, look: '🕶️' },
-  { id: 'outfit-crown', kind: 'outfit', price: 200, look: '👑' },
+  { id: 'outfit-hat', kind: 'outfit', price: 120, look: '🎩', accessorySlot: 'head' },
+  { id: 'outfit-scarf', kind: 'outfit', price: 120, look: '🧣', accessorySlot: 'neck' },
+  { id: 'outfit-glasses', kind: 'outfit', price: 120, look: '🕶️', accessorySlot: 'eyes' },
+  { id: 'outfit-crown', kind: 'outfit', price: 200, look: '👑', accessorySlot: 'head' },
 
   { id: 'skin-winter', kind: 'skin', price: 300, look: 'winter' },
   { id: 'skin-night', kind: 'skin', price: 300, look: 'night' },
@@ -58,6 +77,10 @@ export const ITEMS: ShopItem[] = [
 ];
 
 export const itemById = (id: string) => ITEMS.find((i) => i.id === id);
+export function equipmentSlot(item: ShopItem): EquipmentSlot {
+  if (item.accessorySlot) return item.accessorySlot;
+  return item.kind === 'consumable' ? 'outfit' : item.kind;
+}
 
 /** Gems per achievement. Modest on purpose: a cosmetic takes about a week of steady study. */
 export const EARN = {

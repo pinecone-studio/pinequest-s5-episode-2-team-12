@@ -16,6 +16,7 @@ import type { MockAttempt } from '@/features/exam/lib/mock';
 import { loadLocalRoadmap } from '@/features/roadmap/lib/local-store';
 import { type SettingsPatch, saveSettings } from '@/features/settings/actions';
 import { readLocalSettings, writeLocalSettings } from '@/features/settings/local';
+import type { AccessorySlot } from '@/features/shop/catalog';
 import { itemById } from '@/features/shop/catalog';
 import { useWallet } from '@/features/shop/lib/use-wallet';
 import type { ServerWallet } from '@/features/shop/queries';
@@ -25,6 +26,7 @@ import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
 import { DOMAIN_AXES, domainRadar, type QuestionMeta, resolve } from '../lib/radar';
 import type { RawAnswer } from '../queries';
+import { AboutCard, type AboutMe } from './AboutCard';
 
 export type ProfileUser = {
   name: string;
@@ -73,7 +75,12 @@ function Header({
   demo: boolean;
   onSaved: (p: Partial<ProfileUser>) => void;
   gems: number;
-  look: { frame?: string; outfit?: string; banner?: string };
+  look: {
+    frame?: string;
+    outfit?: string;
+    banner?: string;
+    accessories?: Partial<Record<AccessorySlot, string>>;
+  };
 }) {
   const t = useT('profile');
   const [editing, setEditing] = useState(false);
@@ -130,6 +137,7 @@ function Header({
           size={76}
           frame={look.frame}
           outfit={look.outfit}
+          accessories={look.accessories}
         />
         <div className="min-w-0 flex-1">
           <h1 className="font-display text-[26px] font-bold leading-tight text-ink">{user.name || '—'}</h1>
@@ -403,9 +411,33 @@ function MockHistory({ mocks }: { mocks: MockAttempt[] }) {
   );
 }
 
+/** Demo mode: the onboarding answers (OnboardingForm) plus later edits (settings/local.ts). */
+function readLocalAbout(fallback: AboutMe): AboutMe {
+  let saved: Partial<AboutMe> = {};
+  try {
+    saved = JSON.parse(localStorage.getItem('suprep:onboarding:v1') ?? '{}') as Partial<AboutMe>;
+  } catch {
+    // storage blocked or broken: keep the defaults
+  }
+  const s = readLocalSettings();
+  const pick = <K extends keyof AboutMe>(k: K): AboutMe[K] =>
+    (s[k as keyof typeof s] as AboutMe[K] | undefined) ?? saved[k] ?? fallback[k];
+  return {
+    satExp: pick('satExp'),
+    lastMathScore: pick('lastMathScore'),
+    target: pick('target'),
+    examDate: pick('examDate'),
+    confidence: pick('confidence'),
+    desmos: pick('desmos'),
+    studyMinutes: pick('studyMinutes'),
+    start: pick('start'),
+  };
+}
+
 export function ProfileView({
   demo,
   user: initialUser,
+  about: initialAbout,
   server,
   meta,
   rank,
@@ -414,12 +446,16 @@ export function ProfileView({
   wallet?: ServerWallet | null;
   demo: boolean;
   user: ProfileUser;
+  about: AboutMe;
   server: ProfileServer | null;
   meta: QuestionMeta;
   rank: { rank: number; of: number } | null;
 }) {
   const common = useT('common');
   const [user, setUser] = useState(initialUser);
+  const [about, setAbout] = useState(initialAbout);
+  // remount the card after the demo values load, so its edit form starts from them
+  const [aboutKey, setAboutKey] = useState(0);
   const w = useWallet(demo, wallet);
   const [data, setData] = useState<ProfileServer>(server ?? { mocks: [], answers: [] });
   useEffect(() => {
@@ -434,6 +470,8 @@ export function ProfileView({
       aimag: s.aimag ?? u.aimag,
       school: s.school ?? u.school,
     }));
+    setAbout((a) => readLocalAbout(a));
+    setAboutKey((k) => k + 1);
   }, [demo]);
 
   const mockAnswers = useMemo(
@@ -453,8 +491,14 @@ export function ProfileView({
         demo={demo}
         onSaved={(p) => setUser((u) => ({ ...u, ...p }))}
         gems={w.balance}
-        look={{ frame: w.equipped.frame, outfit: w.equipped.outfit, banner: w.equipped.banner }}
+        look={{
+          frame: w.equipped.frame,
+          outfit: w.equipped.outfit,
+          banner: w.equipped.banner,
+          accessories: { head: w.equipped.head, eyes: w.equipped.eyes, neck: w.equipped.neck },
+        }}
       />
+      <AboutCard key={aboutKey} about={about} demo={demo} onSaved={setAbout} />
       <nav aria-label={common('shell.profile')} className="grid gap-3">
         {[{ href: routes.planner, label: common('nav.planner') }].map((item) => (
           <Link
