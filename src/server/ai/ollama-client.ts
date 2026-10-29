@@ -16,6 +16,9 @@ export type OllamaOptions = {
 
 type OllamaChat = { message?: { content?: string } };
 
+/** How long Ollama keeps Suu loaded after a request. */
+export const KEEP_ALIVE = '2h';
+
 /** What Suu can be asked to do. A model version may know only some of them (Suu v1 learned only 'desmos'). */
 export type SuuSkill = 'chat' | 'desmos' | 'planner' | 'analyze';
 
@@ -56,6 +59,9 @@ export async function ollamaChat(
       body: JSON.stringify({
         model: ollamaModel,
         stream: false,
+        // Ollama unloads an idle model after 5 minutes and the next student waits ~20 s while it loads again;
+        // keep Suu in memory between requests (a demo has long pauses).
+        keep_alive: KEEP_ALIVE,
         ...(opts.json ? { format: 'json' } : {}),
         options: { temperature: opts.temperature ?? 0.3, num_predict: opts.maxTokens ?? 400 },
         messages,

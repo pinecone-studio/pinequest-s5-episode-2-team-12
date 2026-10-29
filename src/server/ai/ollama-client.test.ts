@@ -45,6 +45,7 @@ test('posts the messages to /api/chat with the model name and trims the reply', 
   expect(calls[0]?.body).toMatchObject({
     model: 'suu',
     stream: false,
+    keep_alive: '2h', // Suu stays loaded between students
     options: { temperature: 0, num_predict: 50 },
     messages: msgs,
   });
