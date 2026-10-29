@@ -5,18 +5,15 @@ import { loginPassword, registerPassword } from './password-auth';
 
 const input = { email: 'student@gmail.com', username: 'suu_student', password: 'StudyPassword8' };
 function clients(profile: { id: string } | null = null, failure?: { code: string }) {
-  const signup = mock(async () => ({
-    data: { user: { id: 'test', identities: [{ id: 'email' }] }, session: { access_token: 'test-session' } },
-    error: failure ?? null,
-  }));
+  const signup = mock(async () => ({ data: { user: { id: 'test' } }, error: failure ?? null }));
   const login = mock(async () => ({ error: failure ?? null }));
   const read = mock(async () => ({ data: profile, error: null }));
   const getUser = mock(async () => ({ data: { user: { email: 'private@gmail.com' } }, error: null }));
   const admin = {
     from: () => ({ select: () => ({ ilike: () => ({ maybeSingle: read }) }) }),
-    auth: { admin: { getUserById: getUser } },
+    auth: { admin: { getUserById: getUser, createUser: signup } },
   } as unknown as SupabaseClient;
-  const db = { auth: { signUp: signup, signInWithPassword: login } } as unknown as SupabaseClient;
+  const db = { auth: { signInWithPassword: login } } as unknown as SupabaseClient;
   return { db, admin, signup, login, read, getUser };
 }
 test('credentials normalize names/emails, preserve secrets and reject unsafe username/password lengths', () => {
@@ -33,23 +30,25 @@ test('credentials normalize names/emails, preserve secrets and reject unsafe use
   expect(Password.safeParse('ү'.repeat(40)).success).toBe(false);
   expect(Password.parse(' password with spaces ')).toBe(' password with spaces ');
 });
-test('registration delegates password hashing to Supabase Auth, with only username/name in profile metadata', async () => {
+test('registration creates a confirmed account with no email and signs in right away', async () => {
   const c = clients();
-  expect(
-    await registerPassword(c.db, c.admin, input, 'https://suuprep-app.vercel.app/auth/callback'),
-  ).toEqual({ ok: true, confirmationRequired: false });
+  expect(await registerPassword(c.db, c.admin, input)).toEqual({ ok: true });
   expect(c.signup).toHaveBeenCalledWith({
     email: input.email,
     password: input.password,
-    options: {
-      data: { username: input.username, name: input.username },
-      emailRedirectTo: 'https://suuprep-app.vercel.app/auth/callback',
-    },
+    email_confirm: true,
+    user_metadata: { username: input.username, name: input.username },
   });
+  expect(c.login).toHaveBeenCalledWith({ email: input.email, password: input.password });
+});
+test('an existing email is reported without signing in', async () => {
+  const c = clients(null, { code: 'email_exists' });
+  expect(await registerPassword(c.db, c.admin, input)).toMatchObject({ ok: false, reason: 'account_exists' });
+  expect(c.login).not.toHaveBeenCalled();
 });
 test('duplicate usernames prevent Auth user creation', async () => {
   const c = clients({ id: 'existing' });
-  expect(await registerPassword(c.db, c.admin, input, '/')).toEqual({ ok: false, reason: 'username_taken' });
+  expect(await registerPassword(c.db, c.admin, input)).toEqual({ ok: false, reason: 'username_taken' });
   expect(c.signup).not.toHaveBeenCalled();
 });
 test('username login resolves email server-side, then uses password authentication', async () => {

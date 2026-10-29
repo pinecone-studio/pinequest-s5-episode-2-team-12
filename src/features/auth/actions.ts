@@ -133,13 +133,8 @@ export async function signUpWithPassword(input: unknown, next?: string): Promise
   const db = await getDb();
   const admin = getAdminDb();
   if (!db || !admin) return { ok: false, reason: 'not_configured' };
-  const result = await registerPassword(
-    db,
-    admin,
-    parsed.data,
-    `${await origin()}/auth/callback?next=${encodeURIComponent(safeNext(next))}`,
-  );
-  if (!result.ok || result.confirmationRequired) return result;
+  const result = await registerPassword(db, admin, parsed.data);
+  if (!result.ok) return result;
   await setDemoCookie(false);
   redirect(safeNext(next));
 }
