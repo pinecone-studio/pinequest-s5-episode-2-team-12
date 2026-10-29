@@ -66,7 +66,8 @@ test('profile edits stay in demo mode', async ({ page }) => {
   await page.goto('/profile');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
-  await page.getByRole('button', { name: 'Засах' }).click();
+  // «Миний мэдээлэл» has its own «Засах»; the name and aimag are edited in the header card
+  await page.locator('.profile-identity').getByRole('button', { name: 'Засах' }).click();
   await page.getByRole('textbox', { name: 'Нэр' }).fill('Тэмүүлэн');
   await page.getByRole('combobox', { name: 'Аймаг / хот' }).selectOption('Хөвсгөл');
   await page.getByRole('radio', { name: 'sky' }).click();

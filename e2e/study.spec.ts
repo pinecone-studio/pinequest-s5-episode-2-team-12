@@ -6,7 +6,8 @@ test('flashcards: flip, grade, the queue moves on; topic filter', async ({ page 
   await page.goto('/flashcards');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
-  const left = page.getByText(/^\d+ карт үлдсэн$/);
+  // the count is printed on both faces of the card
+  const left = page.getByText(/^\d+ карт үлдсэн$/).first();
   await expect(left).toHaveText('10 карт үлдсэн');
   await page.getByRole('button', { name: 'Хариуг харах' }).click();
   await expect(page.getByRole('button', { name: /Зүгээр/ })).toBeVisible();
@@ -16,8 +17,9 @@ test('flashcards: flip, grade, the queue moves on; topic filter', async ({ page 
   await page.getByRole('button', { name: /Дахин/ }).click();
   // «Дахин» brings the card back in 10 minutes, so it leaves today's queue for now
   await expect(left).toHaveText('8 карт үлдсэн');
+  // topic 2 «Алгебрын илэрхийлэл» starts with its own words
   await page.getByRole('combobox', { name: 'Сэдэв' }).selectOption('2');
-  await expect(page.getByText('slope').first()).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'equivalent' })).toBeVisible();
 });
 
 test('daily challenge: five server-graded problems, then a score; one try per day', async ({ page }) => {

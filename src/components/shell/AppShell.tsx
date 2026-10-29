@@ -402,7 +402,9 @@ export function AppShell({
               : undefined
           }
           className={cn(
-            'z-30 gutter py-3 flex items-center gap-3',
+            // on the map the bar's popovers (SAT date, user menu) must open above the stop card (z-index 45)
+            map ? 'z-[46]' : 'z-30',
+            'gutter py-3 flex items-center gap-3',
             !map && 'workspace-topbar',
             map
               ? 'app-offset fixed md:absolute inset-x-0 top-0 h-(--topbar-h) pointer-events-none [&>*]:pointer-events-auto'

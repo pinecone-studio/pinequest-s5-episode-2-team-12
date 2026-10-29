@@ -47,7 +47,7 @@ test('leaderboard: scopes and metrics; blocking someone removes them', async ({ 
   await page.getByRole('button', { name: 'Цэс: Билгүүн' }).click();
   await page.getByRole('menuitem', { name: 'Хориглох' }).click();
   await expect(list.getByText('Билгүүн')).toHaveCount(0);
-  await page.getByRole('link', { name: 'Найзууд' }).click();
+  await page.getByRole('link', { name: 'Найзууд', exact: true }).click();
   await expect(page).toHaveURL(/scope=friends/);
   await expect(page.getByRole('list', { name: /Найзууд/ }).getByText('Сараа')).toBeVisible();
 });

@@ -58,6 +58,13 @@ describe('checkQuestion', () => {
     expect(checkQuestion(spr(['3/4', '.75', '0.75'], { value: '3/4' }))).toEqual([]);
   });
 
+  test('spr: grid-in decimals may truncate or round the exact value', () => {
+    expect(checkQuestion(spr(['1/6', '.1666', '.1667', '0.1666'], { value: '5/30' }))).toEqual([]);
+    expect(checkQuestion(spr(['16.7', '16.67', '50/3'], { value: '(1-1/1.2)*100' }))).toEqual([]);
+    expect(checkQuestion(spr(['1/6', '.17'], { value: '1/6' })).length).toBe(1);
+    expect(checkQuestion(spr(['1/6', '.1665'], { value: '1/6' })).length).toBe(1);
+  });
+
   test('mcq: keyed choice must match, others must not', () => {
     expect(checkQuestion(mcq(['$3$', '$4$', '$5$', '$6$'], 2, { value: '15/3' }))).toEqual([]);
     expect(checkQuestion(mcq(['$3$', '$4$', '$5$', '$6$'], 1, { value: '15/3' }))[0].level).toBe('mismatch');

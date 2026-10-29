@@ -23,6 +23,29 @@ function satisfies(eq: string, v: string, value: number): boolean | null {
   }
 }
 
+/** The exact value a `value` rule describes; null for substitution rules or when it cannot be evaluated. */
+function exactValue(q: RoadmapQuestion): number | null {
+  const v = q.verify;
+  if (!v || !('value' in v)) return null;
+  const e = texToExpr(v.value);
+  if (e === null) return null;
+  try {
+    return evaluate(e);
+  } catch {
+    return null;
+  }
+}
+
+/** A grid-in form of `exact`: equal, or a decimal with at least 3 significant digits that truncates or
+ *  rounds it (SAT accepts .1666 and .1667 for 1/6, but not .17 or .2). */
+export function gridForm(answer: string, value: number, exact: number): boolean {
+  if (close(value, exact)) return true;
+  const m = /^-?(\d*)\.(\d+)$/.exec(answer.trim());
+  if (!m || `${m[1]}${m[2]}`.replace(/^0+/, '').length < 3) return false;
+  const scale = 10 ** m[2].length;
+  return [Math.trunc(exact * scale), Math.round(exact * scale)].some((n) => close(n / scale, value));
+}
+
 /** Does `candidate` (a numeric value) pass the question's verify rule? null = cannot tell. */
 function passes(q: RoadmapQuestion, candidate: number): boolean | null {
   const v = q.verify;
@@ -47,8 +70,11 @@ export function checkQuestion(q: RoadmapQuestion): Finding[] {
     const accepted = q.answer as string[];
     const values = accepted.map((a) => ({ a, n: numeric(a) }));
     const nums = values.filter((x) => x.n !== null) as { a: string; n: number }[];
+    const exact = exactValue(q);
+    // with a value rule every form is held to it; otherwise the forms must agree with the first one
     for (const x of nums)
-      if (!close(x.n, nums[0].n)) bad(`accepted answers disagree: "${nums[0].a}" vs "${x.a}"`);
+      if (!gridForm(x.a, x.n, exact ?? nums[0].n))
+        bad(`accepted answers disagree: "${nums[0].a}" vs "${x.a}"`);
     if (!q.verify) {
       out.push({ id: q.id, level: 'manual', message: 'no verify rule' });
       return out;
@@ -57,6 +83,7 @@ export function checkQuestion(q: RoadmapQuestion): Finding[] {
       out.push({ id: q.id, level: 'manual', message: 'answer is not numeric' });
       return out;
     }
+    if (exact !== null) return out;
     const ok = passes(q, nums[0].n);
     if (ok === null) out.push({ id: q.id, level: 'manual', message: 'verify rule could not be evaluated' });
     else if (!ok) bad(`stored answer ${nums[0].a} fails verify ${JSON.stringify(q.verify)}`);

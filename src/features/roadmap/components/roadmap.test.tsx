@@ -304,6 +304,9 @@ describe('StopPlayer (demo mode)', () => {
     expect(saved.state.stops[0]).toMatchObject({ stars: 3, attempts: 1 });
     expect(saved.state.stops[0].completedAt).not.toBeNull();
     expect(saved.xp).toBeGreaterThan(0);
+    // saving changes attempts and mastery; that must not draw a new set over the result
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(screen.getByText('Зогсоол давлаа!')).toBeTruthy();
   });
 
   test('a wrong answer explains and offers Суу with the problem and the answer', async () => {

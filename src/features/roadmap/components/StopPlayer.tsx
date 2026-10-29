@@ -77,7 +77,8 @@ export function StopPlayer({
   const [showSummary, setShowSummary] = useState(false);
   const started = useRef(Date.now());
 
-  // draw the set once the state is known; a new round (retry) draws a fresh one
+  // draw the set once the state is known; a new round (retry) draws a fresh one. Saving a result changes
+  // mastery, attempts and test-out, so those must not be dependencies or the result screen is replaced.
   // biome-ignore lint/correctness/useExhaustiveDependencies: draw only when readiness, stop number or round changes
   useEffect(() => {
     if (!loaded.ready || !allowed) return;
@@ -108,7 +109,7 @@ export function StopPlayer({
     setAnswers([]);
     setOutcome(null);
     started.current = Date.now();
-  }, [loaded.ready, allowed, round, no, forceIntro, testOut, mastery, intro.length, isFirstAttempt]);
+  }, [loaded.ready, allowed, round, no]);
 
   const byId = useMemo(() => new Map(pool.map((q) => [q.id, q])), [pool]);
   const qs = (ids ?? []).map((id) => byId.get(id)!).filter(Boolean);

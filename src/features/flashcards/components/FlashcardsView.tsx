@@ -351,6 +351,7 @@ export function FlashcardsView({
             >
               {/* Front side */}
               <div
+                aria-hidden={flipped}
                 className={cn(
                   'absolute inset-0 flex h-full w-full flex-col justify-between',
                   'rounded-2xl border-2 p-6 sm:p-8',
@@ -374,38 +375,41 @@ export function FlashcardsView({
                   <div className="flex items-center gap-2">
                     {draft && <Pill tone="amber">{t('draft')}</Pill>}
 
-                    <span className="rounded-full border border-black/10 bg-white/40 px-2.5 py-0.5 text-xs font-semibold text-ink">
+                    <span className="rounded-full border border-white/15 bg-black/20 px-2.5 py-0.5 text-xs font-semibold text-white">
                       {t('left', { n: q.length })}
                     </span>
                   </div>
                 </div>
 
                 <div className="my-auto space-y-3 text-center">
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-ink/70">
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-white/80">
                     Click or Press Space to Flip
                   </span>
 
-                  <h2 className="break-words font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+                  <h2 className="break-words font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
                     {card.front}
                   </h2>
 
                   {card.ipa && (
-                    <p className="text-sm font-medium text-ink/80">
+                    <p className="text-sm font-medium text-white/80">
                       {card.ipa}
                     </p>
                   )}
                 </div>
 
-                <div className="text-center text-[11px] font-semibold text-ink/60">
+                <div className="text-center text-[11px] font-semibold text-white/80">
                   Minimal Flashcard
                 </div>
               </div>
 
               {/* Back side */}
               <div
+                aria-hidden={!flipped}
                 className={cn(
                   'absolute inset-0 flex h-full w-full flex-col justify-between',
                   'overflow-y-auto rounded-2xl border-2 p-6 sm:p-8',
+                  // <Rich> bolds in ink; on the dark card it has to stay light
+                  '[&_strong]:text-white',
                   '[backface-visibility:hidden] [transform:rotateY(180deg)]',
                   currentTheme.border,
                   currentTheme.bg,
@@ -422,44 +426,44 @@ export function FlashcardsView({
                     {card.group} • Meaning
                   </span>
 
-                  <span className="rounded-full border border-black/10 bg-white/40 px-2.5 py-0.5 text-xs font-semibold text-ink">
+                  <span className="rounded-full border border-white/15 bg-black/20 px-2.5 py-0.5 text-xs font-semibold text-white">
                     {t('left', { n: q.length })}
                   </span>
                 </div>
 
                 <div className="my-auto space-y-3 py-4 text-center">
-                  <p className="break-words font-display text-xl font-bold text-ink sm:text-2xl">
+                  <p className="break-words font-display text-xl font-bold text-white sm:text-2xl">
                     {card.back}
                   </p>
 
                   {card.say && (
-                    <p className="text-xs font-medium text-ink/80">
+                    <p className="text-xs font-medium text-white/80">
                       [{card.say}]
                     </p>
                   )}
 
                   {card.tex && (
-                    <div className="overflow-x-auto rounded-lg border border-black/10 bg-white/50 p-2">
+                    <div className="overflow-x-auto rounded-lg border border-white/20 bg-white/90 p-2 text-[#132f28]">
                       <Tex tex={card.tex} display />
                     </div>
                   )}
 
                   {card.when && (
-                    <p className="text-xs font-medium text-ink">
+                    <p className="text-xs font-medium text-white">
                       <span className="font-bold">{t('when')}: </span>
                       <Rich text={card.when} />
                     </p>
                   )}
 
                   {card.ex && (
-                    <p className="text-xs font-medium text-ink">
+                    <p className="text-xs font-medium text-white">
                       <span className="font-bold">{t('example')}: </span>
                       <Rich text={card.ex} />
                     </p>
                   )}
                 </div>
 
-                <div className="text-center text-[11px] font-semibold text-ink/60">
+                <div className="text-center text-[11px] font-semibold text-white/80">
                   Minimal Flashcard
                 </div>
               </div>
