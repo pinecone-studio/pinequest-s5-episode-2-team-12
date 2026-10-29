@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/Button';
 import { writeLocalSettings } from '@/features/settings/local';
 import { safeNext } from '@/lib/auth-gate';
 import { cn } from '@/lib/cn';
-import { useT } from '@/lib/i18n-client';
+import { useLocale, useT } from '@/lib/i18n-client';
+import { SAT_DATES } from '@/mocks/meta';
 import { completeOnboarding } from '../actions';
 import { type OnboardingInput, OnboardingSchema } from '../lib/schema';
 
@@ -54,6 +55,14 @@ function Choices<T extends string>({
 
 export function OnboardingForm({ demo, today, next = '/' }: { demo: boolean; today: string; next?: string }) {
   const t = useT('onboarding');
+  const locale = useLocale();
+  const upcomingDates = SAT_DATES.filter(({ d }) => d >= today);
+  const dateFormatter = new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
   const router = useRouter();
   const heading = useRef<HTMLHeadingElement>(null);
   const [step, setStep] = useState(0);
@@ -198,13 +207,18 @@ export function OnboardingForm({ demo, today, next = '/' }: { demo: boolean; tod
             </label>
             <label className="grid gap-2 text-sm font-bold text-ink">
               {t('examDate')}
-              <input
-                type="date"
-                min={today}
+              <select
                 value={data.examDate}
                 onChange={(e) => patch({ examDate: e.target.value })}
                 className={field}
-              />
+              >
+                <option value="">{t('unknownDate')}</option>
+                {upcomingDates.map(({ d }) => (
+                  <option key={d} value={d}>
+                    {dateFormatter.format(new Date(`${d}T00:00:00Z`))}
+                  </option>
+                ))}
+              </select>
             </label>
             <button
               type="button"

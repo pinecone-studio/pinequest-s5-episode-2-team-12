@@ -19,6 +19,8 @@ test('onboarding validates Math-only scores, calendar dates, and study preferenc
     { target: 1600 },
     { target: 705 },
     { examDate: '2027-02-30' },
+    { examDate: '2027-02-11' },
+    { examDate: '2027-03-13' },
     { examDate: '2020-01-01' },
     { studyMinutes: 1000 },
     { confidence: 6 },
