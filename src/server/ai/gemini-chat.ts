@@ -142,7 +142,7 @@ export async function geminiTutorReply(
   input: GeminiChatInput,
   fetchImpl: typeof fetch = fetch,
 ): Promise<string | null> {
-  const { geminiApiKey, geminiChatModel } = serverEnv();
+  const { geminiApiKey, geminiChatModel, geminiChatFallback } = serverEnv();
   if (!geminiApiKey) return null;
   const history = (input.history ?? []).slice(-8).map((t) => ({
     role: t.role === 'user' ? 'user' : 'model',
@@ -156,22 +156,31 @@ export async function geminiTutorReply(
     ],
     generationConfig: { temperature: 0.4, maxOutputTokens: 2048 },
   };
-  try {
-    const res = await fetchImpl(`${API}/${encodeURIComponent(geminiChatModel)}:generateContent`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-goog-api-key': geminiApiKey },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(25_000),
-    });
-    if (!res.ok) return null;
-    const data = (await res.json()) as GeminiReply;
-    const text = (data.candidates?.[0]?.content?.parts ?? [])
-      .filter((p) => !p.thought && p.text)
-      .map((p) => p.text)
-      .join('')
-      .trim();
-    return text || null;
-  } catch {
-    return null;
+  // the main model first; when Google says it's overloaded or over the free quota (429/503), one try on the
+  // lighter fallback model, so a demo doesn't fall back to a canned reply because of a busy minute
+  const deadline = Date.now() + 25_000;
+  for (const model of [geminiChatModel, geminiChatFallback].filter((m, i, a) => m && a.indexOf(m) === i)) {
+    const left = deadline - Date.now();
+    if (left < 3_000) return null;
+    try {
+      const res = await fetchImpl(`${API}/${encodeURIComponent(model)}:generateContent`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-goog-api-key': geminiApiKey },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(left),
+      });
+      if (res.status === 429 || res.status === 503) continue;
+      if (!res.ok) return null;
+      const data = (await res.json()) as GeminiReply;
+      const text = (data.candidates?.[0]?.content?.parts ?? [])
+        .filter((p) => !p.thought && p.text)
+        .map((p) => p.text)
+        .join('')
+        .trim();
+      return text || null;
+    } catch {
+      return null;
+    }
   }
+  return null;
 }

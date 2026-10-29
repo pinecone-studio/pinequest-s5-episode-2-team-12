@@ -152,3 +152,42 @@ describe('geminiTutorReply', () => {
     expect(await geminiTutorReply(input, ok)).toBeNull();
   });
 });
+
+describe('busy Gemini', () => {
+  test('429 on the main model → one try on the fallback model', async () => {
+    process.env.GEMINI_CHAT_FALLBACK = 'gemini-lite-test';
+    const urls: string[] = [];
+    const fetchImpl = (async (u: string) => {
+      urls.push(u);
+      return urls.length === 1
+        ? new Response('quota', { status: 429 })
+        : Response.json({ candidates: [{ content: { parts: [{ text: 'Сайн уу' }] } }] });
+    }) as unknown as typeof fetch;
+    expect(await geminiTutorReply({ mode: 'hint', message: 'hi', raw: true }, fetchImpl)).toBe('Сайн уу');
+    expect(urls.map((u) => u.split('/models/')[1])).toEqual([
+      'gemini-test:generateContent',
+      'gemini-lite-test:generateContent',
+    ]);
+  });
+
+  test('other errors do not retry; both busy → null; empty fallback = no retry', async () => {
+    let n = 0;
+    const bad = (async () => {
+      n++;
+      return new Response('x', { status: 400 });
+    }) as unknown as typeof fetch;
+    expect(await geminiTutorReply({ mode: 'hint', message: 'hi', raw: true }, bad)).toBeNull();
+    expect(n).toBe(1);
+    n = 0;
+    const busy = (async () => {
+      n++;
+      return new Response('x', { status: 503 });
+    }) as unknown as typeof fetch;
+    expect(await geminiTutorReply({ mode: 'hint', message: 'hi', raw: true }, busy)).toBeNull();
+    expect(n).toBe(2);
+    n = 0;
+    process.env.GEMINI_CHAT_FALLBACK = '';
+    expect(await geminiTutorReply({ mode: 'hint', message: 'hi', raw: true }, busy)).toBeNull();
+    expect(n).toBe(1);
+  });
+});
