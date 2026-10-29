@@ -25,6 +25,7 @@ import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
 import { DOMAIN_AXES, domainRadar, type QuestionMeta, resolve } from '../lib/radar';
 import type { RawAnswer } from '../queries';
+import { AboutCard, type AboutMe } from './AboutCard';
 
 export type ProfileUser = {
   name: string;
@@ -403,9 +404,33 @@ function MockHistory({ mocks }: { mocks: MockAttempt[] }) {
   );
 }
 
+/** Demo mode: the onboarding answers (OnboardingForm) plus later edits (settings/local.ts). */
+function readLocalAbout(fallback: AboutMe): AboutMe {
+  let saved: Partial<AboutMe> = {};
+  try {
+    saved = JSON.parse(localStorage.getItem('suprep:onboarding:v1') ?? '{}') as Partial<AboutMe>;
+  } catch {
+    // storage blocked or broken: keep the defaults
+  }
+  const s = readLocalSettings();
+  const pick = <K extends keyof AboutMe>(k: K): AboutMe[K] =>
+    (s[k as keyof typeof s] as AboutMe[K] | undefined) ?? saved[k] ?? fallback[k];
+  return {
+    satExp: pick('satExp'),
+    lastMathScore: pick('lastMathScore'),
+    target: pick('target'),
+    examDate: pick('examDate'),
+    confidence: pick('confidence'),
+    desmos: pick('desmos'),
+    studyMinutes: pick('studyMinutes'),
+    start: pick('start'),
+  };
+}
+
 export function ProfileView({
   demo,
   user: initialUser,
+  about: initialAbout,
   server,
   meta,
   rank,
@@ -414,12 +439,16 @@ export function ProfileView({
   wallet?: ServerWallet | null;
   demo: boolean;
   user: ProfileUser;
+  about: AboutMe;
   server: ProfileServer | null;
   meta: QuestionMeta;
   rank: { rank: number; of: number } | null;
 }) {
   const common = useT('common');
   const [user, setUser] = useState(initialUser);
+  const [about, setAbout] = useState(initialAbout);
+  // remount the card after the demo values load, so its edit form starts from them
+  const [aboutKey, setAboutKey] = useState(0);
   const w = useWallet(demo, wallet);
   const [data, setData] = useState<ProfileServer>(server ?? { mocks: [], answers: [] });
   useEffect(() => {
@@ -434,6 +463,8 @@ export function ProfileView({
       aimag: s.aimag ?? u.aimag,
       school: s.school ?? u.school,
     }));
+    setAbout((a) => readLocalAbout(a));
+    setAboutKey((k) => k + 1);
   }, [demo]);
 
   const mockAnswers = useMemo(
@@ -455,6 +486,7 @@ export function ProfileView({
         gems={w.balance}
         look={{ frame: w.equipped.frame, outfit: w.equipped.outfit, banner: w.equipped.banner }}
       />
+      <AboutCard key={aboutKey} about={about} demo={demo} onSaved={setAbout} />
       <nav aria-label={common('shell.profile')} className="grid gap-3">
         {[{ href: routes.planner, label: common('nav.planner') }].map((item) => (
           <Link

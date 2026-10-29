@@ -48,10 +48,7 @@ function ReportCard({ report }: { report: AdminReport }) {
         <div className="rounded-xl bg-paper-2 px-3.5 py-3">
           <dt className="text-[12px] font-semibold text-ink-3">{t('reports.target')}</dt>
           <dd className="mt-0.5 font-bold text-ink">
-            <Link
-              href={routes.adminUsers(report.target_email ?? report.target_name)}
-              className="hover:underline"
-            >
+            <Link href={routes.adminUser(report.target)} className="hover:underline">
               {report.target_name || t('reports.unknown')}
             </Link>
           </dd>

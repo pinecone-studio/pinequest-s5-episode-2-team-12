@@ -1,5 +1,6 @@
 'use client';
-// /admin/users: search every account, promote / demote admins, send or take back gems.
+// /admin/users: search every account, promote / demote admins, send or take back gems. A name opens the user.
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { type FormEvent, useId, useState } from 'react';
 import { Avatar } from '@/components/brand/Avatar';
@@ -25,7 +26,7 @@ function useFail() {
   };
 }
 
-function GemsForm({ user, onDone }: { user: AdminUser; onDone: () => void }) {
+function GemsForm({ userId, onDone }: { userId: string; onDone: () => void }) {
   const t = useT('admin');
   const router = useRouter();
   const fail = useFail();
@@ -39,7 +40,7 @@ function GemsForm({ user, onDone }: { user: AdminUser; onDone: () => void }) {
     const n = Number(amount);
     if (!Number.isInteger(n) || n === 0 || n < -1000 || n > 1000) return toast(t('users.gems.invalid'));
     setBusy(true);
-    const r = await grantGems({ userId: user.id, amount: n, note });
+    const r = await grantGems({ userId, amount: n, note });
     setBusy(false);
     if (!r.ok) return fail(r);
     toast(t('users.gems.done', { n }));
@@ -89,15 +90,22 @@ function GemsForm({ user, onDone }: { user: AdminUser; onDone: () => void }) {
   );
 }
 
-function UserRow({ user, me }: { user: AdminUser; me: string | null }) {
+/** «Эрдэнэ» and make / remove admin: on each list row and on the user's own page. */
+export function UserActions({
+  user,
+  name,
+  self,
+}: {
+  user: Pick<AdminUser, 'id' | 'role' | 'anonymous'>;
+  name: string;
+  self: boolean;
+}) {
   const t = useT('admin');
   const router = useRouter();
   const fail = useFail();
   const [gems, setGems] = useState(false);
   const [busy, setBusy] = useState(false);
-  const name = user.name || user.username || user.email || t('users.guest');
   const admin = user.role === 'admin';
-  const self = user.id === me;
 
   const toggleRole = async () => {
     const next = admin ? 'student' : 'admin';
@@ -111,12 +119,46 @@ function UserRow({ user, me }: { user: AdminUser; me: string | null }) {
   };
 
   return (
+    <>
+      <div className="flex flex-wrap items-center gap-2">
+        <Button variant="secondary" size="sm" onClick={() => setGems((v) => !v)} aria-expanded={gems}>
+          {t('users.gems.button')}
+        </Button>
+        {!user.anonymous && !(admin && self) && (
+          <Button variant={admin ? 'danger' : 'soft'} size="sm" disabled={busy} onClick={toggleRole}>
+            {t(admin ? 'users.removeAdmin' : 'users.makeAdmin')}
+          </Button>
+        )}
+      </div>
+      {gems && (
+        <div className="basis-full">
+          <GemsForm userId={user.id} onDone={() => setGems(false)} />
+        </div>
+      )}
+    </>
+  );
+}
+
+function UserRow({ user, me }: { user: AdminUser; me: string | null }) {
+  const t = useT('admin');
+  const name = user.name || user.username || user.email || t('users.guest');
+  const admin = user.role === 'admin';
+  const self = user.id === me;
+
+  return (
     <li className="soft-card grid gap-3 p-4">
       <div className="flex flex-wrap items-center gap-3">
-        <Avatar name={name} size={44} />
+        <Link href={routes.adminUser(user.id)} aria-hidden="true" tabIndex={-1} className="shrink-0">
+          <Avatar name={name} size={44} />
+        </Link>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="truncate font-bold text-ink">{name}</span>
+            <Link
+              href={routes.adminUser(user.id)}
+              className="truncate font-bold text-ink hover:text-leaf-2 hover:underline"
+            >
+              {name}
+            </Link>
             {user.username && user.username !== name && (
               <span className="text-[13px] text-ink-3">@{user.username}</span>
             )}
@@ -138,18 +180,8 @@ function UserRow({ user, me }: { user: AdminUser; me: string | null }) {
           <span className="font-semibold tnum">{user.xp.toLocaleString('en-US')} XP</span>
           <span className="font-semibold tnum">💎 {user.gems.toLocaleString('en-US')}</span>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <Button variant="secondary" size="sm" onClick={() => setGems((v) => !v)} aria-expanded={gems}>
-            {t('users.gems.button')}
-          </Button>
-          {!user.anonymous && !(admin && self) && (
-            <Button variant={admin ? 'danger' : 'soft'} size="sm" disabled={busy} onClick={toggleRole}>
-              {t(admin ? 'users.removeAdmin' : 'users.makeAdmin')}
-            </Button>
-          )}
-        </div>
+        <UserActions user={user} name={name} self={self} />
       </div>
-      {gems && <GemsForm user={user} onDone={() => setGems(false)} />}
     </li>
   );
 }

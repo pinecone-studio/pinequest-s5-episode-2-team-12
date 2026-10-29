@@ -32,6 +32,8 @@ export type ProfileRow = {
   aimag?: string | null;
   school?: string | null;
   role?: Profile['role'] | null;
+  last_math_score?: number | null;
+  study_minutes?: Profile['studyMinutes'] | null;
 };
 
 /** profiles row (snake_case, nullable) → Profile with the demo defaults filled in. */
@@ -53,6 +55,8 @@ export function profileFromRow(r: ProfileRow): Profile {
     aimag: r.aimag ?? undefined,
     school: r.school ?? undefined,
     role: r.role ?? undefined,
+    lastMathScore: r.last_math_score ?? null,
+    studyMinutes: r.study_minutes ?? undefined,
   };
 }
 

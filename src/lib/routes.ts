@@ -75,6 +75,7 @@ export const routes = {
   // admin (profiles.role = 'admin'); questions and flashcards review live under the same section
   admin: '/admin',
   adminUsers: (q?: string) => `/admin/users${qs({ q })}`,
+  adminUser: (id: string) => `/admin/users/${seg(id)}`,
   adminReports: (all?: boolean) => `/admin/reports${qs({ all })}`,
   adminFeedback: (status?: string) => `/admin/feedback${qs({ status })}`,
   adminContent: '/admin/content',
