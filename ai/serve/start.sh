@@ -50,7 +50,8 @@ SKILLS="$(sed -n 's/^SKILLS=//p' "$MODEL_DIR/build.env" 2>/dev/null | tail -n 1)
 # 3 · Ollama server
 say "3/6 Ollama асааж байна"
 if ! curl -sf "$OLLAMA/api/version" >/dev/null; then
-  ollama serve >"$STATE/ollama.log" 2>&1 &
+  # keep Suu loaded between students (default: unloaded after 5 idle minutes, then a ~20 s reload)
+  OLLAMA_KEEP_ALIVE="${OLLAMA_KEEP_ALIVE:-2h}" ollama serve >"$STATE/ollama.log" 2>&1 &
   PIDS+=($!)
   for _ in $(seq 1 30); do curl -sf "$OLLAMA/api/version" >/dev/null && break; sleep 1; done
 fi
