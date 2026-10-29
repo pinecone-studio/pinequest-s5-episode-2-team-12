@@ -1,233 +1,242 @@
 'use client';
+
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useId, useMemo, useState } from 'react';
 import { Rich } from '@/components/math';
 import { Button } from '@/components/ui/Button';
-// /mistakes: every wrong answer, grouped by topic, with an SM-2 review session (answer again → server
-// grades → explanation → the note moves later or comes back). Demo mode builds the notebook from the
-// roadmap history and mocks in localStorage.
 import { PageHeader } from '@/components/ui/PageHeader';
-import { Pill } from '@/components/ui/Pill';
-import { QuestionView } from '@/features/roadmap/components/QuestionView';
+import { CbHtml, OfficialQuestionCard } from '@/features/practice/components/OfficialQuestionCard';
+import { PracticePlayer } from '@/features/practice/components/PracticePlayer';
+import { cbScope } from '@/features/practice/lib/official';
 import { TOPICS, topicById } from '@/features/roadmap/topics';
-import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
-import type { Question } from '@/types';
-import { type CheckResult, checkMistake, mistakePreviews, type Preview } from '../actions';
+import { readDemoNotebook, type StoredStates } from '../lib/demo-notebook';
+import { noteKey } from '../lib/identity';
 import { localEntries } from '../lib/local-data';
-import { buildNotebook, dueNotes, type Entry, type NoteState, summary } from '../lib/notebook';
+import { buildNotebook, dueNotes, type Entry, summary } from '../lib/notebook';
+import type { RetryQuestion } from '../lib/submission';
+import { loadRetryQuestions } from '../submission-actions';
 import { SuuInsights } from './SuuInsights';
-
-const KEY = 'suprep:mistakes:v1';
-type Stored = Record<string, NoteState & { reviewedAt?: number }>;
-
-function readLocal(): Stored {
-  try {
-    return JSON.parse(localStorage.getItem(KEY) ?? '{}') as Stored;
-  } catch {
-    return {};
-  }
-}
-function writeLocal(s: Stored) {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(s));
-  } catch {
-    // storage blocked
-  }
-}
-
-const asView = (q: Preview): Question => ({
-  ...q,
-  skill: '',
-  difficulty: 2,
-  answer: -1,
-  explain: '',
-  hint: '',
-});
 
 export function MistakesView({
   demo,
   server,
+  loadError = false,
 }: {
   demo: boolean;
-  server: { entries: Entry[]; states: Stored };
+  server: { entries: Entry[]; states: StoredStates };
+  loadError?: boolean;
 }) {
   const t = useT('mistakes');
+  const router = useRouter();
   const [entries, setEntries] = useState(server.entries);
-  const [states, setStates] = useState<Stored>(server.states);
-  const [previews, setPreviews] = useState<Record<string, Preview>>({});
-  const [topic, setTopic] = useState<number | undefined>();
-  const [now, setNow] = useState(() => Date.now());
-  const [session, setSession] = useState<string[] | null>(null);
-  const [value, setValue] = useState('');
-  const [result, setResult] = useState<Extract<CheckResult, { ok: true }> | null>(null);
-  const [busy, setBusy] = useState(false);
-  const topicFieldId = useId();
+  const [states, setStates] = useState(server.states);
+  const [questions, setQuestions] = useState<Record<string, RetryQuestion>>({});
+  const [topic, setTopic] = useState<number>();
+  const [session, setSession] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(loadError ? 'Алдааны дэвтрийг ачаалж чадсангүй.' : '');
+  const [reload, setReload] = useState(0);
+  const topicId = useId();
 
   useEffect(() => {
+    setEntries(server.entries);
+    setStates(server.states);
+    setError(loadError ? 'Алдааны дэвтрийг ачаалж чадсангүй.' : '');
+  }, [server, loadError]);
+  useEffect(() => {
     if (!demo) return;
-    setEntries(localEntries());
-    setStates(readLocal());
+    const read = () => {
+      setEntries(localEntries());
+      setStates(readDemoNotebook().states);
+    };
+    read();
+    window.addEventListener('suu:mistakes-changed', read);
+    return () => window.removeEventListener('suu:mistakes-changed', read);
   }, [demo]);
 
   const notes = useMemo(() => buildNotebook(entries, states), [entries, states]);
+  const active = notes.filter((note) => !note.state.resolved);
+  // Depends on identities, not loaded previews, so unavailable items cannot cause a fetch loop.
+  const refs = JSON.stringify({
+    items: active.map(({ qid, questionSource }) => ({ qid, questionSource })),
+    reload,
+  });
   useEffect(() => {
-    const missing = notes.map((n) => n.qid).filter((id) => !previews[id]);
-    if (!missing.length) return;
-    mistakePreviews(missing).then((ps) =>
-      setPreviews((p) => ({ ...p, ...Object.fromEntries(ps.map((x) => [x.id, x])) })),
-    );
-  }, [notes, previews]);
-
-  const topicOf = (qid: string) => previews[qid]?.topicId;
-  const shown = notes.filter((n) => !topic || topicOf(n.qid) === topic);
-  const stats = summary(shown, now);
-  const due = dueNotes(shown, now);
-
-  const current = session?.[0];
-  const q = current ? previews[current] : undefined;
-  const note = notes.find((n) => n.qid === current);
-
-  const check = async () => {
-    if (!current || !note || busy) return;
-    setBusy(true);
-    const r = await checkMistake({ qid: current, answer: value, state: demo ? note.state : undefined });
-    setBusy(false);
-    if (!r.ok) return;
-    setResult(r);
-    if (r.state) {
-      const next = { ...states, [current]: { ...r.state, reviewedAt: Date.now() } };
-      setStates(next);
-      if (demo) writeLocal(next);
+    let cancelled = false;
+    const input = JSON.parse(refs).items;
+    if (!input.length) {
+      setLoading(false);
+      return;
     }
-  };
-  const next = () => {
-    setSession((s) => (s ? s.slice(1) : s));
-    setValue('');
-    setResult(null);
-    setNow(Date.now());
-  };
+    setLoading(true);
+    Promise.all(
+      Array.from({ length: Math.ceil(input.length / 500) }, (_, index) =>
+        loadRetryQuestions(input.slice(index * 500, (index + 1) * 500)),
+      ),
+    )
+      .then((batches) => {
+        const items = batches.flat();
+        if (cancelled) return;
+        setQuestions((previous) => ({
+          ...previous,
+          ...Object.fromEntries(
+            items.map((item) => [
+              noteKey({ qid: item.question.id, questionSource: item.questionSource }),
+              item,
+            ]),
+          ),
+        }));
+        setError('');
+      })
+      .catch(() => {
+        if (!cancelled) setError('Асуултуудыг ачаалж чадсангүй. Дахин оролдоно уу.');
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [refs]);
 
-  if (session && current && q && note) {
+  const topicOf = (key: string) => {
+    const item = questions[key];
+    return item?.questionSource === 'practice' ? item.question.topicId : undefined;
+  };
+  const shown = active.filter((note) => !topic || topicOf(noteKey(note)) === topic);
+  const stats = summary(notes, Date.now());
+  const due = dueNotes(shown, Date.now());
+  const current = session[0];
+  const item = current ? questions[current] : undefined;
+  const resolved = () => {
+    // The solver calls this only after server grading AND successful persistence.
+    setStates((previous) => {
+      const note = notes.find((candidate) => noteKey(candidate) === current);
+      return note
+        ? { ...previous, [current]: { ...note.state, resolved: true, reviewedAt: Date.now() } }
+        : previous;
+    });
+  };
+  if (item && current)
     return (
-      <div className="mx-auto grid w-full max-w-2xl gap-4">
-        <div className="flex items-center justify-between gap-2">
-          <p className="eyebrow">
-            {topicById(q.topicId ?? 0)?.title} · {t(`source.${note.source}`)}
-          </p>
-          <Button variant="ghost" size="sm" onClick={() => setSession(null)}>
-            {t('stop')}
-          </Button>
-        </div>
-        <section className="soft-card grid min-w-0 gap-4 overflow-x-auto p-5">
-          <QuestionView key={q.id} q={asView(q)} value={value} onChange={setValue} revealed={false} />
-          {note.chosen && !result && (
-            <p className="text-[13px] text-ink-3">
-              {t('yourWas', { a: q.choices?.[Number(note.chosen)] ?? note.chosen })}
-            </p>
-          )}
-          {result ? (
-            <div
-              className={cn(
-                'grid gap-2 rounded-2xl px-4 py-3',
-                result.correct ? 'bg-sage' : 'bg-danger-soft',
-              )}
-              role="status"
-            >
-              <p className={cn('font-bold', result.correct ? 'text-leaf-2' : 'text-danger')}>
-                {result.correct ? t('right') : <Rich text={t('wrong', { a: result.correctText })} />}
-              </p>
-              <p className="text-[14px] text-ink-2">
-                <span className="font-semibold text-ink">{t('explain')}: </span>
-                <Rich text={result.explain} />
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <Button onClick={next}>{t('next')}</Button>
-                <Link
-                  href={routes.tutor({ kind: 'mistake', id: q.id, chosen: value })}
-                  className="inline-flex h-11 items-center px-3 text-[14px] font-bold text-leaf-2 underline"
-                >
-                  {t('ask')}
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <Button onClick={check} disabled={!value || busy}>
-              {t('check')}
-            </Button>
-          )}
-        </section>
+      <div className="workspace-page max-w-5xl">
+        <PageHeader title={t('pages.mistakes.title')} icon="mistakes" />
+        <Button variant="ghost" onClick={() => setSession([])}>
+          ← Алдааны дэвтэр
+        </Button>
+        <Link
+          href={routes.tutor({ kind: 'mistake', id: item.question.id })}
+          className="text-sm font-bold text-leaf-2 underline"
+        >
+          Суугаас асуух
+        </Link>
+        {item.questionSource === 'official' ? (
+          <OfficialQuestionCard
+            key={current}
+            question={item.question}
+            index={1}
+            onResolved={resolved}
+            onNext={() => setSession((previous) => previous.slice(1))}
+            onComplete={() => setSession([])}
+            lastInTopic={session.length === 1}
+          />
+        ) : (
+          <PracticePlayer
+            key={current}
+            questions={[item.question]}
+            onResolved={resolved}
+            onNext={() => setSession((previous) => previous.slice(1))}
+            onComplete={() => setSession([])}
+            lastInTopic={session.length === 1}
+          />
+        )}
       </div>
     );
-  }
 
   return (
     <div className="workspace-page max-w-5xl">
       <PageHeader title={t('pages.mistakes.title')} description={t('lead')} icon="mistakes" />
       <dl className="grid grid-cols-3 gap-2">
-        {(['due', 'total', 'resolved'] as const).map((k) => (
-          <div key={k} className="stat-card">
-            <dt className="text-[12px] text-ink-3">{t(`stats.${k}`)}</dt>
-            <dd className="font-display text-2xl font-bold text-ink tnum">{stats[k]}</dd>
+        {(['due', 'total', 'resolved'] as const).map((key) => (
+          <div key={key} className="stat-card">
+            <dt className="text-xs text-ink-3">{t(`stats.${key}`)}</dt>
+            <dd className="font-display text-2xl font-bold">{stats[key]}</dd>
           </div>
         ))}
       </dl>
-      <SuuInsights demo={demo} count={notes.length} />
+      <SuuInsights demo={demo} count={active.length} />
+      {error && (
+        <div role="alert" className="space-y-2 text-danger">
+          <p>{error}</p>
+          <Button
+            onClick={() => {
+              setReload((value) => value + 1);
+              router.refresh();
+            }}
+          >
+            Дахин ачаалах
+          </Button>
+        </div>
+      )}
+      {loading && <p role="status">Асуултуудыг ачаалж байна…</p>}
       <div className="filter-panel flex flex-wrap items-center gap-3">
-        <label className="sr-only" htmlFor={topicFieldId}>
+        <label className="sr-only" htmlFor={topicId}>
           {t('filter')}
         </label>
         <select
-          id={topicFieldId}
+          id={topicId}
           value={topic ?? ''}
-          onChange={(e) => setTopic(e.target.value ? Number(e.target.value) : undefined)}
-          className="h-11 max-w-[260px] rounded-2xl border border-line bg-paper px-3 text-[14px]"
+          onChange={(event) => setTopic(event.target.value ? Number(event.target.value) : undefined)}
+          className="h-11 max-w-[260px] rounded-2xl border border-line bg-paper px-3"
         >
           <option value="">{t('allTopics')}</option>
-          {TOPICS.map((x) => (
-            <option key={x.id} value={x.id}>
-              {x.id}. {x.title}
+          {TOPICS.map((entry) => (
+            <option key={entry.id} value={entry.id}>
+              {entry.id}. {entry.title}
             </option>
           ))}
         </select>
-        <Button onClick={() => setSession(due.map((n) => n.qid))} disabled={!due.length}>
+        <Button
+          disabled={!due.length || loading}
+          onClick={() => setSession(due.filter((note) => questions[noteKey(note)]).map(noteKey))}
+        >
           {t('review')} ({due.length})
         </Button>
       </div>
-      {shown.length === 0 ? (
-        <p className="soft-card border-dashed p-10 text-center text-[14px] leading-relaxed text-ink-2">
-          {t('empty')}
-        </p>
-      ) : (
-        <section aria-label={t('list')}>
-          {due.length === 0 && <p className="mb-3 text-[14px] font-semibold text-leaf-2">{t('allDone')}</p>}
-          <ul className="grid gap-2">
-            {shown.map((n) => {
-              const p = previews[n.qid];
-              const isDueNow = !n.state.resolved && n.state.due <= now;
-              return (
-                <li key={n.qid} className="soft-card grid gap-1.5 p-4">
-                  <div className="flex flex-wrap items-center gap-2 text-[12px] text-ink-3">
-                    <span>{topicById(p?.topicId ?? 0)?.title ?? '—'}</span>
-                    <span>· {t(`source.${n.source}`)}</span>
-                    <span className="ml-auto">
-                      {n.state.resolved ? (
-                        <Pill tone="leaf">{t('learned')}</Pill>
-                      ) : isDueNow ? (
-                        <Pill tone="amber">{t('due')}</Pill>
-                      ) : (
-                        <Pill>{t('later')}</Pill>
-                      )}
-                    </span>
-                  </div>
-                  <p className="line-clamp-2 text-[14px] text-ink">{p ? <Rich text={p.prompt} /> : '…'}</p>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
+      {!shown.length && !loading && !error && (
+        <p className="soft-card border-dashed p-10 text-center text-ink-2">{t('empty')}</p>
       )}
+      <section aria-label={t('list')} className="grid gap-3">
+        {shown.map((note) => {
+          const key = noteKey(note);
+          const question = questions[key];
+          return (
+            <article key={key} className="soft-card space-y-3 p-5">
+              <p className="text-xs text-ink-3">
+                {question?.questionSource === 'official'
+                  ? 'College Board'
+                  : (topicById(topicOf(key) ?? 0)?.title ?? t(`source.${note.source}`))}{' '}
+                · {note.qid}
+              </p>
+              {question?.questionSource === 'official' ? (
+                <CbHtml html={question.question.promptHtml} scope={cbScope(note.qid, 'q')} />
+              ) : question ? (
+                <Rich text={question.question.prompt} />
+              ) : (
+                <p className="text-sm text-ink-3">
+                  {loading ? 'Ачаалж байна…' : 'Энэ асуултын өгөгдөл одоогоор олдсонгүй.'}
+                </p>
+              )}
+              <Button disabled={!question || loading} onClick={() => setSession([key])}>
+                Дахин бодох
+              </Button>
+            </article>
+          );
+        })}
+      </section>
     </div>
   );
 }

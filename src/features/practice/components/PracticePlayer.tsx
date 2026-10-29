@@ -3,18 +3,25 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Rich } from '@/components/math';
 import { toast } from '@/components/ui/toast';
+import { SaveStatus } from '@/features/mistakes/components/SaveStatus';
+import { useAnswerSubmission } from '@/features/mistakes/useAnswerSubmission';
 import {
   createTimedSession,
   finishTimedSession,
   formatTime,
   tickTimedSession,
 } from '@/features/practice/lib/timed-session';
+import { correctAnswerText, isCorrect } from '@/features/roadmap/lib/grade';
 import { DesmosCatButton, DesmosSidePanel } from '@/features/tutor/components/DesmosSidePanel';
 import { panelInput } from '@/features/tutor/lib/desmos-panel';
 import type { Question } from '@/types';
 
 type Props = {
   questions: Question[];
+  onNext?: () => void;
+  onComplete?: () => void;
+  lastInTopic?: boolean;
+  onResolved?: () => void;
 };
 
 /* ───────── Shared look: uses the tokens from globals.css (--c-*, .card, .btn3d) ───────── */
@@ -47,19 +54,11 @@ const row = 'rounded-2xl border border-line bg-paper';
 // Teal info pill (like the "Демо горим" banner).
 const infoPill = 'rounded-full bg-teal-soft px-6 py-3 text-sm font-semibold text-teal';
 
-function isCorrect(question: Question, value: string): boolean {
-  if (typeof question.answer === 'number') {
-    return value === String(question.answer);
-  }
-
-  const normalized = value.trim().replaceAll(',', '');
-
-  return question.answer.some((answer) => answer.trim().replaceAll(',', '') === normalized);
-}
-
-export function PracticePlayer({ questions }: Props) {
+export function PracticePlayer({ questions, onNext, onComplete, lastInTopic, onResolved }: Props) {
   const [index, setIndex] = useState(0);
   const [answer, setAnswer] = useState('');
+  const [revealed, setRevealed] = useState(false);
+  const saving = useAnswerSubmission(onResolved);
   const [submitted, setSubmitted] = useState(false);
   const [hintVisible, setHintVisible] = useState(false);
   const [marked, setMarked] = useState<string[]>([]);
@@ -103,7 +102,9 @@ export function PracticePlayer({ questions }: Props) {
   }, [timedMode, session.status]);
 
   function resetQuestionState() {
+    saving.reset();
     setAnswer('');
+    setRevealed(false);
     setSubmitted(false);
     setHintVisible(false);
     setShowDesmos(false);
@@ -135,12 +136,19 @@ export function PracticePlayer({ questions }: Props) {
   }
 
   function submitAnswer(value: string) {
-    if (submitted || (timedMode && session.status !== 'running') || !question) {
+    if (
+      saving.busy ||
+      (submitted && question && isCorrect(question, answer)) ||
+      (timedMode && session.status !== 'running') ||
+      !question
+    ) {
       return;
     }
 
     setAnswer(value);
     setSubmitted(true);
+    setRevealed(false);
+    void saving.submit({ qid: question.id, questionSource: 'practice' }, value);
 
     if (timedMode) {
       setSessionAnswers((previous) => ({
@@ -155,7 +163,12 @@ export function PracticePlayer({ questions }: Props) {
   }
 
   function goTo(nextIndex: number) {
-    if (nextIndex < 0 || nextIndex >= activeQuestions.length || (timedMode && session.status !== 'running')) {
+    if (
+      saving.busy ||
+      nextIndex < 0 ||
+      nextIndex >= activeQuestions.length ||
+      (timedMode && session.status !== 'running')
+    ) {
       return;
     }
 
@@ -337,7 +350,7 @@ export function PracticePlayer({ questions }: Props) {
                 key={item.id}
                 type="button"
                 onClick={() => goTo(i)}
-                disabled={!timedSessionRunning}
+                disabled={saving.busy || !timedSessionRunning}
                 aria-label={`${i + 1}-р асуулт`}
                 aria-current={i === index ? 'step' : undefined}
                 className={`${chipBase} flex h-10 min-w-12 items-center justify-center gap-1 ${
@@ -379,7 +392,7 @@ export function PracticePlayer({ questions }: Props) {
                     : [...previous, question.id],
                 )
               }
-              disabled={!timedSessionRunning}
+              disabled={saving.busy || !timedSessionRunning}
               aria-pressed={marked.includes(question.id)}
               className={`${chipBase} px-4 ${marked.includes(question.id) ? chipMarked : chipIdle}`}
             >
@@ -397,12 +410,12 @@ export function PracticePlayer({ questions }: Props) {
                   <button
                     key={`${question.id}-${i}`}
                     type="button"
-                    disabled={submitted || !timedSessionRunning}
+                    disabled={saving.busy || (submitted && correct) || !timedSessionRunning}
                     onClick={() => submitAnswer(String(i))}
                     className={`flex items-center gap-3.5 rounded-2xl border p-4 text-left transition ${
-                      submitted && isRight
+                      (revealed || correct) && isRight
                         ? 'border-leaf bg-sage text-leaf-2'
-                        : submitted && isSelected
+                        : revealed && isSelected
                           ? 'border-danger bg-danger-soft text-danger'
                           : isSelected
                             ? 'border-leaf bg-leaf/10 text-ink'
@@ -411,9 +424,9 @@ export function PracticePlayer({ questions }: Props) {
                   >
                     <span
                       className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-xs font-bold ${
-                        submitted && isRight
+                        (revealed || correct) && isRight
                           ? 'bg-leaf text-white'
-                          : submitted && isSelected
+                          : revealed && isSelected
                             ? 'bg-danger text-white'
                             : isSelected
                               ? 'bg-leaf text-white'
@@ -435,24 +448,28 @@ export function PracticePlayer({ questions }: Props) {
               onSubmit={(event) => {
                 event.preventDefault();
 
-                if (answer.trim() && !submitted) {
+                if (answer.trim() && !(submitted && correct)) {
                   submitAnswer(answer);
                 }
               }}
             >
               <input
                 value={answer}
-                onChange={(event) => setAnswer(event.target.value)}
-                disabled={submitted || !timedSessionRunning}
+                onChange={(event) => {
+                  setAnswer(event.target.value);
+                  setSubmitted(false);
+                  setRevealed(false);
+                }}
+                disabled={saving.busy || (submitted && correct) || !timedSessionRunning}
                 aria-label="Хариулт"
                 placeholder="Хариултаа бичнэ үү"
                 className="min-w-0 flex-1 rounded-2xl border border-line bg-paper-2 px-5 py-3.5 font-mono text-lg text-ink placeholder:text-sm placeholder:uppercase placeholder:tracking-[0.15em] disabled:opacity-60"
               />
 
-              {!submitted && (
+              {!(submitted && correct) && (
                 <button
                   type="submit"
-                  disabled={!answer.trim() || !timedSessionRunning}
+                  disabled={saving.busy || !answer.trim() || !timedSessionRunning}
                   className={btnPrimary}
                 >
                   Шалгах
@@ -465,7 +482,7 @@ export function PracticePlayer({ questions }: Props) {
             <button
               type="button"
               onClick={() => setHintVisible((visible) => !visible)}
-              disabled={!timedSessionRunning}
+              disabled={saving.busy || !timedSessionRunning}
               className={btnSecondary}
             >
               {hintVisible ? 'Сэжүүр нуух' : '🐈 Hint · Сэжүүр'}
@@ -474,7 +491,7 @@ export function PracticePlayer({ questions }: Props) {
             <DesmosCatButton
               open={showDesmos}
               onClick={() => setShowDesmos((visible) => !visible)}
-              disabled={!timedSessionRunning}
+              disabled={saving.busy || !timedSessionRunning}
             />
           </div>
 
@@ -495,24 +512,28 @@ export function PracticePlayer({ questions }: Props) {
               }`}
             >
               <h2 className="flex items-center gap-2 text-base font-bold">
-                <span>{correct ? '✨ Зөв хариулт! +5 XP' : '❌ Буруу хариулт'}</span>
+                <span>{correct ? '✨ Зөв хариулт! +5 XP' : 'Буруу байна. Дахин оролдоорой.'}</span>
               </h2>
 
-              {!correct && (
+              {!correct && revealed && (
                 <div className="space-y-1.5 text-sm">
-                  <p className="font-bold">Яагаад?</p>
+                  <p className="font-bold">
+                    Хариу: <Rich text={correctAnswerText(question)} />
+                  </p>
                   <div className="text-ink">
-                    <Rich
-                      text={
-                        question.choices && question.why?.[Number(answer)]
-                          ? question.why[Number(answer)]
-                          : question.explain
-                      }
-                    />
+                    {question.choices && question.why?.[Number(answer)] && (
+                      <Rich text={question.why[Number(answer)]} />
+                    )}
+                    <Rich text={question.explain} />
                   </div>
                 </div>
               )}
 
+              {!correct && (
+                <button type="button" className={btnSecondary} onClick={() => setRevealed((value) => !value)}>
+                  {revealed ? 'Хариу нуух' : 'Хариу харах'}
+                </button>
+              )}
               {correct && (
                 <div className="space-y-1.5 text-sm">
                   <p className="font-bold">Тайлбар</p>
@@ -521,13 +542,39 @@ export function PracticePlayer({ questions }: Props) {
                   </div>
                 </div>
               )}
+              {correct && (
+                <div className="space-y-3">
+                  {(lastInTopic ?? last) && <p className="font-bold">Сэдвийн бодлогууд дууслаа!</p>}
+                  {(onNext || !last) && !(lastInTopic ?? last) && (
+                    <button
+                      type="button"
+                      disabled={saving.busy}
+                      onClick={onNext ?? (() => goTo(index + 1))}
+                      className={btnPrimary}
+                    >
+                      Дараагийн бодлого →
+                    </button>
+                  )}
+                  {(lastInTopic ?? last) && onComplete && (
+                    <button
+                      type="button"
+                      disabled={saving.busy}
+                      onClick={onComplete}
+                      className={btnSecondary}
+                    >
+                      Бодлогын жагсаалт руу буцах
+                    </button>
+                  )}
+                </div>
+              )}
             </section>
           )}
+          <SaveStatus {...saving} />
 
           <footer className="flex items-center justify-between gap-3 border-t border-line pt-5">
             <button
               type="button"
-              disabled={index === 0 || !timedSessionRunning}
+              disabled={saving.busy || index === 0 || !timedSessionRunning}
               onClick={() => goTo(index - 1)}
               className={btnSecondary}
             >
@@ -536,7 +583,7 @@ export function PracticePlayer({ questions }: Props) {
 
             <button
               type="button"
-              disabled={last || !timedSessionRunning}
+              disabled={saving.busy || last || !timedSessionRunning}
               onClick={() => goTo(index + 1)}
               className={btnPrimary}
             >
@@ -547,7 +594,11 @@ export function PracticePlayer({ questions }: Props) {
       </div>
 
       {showDesmos && desmosInput && (
-        <DesmosSidePanel input={desmosInput} revealed={submitted} onClose={() => setShowDesmos(false)} />
+        <DesmosSidePanel
+          input={desmosInput}
+          revealed={correct || revealed}
+          onClose={() => setShowDesmos(false)}
+        />
       )}
     </main>
   );

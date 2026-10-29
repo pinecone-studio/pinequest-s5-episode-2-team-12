@@ -12,13 +12,17 @@ import {
   type OfficialPage,
   type OfficialRow,
 } from './lib/official';
+import { collectOfficialHardQuestions } from './lib/topic-bank';
 
 /** One page of official questions, or null when Supabase or the table is unavailable (→ the mock bank). */
-export async function listOfficialQuestions(filter: OfficialFilter): Promise<OfficialPage | null> {
+export async function listOfficialQuestions(
+  filter: OfficialFilter,
+  pageSize = OFFICIAL_PAGE_SIZE,
+): Promise<OfficialPage | null> {
   const db = await getDb();
   if (!db) return null;
 
-  const from = (filter.page - 1) * OFFICIAL_PAGE_SIZE;
+  const from = (filter.page - 1) * pageSize;
   let query = db
     .from(OFFICIAL_TABLE)
     .select(OFFICIAL_COLUMNS, { count: 'exact' })
@@ -26,7 +30,7 @@ export async function listOfficialQuestions(filter: OfficialFilter): Promise<Off
     .order('skill')
     .order('difficulty_rank')
     .order('id')
-    .range(from, from + OFFICIAL_PAGE_SIZE - 1);
+    .range(from, from + pageSize - 1);
 
   if (filter.domain) query = query.eq('domain', OFFICIAL_DOMAINS[filter.domain]);
   if (filter.skill) query = query.eq('skill', filter.skill);
@@ -47,7 +51,7 @@ export async function listOfficialQuestions(filter: OfficialFilter): Promise<Off
     questions: ((data ?? []) as OfficialRow[]).map(mapOfficialRow),
     total,
     page: filter.page,
-    pageCount: Math.max(1, Math.ceil(total / OFFICIAL_PAGE_SIZE)),
+    pageCount: Math.max(1, Math.ceil(total / pageSize)),
   };
 }
 
@@ -60,4 +64,9 @@ async function countOfficialQuestions(
   if (!filter.domain && !filter.skill && !filter.difficulty && !filter.search) return filteredTotal;
   const { count } = await db.from(OFFICIAL_TABLE).select('id', { count: 'exact', head: true });
   return count ?? filteredTotal;
+}
+
+/** Read every hard page, rather than silently limiting topic cards to the first ten items. */
+export async function listOfficialHardQuestions() {
+  return collectOfficialHardQuestions(listOfficialQuestions);
 }
