@@ -1,7 +1,8 @@
 // Desmos Академи · /desmos/ai. POST { question, answer? } → a step-by-step Desmos lesson.
 // 1. The 6 pitch questions get their hand-written sample lesson (labelled «Жишээ хичээл»). With the model off,
 //    keyword matches count too (demo); with it on, only the exact sample question does.
-// 2. Otherwise Suu writes the lesson live (OLLAMA_URL), checked by parseModelLesson before it is sent.
+// 2. Otherwise Suu writes the lesson live (OLLAMA_URL), with the most similar checked lessons from our library as
+//    worked examples (RAG, src/server/ai/rag), and parseModelLesson checks it before it is sent.
 // 3. Model off or every try failed the checks → { lesson: null } and the page says so.
 import { z } from 'zod';
 import { answersMatch } from '@/features/tutor/lib/desmos-lesson-parse';
@@ -26,6 +27,8 @@ export type DesmosLessonResponse =
       source: 'sample' | 'model';
       answerFrom?: 'student' | 'model';
       technique?: string | null;
+      /** Library lessons Suu was shown first (RAG). */
+      examples?: { id: string; technique: string; score: number }[];
     }
   | { lesson: null; source: 'none'; reason: 'off' | 'failed' };
 
@@ -56,5 +59,6 @@ export async function POST(req: Request) {
     source: 'model',
     answerFrom: res.answerFrom,
     technique: res.technique,
+    examples: res.examples,
   } satisfies DesmosLessonResponse);
 }
