@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { type FormEvent, useId, useState, useTransition } from 'react';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { DownloadQuestions } from '@/features/offline/DownloadQuestions';
 import { SuuSidePanel } from '@/features/tutor/components/SuuSidePanel';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
@@ -57,6 +58,8 @@ export function OfficialBank({ data, filter }: { data: OfficialPage; filter: Off
           <span className="text-xs font-semibold text-ink-3">{t('bank.available')}</span>
         </div>
       </PageHeader>
+
+      <DownloadQuestions questions={data.questions} />
 
       <section className="section-panel space-y-5 p-5 sm:p-6">
         <div className="space-y-2.5">

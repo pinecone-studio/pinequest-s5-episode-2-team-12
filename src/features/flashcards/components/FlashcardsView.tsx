@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Pill } from '@/components/ui/Pill';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
+import { DownloadCards } from '@/features/offline/DownloadCards';
 import { loadLocalRoadmap } from '@/features/roadmap/lib/local-store';
 import { frontier } from '@/features/roadmap/lib/unlock';
 import { stopByNo } from '@/features/roadmap/stops';
@@ -72,6 +73,7 @@ export function FlashcardsView({
   reviewed,
   extra = [],
   initialTopic,
+  onGrade,
 }: {
   demo: boolean;
   serverStates: Record<string, FlashState>;
@@ -80,6 +82,8 @@ export function FlashcardsView({
   /** Admin-written word cards (custom_cards), after the bundled decks. */
   extra?: FlashCard[];
   initialTopic?: number;
+  /** /offline/flashcards: keeps grades on the device instead of calling the server. */
+  onGrade?: (key: string, grade: Grade, at: number, next: FlashState) => void;
 }) {
   const t = useT('flashcards');
 
@@ -156,10 +160,14 @@ export function FlashcardsView({
       setFlipped(false);
       setNow(at);
 
+      onGrade?.(card.key, g, at, next);
+
       if (demo) {
         writeLocal(updatedStates);
         return;
       }
+
+      if (onGrade) return;
 
       try {
         const result = await gradeFlashcard({
@@ -180,7 +188,7 @@ export function FlashcardsView({
         // Keep the optimistic UI state if the request fails.
       }
     },
-    [card, states, demo],
+    [card, states, demo, onGrade],
   );
 
   useEffect(() => {
@@ -236,6 +244,10 @@ export function FlashcardsView({
         description={t('lead')}
         icon="flashcards"
       />
+
+      {!onGrade && (
+        <DownloadCards states={states} extra={extra} reviewed={reviewed} currentStop={current} />
+      )}
 
       {/* Progress overview */}
       <dl className="grid grid-cols-3 gap-3">

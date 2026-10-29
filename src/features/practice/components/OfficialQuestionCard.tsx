@@ -27,7 +27,13 @@ export function OfficialQuestionCard({
   index,
   suuOpen = false,
   onSuu,
+  initialAnswer,
+  initiallyChecked = false,
+  onAnswer,
 }: {
+  initialAnswer?: string;
+  initiallyChecked?: boolean;
+  onAnswer?: (answer: string) => void;
   question: OfficialQuestion;
   index: number;
   /** This card's problem is open in the Суу side panel. */
@@ -37,10 +43,12 @@ export function OfficialQuestionCard({
 }) {
   const t = useT('practice');
   const inputId = useId();
-  const [choice, setChoice] = useState<string | null>(null);
-  const [typed, setTyped] = useState('');
-  const [checked, setChecked] = useState(false);
-  const [showExplanation, setShowExplanation] = useState(false);
+  const [choice, setChoice] = useState<string | null>(
+    question.format === 'mcq' ? (initialAnswer ?? null) : null,
+  );
+  const [typed, setTyped] = useState(question.format === 'spr' ? (initialAnswer ?? '') : '');
+  const [checked, setChecked] = useState(initiallyChecked);
+  const [showExplanation, setShowExplanation] = useState(initiallyChecked);
 
   const isMcq = question.format === 'mcq';
   const correct = isMcq ? choice === question.answer : checkGridInAnswer(typed, question.accepted);
@@ -56,7 +64,8 @@ export function OfficialQuestionCard({
 
   function check(event?: FormEvent) {
     event?.preventDefault();
-    if (!canCheck) return;
+    if (!canCheck || checked) return;
+    onAnswer?.(isMcq ? (choice ?? '') : typed.trim());
     setChecked(true);
     setShowExplanation(true);
   }
