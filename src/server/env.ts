@@ -13,6 +13,8 @@ export function serverEnv() {
     geminiModel: process.env.GEMINI_MODEL ?? 'gemini-2.5-flash',
     // The tutor's free chat (src/server/ai/gemini-chat.ts). "latest" follows Google's current stable Flash.
     geminiChatModel: process.env.GEMINI_CHAT_MODEL || 'gemini-flash-latest',
+    // Tried once when the chat model answers 429/503 (busy or over the free quota).
+    geminiChatFallback: process.env.GEMINI_CHAT_FALLBACK ?? 'gemini-3.5-flash-lite',
     promptVersion: process.env.TUTOR_PROMPT_VERSION ?? 'v1',
     supabaseServiceRole: process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
     supabaseQuestionsTable:
