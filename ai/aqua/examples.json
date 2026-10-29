@@ -17,7 +17,9 @@
         },
         {
           "text": "Хоёр шулууны огтлолцлын цэг (intersection point) дээр дар. (20, 43) гарна. Тэгэхээр Q 20 км явсан.",
-          "desmos": [{ "latex": "\\left(20,43\\right)", "color": "green", "label": "Q: x = 20", "showLabel": true }]
+          "desmos": [
+            { "latex": "\\left(20,43\\right)", "color": "green", "label": "Q: x = 20", "showLabel": true }
+          ]
         },
         {
           "text": "Асуулт P-ийн замыг асууж байна. y = 1.15x шулууныг зур, x = 20 дээрх утгыг нь дарж уншина: 23 км.",
@@ -53,7 +55,9 @@
         },
         {
           "text": "Огтлолцлын цэг (intersection point) дээр дар: (35, 130). Dhoni 35 оноо авсан.",
-          "desmos": [{ "latex": "\\left(35,130\\right)", "color": "green", "label": "x = 35", "showLabel": true }]
+          "desmos": [
+            { "latex": "\\left(35,130\\right)", "color": "green", "label": "x = 35", "showLabel": true }
+          ]
         }
       ],
       "check": "35 + 25 + 70 = 130 ✓",
@@ -102,7 +106,9 @@
         },
         {
           "text": "Огтлолцлын цэг (intersection point) дээр дар: (40, 16). Хоёр дахь уусмал 40% чихэртэй.",
-          "desmos": [{ "latex": "\\left(40,16\\right)", "color": "green", "label": "x = 40", "showLabel": true }]
+          "desmos": [
+            { "latex": "\\left(40,16\\right)", "color": "green", "label": "x = 40", "showLabel": true }
+          ]
         }
       ],
       "check": "0.75 · 8 + 0.25 · 40 = 6 + 10 = 16 ✓",

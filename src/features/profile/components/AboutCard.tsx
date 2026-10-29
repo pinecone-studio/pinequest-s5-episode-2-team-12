@@ -5,7 +5,7 @@
 import { useId, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { toast } from '@/components/ui/toast';
-import { saveSettings, type SettingsPatch } from '@/features/settings/actions';
+import { type SettingsPatch, saveSettings } from '@/features/settings/actions';
 import { writeLocalSettings } from '@/features/settings/local';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';

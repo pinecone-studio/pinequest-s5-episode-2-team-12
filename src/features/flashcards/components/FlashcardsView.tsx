@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useCallback, useEffect, useId, useMemo, useState } from 'react';
@@ -48,12 +47,9 @@ function writeLocal(states: Record<string, FlashState>) {
 const GRADE_STYLE: Record<Grade, string> = {
   again:
     'border-[#D6A0A9] bg-[#E8C1C7] text-[#78434B] hover:border-[#D6A0A9] hover:bg-[#DDB0B7] hover:text-[#6E3740] focus-visible:ring-[#D6A0A9]',
-  hard:
-    'border-[#D9C18E] bg-[#E9D8B4] text-[#78613A] hover:border-[#D9C18E] hover:bg-[#DFCCA1] hover:text-[#6D552F] focus-visible:ring-[#D9C18E]',
-  good:
-    'border-[#9FC6AE] bg-[#C4DFCD] text-[#3F6B50] hover:border-[#9FC6AE] hover:bg-[#B3D4BF] hover:text-[#345D43] focus-visible:ring-[#9FC6AE]',
-  easy:
-    'border-[#9FCBD4] bg-[#C3E0E6] text-[#3D6973] hover:border-[#9FCBD4] hover:bg-[#B0D5DD] hover:text-[#315C66] focus-visible:ring-[#9FCBD4]',
+  hard: 'border-[#D9C18E] bg-[#E9D8B4] text-[#78613A] hover:border-[#D9C18E] hover:bg-[#DFCCA1] hover:text-[#6D552F] focus-visible:ring-[#D9C18E]',
+  good: 'border-[#9FC6AE] bg-[#C4DFCD] text-[#3F6B50] hover:border-[#9FC6AE] hover:bg-[#B3D4BF] hover:text-[#345D43] focus-visible:ring-[#9FC6AE]',
+  easy: 'border-[#9FCBD4] bg-[#C3E0E6] text-[#3D6973] hover:border-[#9FCBD4] hover:bg-[#B0D5DD] hover:text-[#315C66] focus-visible:ring-[#9FCBD4]',
 };
 
 /** Each card gets a consistent color on both sides. */
@@ -99,9 +95,7 @@ export function FlashcardsView({
     setStates(readLocal());
 
     const local = loadLocalRoadmap();
-    setCurrent(
-      local.state.placement ? frontier(local.state.stops) : null,
-    );
+    setCurrent(local.state.placement ? frontier(local.state.stops) : null);
   }, [demo]);
 
   const cards = useMemo(
@@ -115,10 +109,7 @@ export function FlashcardsView({
     [deck, topicId, extra],
   );
 
-  const q = useMemo(
-    () => queue(cards, states, now),
-    [cards, states, now],
-  );
+  const q = useMemo(() => queue(cards, states, now), [cards, states, now]);
 
   const stats = counts(cards, states, now);
   const card = q[0];
@@ -189,9 +180,7 @@ export function FlashcardsView({
 
       if (
         target instanceof Element &&
-        target.closest(
-          'input, select, textarea, button, [role="radio"], [contenteditable="true"]',
-        )
+        target.closest('input, select, textarea, button, [role="radio"], [contenteditable="true"]')
       ) {
         return;
       }
@@ -214,28 +203,17 @@ export function FlashcardsView({
     };
   }, [card, flipped, grade]);
 
-  const intervals = card
-    ? preview(states[card.key] ?? newState(now), now)
-    : null;
+  const intervals = card ? preview(states[card.key] ?? newState(now), now) : null;
 
   const stop = current ? stopByNo(current) : null;
 
-  const cardReviewed =
-    card !== undefined &&
-    'reviewed' in card &&
-    card.reviewed === true;
+  const cardReviewed = card !== undefined && 'reviewed' in card && card.reviewed === true;
 
-  const draft = Boolean(
-    card && !cardReviewed && !approved.has(card.key),
-  );
+  const draft = Boolean(card && !cardReviewed && !approved.has(card.key));
 
   return (
     <div className="workspace-page mx-auto w-full max-w-3xl space-y-6 px-4 py-6">
-      <PageHeader
-        title={t('title')}
-        description={t('lead')}
-        icon="flashcards"
-      />
+      <PageHeader title={t('title')} description={t('lead')} icon="flashcards" />
 
       {/* Progress overview */}
       <dl className="grid grid-cols-3 gap-3">
@@ -253,9 +231,7 @@ export function FlashcardsView({
             <dt className="text-[11px] font-semibold uppercase tracking-wider text-ink-3">
               {t(`stats.${key}`)}
             </dt>
-            <dd className="mt-1 font-display text-2xl font-bold tracking-tight text-ink">
-              {value}
-            </dd>
+            <dd className="mt-1 font-display text-2xl font-bold tracking-tight text-ink">{value}</dd>
           </div>
         ))}
       </dl>
@@ -310,9 +286,7 @@ export function FlashcardsView({
               type="button"
               aria-pressed={topicId === stop.no}
               onClick={() => {
-                setTopicId((value) =>
-                  value === stop.no ? undefined : stop.no,
-                );
+                setTopicId((value) => (value === stop.no ? undefined : stop.no));
                 setFlipped(false);
               }}
               className={cn(
@@ -389,16 +363,10 @@ export function FlashcardsView({
                     {card.front}
                   </h2>
 
-                  {card.ipa && (
-                    <p className="text-sm font-medium text-ink/80">
-                      {card.ipa}
-                    </p>
-                  )}
+                  {card.ipa && <p className="text-sm font-medium text-ink/80">{card.ipa}</p>}
                 </div>
 
-                <div className="text-center text-[11px] font-semibold text-ink/60">
-                  Minimal Flashcard
-                </div>
+                <div className="text-center text-[11px] font-semibold text-ink/60">Minimal Flashcard</div>
               </div>
 
               {/* Back side */}
@@ -432,11 +400,7 @@ export function FlashcardsView({
                     {card.back}
                   </p>
 
-                  {card.say && (
-                    <p className="text-xs font-medium text-ink/80">
-                      [{card.say}]
-                    </p>
-                  )}
+                  {card.say && <p className="text-xs font-medium text-ink/80">[{card.say}]</p>}
 
                   {card.tex && (
                     <div className="overflow-x-auto rounded-lg border border-black/10 bg-white/50 p-2">
@@ -459,9 +423,7 @@ export function FlashcardsView({
                   )}
                 </div>
 
-                <div className="text-center text-[11px] font-semibold text-ink/60">
-                  Minimal Flashcard
-                </div>
+                <div className="text-center text-[11px] font-semibold text-ink/60">Minimal Flashcard</div>
               </div>
             </div>
           </div>
@@ -469,23 +431,15 @@ export function FlashcardsView({
           {/* Grade options */}
           {!flipped ? (
             <div className="space-y-2">
-              <Button
-                size="lg"
-                onClick={() => setFlipped(true)}
-                className="w-full"
-              >
+              <Button size="lg" onClick={() => setFlipped(true)} className="w-full">
                 {t('show')} (Flip Card)
               </Button>
 
-              <p className="text-center text-[11px] text-ink-3">
-                {t('keys')}
-              </p>
+              <p className="text-center text-[11px] text-ink-3">{t('keys')}</p>
             </div>
           ) : (
             <div className="space-y-3">
-              <p className="text-center text-[11px] font-medium text-ink-3">
-                {t('keys')}
-              </p>
+              <p className="text-center text-[11px] font-medium text-ink-3">{t('keys')}</p>
 
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 {GRADES.map((gradeValue, index) => (
@@ -525,17 +479,11 @@ export function FlashcardsView({
         </section>
       ) : (
         <section className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-line/60 bg-paper px-6 py-12 text-center">
-          <div className="grid size-12 place-items-center rounded-xl bg-sage text-xl text-leaf-2">
-            ✓
-          </div>
+          <div className="grid size-12 place-items-center rounded-xl bg-sage text-xl text-leaf-2">✓</div>
 
-          <h2 className="font-display text-lg font-bold text-ink">
-            {t('done')}
-          </h2>
+          <h2 className="font-display text-lg font-bold text-ink">{t('done')}</h2>
 
-          <p className="max-w-sm text-xs text-ink-2">
-            {t('doneBody')}
-          </p>
+          <p className="max-w-sm text-xs text-ink-2">{t('doneBody')}</p>
         </section>
       )}
     </div>
