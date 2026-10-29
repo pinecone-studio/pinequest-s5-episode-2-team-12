@@ -108,7 +108,9 @@ export function StopPlayer({
     setAnswers([]);
     setOutcome(null);
     started.current = Date.now();
-  }, [loaded.ready, allowed, round, no, forceIntro, testOut, mastery, intro.length, isFirstAttempt]);
+    // Not on mastery / testOut / isFirstAttempt: saving a result changes them, and re-drawing then would wipe the
+    // result screen (and its «next stop» link) right after the student finishes.
+  }, [loaded.ready, allowed, round, no]);
 
   const byId = useMemo(() => new Map(pool.map((q) => [q.id, q])), [pool]);
   const qs = (ids ?? []).map((id) => byId.get(id)!).filter(Boolean);
@@ -160,9 +162,14 @@ export function StopPlayer({
           onClick={() => setShowSummary(true)}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
-          Товч тайлбар
+          {t('stop.summary')}
         </Button>
       )}
     </header>
@@ -300,127 +307,127 @@ export function StopPlayer({
   return (
     <>
       <div className="w-full max-w-4xl mx-auto flex flex-col justify-between h-full py-1 overflow-hidden">
-      {/* Header & Прогресс бар */}
-      <div className="flex flex-col gap-2 shrink-0">
-        {header}
-        <div className="flex items-center gap-3 px-1">
-          <Bar
-            value={(i + (revealed ? 1 : 0)) / total}
-            tone="lime"
-            h={10}
-            className="flex-1"
-            label={t('stop.problem', { i: i + 1, n: total })}
-          />
-          <span className="shrink-0 text-sm font-extrabold text-ink-2 tnum">
-            {i + 1} / {total}
-          </span>
-        </div>
-      </div>
-
-      {/* Main Question Box */}
-      <section
-        className="relative flex flex-col justify-center flex-1 my-auto gap-3 py-1 transition-all text-foreground overflow-hidden"
-        aria-label={t('stop.problem', { i: i + 1, n: total })}
-      >
-        <div className="relative z-10 text-xl sm:text-2xl md:text-3xl leading-snug text-ink font-bold max-h-[38vh] overflow-hidden pr-1">
-          <QuestionView
-            key={`${round}-${i}`}
-            q={q}
-            value={value}
-            onChange={setValue}
-            revealed={revealed}
-            onSubmit={check}
-          />
-        </div>
-
-        {/* Hint */}
-        {hint && !revealed && (
-          <div className="relative z-10 animate-fade-in rounded-2xl bg-teal-soft/90 p-3 text-base sm:text-lg font-bold text-teal border border-teal/20 max-h-24 overflow-hidden">
-            <Rich text={q.hint} />
-          </div>
-        )}
-
-        {/* Explanation */}
-        {revealed && (
-          <div
-            role="status"
-            className={cn(
-              'relative z-10 flex flex-col gap-2 rounded-2xl p-4 max-h-[24vh] overflow-hidden transition-all duration-300 shadow-sm',
-              correct ? 'bg-sage/90 border border-leaf-2/30' : 'bg-danger-soft/90 border border-danger/30',
-            )}
-          >
-            <p className={cn('text-lg sm:text-xl font-black', correct ? 'text-leaf-2' : 'text-danger')}>
-              {correct ? t('stop.correct') : t('stop.wrong')}
-              {!correct && (
-                <span className="ml-2 font-bold text-ink-2 text-sm sm:text-base">
-                  <Rich text={t('stop.answerWas', { a: correctAnswerText(q) })} />
-                </span>
-              )}
-            </p>
-            <p className="text-base sm:text-lg leading-snug text-ink font-medium">
-              <Rich text={q.explain} />
-            </p>
-          </div>
-        )}
-      </section>
-
-      {/* Footer Navigation Buttons */}
-      <div className="relative z-10 flex items-center justify-between gap-4 pt-2 border-t border-border/20 shrink-0">
-        {!revealed ? (
-          <Button
-            variant="ghost"
-            size="lg"
-            className="text-base font-bold px-5 py-2"
-            onClick={() => setHint(true)}
-            disabled={hint}
-          >
-            {t('stop.hint')}
-          </Button>
-        ) : (
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-sm font-extrabold text-ink-3 tnum">
-              Зөв: {right}/{answers.length}
+        {/* Header & Прогресс бар */}
+        <div className="flex flex-col gap-2 shrink-0">
+          {header}
+          <div className="flex items-center gap-3 px-1">
+            <Bar
+              value={(i + (revealed ? 1 : 0)) / total}
+              tone="lime"
+              h={10}
+              className="flex-1"
+              label={t('stop.problem', { i: i + 1, n: total })}
+            />
+            <span className="shrink-0 text-sm font-extrabold text-ink-2 tnum">
+              {i + 1} / {total}
             </span>
-            {!correct && (
-              <Link
-                href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}
-                className="inline-flex min-h-11 items-center rounded-2xl border border-line bg-paper px-4 text-sm font-bold text-ink hover:bg-paper-2"
-              >
-                {t('stop.askSuu')}
-              </Link>
-            )}
           </div>
-        )}
-        {!revealed ? (
-          <Button
-            variant="lime"
-            size="xl"
-            className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
-            onClick={check}
-            disabled={!value.trim()}
-          >
-            {t('stop.check')}
-          </Button>
-        ) : (
-          <Button
-            variant="lime"
-            size="xl"
-            className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
-            onClick={next}
-          >
-            {i < total - 1 ? t('stop.next') : t('stop.finish')}
-          </Button>
-        )}
+        </div>
+
+        {/* Main Question Box */}
+        <section
+          className="relative flex flex-col justify-center flex-1 my-auto gap-3 py-1 transition-all text-foreground overflow-hidden"
+          aria-label={t('stop.problem', { i: i + 1, n: total })}
+        >
+          <div className="relative z-10 text-xl sm:text-2xl md:text-3xl leading-snug text-ink font-bold max-h-[38vh] overflow-hidden pr-1">
+            <QuestionView
+              key={`${round}-${i}`}
+              q={q}
+              value={value}
+              onChange={setValue}
+              revealed={revealed}
+              onSubmit={check}
+            />
+          </div>
+
+          {/* Hint */}
+          {hint && !revealed && (
+            <div className="relative z-10 animate-fade-in rounded-2xl bg-teal-soft/90 p-3 text-base sm:text-lg font-bold text-teal border border-teal/20 max-h-24 overflow-hidden">
+              <Rich text={q.hint} />
+            </div>
+          )}
+
+          {/* Explanation */}
+          {revealed && (
+            <div
+              role="status"
+              className={cn(
+                'relative z-10 flex flex-col gap-2 rounded-2xl p-4 max-h-[24vh] overflow-hidden transition-all duration-300 shadow-sm',
+                correct ? 'bg-sage/90 border border-leaf-2/30' : 'bg-danger-soft/90 border border-danger/30',
+              )}
+            >
+              <p className={cn('text-lg sm:text-xl font-black', correct ? 'text-leaf-2' : 'text-danger')}>
+                {correct ? t('stop.correct') : t('stop.wrong')}
+                {!correct && (
+                  <span className="ml-2 font-bold text-ink-2 text-sm sm:text-base">
+                    <Rich text={t('stop.answerWas', { a: correctAnswerText(q) })} />
+                  </span>
+                )}
+              </p>
+              <p className="text-base sm:text-lg leading-snug text-ink font-medium">
+                <Rich text={q.explain} />
+              </p>
+            </div>
+          )}
+        </section>
+
+        {/* Footer Navigation Buttons */}
+        <div className="relative z-10 flex items-center justify-between gap-4 pt-2 border-t border-border/20 shrink-0">
+          {!revealed ? (
+            <Button
+              variant="ghost"
+              size="lg"
+              className="text-base font-bold px-5 py-2"
+              onClick={() => setHint(true)}
+              disabled={hint}
+            >
+              {t('stop.hint')}
+            </Button>
+          ) : (
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-sm font-extrabold text-ink-3 tnum">
+                Зөв: {right}/{answers.length}
+              </span>
+              {!correct && (
+                <Link
+                  href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}
+                  className="inline-flex min-h-11 items-center rounded-2xl border border-line bg-paper px-4 text-sm font-bold text-ink hover:bg-paper-2"
+                >
+                  {t('stop.askSuu')}
+                </Link>
+              )}
+            </div>
+          )}
+          {!revealed ? (
+            <Button
+              variant="lime"
+              size="xl"
+              className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
+              onClick={check}
+              disabled={!value.trim()}
+            >
+              {t('stop.check')}
+            </Button>
+          ) : (
+            <Button
+              variant="lime"
+              size="xl"
+              className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
+              onClick={next}
+            >
+              {i < total - 1 ? t('stop.next') : t('stop.finish')}
+            </Button>
+          )}
+        </div>
       </div>
-    </div>
-    <Modal
-      open={showSummary}
-      onClose={() => setShowSummary(false)}
-      label="Товч тайлбар"
-      className="max-w-6xl"
-    >
-      <StopIntro screens={intro} onDone={() => setShowSummary(false)} />
-    </Modal>
+      <Modal
+        open={showSummary}
+        onClose={() => setShowSummary(false)}
+        label={t('stop.summary')}
+        className="max-w-6xl"
+      >
+        <StopIntro screens={intro} onDone={() => setShowSummary(false)} />
+      </Modal>
     </>
   );
 }

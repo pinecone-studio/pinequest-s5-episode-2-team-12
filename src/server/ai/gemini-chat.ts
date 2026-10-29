@@ -149,27 +149,76 @@ export function hasGeminiChat(): boolean {
   return Boolean(serverEnv().geminiApiKey);
 }
 
+type GeminiContent = { role: 'user' | 'model'; parts: { text: string }[] };
+
+/**
+ * The conversation in the shape Gemini wants: starting with the student and alternating. A failed reply is left
+ * out of the history by the browser, which can leave two student turns in a row; those are joined into one.
+ */
+export function geminiContents(history: ChatTurn[], message: string): GeminiContent[] {
+  const turns = [
+    ...history
+      .slice(-8)
+      .map((t) => ({ role: t.role === 'user' ? 'user' : 'model', text: t.text.slice(0, 1500) })),
+    { role: 'user', text: message },
+  ] as { role: GeminiContent['role']; text: string }[];
+  const out: GeminiContent[] = [];
+  for (const t of turns) {
+    if (!out.length && t.role === 'model') continue;
+    const last = out.at(-1);
+    if (last?.role === t.role) last.parts[0].text += `\n\n${t.text}`;
+    else out.push({ role: t.role, parts: [{ text: t.text }] });
+  }
+  return out;
+}
+
 export async function geminiTutorReply(
   input: GeminiChatInput,
   fetchImpl: typeof fetch = fetch,
 ): Promise<string | null> {
-  const { geminiApiKey, geminiChatModel, geminiChatFallback } = serverEnv();
-  if (!geminiApiKey) return null;
-  const history = (input.history ?? []).slice(-8).map((t) => ({
-    role: t.role === 'user' ? 'user' : 'model',
-    parts: [{ text: t.text.slice(0, 1500) }],
-  }));
+  if (!serverEnv().geminiApiKey) return null;
   const body = {
     systemInstruction: { parts: [{ text: GEMINI_SYSTEM }] },
-    contents: [
-      ...history,
-      { role: 'user', parts: [{ text: `${factsFor(input)}\n\n[Сурагч]\n${input.message}` }] },
-    ],
+    contents: geminiContents(input.history ?? [], `${factsFor(input)}\n\n[Сурагч]\n${input.message}`),
     generationConfig: { temperature: 0.4, maxOutputTokens: 2048 },
   };
+  return geminiGenerate(body, fetchImpl, 25_000);
+}
+
+export const GEMINI_SOLVE_SYSTEM = [
+  'You solve SAT Math problems. Work it out briefly, then end with exactly one final line:',
+  'Хариу: <the answer>',
+  'For a multiple-choice problem the answer is the letter with its choice, e.g. "Хариу: B) $12$".',
+  'Otherwise a number, a fraction like 33/2, or a point like (2, 5). No units, no words on that line.',
+].join('\n');
+
+/**
+ * Gemini solves a problem the student sent without an answer, so Suu can then teach it in Desmos.
+ * Returns the whole reply (its last "Хариу: …" line is the answer), or null.
+ */
+export async function geminiSolve(
+  question: string,
+  fetchImpl: typeof fetch = fetch,
+  budgetMs = 20_000,
+): Promise<string | null> {
+  if (!serverEnv().geminiApiKey) return null;
+  const body = {
+    systemInstruction: { parts: [{ text: GEMINI_SOLVE_SYSTEM }] },
+    contents: [{ role: 'user', parts: [{ text: question.trim() }] }],
+    generationConfig: { temperature: 0, maxOutputTokens: 2048 },
+  };
+  return geminiGenerate(body, fetchImpl, budgetMs);
+}
+
+async function geminiGenerate(
+  body: object,
+  fetchImpl: typeof fetch,
+  budgetMs: number,
+): Promise<string | null> {
+  const { geminiApiKey, geminiChatModel, geminiChatFallback } = serverEnv();
   // the main model first; when Google says it's overloaded or over the free quota (429/503), one try on the
   // lighter fallback model, so a demo doesn't fall back to a canned reply because of a busy minute
-  const deadline = Date.now() + 25_000;
+  const deadline = Date.now() + budgetMs;
   for (const model of [geminiChatModel, geminiChatFallback].filter((m, i, a) => m && a.indexOf(m) === i)) {
     const left = deadline - Date.now();
     if (left < 3_000) return null;

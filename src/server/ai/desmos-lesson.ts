@@ -1,10 +1,11 @@
 // Server-only. Asks Suu to write a step-by-step Desmos lesson for a SAT question.
 // The Desmos skill was trained with the correct answer in the prompt ("Зөв хариу: …") and teaches *how* to get
-// it in Desmos. When the student doesn't know the answer, the chat skill solves the question first, and the
-// page says that the answer came from Suu. Every lesson goes through parseModelLesson before it is shown.
+// it in Desmos. When the student doesn't know the answer, Gemini (or else Suu's chat skill) solves the question
+// first, and the page says the answer came from the AI. Every lesson goes through parseModelLesson before it is shown.
 
 import { normAnswer, parseModelLesson } from '@/features/tutor/lib/desmos-lesson-parse';
 import type { DesmosAiLesson } from '@/features/tutor/lib/desmos-lessons';
+import { geminiSolve, hasGeminiChat } from './gemini-chat';
 import { type ChatMessage, hasOllama, ollamaChat } from './ollama-client';
 import { CHAT_PROMPT, DESMOS_PROMPT, desmosUserMessage, EXPLAIN_ASK } from './prompts';
 
@@ -66,17 +67,24 @@ export async function modelDesmosLesson(
   if (correct && !checkableAnswer(correct)) return null;
 
   if (!correct) {
-    // Solving needs the chat skill; with it off the page asks the student to add the answer.
-    if (!hasOllama('chat')) return null;
-    const explanation = await ollamaChat(
-      [
-        { role: 'system', content: CHAT_PROMPT },
-        { role: 'user', content: `${question.trim()}\n\n${EXPLAIN_ASK}` },
-      ],
-      { temperature: 0, maxTokens: 700, timeoutMs: Math.min(25_000, left()) },
-      fetchImpl,
-    );
-    const solved = explanation ? answerFromExplanation(explanation) : null;
+    // No answer from the student: Gemini solves it (the stronger solver), else Suu's chat skill. Suu then only
+    // teaches how to reach that answer in Desmos, which is what it was trained for.
+    let solved: string | null = null;
+    if (hasGeminiChat()) {
+      const reply = await geminiSolve(question, fetchImpl, Math.min(20_000, left() - MIN_CALL_MS));
+      solved = reply ? answerFromExplanation(reply) : null;
+    }
+    if (!solved && hasOllama('chat') && left() > MIN_CALL_MS) {
+      const explanation = await ollamaChat(
+        [
+          { role: 'system', content: CHAT_PROMPT },
+          { role: 'user', content: `${question.trim()}\n\n${EXPLAIN_ASK}` },
+        ],
+        { temperature: 0, maxTokens: 700, timeoutMs: Math.min(25_000, left() - MIN_CALL_MS) },
+        fetchImpl,
+      );
+      solved = explanation ? answerFromExplanation(explanation) : null;
+    }
     if (!solved) return null;
     correct = solved;
     answerFrom = 'model';

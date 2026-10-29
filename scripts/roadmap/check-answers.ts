@@ -39,6 +39,38 @@ function passes(q: RoadmapQuestion, candidate: number): boolean | null {
   return satisfies(v.sub.eq, v.sub.var, candidate);
 }
 
+/** A plain decimal answer such as ".1667", "0.833" or "16.7". */
+const DECIMAL = /^-?\d*\.\d+$/;
+
+/**
+ * Is `answer` (numeric value `n`) an accepted form of `exact`? SAT grid-ins accept a decimal that is
+ * cut off or rounded at its last digit (1/6 → .1666 or .1667), so a decimal answer is compared at its own precision —
+ * but only a precise one (3+ significant digits): .7 for 3/4 or .66 for 2/3 is still a mismatch.
+ */
+function agrees(answer: string, n: number, exact: number): boolean {
+  if (close(n, exact)) return true;
+  const a = answer.trim();
+  if (!DECIMAL.test(a)) return false;
+  const significant = a.replace(/^-/, '').replace('.', '').replace(/^0+/, '').length;
+  if (significant < 3) return false;
+  const f = 10 ** a.split('.')[1].length;
+  return close(n, Math.round(exact * f) / f) || close(n, Math.trunc(exact * f) / f);
+}
+
+/** The value a `{ value }` verify rule expects; undefined for other rules, null if it cannot be evaluated. */
+function verifyValue(q: RoadmapQuestion): number | null | undefined {
+  const v = q.verify;
+  if (!v || !('value' in v)) return undefined;
+  const e = texToExpr(v.value);
+  if (e === null) return null;
+  try {
+    const n = evaluate(e);
+    return Number.isFinite(n) ? n : null;
+  } catch {
+    return null;
+  }
+}
+
 export function checkQuestion(q: RoadmapQuestion): Finding[] {
   const out: Finding[] = [];
   const bad = (message: string) => out.push({ id: q.id, level: 'mismatch', message });
@@ -47,8 +79,10 @@ export function checkQuestion(q: RoadmapQuestion): Finding[] {
     const accepted = q.answer as string[];
     const values = accepted.map((a) => ({ a, n: numeric(a) }));
     const nums = values.filter((x) => x.n !== null) as { a: string; n: number }[];
+    // compare against an exact form (a fraction, an integer) when there is one, not a cut-off decimal
+    const exact = nums.find((x) => !DECIMAL.test(x.a.trim())) ?? nums[0];
     for (const x of nums)
-      if (!close(x.n, nums[0].n)) bad(`accepted answers disagree: "${nums[0].a}" vs "${x.a}"`);
+      if (!agrees(x.a, x.n, exact.n)) bad(`accepted answers disagree: "${exact.a}" vs "${x.a}"`);
     if (!q.verify) {
       out.push({ id: q.id, level: 'manual', message: 'no verify rule' });
       return out;
@@ -57,9 +91,11 @@ export function checkQuestion(q: RoadmapQuestion): Finding[] {
       out.push({ id: q.id, level: 'manual', message: 'answer is not numeric' });
       return out;
     }
-    const ok = passes(q, nums[0].n);
+    const target = verifyValue(q);
+    const ok =
+      target === undefined ? passes(q, exact.n) : target === null ? null : agrees(exact.a, exact.n, target);
     if (ok === null) out.push({ id: q.id, level: 'manual', message: 'verify rule could not be evaluated' });
-    else if (!ok) bad(`stored answer ${nums[0].a} fails verify ${JSON.stringify(q.verify)}`);
+    else if (!ok) bad(`stored answer ${exact.a} fails verify ${JSON.stringify(q.verify)}`);
     return out;
   }
 

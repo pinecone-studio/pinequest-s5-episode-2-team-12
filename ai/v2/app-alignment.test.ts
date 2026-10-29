@@ -14,8 +14,11 @@ test('topic ids and names are the roadmap topics the app shows', () => {
 });
 
 test('Desmos topics are the topics where at least 40% of bank questions come with Desmos rows', () => {
+  // The AI-written add-on practice questions ("claude-addon") come without Desmos rows by design; counting them
+  // would only dilute the share and say nothing about which topics the app teaches with Desmos.
+  const pool = mockBank().pool.filter((q) => !('author' in q && q.author === 'claude-addon'));
   const by = new Map<number, { n: number; d: number }>();
-  for (const q of mockBank().pool) {
+  for (const q of pool) {
     if (!q.topicId) continue;
     const b = by.get(q.topicId) ?? { n: 0, d: 0 };
     b.n++;

@@ -58,6 +58,16 @@ describe('checkQuestion', () => {
     expect(checkQuestion(spr(['3/4', '.75', '0.75'], { value: '3/4' }))).toEqual([]);
   });
 
+  test('spr: a precise cut-off or rounded decimal agrees with a repeating value (SAT grid-in rule)', () => {
+    expect(checkQuestion(spr(['1/6', '.1666', '.1667', '0.1667'], { value: '5/30' }))).toEqual([]);
+    expect(checkQuestion(spr(['5/6', '.833', '0.8333'], { value: '150/180' }))).toEqual([]);
+    // the stored answer may itself be the rounded form the prompt asks for ("nearest tenth")
+    expect(checkQuestion(spr(['16.7', '50/3'], { value: '(1-1/1.2)*100' }))).toEqual([]);
+    // too short to be a grid-in form of 2/3; a wrong digit is never fine
+    expect(checkQuestion(spr(['2/3', '.66'], { value: '2/3' }))[0].level).toBe('mismatch');
+    expect(checkQuestion(spr(['1/6', '.1677'], { value: '1/6' }))[0].level).toBe('mismatch');
+  });
+
   test('mcq: keyed choice must match, others must not', () => {
     expect(checkQuestion(mcq(['$3$', '$4$', '$5$', '$6$'], 2, { value: '15/3' }))).toEqual([]);
     expect(checkQuestion(mcq(['$3$', '$4$', '$5$', '$6$'], 1, { value: '15/3' }))[0].level).toBe('mismatch');

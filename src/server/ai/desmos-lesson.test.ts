@@ -12,6 +12,7 @@ beforeEach(() => {
   process.env.OLLAMA_URL = 'http://ollama:11434';
   process.env.OLLAMA_TOKEN = '';
   process.env.OLLAMA_SKILLS = '';
+  process.env.GEMINI_API_KEY = ''; // bun loads .env: a developer's real key must not reach these tests
 });
 afterEach(() => {
   process.env = { ...saved };
@@ -144,4 +145,60 @@ test('checkableAnswer', () => {
   for (const a of ['5', 'x = 5', '-1', '33/2', 'C', '(2, 21)', '21 meters'])
     expect(checkableAnswer(a)).toBe(true);
   for (const a of ['', 'yes', 'x squared', '1'.repeat(41)]) expect(checkableAnswer(a)).toBe(false);
+});
+
+describe('Gemini solves, Suu teaches (no answer from the student)', () => {
+  /** Fake network: Gemini (generativelanguage) and Ollama calls, each answered from its own list. */
+  function both(gemini: (string | null)[], suu: (string | null)[]) {
+    const calls: { to: 'gemini' | 'ollama'; body: Body & { contents?: { parts: { text: string }[] }[] } }[] =
+      [];
+    let g = 0;
+    let o = 0;
+    const fetchImpl = (async (url: string, init: RequestInit) => {
+      const to = String(url).includes('generativelanguage') ? 'gemini' : 'ollama';
+      calls.push({ to, body: JSON.parse(String(init.body)) });
+      const r = to === 'gemini' ? gemini[g++] : suu[o++];
+      if (r === null || r === undefined) return new Response('down', { status: 500 });
+      return to === 'gemini'
+        ? Response.json({ candidates: [{ content: { parts: [{ text: r }] } }] })
+        : Response.json({ message: { content: r } });
+    }) as unknown as typeof fetch;
+    return { calls, fetchImpl };
+  }
+
+  test('Gemini gives the answer, Suu writes the Desmos lesson; Suu chat is not needed', async () => {
+    process.env.GEMINI_API_KEY = 'test-key';
+    process.env.OLLAMA_SKILLS = 'desmos,planner,analyze';
+    const { calls, fetchImpl } = both([`Тэгшитгэлийг бод.\n\nХариу: ${good.answer}`], [good.output]);
+    const res = await modelDesmosLesson(good.question, undefined, fetchImpl);
+    expect(res?.answerFrom).toBe('model');
+    expect(res?.lesson.answer).toBe(good.answer);
+    expect(calls.map((c) => c.to)).toEqual(['gemini', 'ollama']);
+    expect(calls[0].body.contents?.[0].parts[0].text).toBe(good.question.trim());
+    expect(calls[1].body.messages[1].content).toBe(desmosUserMessage(good.question, good.answer));
+  });
+
+  test('Gemini down → Suu chat solves when that skill is on', async () => {
+    process.env.GEMINI_API_KEY = 'test-key';
+    const explanation = `Хариу: ${good.answer}`;
+    const { calls, fetchImpl } = both([null], [explanation, good.output]);
+    const res = await modelDesmosLesson(good.question, undefined, fetchImpl);
+    expect(res?.answerFrom).toBe('model');
+    expect(calls.map((c) => c.to)).toEqual(['gemini', 'ollama', 'ollama']);
+  });
+
+  test('Gemini down and Suu chat off → no lesson, Suu never asked', async () => {
+    process.env.GEMINI_API_KEY = 'test-key';
+    process.env.OLLAMA_SKILLS = 'desmos';
+    const { calls, fetchImpl } = both([null], [good.output]);
+    expect(await modelDesmosLesson(good.question, undefined, fetchImpl)).toBeNull();
+    expect(calls.map((c) => c.to)).toEqual(['gemini']);
+  });
+
+  test('a student-given answer never goes to Gemini', async () => {
+    process.env.GEMINI_API_KEY = 'test-key';
+    const { calls, fetchImpl } = both([], [good.output]);
+    expect(await modelDesmosLesson(good.question, good.answer, fetchImpl)).not.toBeNull();
+    expect(calls.map((c) => c.to)).toEqual(['ollama']);
+  });
 });

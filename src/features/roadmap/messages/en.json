@@ -145,6 +145,7 @@
     "retry": "Try again",
     "toMap": "Back to the map",
     "nextStop": "Next stop: {place}",
+    "summary": "Quick recap",
     "region": "New badge: {name}",
     "lockedTitle": "This stop is locked",
     "testOutTitle": "Test out",

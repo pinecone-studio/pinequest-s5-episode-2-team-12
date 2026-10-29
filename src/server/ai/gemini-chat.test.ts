@@ -1,6 +1,14 @@
 import { afterEach, beforeEach, describe, expect, test } from 'bun:test';
 import { QUESTIONS } from '@/mocks/questions';
-import { answerText, factsFor, geminiTutorReply, gradeAttempt, statedAnswer } from './gemini-chat';
+import {
+  answerText,
+  factsFor,
+  geminiContents,
+  geminiSolve,
+  geminiTutorReply,
+  gradeAttempt,
+  statedAnswer,
+} from './gemini-chat';
 
 const mc = QUESTIONS.find((q) => q.id === 'a2')!; // choices $1$ $2$ $3$ $5$, answer B) $2$
 const grid = QUESTIONS.find((q) => q.id === 'a1')!; // answer 5
@@ -189,5 +197,52 @@ describe('busy Gemini', () => {
     process.env.GEMINI_CHAT_FALLBACK = '';
     expect(await geminiTutorReply({ mode: 'hint', message: 'hi', raw: true }, busy)).toBeNull();
     expect(n).toBe(1);
+  });
+});
+
+describe('conversation shape Gemini accepts', () => {
+  test('starts with the student and alternates; a failed reply leaves two student turns, joined', () => {
+    const c = geminiContents(
+      [
+        { role: 'suu', text: 'Сайн уу! Би Суу.' },
+        { role: 'user', text: 'x+1=3 бол x?' },
+        { role: 'suu', text: 'x = 2' },
+        { role: 'user', text: 'яагаад?' },
+      ],
+      'дахиад тайлбарлаач',
+    );
+    expect(c.map((t) => t.role)).toEqual(['user', 'model', 'user']);
+    expect(c[2].parts[0].text).toBe('яагаад?\n\nдахиад тайлбарлаач');
+  });
+
+  test('no history: just the new message', () => {
+    expect(geminiContents([], 'сайн уу')).toEqual([{ role: 'user', parts: [{ text: 'сайн уу' }] }]);
+  });
+});
+
+describe('geminiSolve', () => {
+  test('asks for a final «Хариу:» line and returns the reply', async () => {
+    let body: {
+      systemInstruction: { parts: { text: string }[] };
+      contents: { parts: { text: string }[] }[];
+    } | null = null;
+    const fetchImpl = (async (_u: string, init: RequestInit) => {
+      body = JSON.parse(String(init.body));
+      return Response.json({ candidates: [{ content: { parts: [{ text: '2x=8\n\nХариу: 4' }] } }] });
+    }) as unknown as typeof fetch;
+    expect(await geminiSolve(' If 2x = 8, what is x? ', fetchImpl)).toBe('2x=8\n\nХариу: 4');
+    expect(body!.systemInstruction.parts[0].text).toContain('Хариу:');
+    expect(body!.contents[0].parts[0].text).toBe('If 2x = 8, what is x?');
+  });
+
+  test('no key → null without a call', async () => {
+    process.env.GEMINI_API_KEY = '';
+    let called = false;
+    const fetchImpl = (async () => {
+      called = true;
+      return Response.json({});
+    }) as unknown as typeof fetch;
+    expect(await geminiSolve('x?', fetchImpl)).toBeNull();
+    expect(called).toBe(false);
   });
 });
