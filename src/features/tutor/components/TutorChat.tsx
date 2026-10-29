@@ -12,6 +12,7 @@ import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
 import type { TutorContext, TutorMode } from '@/types';
+import { useElapsed, waitLabel } from '../hooks/useElapsed';
 import {
   askSuu,
   type ChatAction,
@@ -444,13 +445,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
 
 function SuuBubble({ msg, onRetry }: { msg: ChatMsg; onRetry: () => void }) {
   const t = useT('tutor');
-  if (msg.status === 'pending') {
-    return (
-      <div className="rounded-2xl rounded-tl-md bg-paper-2 px-4 py-3 text-[15px] text-ink-3" role="status">
-        <span className="animate-pulse">{t('chat.thinking')}</span>
-      </div>
-    );
-  }
+  if (msg.status === 'pending') return <Pending />;
   if (msg.status === 'error') {
     return (
       <div className="flex items-center gap-3 rounded-2xl rounded-tl-md bg-danger-soft px-4 py-3 text-[14px] text-danger">
@@ -496,6 +491,18 @@ function SuuBubble({ msg, onRetry }: { msg: ChatMsg; onRetry: () => void }) {
           context={msg.sent.context}
         />
       )}
+    </div>
+  );
+}
+
+/** "Суу бодож байна… 12 сек" — the counter appears after 3 s, so a slow model never looks frozen. */
+function Pending() {
+  const t = useT('tutor');
+  const waited = useElapsed(true);
+  return (
+    <div className="rounded-2xl rounded-tl-md bg-paper-2 px-4 py-3 text-[15px] text-ink-3" role="status">
+      <span className="animate-pulse">{t('chat.thinking')}</span>
+      {waitLabel(waited, t('desmosPanel.seconds'))}
     </div>
   );
 }
