@@ -28,12 +28,13 @@ PIDS=()
 cleanup() { for p in "${PIDS[@]:-}"; do [[ -n "$p" ]] && kill "$p" 2>/dev/null || true; done; }
 trap cleanup EXIT INT TERM
 
-# 1 · tools
-say "1/6 Хэрэгслүүдийг шалгаж байна (Homebrew, Ollama, cloudflared, Bun)"
-need brew || die "Homebrew алга. https://brew.sh дээрх нэг мөр командыг Terminal-д ажиллуулаад дахин оролдоно уу."
-need ollama || brew install ollama
-[[ $LOCAL -eq 1 ]] || need cloudflared || brew install cloudflared
-need bun || { curl -fsSL https://bun.sh/install | bash; export PATH="$HOME/.bun/bin:$PATH"; }
+# 1 · tools (Homebrew when this user can use it, otherwise official downloads into ~/.suu/tools — no admin needed)
+say "1/6 Хэрэгслүүдийг шалгаж байна (Ollama, cloudflared, Bun)"
+# shellcheck source=ai/serve/tools.sh
+source "$REPO/ai/serve/tools.sh"
+ensure_tool ollama || die "Ollama суулгаж чадсангүй. https://ollama.com/download-аас гараар суулгаад дахин оролдоно уу."
+[[ $LOCAL -eq 1 ]] || ensure_tool cloudflared || die "cloudflared татаж чадсангүй."
+ensure_tool bun || die "Bun суулгаж чадсангүй. https://bun.sh"
 
 # 2 · model files
 say "2/6 Загварын файлууд: $MODEL_DIR"
