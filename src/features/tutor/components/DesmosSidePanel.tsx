@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/Button';
 import { Pill } from '@/components/ui/Pill';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
+import { useElapsed, waitLabel } from '../hooks/useElapsed';
 import { type Calc, drawLesson, drawRows, loadDesmos } from '../lib/desmos-calc';
 import type { DesmosAiLesson } from '../lib/desmos-lessons';
 import { type DesmosPanelInput, panelView, visibleSteps } from '../lib/desmos-panel';
@@ -77,6 +78,7 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
   const [lesson, setLesson] = useState<DesmosAiLesson | null>(null);
   const [source, setSource] = useState<'sample' | 'model' | null>(null);
   const [thinking, setThinking] = useState(true);
+  const waited = useElapsed(thinking);
   const [cur, setCur] = useState(0);
   const [graph, setGraph] = useState<'loading' | 'ready' | 'failed'>('loading');
   const box = useRef<HTMLDivElement>(null);
@@ -203,6 +205,7 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
         {thinking && (
           <p className="animate-pulse text-ink-3" role="status">
             {t('desmosPanel.thinking')}
+            {waitLabel(waited, t('desmosPanel.seconds'))}
           </p>
         )}
 
