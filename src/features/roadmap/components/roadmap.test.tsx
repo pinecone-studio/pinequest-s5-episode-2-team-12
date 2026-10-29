@@ -327,7 +327,7 @@ describe('StopPlayer (demo mode)', () => {
     render(
       <StopPlayer no={1} testOut={false} pool={pool} intro={[]} demo server={null} serverHistory={[]} />,
     );
-    await screen.findByText('Бодлого 1 / 8', { selector: 'span' });
+    await screen.findByRole('region', { name: 'Бодлого 1 / 8' });
     fireEvent.click(screen.getByRole('button', { name: 'AI багш Суу-г хажууд нээх' }));
     expect(screen.getByRole('complementary', { name: 'AI багш Суу' })).toBeTruthy();
     expect((screen.getByRole('button', { name: /Бүтэн тайлбар/ }) as HTMLButtonElement).disabled).toBe(true);
