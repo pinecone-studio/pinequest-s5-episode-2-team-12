@@ -79,6 +79,8 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
   const [thinking, setThinking] = useState(true);
   const [cur, setCur] = useState(0);
   const [graph, setGraph] = useState<'loading' | 'ready' | 'failed'>('loading');
+  // «Өөр хичээл»: bumping this asks Suu for a new (sampled) lesson for the same problem
+  const [round, setRound] = useState(0);
   const box = useRef<HTMLDivElement>(null);
   const calc = useRef<Calc | null>(null);
   const doFetch = fetchImpl ?? ((...args: Parameters<typeof fetch>) => fetch(...args));
@@ -116,9 +118,11 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
     send('/api/desmos/lesson', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(
-        input.answer ? { question: input.question, answer: input.answer } : { question: input.question },
-      ),
+      body: JSON.stringify({
+        question: input.question,
+        ...(input.answer ? { answer: input.answer } : {}),
+        ...(round > 0 ? { another: true } : {}),
+      }),
       signal: ctrl.signal,
     })
       .then(async (res) => (res.ok ? ((await res.json()) as LessonReply) : null))
@@ -132,7 +136,7 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
         setThinking(false);
       });
     return () => ctrl.abort();
-  }, [input.question, input.answer]);
+  }, [input.question, input.answer, round]);
 
   const shown = lesson ? visibleSteps(lesson, revealed) : 0;
   const locked = lesson ? shown < lesson.steps.length : false;
@@ -252,6 +256,17 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
                   {t('desmosAi.next')} →
                 </Button>
               </div>
+            )}
+            {source === 'model' && (
+              <Button
+                size="sm"
+                variant="secondary"
+                className="w-fit"
+                disabled={thinking}
+                onClick={() => setRound((r) => r + 1)}
+              >
+                ↻ {t('desmosPanel.another')}
+              </Button>
             )}
             {revealed && last && (
               <div className="grid gap-0.5 rounded-xl bg-sage px-3 py-2 text-ink">
