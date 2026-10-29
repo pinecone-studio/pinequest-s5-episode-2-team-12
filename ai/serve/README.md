@@ -10,6 +10,12 @@
 2. Mac-ийг унтуулахгүй: System Settings → Battery → Options → *Prevent automatic sleeping on power adapter when
    the display is off*. Цэнэглэгчтэй байлга.
 
+## Асаахаас өмнө шалгах
+
+```bash
+bash ai/serve/doctor.sh   # юу ч өөрчлөхгүй: чип, RAM, зай, SDK, хэрэгслүүд, загвар, Ollama
+```
+
 ## Асаах
 
 ```bash
