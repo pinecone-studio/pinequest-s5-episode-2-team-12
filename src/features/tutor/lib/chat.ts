@@ -1,5 +1,6 @@
 // Section G · G4 · Chat logic for Suu, kept out of the component so it is easy to test.
 import type { TutorContext, TutorMode } from '@/types';
+import { cleanItem } from './desmos-lesson-parse';
 
 export type ChatMsg = {
   id: string;
@@ -128,4 +129,28 @@ export async function askSuu(req: TutorRequest, fetchImpl: typeof fetch = fetch)
 /** Replace one message by id (immutable update). */
 export function patch(list: ChatMsg[], id: string, change: Partial<ChatMsg>): ChatMsg[] {
   return list.map((m) => (m.id === id ? { ...m, ...change } : m));
+}
+
+/**
+ * Desmos rows a chat reply suggests in `backticks` (`y=2x+1`, `(3, 4)`, `y\\le x-3`), so the student can draw
+ * them next to Suu's lesson with one click. Only things that look like Desmos input and pass the same item
+ * check as lessons; at most 6.
+ */
+export function desmosRows(text: string): string[] {
+  const out: string[] = [];
+  for (const m of text.matchAll(/`([^`\n]{2,120})`/g)) {
+    const raw = m[1]
+      .trim()
+      .replace(/\$/g, '')
+      .replace(/≤/g, '\\le ')
+      .replace(/≥/g, '\\ge ')
+      .replace(/·/g, '\\cdot ');
+    if (/[А-Яа-яЁёӨөҮү]/.test(raw)) continue; // words, not math
+    const looksMath = /[=<>]|\\le|\\ge/.test(raw) || /^\(\s*-?[\d.]+\s*,\s*-?[\d.]+\s*\)$/.test(raw);
+    if (!looksMath || !/[xy\d]/.test(raw)) continue;
+    if (!cleanItem({ latex: raw })) continue;
+    if (!out.includes(raw)) out.push(raw);
+    if (out.length >= 6) break;
+  }
+  return out;
 }

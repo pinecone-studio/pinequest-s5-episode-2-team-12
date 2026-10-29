@@ -37,7 +37,8 @@
     "sample": "Sample answer",
     "openDesmos": "See it step by step in Desmos",
     "bySuu": "Suu (our model)",
-    "byGemini": "Gemini chat"
+    "byGemini": "Gemini chat",
+    "drawDesmos": "Draw in Desmos ({n})"
   },
   "modes": {
     "hint": "Hint",
