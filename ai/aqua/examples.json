@@ -1,0 +1,112 @@
+[
+  {
+    "id": "aqua-train-0",
+    "question": "Two friends plan to walk along a 43-km trail, starting at opposite ends of the trail at the same time. If Friend P's rate is 15% faster than Friend Q's, how many kilometers will Friend P have walked when they pass each other?",
+    "answer": "23",
+    "lesson": {
+      "technique": "intersection_equation",
+      "steps": [
+        {
+          "text": "Үгээ тэгшитгэл (equation) болго. Q-ийн явсан замыг x км гэе. P 15%-иар хурдан тул ижил хугацаанд 1.15x км явна. Хоёулаа нийлээд бүх замыг туулна: x + 1.15x = 43.",
+          "desmos": [{ "latex": "y=x+1.15x", "color": "blue" }],
+          "bounds": { "left": -5, "right": 40, "bottom": -10, "top": 60 }
+        },
+        {
+          "text": "Баруун тал нь нийт зам. Үүнийг хэвтээ шулуун болгож бич: y = 43.",
+          "desmos": [{ "latex": "y=43", "color": "red" }]
+        },
+        {
+          "text": "Хоёр шулууны огтлолцлын цэг (intersection point) дээр дар. (20, 43) гарна. Тэгэхээр Q 20 км явсан.",
+          "desmos": [{ "latex": "\\left(20,43\\right)", "color": "green", "label": "Q: x = 20", "showLabel": true }]
+        },
+        {
+          "text": "Асуулт P-ийн замыг асууж байна. y = 1.15x шулууныг зур, x = 20 дээрх утгыг нь дарж уншина: 23 км.",
+          "desmos": [
+            { "latex": "y=1.15x", "color": "purple" },
+            { "latex": "\\left(20,23\\right)", "color": "purple", "label": "P = 23", "showLabel": true }
+          ]
+        }
+      ],
+      "check": "20 + 23 = 43 ✓, 23 ÷ 20 = 1.15 ✓",
+      "answer": "23"
+    }
+  },
+  {
+    "id": "aqua-train-dhoni",
+    "question": "In a basketball game, Dhoni scored 10 points more than Dravid, but only half as many points as Shewag. If the three players scored a combined total of 130 points, how many points did Dhoni score?",
+    "answer": "35",
+    "lesson": {
+      "technique": "intersection_equation",
+      "steps": [
+        {
+          "text": "Асуусан зүйлээ x гэж ав: Dhoni x оноо авсан. Dravid 10 оноогоор бага тул x − 10, Shewag хоёр дахин их тул 2x оноотой.",
+          "desmos": [],
+          "bounds": { "left": -10, "right": 60, "bottom": -20, "top": 180 }
+        },
+        {
+          "text": "Гурвуулангийн нийлбэрийг функц болгож бич: y = x + (x − 10) + 2x.",
+          "desmos": [{ "latex": "y=x+\\left(x-10\\right)+2x", "color": "blue" }]
+        },
+        {
+          "text": "Нийт оноо 130. Хэвтээ шулуун зур: y = 130.",
+          "desmos": [{ "latex": "y=130", "color": "red" }]
+        },
+        {
+          "text": "Огтлолцлын цэг (intersection point) дээр дар: (35, 130). Dhoni 35 оноо авсан.",
+          "desmos": [{ "latex": "\\left(35,130\\right)", "color": "green", "label": "x = 35", "showLabel": true }]
+        }
+      ],
+      "check": "35 + 25 + 70 = 130 ✓",
+      "answer": "35"
+    }
+  },
+  {
+    "id": "aqua-train-claire",
+    "question": "Claire has 3 books. She averages the amount of pages of each book to have 305 pages. If her mom buys her a new book which has 400 pages, what will the new average be?",
+    "answer": "328.75",
+    "lesson": {
+      "technique": "statistics",
+      "steps": [
+        {
+          "text": "Дундаж (average) = нийлбэр ÷ тоо. Тэгэхээр 3 номын нийт хуудас = 3 · 305. Desmos-д s гэдэг хувьсагчид хадгал.",
+          "desmos": [{ "latex": "s=3\\cdot305", "color": "blue" }]
+        },
+        {
+          "text": "Шинэ ном нэмэгдэхэд нийлбэр s + 400, номын тоо 4 болно. Шинэ дундажийг Desmos-оор шууд бодуул.",
+          "desmos": [{ "latex": "\\frac{s+400}{4}", "color": "red" }]
+        },
+        {
+          "text": "Desmos 328.75 гэж харуулна. Энэ бол шинэ дундаж.",
+          "desmos": [{ "latex": "a=\\frac{s+400}{4}", "color": "green" }]
+        }
+      ],
+      "check": "915 + 400 = 1315, 1315 ÷ 4 = 328.75 ✓",
+      "answer": "328.75"
+    }
+  },
+  {
+    "id": "aqua-train-sugar",
+    "question": "One fourth of a solution that was 8% sugar by weight was replaced by a second solution resulting in a solution that was 16 percent sugar by weight. The second solution was what percent sugar by weight?",
+    "answer": "40",
+    "lesson": {
+      "technique": "percent",
+      "steps": [
+        {
+          "text": "Хоёр дахь уусмалын хувийг x гэе. Хуучин уусмалын 3/4 нь үлдэнэ (8%), 1/4 нь шинэ уусмал (x%). Холимгийн хувь: 0.75 · 8 + 0.25 · x.",
+          "desmos": [{ "latex": "y=0.75\\cdot8+0.25x", "color": "blue" }],
+          "bounds": { "left": -10, "right": 60, "bottom": -5, "top": 25 }
+        },
+        {
+          "text": "Холимог 16% болсон. Хэвтээ шулуун зур: y = 16.",
+          "desmos": [{ "latex": "y=16", "color": "red" }]
+        },
+        {
+          "text": "Огтлолцлын цэг (intersection point) дээр дар: (40, 16). Хоёр дахь уусмал 40% чихэртэй.",
+          "desmos": [{ "latex": "\\left(40,16\\right)", "color": "green", "label": "x = 40", "showLabel": true }]
+        }
+      ],
+      "check": "0.75 · 8 + 0.25 · 40 = 6 + 10 = 16 ✓",
+      "answer": "40"
+    }
+  }
+]
