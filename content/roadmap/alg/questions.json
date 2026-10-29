@@ -1276,5 +1276,513 @@
     "reviewed": false,
     "author": "suprep-seed",
     "createdAt": "2026-10-25"
+  },
+  {
+    "id": "rmc3-03-1-1",
+    "topicId": 3,
+    "domain": "alg",
+    "skill": "Linear equations in one variable",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "If $5x - 12 = 28$, what is the value of $x$?",
+    "mn": "Хэрэв $5x - 12 = 28$ бол $x$-ийн утга хэд вэ?",
+    "answer": ["8"],
+    "explain": "Хоёр талд $12$ нэмбэл $5x = 40$, $x = 8$.",
+    "hint": "Эхлээд $-12$-ыг арилга.",
+    "verify": {
+      "sub": {
+        "var": "x",
+        "eq": "5x - 12 = 28"
+      }
+    },
+    "vocab": ["value"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-03-2-1",
+    "topicId": 3,
+    "domain": "alg",
+    "skill": "Linear equations in one variable",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "What value of $x$ satisfies the equation $\\frac{3x - 1}{4} = 2x - 4$?",
+    "mn": "$\\frac{3x - 1}{4} = 2x - 4$ тэгшитгэлийг ямар $x$ хангах вэ?",
+    "choices": ["$\\frac{3}{5}$", "$3$", "$-3$", "$\\frac{17}{11}$"],
+    "answer": 1,
+    "explain": "Хоёр талыг $4$-өөр үржүүлбэл $3x - 1 = 8x - 16$. $15 = 5x$, $x = 3$.",
+    "hint": "Эхлээд хоёр талыг $4$-өөр үржүүлж хуваарийг арилга.",
+    "why": {
+      "0": "$2x - 4$-ийг $4$-өөр үржүүлэхдээ $-4$-ийг орхисон ($8x - 4$ гэж бичсэн).",
+      "2": "Тэмдгийн алдаа гарсан."
+    },
+    "verify": {
+      "sub": {
+        "var": "x",
+        "eq": "(3x - 1)/4 = 2x - 4"
+      }
+    },
+    "vocab": ["satisfies"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-03-3-1",
+    "topicId": 3,
+    "domain": "alg",
+    "skill": "Linear equations in one variable",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "In the equation $4(x - 3) + kx = 7x + 5$, $k$ is a constant. If the equation has no solution, what is the value of $k$?",
+    "mn": "$4(x - 3) + kx = 7x + 5$ тэгшитгэлд $k$ тогтмол. Тэгшитгэл шийдгүй бол $k$-ийн утга хэд вэ?",
+    "answer": ["3"],
+    "explain": "Зүүн тал: $(4 + k)x - 12$. Шийдгүй байхын тулд $x$-ийн коэффициентүүд тэнцүү ($4 + k = 7$), харин чөлөөт гишүүд ялгаатай ($-12 \\ne 5$) байх ёстой. Иймд $k = 3$.",
+    "hint": "Шийдгүй бол хоёр талын $x$-ийн коэффициент тэнцүү, чөлөөт гишүүн нь тэнцүү биш.",
+    "verify": {
+      "sub": {
+        "var": "k",
+        "eq": "4 + k = 7"
+      }
+    },
+    "vocab": ["no solution"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-11-1-1",
+    "topicId": 11,
+    "domain": "alg",
+    "skill": "Linear equations in one variable",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A woodworking class in Ulaanbaatar charges a registration fee of ₮20,000 plus ₮15,000 per session. A student paid a total of ₮110,000. How many sessions did the student attend?",
+    "mn": "Улаанбаатарын нэгэн мужаанчлалын курс ₮20,000-ийн бүртгэлийн хураамж, түүнээс гадна нэг хичээл тутамд ₮15,000 авдаг. Нэг сурагч нийт ₮110,000 төлжээ. Тэр хэдэн хичээлд суусан бэ?",
+    "choices": ["$4$", "$6$", "$7$", "$9$"],
+    "answer": 1,
+    "explain": "$20{,}000 + 15{,}000s = 110{,}000$, $15{,}000s = 90{,}000$, $s = 6$.",
+    "hint": "Бүртгэлийн хураамжийг нийт дүнгээс эхлээд хас.",
+    "why": {
+      "2": "Бүртгэлийн хураамжийг хасалгүй $110{,}000 \\div 15{,}000$ гэж хуваасан."
+    },
+    "verify": {
+      "value": "(110000 - 20000)/15000"
+    },
+    "vocab": ["registration fee", "session"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-11-2-1",
+    "topicId": 11,
+    "domain": "alg",
+    "skill": "Linear equations in one variable",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A mobile phone plan costs ₮25,000 per month and includes $300$ minutes. Each additional minute costs ₮200. One month, the bill was ₮43,000. In total, how many minutes were used that month?",
+    "mn": "Гар утасны төлөвлөгөө сард ₮25,000 бөгөөд $300$ минут багтана. Нэмэлт минут тутамд ₮200. Нэг сарын төлбөр ₮43,000 болсон бол тэр сард нийт хэдэн минут ярьсан бэ?",
+    "answer": ["390"],
+    "explain": "Нэмэлт төлбөр $43{,}000 - 25{,}000 = 18{,}000$. Нэмэлт минут $18{,}000 \\div 200 = 90$. Нийт $300 + 90 = 390$ минут.",
+    "hint": "Нэмэлт минутыг ол, дараа нь багтсан $300$ минутыг нэм.",
+    "verify": {
+      "value": "(43000-25000)/200+300"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-11-3-1",
+    "topicId": 11,
+    "domain": "alg",
+    "skill": "Linear equations in one variable",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "Tank A contains $150$ liters of water and is being drained at a constant rate of $7$ liters per minute. Tank B contains $24$ liters of water and is being filled at a constant rate of $5$ liters per minute. After how many minutes will the two tanks contain the same amount of water?",
+    "mn": "A сав $150$ литр ус агуулсан бөгөөд минутанд $7$ литрээр тогтмол шавхагдаж байна. B сав $24$ литр ус агуулсан бөгөөд минутанд $5$ литрээр тогтмол дүүрч байна. Хэдэн минутын дараа хоёр савны ус тэнцэх вэ?",
+    "choices": ["$9$", "$10$", "$10.5$", "$12.6$"],
+    "answer": 2,
+    "explain": "$150 - 7t = 24 + 5t$, $126 = 12t$, $t = 10.5$.",
+    "hint": "Хоёр савны усны хэмжээг $t$-ээр илэрхийлээд тэнцүүл.",
+    "verify": {
+      "value": "126/12"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-05-1-2",
+    "topicId": 5,
+    "domain": "alg",
+    "skill": "Linear functions",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The function $f$ is defined by $f(x) = -3x + 10$. What is the value of $f(4)$?",
+    "mn": "$f(x) = -3x + 10$ функц өгөгджээ. $f(4)$-ийн утга хэд вэ?",
+    "answer": ["-2"],
+    "explain": "$f(4) = -3(4) + 10 = -12 + 10 = -2$.",
+    "hint": "$x$-ийн оронд $4$-ийг орлуул.",
+    "verify": {
+      "value": "-3*4+10"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-05-2-2",
+    "topicId": 5,
+    "domain": "alg",
+    "skill": "Linear functions",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "The function $f$ is defined by $f(x) = 4x + b$, where $b$ is a constant. If $f(2) = 15$, what is the value of $f(5)$?",
+    "mn": "$f(x) = 4x + b$ функцэд $b$ тогтмол. Хэрэв $f(2) = 15$ бол $f(5)$-ын утга хэд вэ?",
+    "choices": ["$19$", "$23$", "$27$", "$35$"],
+    "answer": 2,
+    "explain": "$f(2) = 8 + b = 15$ тул $b = 7$. $f(5) = 4(5) + 7 = 27$.",
+    "hint": "Эхлээд $f(2) = 15$-аас $b$-г ол.",
+    "why": {
+      "3": "$b = 7$-г $5$-аар үржүүлсэн ($35$) — $b$ нь $x$-д үржигдэхгүй."
+    },
+    "verify": {
+      "value": "4*5+(15-8)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-05-3-2",
+    "topicId": 5,
+    "domain": "alg",
+    "skill": "Linear functions",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "The function $f$ is linear, and $f(x + 3) - f(x) = 12$ for all values of $x$. If $f(1) = 5$, what is the value of $f(10)$?",
+    "mn": "$f$ нь шугаман функц бөгөөд бүх $x$-ийн хувьд $f(x + 3) - f(x) = 12$. Хэрэв $f(1) = 5$ бол $f(10)$-ийн утга хэд вэ?",
+    "answer": ["41"],
+    "explain": "$x$ нь $3$-аар нэмэгдэхэд функц $12$-оор нэмэгддэг тул налуу $\\frac{12}{3} = 4$. $f(10) = f(1) + 4(10 - 1) = 5 + 36 = 41$.",
+    "hint": "Налууг ол: $y$-ийн өөрчлөлт ÷ $x$-ийн өөрчлөлт.",
+    "verify": {
+      "value": "5+4*9"
+    },
+    "vocab": ["linear function"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-06-1-1",
+    "topicId": 6,
+    "domain": "alg",
+    "skill": "Linear equations in two variables",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "What is the slope of the graph of $3x + 4y = 24$ in the $xy$-plane?",
+    "mn": "$xy$ хавтгай дээрх $3x + 4y = 24$ графикийн налуу хэд вэ?",
+    "choices": ["$-\\frac{3}{4}$", "$-\\frac{4}{3}$", "$\\frac{3}{4}$", "$-3$"],
+    "answer": 0,
+    "explain": "$y$-ийн хувьд бодвол $4y = -3x + 24$, $y = -\\frac{3}{4}x + 6$. Налуу $-\\frac{3}{4}$.",
+    "hint": "Тэгшитгэлийг $y = mx + b$ хэлбэрт шилжүүл.",
+    "why": {
+      "1": "Налууг урвуугаар нь авсан.",
+      "2": "$3x$-ийг нөгөө талд шилжүүлэхэд тэмдэг солигдоно."
+    },
+    "verify": {
+      "value": "-3/4"
+    },
+    "vocab": ["slope"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-06-2-1",
+    "topicId": 6,
+    "domain": "alg",
+    "skill": "Linear equations in two variables",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A line in the $xy$-plane passes through the points $(0, -4)$ and $(3, 5)$. What is the $y$-coordinate of the point on the line with $x$-coordinate $7$?",
+    "mn": "$xy$ хавтгай дээрх шулуун $(0, -4)$ ба $(3, 5)$ цэгүүдийг дайрна. $x = 7$ байх цэгийн $y$-координат хэд вэ?",
+    "answer": ["17"],
+    "explain": "Налуу $\\frac{5 - (-4)}{3 - 0} = 3$. $y$-огтлол $-4$ тул $y = 3x - 4$. $x = 7$ үед $y = 21 - 4 = 17$.",
+    "hint": "Налуу ба $y$-огтлолоор шулууны тэгшитгэлийг бич.",
+    "verify": {
+      "value": "3*7-4"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-06-3-1",
+    "topicId": 6,
+    "domain": "alg",
+    "skill": "Linear equations in two variables",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "Line $k$ is defined by $5x - 2y = 11$. Line $m$ is perpendicular to line $k$ and passes through the point $(5, -1)$. What is the $y$-coordinate of the $y$-intercept of line $m$?",
+    "mn": "$k$ шулуун $5x - 2y = 11$ тэгшитгэлтэй. $m$ шулуун $k$-д перпендикуляр бөгөөд $(5, -1)$ цэгийг дайрна. $m$ шулууны $y$-огтлолын $y$-координат хэд вэ?",
+    "choices": ["$-3$", "$-1$", "$1$", "$3$"],
+    "answer": 2,
+    "explain": "$k$: $y = \\frac{5}{2}x - \\frac{11}{2}$, налуу $\\frac{5}{2}$. Перпендикуляр шулууны налуу $-\\frac{2}{5}$. $y = -\\frac{2}{5}x + b$ дээр $(5, -1)$-ийг орлуулбал $-1 = -2 + b$, $b = 1$.",
+    "hint": "Перпендикуляр шулууны налуу нь урвуу, эсрэг тэмдэгтэй.",
+    "why": {
+      "0": "Налууг $+\\frac{2}{5}$ гэж авсан: $-1 = 2 + b$, $b = -3$."
+    },
+    "verify": {
+      "sub": {
+        "var": "b",
+        "eq": "-1 = (-2/5)(5) + b"
+      }
+    },
+    "vocab": ["perpendicular"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-07-1-1",
+    "topicId": 7,
+    "domain": "alg",
+    "skill": "Linear functions",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A cyclist's distance $d$, in kilometers, from home $t$ hours after starting a ride is given by $d(t) = 18t + 4$. What is the best interpretation of $18$ in this context?",
+    "mn": "Дугуйчин гарснаас хойш $t$ цагийн дараах гэрээсээ хол $d$ (километрээр) нь $d(t) = 18t + 4$. Энэ нөхцөлд $18$ нь юуг илэрхийлэх вэ?",
+    "choices": [
+      "The cyclist's distance from home at the start of the ride",
+      "The cyclist's speed, in kilometers per hour",
+      "The number of hours the cyclist has been riding",
+      "The cyclist's distance from home after $18$ hours"
+    ],
+    "answer": 1,
+    "explain": "$t$-ийн коэффициент $18$ нь цаг тутамд зай хэдээр өөрчлөгдөхийг, өөрөөр хэлбэл хурдыг ($18$ км/цаг) илэрхийлнэ. $4$ нь гарах үеийн зай.",
+    "hint": "$t$ нэг нэгжээр нэмэгдэхэд $d$ хэдээр өөрчлөгдөх вэ?",
+    "why": {
+      "0": "Эхлэх мөчийн зай нь $d(0) = 4$.",
+      "3": "$18$ цагийн дараах зай нь $d(18) = 328$."
+    },
+    "vocab": ["interpretation"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-07-2-1",
+    "topicId": 7,
+    "domain": "alg",
+    "skill": "Linear functions",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A gym charges a one-time joining fee plus a fixed monthly fee. After $4$ months, a member has paid a total of ₮170,000, and after $6$ months the member has paid a total of ₮230,000. After how many months will the member have paid a total of ₮290,000?",
+    "mn": "Фитнесийн төв нэг удаагийн элсэлтийн хураамж болон сар бүрийн тогтмол хураамж авдаг. Гишүүн $4$ сарын дараа нийт ₮170,000, $6$ сарын дараа нийт ₮230,000 төлсөн. Хэдэн сарын дараа нийт ₮290,000 төлсөн байх вэ?",
+    "answer": ["8"],
+    "explain": "Сарын төлбөр $\\frac{230{,}000 - 170{,}000}{6 - 4} = 30{,}000$. Элсэлтийн хураамж $170{,}000 - 4(30{,}000) = 50{,}000$. $50{,}000 + 30{,}000m = 290{,}000$, $m = 8$.",
+    "hint": "Хоёр өгөгдлөөс сарын төлбөрийг (налууг) ол.",
+    "verify": {
+      "value": "(290000-50000)/((230000-170000)/2)"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-07-3-1",
+    "topicId": 7,
+    "domain": "alg",
+    "skill": "Linear functions",
+    "difficulty": 3,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "The height of a candle, in centimeters, is a linear function of the time it has been burning. After $2$ hours the candle is $18$ centimeters tall, and after $5$ hours it is $12$ centimeters tall. After how many hours of burning will the candle be completely burned down?",
+    "mn": "Лааны өндөр шатсан хугацаанаасаа шугаман хамааран буурдаг. $2$ цагийн дараа лаа $18$ см, $5$ цагийн дараа $12$ см өндөртэй байв. Хэдэн цаг шатсаны дараа лаа бүрэн шатаж дуусах вэ?",
+    "choices": ["$9$", "$11$", "$12$", "$14$"],
+    "answer": 1,
+    "explain": "Налуу $\\frac{12 - 18}{5 - 2} = -2$ см/цаг. Анхны өндөр $18 + 2(2) = 22$ см. $22 - 2t = 0$ үед $t = 11$.",
+    "hint": "Налуу ба анхны өндрийг ол, дараа нь өндөр $0$ болох $t$-г бод.",
+    "why": {
+      "0": "$18 \\div 2 = 9$ — эхний $2$ цагт шатсан хэсгийг тооцоогүй."
+    },
+    "verify": {
+      "value": "(18+2*2)/2"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-13-1-2",
+    "topicId": 13,
+    "domain": "alg",
+    "skill": "Systems of two linear equations in two variables",
+    "difficulty": 1,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "$$y = x + 3$$ $$2x + y = 15$$ If $(x, y)$ is the solution to the system of equations above, what is the value of $x$?",
+    "mn": "$$y = x + 3$$ $$2x + y = 15$$ Дээрх тэгшитгэлийн системийн шийд $(x, y)$ бол $x$-ийн утга хэд вэ?",
+    "answer": ["4"],
+    "explain": "$y = x + 3$-ыг хоёр дахь тэгшитгэлд орлуулбал $2x + x + 3 = 15$, $3x = 12$, $x = 4$.",
+    "hint": "Орлуулах аргаар бод.",
+    "verify": {
+      "sub": {
+        "var": "x",
+        "eq": "2x + x + 3 = 15"
+      }
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-13-2-2",
+    "topicId": 13,
+    "domain": "alg",
+    "skill": "Systems of two linear equations in two variables",
+    "difficulty": 2,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "A cafe in Darkhan sells tea for ₮2,500 per cup and coffee for ₮3,500 per cup. One morning, the cafe sold $48$ cups in total and collected ₮140,000. How many cups of tea did the cafe sell?",
+    "mn": "Дархан дахь нэгэн кафе цайг аяга тутамд ₮2,500, кофег ₮3,500-аар зардаг. Нэг өглөө нийт $48$ аяга зарж ₮140,000 цуглуулав. Кафе хэдэн аяга цай зарсан бэ?",
+    "choices": ["$20$", "$24$", "$28$", "$32$"],
+    "answer": 2,
+    "explain": "Цай $t$, кофе $c$ гэе: $t + c = 48$, $2{,}500t + 3{,}500c = 140{,}000$. $c = 48 - t$-г орлуулбал $2{,}500t + 168{,}000 - 3{,}500t = 140{,}000$, $-1{,}000t = -28{,}000$, $t = 28$.",
+    "hint": "Аяганы тоо болон орлогын хоёр тэгшитгэл бич.",
+    "why": {
+      "0": "$20$ нь зарагдсан кофены аяганы тоо."
+    },
+    "verify": {
+      "sub": {
+        "var": "t",
+        "eq": "2500t + 3500(48 - t) = 140000"
+      }
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-13-3-2",
+    "topicId": 13,
+    "domain": "alg",
+    "skill": "Systems of two linear equations in two variables",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "$$ax + 2y = 14$$ $$3x - by = -3$$ In the system of equations above, $a$ and $b$ are constants. If the solution to the system is $(2, 3)$, what is the value of $a + b$?",
+    "mn": "$$ax + 2y = 14$$ $$3x - by = -3$$ Дээрх системд $a$, $b$ тогтмол. Системийн шийд $(2, 3)$ бол $a + b$-ийн утга хэд вэ?",
+    "answer": ["7"],
+    "explain": "$(2, 3)$-ыг орлуулбал: $2a + 6 = 14$, $a = 4$; $6 - 3b = -3$, $b = 3$. Иймд $a + b = 7$.",
+    "hint": "$x = 2$, $y = 3$-ыг хоёр тэгшитгэлд орлуулж $a$, $b$-г тус тусад нь ол.",
+    "verify": {
+      "value": "(14-6)/2+(6+3)/3"
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-14-1-1",
+    "topicId": 14,
+    "domain": "alg",
+    "skill": "Linear inequalities in one or two variables",
+    "difficulty": 1,
+    "format": "mcq",
+    "pool": "stop",
+    "prompt": "Which of the following is the solution set of the inequality $5x - 7 < 18$?",
+    "mn": "$5x - 7 < 18$ тэнцэтгэл бишийн шийдийн олонлог аль нь вэ?",
+    "choices": ["$x < 5$", "$x > 5$", "$x < \\frac{11}{5}$", "$x < 25$"],
+    "answer": 0,
+    "explain": "Хоёр талд $7$ нэмбэл $5x < 25$, $5$-д хуваавал $x < 5$.",
+    "hint": "Тэгшитгэл шиг бод; зөвхөн сөрөг тоогоор үржүүлэх/хуваахад тэмдэг эргэнэ.",
+    "why": {
+      "2": "$7$-г нэмэхийн оронд хассан: $\\frac{18 - 7}{5}$.",
+      "3": "$5$-д хуваахаа мартсан."
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-14-2-1",
+    "topicId": 14,
+    "domain": "alg",
+    "skill": "Linear inequalities in one or two variables",
+    "difficulty": 2,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "A student has ₮30,000 to spend on notebooks and one backpack. The backpack costs ₮9,000 and each notebook costs ₮1,800. What is the greatest number of notebooks the student can buy?",
+    "mn": "Сурагч ₮30,000-аар дэвтэр болон нэг цүнх авна. Цүнх ₮9,000, дэвтэр тус бүр ₮1,800. Сурагч хамгийн ихдээ хэдэн дэвтэр авч чадах вэ?",
+    "answer": ["11"],
+    "explain": "$9{,}000 + 1{,}800n \\le 30{,}000$, $1{,}800n \\le 21{,}000$, $n \\le 11.67$. Дэвтэр бүхэл тоо тул хамгийн их нь $11$.",
+    "hint": "Тэнцэтгэл биш бичээд, хариуг бүхэл тоо болгож доош нь бөөрөнхийл.",
+    "vocab": ["greatest number"],
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
+  },
+  {
+    "id": "rmc3-14-3-1",
+    "topicId": 14,
+    "domain": "alg",
+    "skill": "Linear inequalities in one or two variables",
+    "difficulty": 3,
+    "format": "spr",
+    "pool": "stop",
+    "prompt": "For the system of inequalities $y \\le x + 2$ and $y \\ge 3x - 6$, what is the greatest possible value of $x$ for any solution $(x, y)$ to the system?",
+    "mn": "$y \\le x + 2$ ба $y \\ge 3x - 6$ тэнцэтгэл бишийн системийн аль ч шийд $(x, y)$-ийн хувьд $x$-ийн хамгийн их боломжит утга хэд вэ?",
+    "answer": ["4"],
+    "explain": "Шийд оршин байхын тулд $3x - 6 \\le y \\le x + 2$ буюу $3x - 6 \\le x + 2$ байх ёстой. $2x \\le 8$, $x \\le 4$. Хамгийн их $x = 4$ (энэ үед $y = 6$).",
+    "hint": "$y$ нь хоёр хязгаарын хооронд байх тул доод хязгаар нь дээд хязгаараас хэтрэх ёсгүй.",
+    "verify": {
+      "sub": {
+        "var": "x",
+        "eq": "x + 2 = 3x - 6"
+      }
+    },
+    "source": "original",
+    "reviewed": false,
+    "author": "claude-addon",
+    "createdAt": "2026-10-29"
   }
 ]
