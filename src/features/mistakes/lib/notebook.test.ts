@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { DAY_MS } from '@/lib/time';
-import { afterReview, buildNotebook, dueNotes, type Entry, RESOLVED_AT_DAYS, summary } from './notebook';
+import { afterReview, buildNotebook, dueNotes, type Entry, summary } from './notebook';
 
 const NOW = Date.parse('2026-10-26T02:00:00Z');
 const e = (qid: string, at: number, chosen = '1'): Entry => ({ qid, chosen, source: 'stop', at });
@@ -22,14 +22,14 @@ describe('mistake notebook', () => {
     expect(bad.due).toBe(NOW + DAY_MS + 10 * 60_000);
   });
 
-  test('a note resolves once its interval is three weeks', () => {
+  test('a correct submission immediately resolves the note', () => {
     let s = buildNotebook([e('a', NOW)], {})[0].state;
     let t = NOW;
     while (!s.resolved) {
       s = afterReview(s, true, t);
       t = s.due;
     }
-    expect(s.interval).toBeGreaterThanOrEqual(RESOLVED_AT_DAYS);
+    expect(s.interval).toBe(1);
     const notes = buildNotebook([e('a', NOW)], { a: { ...s, reviewedAt: NOW + DAY_MS } });
     expect(summary(notes, t)).toEqual({ total: 1, due: 0, resolved: 1 });
   });

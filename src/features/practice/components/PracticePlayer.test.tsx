@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, jest, test } from 'bun:test';
+import { resetAnswerTransport } from '@/test/mock-submissions';
 import { act, fireEvent, render, screen, within } from '@/test/render';
 import type { Question } from '@/types';
 import { PracticePlayer } from './PracticePlayer';
@@ -121,3 +122,6 @@ describe('PracticePlayer Desmos side panel', () => {
     expect(container.querySelector('main')?.className).not.toContain('lg:grid-cols-2');
   });
 });
+
+beforeEach(resetAnswerTransport);
+afterEach(resetAnswerTransport);

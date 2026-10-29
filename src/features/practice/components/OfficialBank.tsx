@@ -26,12 +26,13 @@ export function OfficialBank({ data, filter }: { data: OfficialPage; filter: Off
   const router = useRouter();
   const pathname = usePathname();
   const [pending, start] = useTransition();
+  const [resetKeys, setResetKeys] = useState<Record<string, number>>({});
   const [search, setSearch] = useState(filter.search ?? '');
   const searchId = useId();
 
   function go(next: Partial<OfficialFilter>) {
     const params = officialFilterToParams({ ...filter, page: 1, ...next });
-    start(() => router.push(params ? `${pathname}?${params}` : pathname));
+    start(() => router.push(`${pathname}?view=official${params ? `&${params}` : ''}`));
   }
 
   function submitSearch(event: FormEvent) {
@@ -161,7 +162,22 @@ export function OfficialBank({ data, filter }: { data: OfficialPage; filter: Off
 
       <section className={cn('space-y-3 transition-opacity', pending && 'opacity-50')} aria-busy={pending}>
         {data.questions.map((q, i) => (
-          <OfficialQuestionCard key={q.id} question={q} index={firstIndex + i + 1} />
+          <OfficialQuestionCard
+            key={`${q.id}:${resetKeys[q.id] ?? 0}`}
+            question={q}
+            index={firstIndex + i + 1}
+            lastInTopic={i === data.questions.length - 1 && data.page === data.pageCount}
+            onComplete={() => router.push('/bank')}
+            onNext={() => {
+              const next = data.questions[i + 1];
+              if (!next) {
+                go({ page: data.page + 1 });
+                return;
+              }
+              setResetKeys((previous) => ({ ...previous, [next.id]: (previous[next.id] ?? 0) + 1 }));
+              requestAnimationFrame(() => document.getElementById(`official-question-${next.id}`)?.focus());
+            }}
+          />
         ))}
 
         {data.questions.length === 0 && (

@@ -49,7 +49,9 @@ export type OfficialQuestion = {
   domain: Domain;
   skill: string;
   difficulty: OfficialDifficulty;
-  format: 'mcq' | 'spr';
+  format: 'mcq' | 'spr' | 'unsupported';
+  source?: string | null;
+  questionType?: string;
   /** Display-ready HTML (MathML, figures). */
   promptHtml: string;
   choices: { label: string; html: string }[];
@@ -130,10 +132,11 @@ export type OfficialRow = {
   correct_answer: string | null;
   accepted_answers: string[] | null;
   explanation_html: string | null;
+  source?: string | null;
 };
 
 export const OFFICIAL_COLUMNS =
-  'id, domain, skill, difficulty, question_type, question_html, choices, correct_answer, accepted_answers, explanation_html';
+  'id, domain, skill, difficulty, question_type, question_html, choices, correct_answer, accepted_answers, explanation_html, source';
 
 /** The scope a snippet was prepared with; the element showing it carries the same `data-cb`. */
 export function cbScope(id: string, part: string): string {
@@ -152,14 +155,28 @@ export function mapOfficialRow(row: OfficialRow): OfficialQuestion {
     domain,
     skill: row.skill.trim(),
     difficulty,
-    format: row.question_type === 'multiple_choice' ? 'mcq' : 'spr',
+    format:
+      row.question_type === 'multiple_choice'
+        ? 'mcq'
+        : row.question_type === 'student_response'
+          ? 'spr'
+          : 'unsupported',
+    source: row.source,
+    questionType: row.question_type,
     promptHtml: prepareCbHtml(row.question_html, cbScope(row.id, 'q')),
     choices: (row.choices ?? []).map((c) => ({
       label: c.label,
       html: prepareCbHtml(c.html, cbScope(row.id, c.label)),
     })),
-    answer: row.correct_answer ?? '',
-    accepted: row.accepted_answers ?? [],
+    answer:
+      row.correct_answer?.trim() ||
+      (row.question_type === 'multiple_choice' ? row.accepted_answers?.[0]?.trim() : '') ||
+      '',
+    accepted: row.accepted_answers?.filter((answer) => answer.trim())?.length
+      ? row.accepted_answers.filter((answer) => answer.trim())
+      : row.correct_answer?.trim()
+        ? [row.correct_answer.trim()]
+        : [],
     explanationHtml: prepareCbHtml(row.explanation_html ?? '', cbScope(row.id, 'e')),
   };
 }

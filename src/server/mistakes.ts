@@ -14,6 +14,7 @@ export async function recordMistakes(userId: string, missed: readonly Missed[], 
     unique.map((m) => ({
       user_id: userId,
       question_id: m.qid,
+      question_source: 'practice',
       chosen: m.chosen.slice(0, 200),
       source,
       last_wrong_at: now,
@@ -22,6 +23,6 @@ export async function recordMistakes(userId: string, missed: readonly Missed[], 
       interval_days: 0,
       due_at: now,
     })),
-    { onConflict: 'user_id,question_id' },
+    { onConflict: 'user_id,question_id,question_source' },
   );
 }

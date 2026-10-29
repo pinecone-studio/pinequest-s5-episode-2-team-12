@@ -1,10 +1,13 @@
 'use client';
 
 import { type FormEvent, useId, useState } from 'react';
+import { SaveStatus } from '@/features/mistakes/components/SaveStatus';
+import { useAnswerSubmission } from '@/features/mistakes/useAnswerSubmission';
 import { checkGridInAnswer } from '@/lib/check-answer';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { cbScope, type OfficialQuestion } from '../lib/official';
+import { officialSolveIssue } from '../lib/topic-bank';
 
 /** College Board HTML that was prepared on the server with the same scope (see lib/cb-html.ts). */
 export function CbHtml({ html, scope, className }: { html: string; scope: string; className?: string }) {
@@ -18,27 +21,55 @@ export function CbHtml({ html, scope, className }: { html: string; scope: string
   );
 }
 
-export function OfficialQuestionCard({ question, index }: { question: OfficialQuestion; index: number }) {
+export function OfficialQuestionCard({
+  question,
+  index,
+  onNext,
+  onComplete,
+  lastInTopic = false,
+  onResolved,
+}: {
+  question: OfficialQuestion;
+  index: number;
+  onNext?: () => void;
+  onComplete?: () => void;
+  lastInTopic?: boolean;
+  onResolved?: () => void;
+}) {
   const t = useT('practice');
   const inputId = useId();
   const [choice, setChoice] = useState<string | null>(null);
   const [typed, setTyped] = useState('');
   const [checked, setChecked] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [correct, setCorrect] = useState(false);
+  const saving = useAnswerSubmission(onResolved);
+
+  const issue = officialSolveIssue(question);
+  if (issue)
+    return (
+      <article className="section-panel space-y-3 p-6">
+        <h2 className="font-bold">{question.skill}</h2>
+        <p role="status">{issue}</p>
+      </article>
+    );
 
   const isMcq = question.format === 'mcq';
-  const correct = isMcq ? choice === question.answer : checkGridInAnswer(typed, question.accepted);
   const canCheck = isMcq ? choice !== null : typed.trim() !== '';
   const answerText = isMcq ? question.answer : question.accepted.join(', ');
 
   function check(event?: FormEvent) {
     event?.preventDefault();
-    if (!canCheck) return;
+    if (!canCheck || saving.busy) return;
+    const right = isMcq ? choice === question.answer : checkGridInAnswer(typed, question.accepted);
+    setCorrect(right);
     setChecked(true);
-    setShowExplanation(true);
+    setShowExplanation(right);
+    void saving.submit({ qid: question.id, questionSource: 'official' }, isMcq ? choice! : typed);
   }
 
   function retry() {
+    setCorrect(false);
     setChecked(false);
     setShowExplanation(false);
     setChoice(null);
@@ -49,6 +80,8 @@ export function OfficialQuestionCard({ question, index }: { question: OfficialQu
     <article
       className="section-panel bank-question official-question space-y-4"
       aria-labelledby={`${inputId}-title`}
+      id={`official-question-${question.id}`}
+      tabIndex={-1}
     >
       <div className="flex flex-wrap items-center gap-2">
         <span className="font-display text-sm font-bold text-ink-3 tnum">#{index}</span>
@@ -90,22 +123,24 @@ export function OfficialQuestionCard({ question, index }: { question: OfficialQu
           >
             {question.choices.map((c) => {
               const picked = choice === c.label;
-              const isAnswer = checked && c.label === question.answer;
-              const isWrongPick = checked && picked && !isAnswer;
+              const isAnswer = (showExplanation || (checked && correct)) && c.label === question.answer;
               return (
                 <button
                   key={c.label}
                   type="button"
                   role="radio"
                   aria-checked={picked}
-                  disabled={checked}
-                  onClick={() => setChoice(c.label)}
+                  disabled={saving.busy || (checked && correct)}
+                  onClick={() => {
+                    setChoice(c.label);
+                    setChecked(false);
+                    setShowExplanation(false);
+                  }}
                   className={cn(
                     'flex items-center gap-3.5 rounded-2xl border p-3.5 text-left text-[15px] text-ink transition',
                     'border-line bg-paper-2 enabled:hover:border-leaf',
                     picked && !checked && 'border-leaf bg-leaf/10',
                     isAnswer && 'border-leaf bg-sage',
-                    isWrongPick && 'border-danger bg-danger-soft',
                   )}
                 >
                   <span
@@ -127,8 +162,12 @@ export function OfficialQuestionCard({ question, index }: { question: OfficialQu
             <input
               id={inputId}
               value={typed}
-              disabled={checked}
-              onChange={(e) => setTyped(e.target.value)}
+              disabled={saving.busy || (checked && correct)}
+              onChange={(e) => {
+                setTyped(e.target.value);
+                setChecked(false);
+                setShowExplanation(false);
+              }}
               placeholder={t('official.answerPlaceholder')}
               inputMode="decimal"
               autoComplete="off"
@@ -142,6 +181,7 @@ export function OfficialQuestionCard({ question, index }: { question: OfficialQu
             <button
               type="button"
               onClick={retry}
+              disabled={saving.busy}
               className="rounded-xl border border-line bg-paper px-4 py-2 text-sm font-bold text-ink hover:border-leaf"
             >
               {t('official.tryAgain')}
@@ -149,20 +189,22 @@ export function OfficialQuestionCard({ question, index }: { question: OfficialQu
           ) : (
             <button
               type="submit"
-              disabled={!canCheck}
+              disabled={!canCheck || saving.busy}
               className="rounded-xl bg-leaf px-5 py-2 text-sm font-bold text-on-leaf transition enabled:hover:bg-leaf-2 disabled:opacity-50"
             >
               {t('official.check')}
             </button>
           )}
-          <button
-            type="button"
-            aria-expanded={showExplanation}
-            onClick={() => setShowExplanation((v) => !v)}
-            className="rounded-xl px-3 py-2 text-sm font-bold text-leaf-2 hover:bg-leaf/10"
-          >
-            {t(showExplanation ? 'official.hideExplanation' : 'official.showExplanation')}
-          </button>
+          {checked && !correct && (
+            <button
+              type="button"
+              aria-expanded={showExplanation}
+              onClick={() => setShowExplanation((v) => !v)}
+              className="rounded-xl px-3 py-2 text-sm font-bold text-leaf-2 hover:bg-leaf/10"
+            >
+              {showExplanation ? 'Хариу нуух' : 'Хариу харах'}
+            </button>
+          )}
         </div>
       </form>
 
@@ -174,21 +216,39 @@ export function OfficialQuestionCard({ question, index }: { question: OfficialQu
             correct ? 'bg-sage text-leaf-ink' : 'bg-danger-soft text-danger',
           )}
         >
-          {correct ? t('official.correct') : t('official.incorrect', { answer: answerText })}
+          {correct ? t('official.correct') : 'Буруу байна. Дахин оролдоорой.'}
         </p>
       )}
 
+      <SaveStatus {...saving} />
+      {checked && correct && (onNext || onComplete) && (
+        <div className="space-y-3">
+          {lastInTopic && <p className="font-bold text-leaf-2">Сэдвийн бодлогууд дууслаа!</p>}
+          <button
+            type="button"
+            disabled={saving.busy}
+            onClick={lastInTopic ? onComplete : onNext}
+            className="rounded-xl bg-leaf px-5 py-3 font-bold text-on-leaf"
+          >
+            {lastInTopic ? 'Бодлогын жагсаалт руу буцах' : 'Дараагийн бодлого →'}
+          </button>
+        </div>
+      )}
       {showExplanation && (
         <section className="space-y-2 rounded-2xl border border-line bg-paper-2 p-4">
           <h3 className="eyebrow text-ink-3">{t('official.explanation')}</h3>
-          {!checked && (
+          {!correct && (
             <p className="text-sm font-bold text-ink">{t('official.answerIs', { answer: answerText })}</p>
           )}
-          <CbHtml
-            html={question.explanationHtml}
-            scope={cbScope(question.id, 'e')}
-            className="text-[15px] leading-relaxed text-ink-2"
-          />
+          {question.explanationHtml.trim() ? (
+            <CbHtml
+              html={question.explanationHtml}
+              scope={cbScope(question.id, 'e')}
+              className="text-[15px] leading-relaxed text-ink-2"
+            />
+          ) : (
+            <p className="text-sm text-ink-3">Эх сурвалжид тайлбар оруулаагүй байна.</p>
+          )}
         </section>
       )}
     </article>

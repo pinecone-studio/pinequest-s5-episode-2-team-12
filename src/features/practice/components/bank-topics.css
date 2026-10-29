@@ -1,0 +1,41 @@
+/* Scoped to the Question Bank; original brand artwork stays unmodified. */
+.bank-topic-card {
+  overflow: hidden;
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+.bank-topic-card:hover,
+.bank-topic-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--c-leaf);
+}
+.bank-mascot {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin-inline: auto;
+  color: var(--c-leaf-2);
+  border-radius: 18px;
+  background: radial-gradient(ellipse at 50% 65%, var(--c-sage), transparent 72%);
+}
+.bank-mascot-scene { display: block; width: 100%; height: auto; }
+.bank-mascot-float { animation: bank-suu-float 6s ease-in-out infinite; }
+.bank-mascot-fractions .bank-mascot-float { animation-delay: -1.2s; }
+.bank-mascot-adv .bank-mascot-float { animation-delay: -2.4s; }
+.bank-mascot-psda .bank-mascot-float { animation-delay: -3.6s; }
+.bank-mascot-geo .bank-mascot-float { animation-delay: -4.8s; }
+.bank-mascot-prop { stroke: var(--c-leaf-2); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.bank-mascot-prop rect { fill: var(--c-paper); }
+.bank-mascot-prop text { fill: var(--c-ink); stroke: none; font-family: var(--font-display); font-size: 19px; font-weight: 600; }
+.bank-mascot-prop .bank-mascot-question { font-size: 36px; }
+@keyframes bank-suu-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bank-mascot-float { animation: none; }
+  .bank-topic-card,
+  .bank-topic-card * { transition: none; }
+  .bank-topic-card:hover,
+  .bank-topic-card:focus-visible { transform: none; }
+  .bank-topic-card:hover .bank-topic-arrow { transform: none; }
+}
