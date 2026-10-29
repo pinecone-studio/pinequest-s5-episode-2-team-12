@@ -1,5 +1,20 @@
 {
   "title": "Profile",
+  "about": {
+    "title": "About me",
+    "edit": "Edit",
+    "notSet": "Not set",
+    "lastScore": "Previous SAT Math score",
+    "target": "Target Math score",
+    "examDate": "Test date",
+    "confidence": "Confidence in math",
+    "outOf5": "{n} / 5",
+    "minutes": "Daily study time",
+    "start": "Starting point",
+    "saved": "Saved",
+    "failed": "Couldn't save. Try again.",
+    "invalid": "Scores must be 200–800, ending in 0."
+  },
   "header": {
     "level": "Level {n}",
     "xp": "XP",
