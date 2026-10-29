@@ -169,7 +169,21 @@
   },
   "collection": {
     "title": "Suu’s wardrobe",
-    "lead": "Find a new look for your Suu."
+    "lead": "Find a new look for your Suu.",
+    "preview": "Try it on Suu",
+    "tryOn": "Try the {name} outfit on Suu",
+    "tryOnAccessory": "Try the {name} accessory with Suu’s outfit",
+    "tryOnAccessoryUnavailableWinter": "Winter Warm already includes a scarf",
+    "tryOnAccessoryUnavailableGlasses": "This outfit already has glasses",
+    "tryOnAccessoryUnavailableHeadwear": "This outfit already has headwear"
+  },
+  "preview": {
+    "frame": "Try the avatar frame",
+    "map": "Try the map colors",
+    "banner": "Try the profile banner",
+    "selectFrame": "Try the {name} frame",
+    "selectMap": "Try the {name} map",
+    "selectBanner": "Try the {name} banner"
   },
   "defaultMap": {
     "name": "Default map",
