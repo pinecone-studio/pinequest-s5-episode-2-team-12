@@ -126,6 +126,8 @@
     "introOpen": "Show the intro",
     "problem": "Problem {i} of {n}",
     "check": "Check",
+    "showSolution": "Show the solution",
+    "hideSolution": "Hide the solution",
     "next": "Next",
     "finish": "See results",
     "hint": "Hint",

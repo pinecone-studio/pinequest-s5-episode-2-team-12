@@ -1,10 +1,18 @@
-// Section G · Suu tutor. Uses the fine-tuned small model on Ollama when OLLAMA_URL is set
-// (see ai/train/suu_finetune.ipynb). Otherwise, or if Ollama fails, answers in demo mode and says so (`demo: true`).
-// Keys and model URLs stay on the server.
+// Section G · the tutor chat. Who answers, in order:
+//   1. pitch questions → a hand-written sample answer (labelled), see scripted.ts
+//   2. Suu (our fine-tuned model on Ollama) when OLLAMA_SKILLS allows its 'chat' skill
+//   3. Gemini (GEMINI_API_KEY) for free chat — with the facts the server checked: the bank problem, a code-graded
+//      verdict on the student's answer, the Desmos lesson Suu drew in the side panel (src/server/ai/gemini-chat.ts)
+//   4. otherwise a demo reply that says so (`demo: true`)
+// Suu still writes every Desmos lesson (/api/desmos/lesson). Keys and model URLs stay on the server.
 import { z } from 'zod';
+import { geminiTutorReply, hasGeminiChat } from '@/server/ai/gemini-chat';
+import { hasOllama } from '@/server/ai/ollama-client';
 import { demoReply } from '@/server/tutor/demo';
 import { ollamaReply } from '@/server/tutor/ollama';
 import { scriptedReply } from '@/server/tutor/scripted';
+
+export const maxDuration = 60;
 
 const Body = z.object({
   mode: z.enum(['hint', 'explain', 'desmos', 'similar', 'translate']).default('hint'),
@@ -14,7 +22,24 @@ const Body = z.object({
   context: z
     .object({
       kind: z.enum(['lesson', 'desmos', 'question', 'mistake', 'topic', 'general']),
-      id: z.string().optional(),
+      id: z.string().max(100).optional(),
+    })
+    .optional(),
+  /** The student answered or unlocked the answer, so the correct answer may be said. */
+  revealed: z.boolean().default(false),
+  /** Earlier turns of this chat (the browser keeps them), oldest first. */
+  history: z
+    .array(z.object({ role: z.enum(['user', 'suu']), text: z.string().max(2000) }))
+    .max(12)
+    .default([]),
+  /** What the Desmos side panel shows (visible steps only). */
+  panel: z
+    .object({
+      technique: z.string().max(60).optional(),
+      step: z.number().int().min(0).max(20),
+      steps: z
+        .array(z.object({ text: z.string().max(600), latex: z.array(z.string().max(200)).max(12) }))
+        .max(12),
     })
     .optional(),
 });
@@ -34,7 +59,13 @@ export async function POST(req: Request) {
     return Response.json({ text: sample.text, lesson: sample.lesson, demo: false, sample: true });
   }
 
-  const text = await ollamaReply(mode, message, fetch, raw);
-  if (text) return Response.json({ text, demo: false, model: 'suu' });
+  if (hasOllama('chat')) {
+    const text = await ollamaReply(mode, message, fetch, raw);
+    if (text) return Response.json({ text, demo: false, model: 'suu' });
+  }
+  if (hasGeminiChat()) {
+    const text = await geminiTutorReply(parsed.data);
+    if (text) return Response.json({ text, demo: false, model: 'gemini' });
+  }
   return Response.json({ text: demoReply(mode), demo: true });
 }

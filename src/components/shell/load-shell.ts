@@ -35,6 +35,7 @@ export const loadShell = cache(async (): Promise<ShellData> => {
         xp: stats.xp,
         streak: stats.streak,
         avatarId: profile.avatarId,
+        admin: profile.role === 'admin',
       },
       settings,
       demo,

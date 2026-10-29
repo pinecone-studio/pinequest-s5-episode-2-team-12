@@ -14,7 +14,6 @@ import { chosenText, questionProblem } from '@/features/tutor/lib/suu-panel';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
-import { BADGES } from '@/mocks/meta';
 import type { Question } from '@/types';
 import type { StopOutcome } from '../actions';
 import { ROADMAP } from '../config';
@@ -57,7 +56,6 @@ export function StopPlayer({
   const t = useT('roadmap');
   const router = useRouter();
   const loaded = useRoadmapState(demo, server);
-  const stop = stopByNo(no)!;
   const topic = topicById(no)!;
   const state = loaded.state;
   const mastery = masteryAt(state, no);
@@ -78,6 +76,8 @@ export function StopPlayer({
   const [error, setError] = useState<string | null>(null);
   const started = useRef(Date.now());
 
+  // draw the set once the state is known; a new round (retry) draws a fresh one
+  // biome-ignore lint/correctness/useExhaustiveDependencies: draw only when readiness or the round changes, not on every state update
   useEffect(() => {
     if (!loaded.ready || !allowed) return;
     const history = demo ? loaded.history : serverHistory;
@@ -361,9 +361,20 @@ export function StopPlayer({
                 {t('stop.hint')}
               </Button>
             ) : (
-              <span className="text-sm font-extrabold text-ink-3 tnum">
-                Зөв: {right}/{answers.length}
-              </span>
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="text-sm font-extrabold text-ink-3 tnum">
+                  Зөв: {right}/{answers.length}
+                </span>
+                {/* a wrong answer goes to Суу with the problem and what the student chose */}
+                {!correct && (
+                  <Link
+                    href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}
+                    className="inline-flex min-h-11 items-center rounded-2xl border border-line bg-paper px-4 text-sm font-bold text-ink hover:bg-paper-2"
+                  >
+                    {t('stop.askSuu')}
+                  </Link>
+                )}
+              </div>
             )}
             <SuuTutorButton open={showSuu} onClick={() => setShowSuu((v) => !v)} />
           </div>

@@ -82,7 +82,7 @@ export const IntroScreenSchema = z.object({
   checkAnswer: z.string().min(10).optional(),
 });
 
-export const IntrosSchema = z.record(z.string().regex(/^\d+$/), z.array(IntroScreenSchema).min(2).max(4));
+export const IntrosSchema = z.record(z.string().regex(/^\d+$/), z.array(IntroScreenSchema).min(2).max(10));
 export type IntroCard = z.infer<typeof IntroCardSchema>;
 export type IntroScreen = z.infer<typeof IntroScreenSchema>;
 

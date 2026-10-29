@@ -35,7 +35,9 @@
     "you": "You",
     "deleteChat": "Delete chat",
     "sample": "Sample answer",
-    "openDesmos": "See it step by step in Desmos"
+    "openDesmos": "See it step by step in Desmos",
+    "bySuu": "Suu (our model)",
+    "byGemini": "Gemini chat"
   },
   "modes": {
     "hint": "Hint",

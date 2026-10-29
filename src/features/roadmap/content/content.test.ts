@@ -58,7 +58,7 @@ describe('roadmap bank', () => {
     expect(manual.size / all.length).toBeLessThan(0.25);
   });
 
-  test('intros: 2–4 screens for every topic', () => {
+  test('intros: 2–10 screens for every topic', () => {
     expect(IntrosSchema.safeParse(Object.fromEntries(Object.entries(INTROS))).success).toBe(true);
     for (const t of TOPICS) expect(INTROS[t.id]?.length ?? 0).toBeGreaterThanOrEqual(2);
   });
@@ -69,7 +69,7 @@ describe('roadmap bank', () => {
       expect(screens.some((s) => s.kind === 'example')).toBe(true);
       expect(screens.at(-1)?.checkAnswer).toBeTruthy();
       for (const screen of screens) {
-        for (const text of [screen.body, screen.checkAnswer ?? '']) {
+        for (const text of [screen.body ?? '', screen.checkAnswer ?? '']) {
           for (const match of text.matchAll(/\$([^$]+)\$/g)) {
             expect(() => katex.renderToString(match[1], { throwOnError: true })).not.toThrow();
           }

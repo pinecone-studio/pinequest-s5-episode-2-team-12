@@ -392,7 +392,7 @@ export function StopPanel({
               ))}
             </div>
           )}
-          {example && (
+          {example?.body && (
             <details className="group rounded-xl border border-line bg-paper px-3 py-2">
               <summary className="cursor-pointer select-none text-[13.5px] font-bold text-leaf-2">
                 {t('panel.example')}
@@ -463,10 +463,10 @@ export function StopPanel({
               </div>
             </div>
           )}
-          {(tip || detail.desmos.length > 0) && (
+          {(tip?.body || detail.desmos.length > 0) && (
             <div className="grid gap-1.5">
               <p className="text-[12.5px] font-semibold text-ink-3">{t('panel.desmos')}</p>
-              {tip && (
+              {tip?.body && (
                 <p className="text-[13.5px] leading-relaxed text-ink-2">
                   <Rich text={tip.body} />
                 </p>

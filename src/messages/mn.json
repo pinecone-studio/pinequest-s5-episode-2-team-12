@@ -7,8 +7,10 @@
     "groups": {
       "main": "",
       "materials": "Материал",
-      "me": "Би"
+      "me": "Би",
+      "admin": "Удирдлага"
     },
+    "admin": "Админ",
     "journey": "Хичээлүүд",
     "desmos": "Desmos Академи",
     "practicePlayer": "Дасгал",

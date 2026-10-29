@@ -14,13 +14,21 @@ import { useWallet } from '@/features/shop/lib/use-wallet';
 import type { ServerWallet } from '@/features/shop/queries';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
-import { isActive, NAV, type NavGroup, type NavItem } from '@/lib/nav';
+import { ADMIN_NAV, isActive, NAV, type NavGroup, type NavItem } from '@/lib/nav';
 import { routes } from '@/lib/routes';
 import { ExamChip } from './ExamChip';
 import { Flame, Icon } from './icons';
 import { useSidebar } from './sidebar-state';
 
-export type ShellUser = { name: string; level: number; xp: number; streak: number; avatarId?: string };
+export type ShellUser = {
+  name: string;
+  level: number;
+  xp: number;
+  streak: number;
+  avatarId?: string;
+  /** profiles.role = 'admin': the drawer adds the Admin link. */
+  admin?: boolean;
+};
 export { Avatar };
 
 function NavLink({
@@ -105,16 +113,18 @@ function FoldGroup({
 function NavList({
   pathname,
   rail = false,
+  admin = false,
   onNavigate,
 }: {
   pathname: string;
   rail?: boolean;
+  admin?: boolean;
   onNavigate?: () => void;
 }) {
   const t = useT('common');
   return (
     <nav className="grid gap-3" aria-label="Suprep">
-      {NAV.map((g) =>
+      {(admin ? [...NAV, ADMIN_NAV] : NAV).map((g) =>
         g.collapsible && !rail ? (
           <FoldGroup key={g.key} group={g} pathname={pathname} onNavigate={onNavigate} />
         ) : (
@@ -230,7 +240,7 @@ function NavRail({
             </button>
           )}
         </div>
-        <NavList pathname={pathname} rail onNavigate={onCollapse} />
+        <NavList pathname={pathname} rail admin={user.admin} onNavigate={onCollapse} />
         <NavFooter user={user} gems={gems} look={look} onNavigate={onCollapse} />
       </aside>
       {/* Opens the rail; once open, the × in its header closes it. */}
@@ -300,7 +310,7 @@ function NavDrawer({
           </button>
         </div>
 
-        <NavList pathname={pathname} onNavigate={onClose} />
+        <NavList pathname={pathname} admin={user.admin} onNavigate={onClose} />
         <NavFooter user={user} gems={gems} look={look} onNavigate={onClose} />
       </div>
     </div>

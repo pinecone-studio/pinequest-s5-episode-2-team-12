@@ -72,6 +72,13 @@ export const routes = {
   shop: '/shop',
   friends: '/friends',
 
+  // admin (profiles.role = 'admin'); questions and flashcards review live under the same section
+  admin: '/admin',
+  adminUsers: (q?: string) => `/admin/users${qs({ q })}`,
+  adminReports: (all?: boolean) => `/admin/reports${qs({ all })}`,
+  adminFeedback: (status?: string) => `/admin/feedback${qs({ status })}`,
+  adminContent: '/admin/content',
+
   // G · tutor
   tutor: (ctx: { kind?: TutorContextKind; id?: string; chosen?: string } = {}) =>
     `/tutor${qs({ kind: ctx.kind, id: ctx.id, chosen: ctx.chosen })}`,

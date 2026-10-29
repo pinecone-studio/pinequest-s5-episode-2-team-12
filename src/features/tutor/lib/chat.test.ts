@@ -85,3 +85,40 @@ describe('askSuu', () => {
     await expect(askSuu({ mode: 'hint', message: 'x', raw: true }, empty)).rejects.toThrow();
   });
 });
+
+describe('chat state sent along (history, reveal, Desmos panel)', () => {
+  const msgs = [
+    { id: '1', role: 'user' as const, text: 'Сайн уу' },
+    { id: '2', role: 'suu' as const, text: 'Сайн уу!' },
+    { id: '3', role: 'suu' as const, text: '', status: 'pending' as const },
+  ];
+  const panel = { step: 0, steps: [{ text: 'Шулуун зур', latex: ['y=2x+1'] }] };
+
+  test('finished messages become history; pending ones and empty extras are left out', () => {
+    const req = requestFor({ kind: 'free', text: 'дараа нь?' }, question, { messages: msgs, panel });
+    expect(req?.history).toEqual([
+      { role: 'user', text: 'Сайн уу' },
+      { role: 'suu', text: 'Сайн уу!' },
+    ]);
+    expect(req?.panel).toEqual(panel);
+    expect(req?.revealed).toBeUndefined();
+    const bare = requestFor({ kind: 'free', text: 'hi' }, general);
+    expect(bare && 'history' in bare).toBe(false);
+    expect(bare && 'panel' in bare).toBe(false);
+  });
+
+  test('revealed when the student answered (came from a mistake) or unlocked it', () => {
+    expect(requestFor({ kind: 'quick', mode: 'hint' }, { ...question, chosen: 'B' })?.revealed).toBe(true);
+    expect(requestFor({ kind: 'quick', mode: 'hint' }, question, { revealed: true })?.revealed).toBe(true);
+  });
+
+  test('only the last 8 messages go along', () => {
+    const many = Array.from({ length: 20 }, (_, i) => ({
+      id: String(i),
+      role: 'user' as const,
+      text: `m${i}`,
+    }));
+    const req = requestFor({ kind: 'free', text: 'x' }, general, { messages: many });
+    expect(req?.history?.map((h) => h.text)).toEqual(many.slice(-8).map((m) => m.text));
+  });
+});

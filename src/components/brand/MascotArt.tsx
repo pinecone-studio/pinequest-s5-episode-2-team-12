@@ -2,14 +2,16 @@
 export function MascotArt({
   art,
   size = 96,
+  alignment = [0, 0],
   className,
 }: {
   art?: readonly [number, number, number, number];
   size?: number;
+  /** Source-pixel shift used to align differently cropped mascot artwork. */
+  alignment?: readonly [number, number];
   className?: string;
 }) {
   const bounds = art ?? [120, 150, 1020, 1020];
-  // Match the viewport to the selected window so adjacent outfits cannot show in letterboxing.
   const width = (size * bounds[2]) / bounds[3];
   // Lower rows overlap the preceding row's paws between the cat's ears.
   // Hide that narrow gap while preserving the ears and the graduation cap.
@@ -30,11 +32,13 @@ export function MascotArt({
       aria-hidden="true"
       overflow="hidden"
     >
-      <image
-        href={art ? '/brand/suu-outfits.webp' : '/brand/suu-logo-head.webp'}
-        width={art ? 1402 : 1254}
-        height={art ? 1122 : 1254}
-      />
+      <g transform={`translate(${alignment[0]} ${alignment[1]})`}>
+        <image
+          href={art ? '/brand/suu-outfits.webp' : '/brand/suu-logo-head.webp'}
+          width={art ? 1402 : 1254}
+          height={art ? 1122 : 1254}
+        />
+      </g>
     </svg>
   );
 }

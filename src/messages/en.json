@@ -7,8 +7,10 @@
     "groups": {
       "main": "",
       "materials": "Materials",
-      "me": "Me"
+      "me": "Me",
+      "admin": "Admin"
     },
+    "admin": "Admin",
     "journey": "Lessons",
     "desmos": "Desmos Academy",
     "bank": "Question bank",

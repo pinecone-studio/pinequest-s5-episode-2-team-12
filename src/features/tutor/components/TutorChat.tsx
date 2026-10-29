@@ -17,6 +17,7 @@ import {
   type ChatAction,
   type ChatMsg,
   newId,
+  type PanelView,
   patch,
   QUICK_MODES,
   requestFor,
@@ -104,6 +105,8 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
   // the cat «Desmos» side panel for a bank problem; its last step unlocks once the student has answered
   const [desmosOpen, setDesmosOpen] = useState(false);
   const [desmosRevealed, setDesmosRevealed] = useState(false);
+  // what the Desmos panel shows right now, so the chat (Gemini) talks about the same graph
+  const [panel, setPanel] = useState<PanelView | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
   const inputId = useId();
   const busy = messages.some((m) => m.status === 'pending');
@@ -139,7 +142,14 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
   }, [messages, activeId, ctx]);
 
   async function run(action: ChatAction, retryOf?: string) {
-    const req = requestFor(action, ctx);
+    // a retry sends the same history as the first try: only the messages before the question being retried
+    const at = retryOf ? messages.findIndex((m) => m.id === retryOf) : -1;
+    const before = at > 0 ? messages.slice(0, at - 1) : messages;
+    const req = requestFor(action, ctx, {
+      messages: before,
+      revealed: desmosRevealed,
+      panel: desmosOpen ? panel : null,
+    });
     if (!req || busy) return;
     if (!activeId) setActiveId(newId('chat'));
     const replyId = retryOf ?? newId('suu');
@@ -162,6 +172,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
           demo: reply.demo,
           sample: reply.sample,
           lesson: reply.lesson,
+          model: reply.model,
           status: undefined,
         }),
       );
@@ -423,6 +434,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
           revealed={Boolean(ctx.chosen) || desmosRevealed}
           onReveal={() => setDesmosRevealed(true)}
           onClose={() => setDesmosOpen(false)}
+          onView={setPanel}
           fetchImpl={fetchImpl}
         />
       )}
@@ -459,6 +471,11 @@ export function SuuBubble({ msg, onRetry }: { msg: ChatMsg; onRetry: () => void 
       {msg.sample && (
         <Pill tone="leaf" className="w-fit">
           {t('chat.sample')}
+        </Pill>
+      )}
+      {msg.model && (
+        <Pill tone={msg.model === 'suu' ? 'teal' : 'neutral'} className="w-fit">
+          {t(msg.model === 'suu' ? 'chat.bySuu' : 'chat.byGemini')}
         </Pill>
       )}
       <Rich text={msg.text} className="text-[15px] leading-relaxed text-ink" />

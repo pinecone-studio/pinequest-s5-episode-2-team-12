@@ -17,7 +17,10 @@ export function StopIntro({ screens, onDone }: { screens: IntroScreen[]; onDone:
 
   return (
     /* soft-card ба border-ийг арилгаж, дэлгэц рүүгээ уусам цэлгэр layout болгосон */
-    <section className="relative flex flex-col justify-between min-h-[380px] w-full max-w-4xl mx-auto py-2 px-1 text-foreground" aria-labelledby={`${uid}-title`}>
+    <section
+      className="relative flex flex-col justify-between min-h-[380px] w-full max-w-4xl mx-auto py-2 px-1 text-foreground"
+      aria-labelledby={`${uid}-title`}
+    >
       {/* Дээд талын Прогресс болон Илүү том Dots */}
       <div className="flex items-center justify-between gap-4 mb-4">
         <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground bg-muted/40 px-3 py-1 rounded-full border border-border/30">
@@ -27,7 +30,10 @@ export function StopIntro({ screens, onDone }: { screens: IntroScreen[]; onDone:
           {screens.map((_, j) => (
             <li
               key={j}
-              className={cn('h-2.5 rounded-full transition-all duration-300', j === i ? 'w-8 bg-leaf-2' : j < i ? 'w-3 bg-leaf-2/50' : 'w-3 bg-line')}
+              className={cn(
+                'h-2.5 rounded-full transition-all duration-300',
+                j === i ? 'w-8 bg-leaf-2' : j < i ? 'w-3 bg-leaf-2/50' : 'w-3 bg-line',
+              )}
               aria-current={j === i ? 'step' : undefined}
             />
           ))}
@@ -36,12 +42,17 @@ export function StopIntro({ screens, onDone }: { screens: IntroScreen[]; onDone:
 
       {/* Гол контент: Илүү том, уншихад маш тодорхой font */}
       <div className="flex-1 flex flex-col justify-center my-4 space-y-4">
-        <h2 id={`${uid}-title`} className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-ink leading-tight">
+        <h2
+          id={`${uid}-title`}
+          className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-ink leading-tight"
+        >
           {s.title}
         </h2>
-        <div className="text-lg sm:text-xl leading-relaxed text-ink-2 font-normal pt-2">
-          <Rich text={s.body} />
-        </div>
+        {s.body && (
+          <div className="text-lg sm:text-xl leading-relaxed text-ink-2 font-normal pt-2">
+            <Rich text={s.body} />
+          </div>
+        )}
 
         {s.checkAnswer && (
           <div className="pt-4">
@@ -52,7 +63,8 @@ export function StopIntro({ screens, onDone }: { screens: IntroScreen[]; onDone:
               aria-expanded={answerVisible}
               onClick={() => setAnswerVisible(!answerVisible)}
             >
-              {answerVisible ? 'Бодолтыг нуух ▲' : 'Бодолтыг харах ▼'}
+              {t(answerVisible ? 'stop.hideSolution' : 'stop.showSolution')}
+              <span aria-hidden="true">{answerVisible ? ' ▲' : ' ▼'}</span>
             </Button>
             {answerVisible && (
               <div className="mt-3 p-5 rounded-2xl bg-muted/30 border border-border/40 text-lg leading-relaxed text-ink-2 animate-fade-in">
@@ -65,7 +77,12 @@ export function StopIntro({ screens, onDone }: { screens: IntroScreen[]; onDone:
 
       {/* Навигацийн товчлуур хэсэг */}
       <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border/20 mt-auto">
-        <Button variant="ghost" size="lg" className="text-base text-muted-foreground hover:text-foreground" onClick={onDone}>
+        <Button
+          variant="ghost"
+          size="lg"
+          className="text-base text-muted-foreground hover:text-foreground"
+          onClick={onDone}
+        >
           {t('stop.introSkip')}
         </Button>
         <Button
