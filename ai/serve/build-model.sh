@@ -54,10 +54,10 @@ TOOL="$LLAMA/build/bin/llama-export-lora"
 if [[ ! -x "$TOOL" || "$(git -C "$LLAMA" rev-parse HEAD 2>/dev/null)" != "$LLAMA_CPP_COMMIT"* ]]; then
   say "llama.cpp-ийн merge хэрэгслийг бүтээж байна (нэг удаа, ~2–5 мин)"
   need git || die "git алга. Mac дээр: xcode-select --install"
-  if ! need cmake; then
-    need brew || die "cmake алга. https://cmake.org эсвэл Homebrew-ээр суулгана уу."
-    brew install cmake >&2
-  fi
+  # shellcheck source=ai/serve/tools.sh
+  source "$REPO/ai/serve/tools.sh"
+  ensure_tool cmake || die "cmake суулгаж чадсангүй. https://cmake.org/download"
+  macos_sdk
   rm -rf "$LLAMA" && mkdir -p "$LLAMA"
   git -C "$LLAMA" init -q
   git -C "$LLAMA" fetch -q --depth 1 https://github.com/ggml-org/llama.cpp "$LLAMA_CPP_COMMIT"
