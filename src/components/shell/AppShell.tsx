@@ -10,6 +10,7 @@ import { Avatar } from '@/components/brand/Avatar';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { useDialog } from '@/components/ui/useDialog';
 import type { StudentSettings } from '@/features/settings/use-settings';
+import type { AccessorySlot } from '@/features/shop/catalog';
 import { useWallet } from '@/features/shop/lib/use-wallet';
 import type { ServerWallet } from '@/features/shop/queries';
 import { cn } from '@/lib/cn';
@@ -28,6 +29,12 @@ export type ShellUser = {
   avatarId?: string;
   /** profiles.role = 'admin': the drawer adds the Admin link. */
   admin?: boolean;
+};
+
+type UserLook = {
+  frame?: string;
+  outfit?: string;
+  accessories?: Partial<Record<AccessorySlot, string>>;
 };
 export { Avatar };
 
@@ -153,7 +160,7 @@ function NavFooter({
 }: {
   user: ShellUser;
   gems: number;
-  look: { frame?: string; outfit?: string };
+  look: UserLook;
   onNavigate?: () => void;
 }) {
   const t = useT('common');
@@ -211,7 +218,7 @@ function NavRail({
   user: ShellUser;
   pathname: string;
   gems: number;
-  look: { frame?: string; outfit?: string };
+  look: UserLook;
 }) {
   const t = useT('common');
   return (
@@ -276,7 +283,7 @@ function NavDrawer({
   user: ShellUser;
   pathname: string;
   gems: number;
-  look: { frame?: string; outfit?: string };
+  look: UserLook;
 }) {
   const t = useT('common');
   const ref = useRef<HTMLDivElement>(null);
@@ -352,7 +359,11 @@ export function AppShell({
   const me: ShellUser = user ?? { name: '', level: 1, xp: 0, streak: 0 };
   const map = variant === 'map';
   const w = useWallet(demo, wallet);
-  const look = { frame: w.equipped.frame, outfit: w.equipped.outfit };
+  const look: UserLook = {
+    frame: w.equipped.frame,
+    outfit: w.equipped.outfit,
+    accessories: { head: w.equipped.head, eyes: w.equipped.eyes, neck: w.equipped.neck },
+  };
 
   return (
     <div

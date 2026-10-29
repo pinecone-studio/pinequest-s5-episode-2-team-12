@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { buyItem, equipItem, resetMapSkin as resetServerMapSkin } from '../actions';
-import type { Slot } from '../catalog';
+import type { EquipmentSlot } from '../catalog';
 import type { ServerWallet } from '../queries';
 import { loadLocalWallet, saveLocalWallet } from './local-wallet';
 import { balance, equip as equipLocal, purchase, resetMapSkin } from './wallet';
@@ -12,7 +12,7 @@ import { balance, equip as equipLocal, purchase, resetMapSkin } from './wallet';
 export type WalletView = {
   balance: number;
   owned: Record<string, number>;
-  equipped: Partial<Record<Slot, string>>;
+  equipped: Partial<Record<EquipmentSlot, string>>;
 };
 
 const EMPTY: WalletView = { balance: 0, owned: {}, equipped: {} };

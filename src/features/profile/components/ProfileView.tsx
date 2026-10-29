@@ -16,6 +16,7 @@ import type { MockAttempt } from '@/features/exam/lib/mock';
 import { loadLocalRoadmap } from '@/features/roadmap/lib/local-store';
 import { type SettingsPatch, saveSettings } from '@/features/settings/actions';
 import { readLocalSettings, writeLocalSettings } from '@/features/settings/local';
+import type { AccessorySlot } from '@/features/shop/catalog';
 import { itemById } from '@/features/shop/catalog';
 import { useWallet } from '@/features/shop/lib/use-wallet';
 import type { ServerWallet } from '@/features/shop/queries';
@@ -73,7 +74,12 @@ function Header({
   demo: boolean;
   onSaved: (p: Partial<ProfileUser>) => void;
   gems: number;
-  look: { frame?: string; outfit?: string; banner?: string };
+  look: {
+    frame?: string;
+    outfit?: string;
+    banner?: string;
+    accessories?: Partial<Record<AccessorySlot, string>>;
+  };
 }) {
   const t = useT('profile');
   const [editing, setEditing] = useState(false);
@@ -130,6 +136,7 @@ function Header({
           size={76}
           frame={look.frame}
           outfit={look.outfit}
+          accessories={look.accessories}
         />
         <div className="min-w-0 flex-1">
           <h1 className="font-display text-[26px] font-bold leading-tight text-ink">{user.name || '—'}</h1>
@@ -453,7 +460,12 @@ export function ProfileView({
         demo={demo}
         onSaved={(p) => setUser((u) => ({ ...u, ...p }))}
         gems={w.balance}
-        look={{ frame: w.equipped.frame, outfit: w.equipped.outfit, banner: w.equipped.banner }}
+        look={{
+          frame: w.equipped.frame,
+          outfit: w.equipped.outfit,
+          banner: w.equipped.banner,
+          accessories: { head: w.equipped.head, eyes: w.equipped.eyes, neck: w.equipped.neck },
+        }}
       />
       <nav aria-label={common('shell.profile')} className="grid gap-3">
         {[{ href: routes.planner, label: common('nav.planner') }].map((item) => (
