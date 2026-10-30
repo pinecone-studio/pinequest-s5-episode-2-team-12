@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, mock, test } from 'bun:test';
-import { BankTopics } from '@/features/practice/components/BankTopics';
+import { PracticePlayer } from '@/features/practice/components/PracticePlayer';
 import { newState } from '@/lib/sm2';
 import { QUESTIONS } from '@/mocks/questions';
 import { answerTransport, resetAnswerTransport } from '@/test/mock-submissions';
@@ -81,12 +81,10 @@ test('signed-in notebook ignores demo data; preview failures expose a retry acti
 beforeEach(resetAnswerTransport);
 afterEach(resetAnswerTransport);
 
-test('Question Bank and demo notebook share the same source-aware mistake and recovery', async () => {
+test('Practice player and demo notebook share the same source-aware mistake and recovery', async () => {
   const hard = { ...q, difficulty: 3 as const };
   answerTransport.questions = [{ questionSource: 'practice', question: hard }];
-  const bank = render(<BankTopics questions={[hard]} />);
-  fireEvent.click(screen.getByRole('button', { name: 'Алгебр' }));
-  fireEvent.click(screen.getByRole('button', { name: `Бодох: ${hard.skill}` }));
+  const bank = render(<PracticePlayer questions={[hard]} />);
   fireEvent.change(screen.getByRole('textbox', { name: 'Хариулт' }), { target: { value: '4' } });
   fireEvent.click(screen.getByRole('button', { name: 'Шалгах' }));
   await settled();

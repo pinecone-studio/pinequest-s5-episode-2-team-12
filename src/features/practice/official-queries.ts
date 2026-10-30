@@ -1,5 +1,6 @@
 // Section C · reads for the official SAT question bank (Supabase `sat_math_questions`, readable by everyone).
 import { getDb } from '@/lib/supabase/server';
+import type { Domain } from '@/types';
 import {
   cleanSearch,
   difficultyName,
@@ -12,7 +13,6 @@ import {
   type OfficialPage,
   type OfficialRow,
 } from './lib/official';
-import { collectOfficialHardQuestions } from './lib/topic-bank';
 
 /** One page of official questions, or null when Supabase or the table is unavailable (→ the mock bank). */
 export async function listOfficialQuestions(
@@ -66,7 +66,26 @@ async function countOfficialQuestions(
   return count ?? filteredTotal;
 }
 
-/** Read every hard page, rather than silently limiting topic cards to the first ten items. */
-export async function listOfficialHardQuestions() {
-  return collectOfficialHardQuestions(listOfficialQuestions);
+/** Question count per domain for the topic cards — counts only, the questions load page by page. */
+export async function countOfficialQuestionsByDomain(): Promise<Record<Domain, number> | null> {
+  const db = await getDb();
+  if (!db) return null;
+  const domains = Object.keys(OFFICIAL_DOMAINS) as Domain[];
+  const results = await Promise.all(
+    domains.map((domain) =>
+      db
+        .from(OFFICIAL_TABLE)
+        .select('id', { count: 'exact', head: true })
+        .eq('domain', OFFICIAL_DOMAINS[domain]),
+    ),
+  );
+  const failed = results.find((result) => result.error);
+  if (failed?.error) {
+    console.error('[bank] official counts unavailable:', failed.error.message);
+    return null;
+  }
+  return Object.fromEntries(domains.map((domain, i) => [domain, results[i].count ?? 0])) as Record<
+    Domain,
+    number
+  >;
 }

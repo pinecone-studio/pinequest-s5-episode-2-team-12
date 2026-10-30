@@ -91,5 +91,15 @@
     "free": "No ready steps for this problem. The calculator is yours — try it yourself.",
     "tip": "Tip",
     "seconds": "s"
+  },
+  "suuPanel": {
+    "button": "AI tutor Suu",
+    "open": "Open AI tutor Suu beside the problem",
+    "close": "Close AI tutor Suu",
+    "title": "AI tutor Suu",
+    "empty": "Hi! I'm Suu 🐱 Ask me anything about this problem: get a hint, translate a word, or try a similar one.",
+    "locked": "The full explanation unlocks after you check your answer.",
+    "inputLabel": "Ask Suu about this problem",
+    "placeholder": "Ask about this problem…"
   }
 }

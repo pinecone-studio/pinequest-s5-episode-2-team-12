@@ -1,11 +1,9 @@
 import { BankTopics } from '@/features/practice/components/BankTopics';
 import { OfficialBank } from '@/features/practice/components/OfficialBank';
 import { parseOfficialFilter } from '@/features/practice/lib/official';
-import { realPracticeQuestions } from '@/features/practice/lib/topic-bank';
-import { listOfficialHardQuestions, listOfficialQuestions } from '@/features/practice/official-queries';
-import { listQuestionsWithSource } from '@/features/practice/queries';
+import { countOfficialQuestionsByDomain, listOfficialQuestions } from '@/features/practice/official-queries';
 
-// Section C · C2 — real hard questions by topic; the full official bank remains available.
+// Section C · C2 — the official bank split into its four domains; each card opens that domain's pages.
 export default async function BankPage({
   searchParams,
 }: {
@@ -26,15 +24,6 @@ export default async function BankPage({
     if (official) return <OfficialBank data={official} filter={filter} />;
   }
 
-  const [practice, official] = await Promise.all([
-    listQuestionsWithSource({ difficulty: 3 }),
-    listOfficialHardQuestions(),
-  ]);
-  return (
-    <BankTopics
-      questions={realPracticeQuestions(practice)}
-      officialQuestions={official ?? []}
-      sourceUnavailable={practice.source === 'mock' && official === null}
-    />
-  );
+  const counts = await countOfficialQuestionsByDomain();
+  return <BankTopics counts={counts} />;
 }
