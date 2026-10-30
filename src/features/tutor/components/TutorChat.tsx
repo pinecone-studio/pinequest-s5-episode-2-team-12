@@ -383,7 +383,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
                         msg={m}
                         onRetry={() => retry(m)}
                         onDesmos={
-                          !ctx.desmos && m.sent?.raw && !m.lesson && !m.demo
+                          !ctx.desmos && m.sent?.raw && !m.lesson
                             ? () => drawFree(m.sent?.message ?? '')
                             : undefined
                         }
@@ -515,7 +515,7 @@ export function SuuBubble({
           <Icon name="chevron" size={16} />
         </button>
       )}
-      {!msg.demo && !msg.sample && msg.sent && (
+      {!msg.sample && msg.sent && (
         <FeedbackButtons
           mode={msg.sent.mode}
           prompt={msg.sent.message}

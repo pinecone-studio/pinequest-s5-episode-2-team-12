@@ -109,7 +109,7 @@ test('a typed equation: a wrong model answer is replaced by the solver steps; a 
   try {
     const message = 'x: 5(x - 4) + 7 = 3(x + 2) + 5';
     const wrong = await (await call({ mode: 'explain', message, raw: true })).json();
-    expect(wrong).toMatchObject({ demo: false, model: 'solver' });
+    expect(wrong).toMatchObject({ model: 'solver' });
     expect(wrong.text).toContain('$2x = 24$');
     expect(wrong.text).toContain('**Хариу:** $x = 12$');
     // the model was told the code-checked answer
@@ -132,7 +132,7 @@ test('without any model, a typed equation still gets the solver answer instead o
   process.env.GEMINI_API_KEY = '';
   try {
     const res = await (await call({ mode: 'explain', message: '2x + 1 = 7', raw: true })).json();
-    expect(res).toMatchObject({ demo: false, model: 'solver' });
+    expect(res).toMatchObject({ model: 'solver' });
     expect(res.text).toContain('$x = 3$');
   } finally {
     process.env = saved;
