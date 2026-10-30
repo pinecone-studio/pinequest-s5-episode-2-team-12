@@ -83,7 +83,7 @@ export function StopPlayer({
   // draw the set once the state is known; a new round (retry) draws a fresh one
   // biome-ignore lint/correctness/useExhaustiveDependencies: draw only when readiness, stop number or round changes
   useEffect(() => {
-    if (!loaded.ready || !allowed) return;
+    if (!loaded.ready || !allowed || phase === 'saving' || phase === 'result') return;
     const history = demo ? loaded.history : serverHistory;
     setIds(
       selectProblems({

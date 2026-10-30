@@ -33,6 +33,8 @@ export type MockAttempt = {
   flagged: boolean;
   /** Group mock session: a fixed form and a clock everyone shares (no adaptive module 2). */
   groupId?: string;
+  /** Fixed practice test (forms.ts): module 1 and both module 2s are prepared, the route still adapts. */
+  formId?: string;
 };
 
 /** What the browser gets during the exam: no answer, explanation, hint or Desmos solution. */

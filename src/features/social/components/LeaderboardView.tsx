@@ -5,67 +5,18 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Avatar } from '@/components/brand/Avatar';
 import { Pill } from '@/components/ui/Pill';
-import { loadLocalMocks } from '@/features/exam/lib/local-mocks';
-import { loadLocalRoadmap } from '@/features/roadmap/lib/local-store';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
-import { calculateLevel } from '@/lib/level';
 import { routes } from '@/lib/routes';
 import { blockUser, reportUser } from '../actions';
-import { BOTS, isBot } from '../lib/bots';
+import { isBot } from '../lib/bots';
+import { demoRows } from '../lib/demo-ranking';
 import { loadSocial, saveSocial } from '../lib/local-social';
-import { type Candidate, leaderboard, type Metric, type Row, type Scope } from '../lib/ranking';
+import type { Metric, Row, Scope } from '../lib/ranking';
 import { UserMenu } from './UserMenu';
 
 const SCOPES: Scope[] = ['friends', 'aimag', 'national'];
 const METRICS: Metric[] = ['xp_week', 'xp_all', 'daily', 'mock'];
-
-function demoRows(scope: Scope, metric: Metric, me: { name: string; aimag?: string }): Row[] {
-  const social = loadSocial();
-  const road = loadLocalRoadmap();
-  let daily: number | null = null;
-  try {
-    const d = JSON.parse(localStorage.getItem('suprep:daily:v1') ?? 'null') as {
-      finishedAt?: string;
-      score?: number;
-      flagged?: boolean;
-    } | null;
-    if (d?.finishedAt && !d.flagged) daily = d.score ?? null;
-  } catch {
-    // ignore
-  }
-  const mocks = loadLocalMocks().filter((m) => !m.flagged);
-  const myValue = {
-    xp_week: road.xp,
-    xp_all: road.xp,
-    daily,
-    mock: mocks.length ? Math.max(...mocks.map((m) => m.score ?? 0)) : null,
-  }[metric];
-  const pub = { hidePublic: false, friendsOnly: false };
-  const candidates: Candidate[] = [
-    {
-      userId: 'me',
-      name: me.name || 'Та',
-      level: calculateLevel(road.xp).level,
-      aimag: me.aimag,
-      privacy: pub,
-      value: myValue,
-    },
-    ...BOTS.map((b) => ({
-      userId: b.id,
-      name: b.name,
-      avatarId: b.avatarId,
-      level: b.level,
-      aimag: b.aimag,
-      privacy: pub,
-      value: { xp_week: b.weekXp, xp_all: b.allXp, daily: b.daily, mock: b.bestMock }[metric],
-    })),
-  ];
-  return leaderboard(candidates, { userId: 'me', aimag: me.aimag }, scope, (id) => ({
-    friends: social.friends.includes(id),
-    blocked: social.blocked.includes(id),
-  }));
-}
 
 export function LeaderboardView({
   demo,

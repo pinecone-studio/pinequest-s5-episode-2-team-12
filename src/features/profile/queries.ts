@@ -1,9 +1,9 @@
 // Section F · profile reads for a signed-in student. Demo mode reads localStorage in the browser instead.
 import { mockBank } from '@/features/exam/engine';
-import { getLeague } from '@/features/progress/queries';
+import { leaderboardRows } from '@/features/social/queries';
 import { getDb } from '@/lib/supabase/server';
-import { isoWeekId } from '@/lib/time';
 import type { QuestionMeta } from './lib/radar';
+import { type ProfileRanks, rankSummary } from './lib/ranks';
 
 export type RawAnswer = { qid: string; topicId?: number; correct: boolean; at: number };
 
@@ -26,16 +26,26 @@ export async function listAnswers(userId: string, limit = 1000): Promise<RawAnsw
   }));
 }
 
-/** 1-based place in this week's national XP table, or null when not on it. */
-export async function weeklyRank(userId: string): Promise<{ rank: number; of: number } | null> {
-  const rows = await getLeague(isoWeekId()).catch(() => []);
-  const i = rows.findIndex((r) => r.userId === userId);
-  return i < 0 ? null : { rank: i + 1, of: rows.length };
+/** Use the same scope, metric and privacy rules as the leaderboard page. */
+export async function weeklyBoards(userId: string) {
+  const [national, aimag, friends] = await Promise.all(
+    (['national', 'aimag', 'friends'] as const).map((scope) => leaderboardRows(scope, 'xp_week', userId)),
+  );
+  return { national, aimag, friends };
+}
+
+export async function weeklyRanks(userId: string): Promise<ProfileRanks> {
+  const boards = await weeklyBoards(userId);
+  return {
+    national: rankSummary(boards.national),
+    aimag: rankSummary(boards.aimag),
+    friends: rankSummary(boards.friends),
+  };
 }
 
 /** question id → [topic, difficulty] for every question in the bank (small; lets the browser resolve answers). */
 export function questionMeta(): QuestionMeta {
   const out: QuestionMeta = {};
-  for (const q of mockBank().pool) if (q.topicId) out[q.id] = [q.topicId, q.difficulty];
+  for (const q of mockBank().bank.values()) if (q.topicId) out[q.id] = [q.topicId, q.difficulty];
   return out;
 }

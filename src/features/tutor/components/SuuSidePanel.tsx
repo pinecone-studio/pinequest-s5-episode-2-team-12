@@ -121,7 +121,7 @@ export function SuuSidePanel({ context, revealed, onClose, fetchImpl }: Props) {
     try {
       const reply = await askSuu(req, fetchImpl);
       setMessages((list) =>
-        patch(list, replyId, { text: reply.text, demo: reply.demo, sample: reply.sample, status: undefined }),
+        patch(list, replyId, { text: reply.text, sample: reply.sample, status: undefined }),
       );
     } catch {
       setMessages((list) => patch(list, replyId, { status: 'error' }));

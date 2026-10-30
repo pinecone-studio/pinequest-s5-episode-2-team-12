@@ -39,6 +39,13 @@ function passes(q: RoadmapQuestion, candidate: number): boolean | null {
   return satisfies(v.sub.eq, v.sub.var, candidate);
 }
 
+// Explicitly accepted SAT decimals may be rounded or truncated to at least three significant digits.
+function declaredApproximation(text: string, actual: number, expected: number): boolean {
+  const decimal = /^[+-]?(?:\d+)?\.(\d+)$/.exec(text.trim());
+  const significant = text.replace(/[^0-9]/g, '').replace(/^0+/, '').length;
+  return Boolean(decimal && significant >= 3 && Math.abs(actual - expected) < 10 ** -decimal[1].length);
+}
+
 export function checkQuestion(q: RoadmapQuestion): Finding[] {
   const out: Finding[] = [];
   const bad = (message: string) => out.push({ id: q.id, level: 'mismatch', message });
@@ -48,7 +55,8 @@ export function checkQuestion(q: RoadmapQuestion): Finding[] {
     const values = accepted.map((a) => ({ a, n: numeric(a) }));
     const nums = values.filter((x) => x.n !== null) as { a: string; n: number }[];
     for (const x of nums)
-      if (!close(x.n, nums[0].n)) bad(`accepted answers disagree: "${nums[0].a}" vs "${x.a}"`);
+      if (!close(x.n, nums[0].n) && !declaredApproximation(x.a, x.n, nums[0].n))
+        bad(`accepted answers disagree: "${nums[0].a}" vs "${x.a}"`);
     if (!q.verify) {
       out.push({ id: q.id, level: 'manual', message: 'no verify rule' });
       return out;

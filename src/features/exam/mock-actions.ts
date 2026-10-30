@@ -22,6 +22,7 @@ import {
   startAttempt,
   submitModule as submitStep,
 } from './engine';
+import { formById } from './forms';
 import type { MockAttempt, PublicQuestion } from './lib/mock';
 
 export type ExamStep = {
@@ -136,15 +137,21 @@ async function previousSeen(s: Session): Promise<Set<string>> {
   return seenIds((data ?? []).map((r) => r.attempt as MockAttempt).filter(Boolean));
 }
 
-export async function startMock(input: { seen?: string[] } = {}): Promise<StepResult> {
+/** Starts a mock: the random adaptive one, or the practice test `formId` (forms.ts). */
+export async function startMock(input: { seen?: string[]; formId?: string } = {}): Promise<StepResult> {
   const now = Date.now();
+  const formId = typeof input.formId === 'string' ? input.formId.slice(0, 32) : undefined;
+  if (formId && !formById(formId)) return { ok: false, reason: 'not_found' };
   const s = await signedIn();
   if (!s) {
     const seen = new Set((input.seen ?? []).slice(0, 500));
-    return { ok: true, step: stepOf(startAttempt(`local-${now.toString(36)}`, seen, now), true) };
+    return {
+      ok: true,
+      step: stepOf(startAttempt(`local-${now.toString(36)}`, seen, now, undefined, formId), true),
+    };
   }
   const id = crypto.randomUUID();
-  const a = startAttempt(id, await previousSeen(s), now);
+  const a = startAttempt(id, formId ? new Set() : await previousSeen(s), now, undefined, formId);
   const { error } = await s.admin.from('exams').insert({
     id,
     user_id: s.userId,

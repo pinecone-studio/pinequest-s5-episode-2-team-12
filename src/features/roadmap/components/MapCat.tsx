@@ -62,6 +62,10 @@ export function MapCat({
 }) {
   const item = outfit ? itemById(outfit) : undefined;
   const clothing = item?.kind === 'outfit' ? item : undefined;
+  const equippedAccessories = {
+    ...(clothing?.accessorySlot ? { [clothing.accessorySlot]: clothing.id } : {}),
+    ...accessories,
+  };
   if (clothing?.art) {
     const [x, y, width, height] = clothing.art;
     const trimGap = y > 0 && !(x === 585 && y === 592);
@@ -92,7 +96,7 @@ export function MapCat({
             <ellipse cx={x + width * 0.66} cy={y + height * 0.37} rx={width * 0.085} ry={height * 0.082} />
           </g>
         </g>
-        <AccessoryLayers accessories={accessories} bounds={clothing.art} />
+        <AccessoryLayers accessories={equippedAccessories} bounds={clothing.art} />
       </svg>
     );
   }
@@ -121,7 +125,7 @@ export function MapCat({
           strokeLinecap="round"
         />
       </g>
-      <AccessoryLayers accessories={accessories} bounds={DEFAULT_BOUNDS} sitting />
+      <AccessoryLayers accessories={equippedAccessories} bounds={DEFAULT_BOUNDS} sitting />
     </svg>
   );
 }

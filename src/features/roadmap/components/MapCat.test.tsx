@@ -25,6 +25,6 @@ test('equipped clothing uses its exact shop artwork and updates when changed', (
 
 test('shop accessories are worn over sitting Su', () => {
   const view = render(<MapCat outfit="outfit-crown" />);
-  expect(view.container.querySelector('text')?.textContent).toBe('👑');
+  expect(view.container.querySelector('image[href="/brand/shop-accessories/crown.png"]')).toBeTruthy();
   expect(view.container.querySelector('.roadmap-cat-eyelids')).toBeTruthy();
 });

@@ -1271,7 +1271,7 @@
       "3": "$\\theta = \\pi$ гэж авсан ($12 \\cdot \\pi$)."
     },
     "verify": {
-      "value": "12/3"
+      "value": "12*pi/3"
     },
     "source": "original",
     "reviewed": false,
@@ -1390,7 +1390,7 @@
       "3": "$\\pi (3 \\cdot 10)^2$ гэж $rh$ үржвэрийг бүхлээр нь квадрат зэрэгт дэвшүүлсэн."
     },
     "verify": {
-      "value": "3^2*10"
+      "value": "pi*3^2*10"
     },
     "source": "original",
     "reviewed": false,

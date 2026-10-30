@@ -17,13 +17,18 @@ export default async function LeaderboardPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const sp = await searchParams;
-  const scope = SCOPES.includes(sp.scope as Scope) ? (sp.scope as Scope) : 'friends';
+  const session = await getSession().catch(() => null);
+  const scope = SCOPES.includes(sp.scope as Scope)
+    ? (sp.scope as Scope)
+    : session?.kind === 'demo'
+      ? 'national'
+      : 'friends';
   const metric = METRICS.includes(sp.metric as Metric)
     ? (sp.metric as Metric)
     : sp.period === 'daily'
       ? 'daily'
       : 'xp_week';
-  const [session, profile] = await Promise.all([getSession().catch(() => null), getProfile()]);
+  const profile = await getProfile();
   const userId = session?.kind === 'user' ? session.userId : null;
   const rows = userId ? await leaderboardRows(scope, metric, userId).catch(() => []) : [];
   return (

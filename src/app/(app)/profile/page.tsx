@@ -2,7 +2,8 @@ import { loadShell } from '@/components/shell/load-shell';
 import { listMockAttempts } from '@/features/exam/mock-queries';
 import { getProfile } from '@/features/home/queries';
 import { type ProfileServer, ProfileView } from '@/features/profile/components/ProfileView';
-import { listAnswers, questionMeta, weeklyRank } from '@/features/profile/queries';
+import { EMPTY_BOARDS, rankSummary } from '@/features/profile/lib/ranks';
+import { listAnswers, questionMeta, weeklyBoards } from '@/features/profile/queries';
 import { getT } from '@/lib/i18n';
 import { calculateLevel } from '@/lib/level';
 import { getSession } from '@/lib/session';
@@ -17,7 +18,7 @@ export default async function ProfilePage() {
     getSession().catch(() => null),
   ]);
   const userId = session?.kind === 'user' ? session.userId : null;
-  const [server, rank] = await Promise.all([
+  const [server, boards] = await Promise.all([
     userId
       ? Promise.all([listMockAttempts(userId).catch(() => []), listAnswers(userId).catch(() => [])]).then(
           ([mocks, answers]): ProfileServer => ({
@@ -26,7 +27,7 @@ export default async function ProfilePage() {
           }),
         )
       : Promise.resolve(null),
-    userId ? weeklyRank(userId) : Promise.resolve(null),
+    userId ? weeklyBoards(userId) : Promise.resolve(EMPTY_BOARDS),
   ]);
   const xp = shell.user?.xp ?? 0;
   const lvl = calculateLevel(xp);
@@ -38,6 +39,7 @@ export default async function ProfilePage() {
         avatarId: profile.avatarId,
         aimag: profile.aimag,
         school: profile.school,
+        age: profile.age,
         level: lvl.level,
         levelPct: lvl.progressPercent,
         xp,
@@ -55,7 +57,12 @@ export default async function ProfilePage() {
       }}
       server={server}
       meta={questionMeta()}
-      rank={rank}
+      rank={{
+        national: rankSummary(boards.national),
+        aimag: rankSummary(boards.aimag),
+        friends: rankSummary(boards.friends),
+      }}
+      boards={boards}
       wallet={shell.wallet}
     />
   );

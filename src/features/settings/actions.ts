@@ -38,6 +38,7 @@ const Patch = z
     desmos: z.enum(['never', 'little', 'often']),
     studyMinutes: z.union([z.literal(15), z.literal(30), z.literal(45), z.literal(60)]),
     start: z.enum(['foundations', 'english', 'desmos']),
+    age: z.number().int().min(1).max(120).nullable(),
   })
   .partial()
   .strict()
@@ -79,6 +80,7 @@ export async function saveSettings(patch: SettingsPatch): Promise<SaveResult> {
     ...(p.desmos !== undefined && { desmos: p.desmos }),
     ...(p.studyMinutes !== undefined && { study_minutes: p.studyMinutes }),
     ...(p.start !== undefined && { start: p.start }),
+    ...(p.age !== undefined && { age: p.age }),
   };
   const { error } = await db.from('profiles').upsert(row, { onConflict: 'id' });
   if (error) return { ok: false, reason: 'database_error' };

@@ -158,12 +158,22 @@ describe('RoadmapMap', () => {
     const views = stopViews(sampleState(), true);
     render(<RoadmapMap views={views} frontierNo={5} onOpen={() => {}} cluster={false} />);
     const map = screen.getByRole('application');
-    const pins = within(map).getAllByRole('button');
+    const pins = within(map).getAllByRole('button', { name: /зогсоол/ });
     expect(pins).toHaveLength(26);
     expect(
       screen.getByRole('button', { name: '6-р зогсоол, Мөрөн, Шулуун ба шугаман тэгшитгэл, түгжээтэй' }),
     ).toBeTruthy();
     expect(screen.getByRole('button', { name: /^1-р зогсоол, Өлгий, .*дууссан, 3 од$/ })).toBeTruthy();
+  });
+
+  test('tapping the cat bubble shows the next guide tip', () => {
+    render(
+      <RoadmapMap views={stopViews(sampleState(), true)} frontierNo={5} onOpen={() => {}} cluster={false} />,
+    );
+    const bubble = screen.getByRole('button', { name: 'Дараагийн зөвлөгөө' });
+    expect(bubble.textContent).toContain('Сайн уу!');
+    fireEvent.click(bubble);
+    expect(bubble.textContent).toContain('26 буудлыг');
   });
 
   test('home map stays fixed while pins remain clickable', () => {

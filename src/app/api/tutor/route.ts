@@ -12,7 +12,6 @@ import { equationReply, replyAgrees } from '@/features/tutor/lib/equation-graph'
 import { geminiTutorReply, hasGeminiChat, verdictFor } from '@/server/ai/gemini-chat';
 import { hasOllama } from '@/server/ai/ollama-client';
 import { withVerdict } from '@/server/ai/verdict';
-import { demoReply } from '@/server/tutor/demo';
 import { ollamaReply } from '@/server/tutor/ollama';
 import { scriptedReply } from '@/server/tutor/scripted';
 
@@ -60,7 +59,7 @@ export async function POST(req: Request) {
   const sample = scriptedReply(message);
   if (sample) {
     await new Promise((r) => setTimeout(r, SAMPLE_DELAY_MS));
-    return Response.json({ text: sample.text, lesson: sample.lesson, demo: false, sample: true });
+    return Response.json({ text: sample.text, lesson: sample.lesson, sample: true });
   }
 
   const solved = raw && !parsed.data.context ? equationReply(message) : null;

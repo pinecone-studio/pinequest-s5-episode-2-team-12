@@ -70,17 +70,20 @@ describe('helpers', () => {
 });
 
 describe('askSuu', () => {
-  test('returns text and demo flag', async () => {
-    const f = (async () => Response.json({ text: 'Сайн уу!', demo: true })) as unknown as typeof fetch;
+  test('returns the reply text', async () => {
+    const f = (async () => Response.json({ text: 'Сайн уу!', model: 'suu' })) as unknown as typeof fetch;
     expect(await askSuu({ mode: 'hint', message: 'x', raw: true }, f)).toEqual({
       text: 'Сайн уу!',
-      demo: true,
+      model: 'suu',
     });
   });
 
-  test('throws on server error or empty reply', async () => {
+  test('throws when Suu cannot be reached (503), on server errors and on an empty reply', async () => {
+    const e503 = (async () =>
+      Response.json({ error: 'suu_unavailable' }, { status: 503 })) as unknown as typeof fetch;
     const e500 = (async () => new Response('', { status: 500 })) as unknown as typeof fetch;
     const empty = (async () => Response.json({})) as unknown as typeof fetch;
+    await expect(askSuu({ mode: 'hint', message: 'x', raw: true }, e503)).rejects.toThrow();
     await expect(askSuu({ mode: 'hint', message: 'x', raw: true }, e500)).rejects.toThrow();
     await expect(askSuu({ mode: 'hint', message: 'x', raw: true }, empty)).rejects.toThrow();
   });

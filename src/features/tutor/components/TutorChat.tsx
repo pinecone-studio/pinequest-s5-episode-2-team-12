@@ -1,7 +1,7 @@
 'use client';
 // Section G · G4 · Chat with Suu. Left: new chat + recent chats (kept in this browser). Centre: the cat,
 // suggested prompts, then the conversation. Quick actions (hint, explain, Desmos, similar, translate) appear
-// for a problem; free chat for anything else. Math renders with KaTeX; every real (non-demo) reply gets 👍/👎.
+// for a problem; free chat for anything else. Math renders with KaTeX; every model reply gets 👍/👎.
 import Link from 'next/link';
 import { type FormEvent, type KeyboardEvent, useEffect, useId, useRef, useState } from 'react';
 import { Rich } from '@/components/math';
@@ -28,6 +28,7 @@ import { PANEL_QUESTION_MAX } from '../lib/desmos-panel';
 import { extractEquation } from '../lib/equation-graph';
 import { DesmosCatButton, DesmosSidePanel } from './DesmosSidePanel';
 import { FeedbackButtons } from './FeedbackButtons';
+import { TutorGraph } from './TutorGraph';
 
 type Props = {
   context: TutorContext;
@@ -177,7 +178,6 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
       setMessages((list) =>
         patch(list, replyId, {
           text: reply.text,
-          demo: reply.demo,
           sample: reply.sample,
           lesson: reply.lesson,
           model: reply.model,
@@ -253,74 +253,62 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
   }
 
   return (
-    <div
-      className={cn(
-        'soft-card mx-auto w-full overflow-hidden border border-line md:grid md:grid-cols-[250px_minmax(0,1fr)] md:h-[calc(100dvh-124px)] min-h-[calc(100dvh-180px)]',
-        // Desmos open: the screen splits in half (chat | Desmos); the chat history steps aside
-        desmos ? 'max-w-[1280px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]' : 'max-w-6xl',
-      )}
-    >
-      {/* recent chats */}
-      <aside
-        className={cn(
-          'hidden md:flex flex-col gap-3 border-r border-line bg-paper-2/60 p-3 min-h-0',
-          desmos && 'lg:hidden',
-        )}
-      >
-        <button
-          type="button"
-          onClick={newChat}
-          className="flex items-center justify-center gap-2 h-11 rounded-2xl bg-lime text-[var(--c-on-lime)] font-bold text-[15px] shadow-[0_10px_20px_-12px_var(--c-leaf)] hover:brightness-105"
-        >
-          <span className="text-[20px] leading-none">+</span>
-          {t('chat.newChat')}
-        </button>
-        <div className="px-2 pt-1 text-[11px] font-bold uppercase tracking-[0.12em] text-ink-3">
-          {t('chat.history')}
+    <div className="mx-auto grid w-full max-w-[1500px] overflow-hidden rounded-3xl border border-line bg-paper shadow-sm lg:h-[calc(100dvh-125px)] lg:min-h-[620px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)]">
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line bg-sage/40 px-5 py-4 lg:col-span-2">
+        <div className="flex items-center gap-3">
+          <SuuAvatar size={44} />
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-leaf-2">
+              {t('workspace.eyebrow')}
+            </p>
+            <h1 className="font-display text-xl font-bold text-ink">{t('pages.tutor.title')}</h1>
+          </div>
         </div>
-        <ul className="grid gap-0.5 overflow-y-auto scroll-thin min-h-0 content-start">
-          {sessions.length === 0 && (
-            <li className="px-2 py-1 text-[13.5px] text-ink-3">{t('chat.noHistory')}</li>
-          )}
-          {sessions.map((s) => (
-            <li key={s.id} className="group relative">
-              <button
-                type="button"
-                onClick={() => openChat(s)}
-                className={cn(
-                  'w-full text-left truncate rounded-xl px-3 py-2.5 pr-8 text-[14px] transition-colors',
-                  s.id === activeId ? 'bg-sage text-leaf-2 font-semibold' : 'text-ink-2 hover:bg-paper',
-                )}
-              >
-                {s.title}
-              </button>
-              <button
-                type="button"
-                onClick={() => deleteChat(s.id)}
-                aria-label={t('chat.deleteChat')}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 size-6 rounded-lg text-ink-3 opacity-0 group-hover:opacity-100 focus:opacity-100 hover:bg-paper-2 hover:text-danger"
-              >
-                ×
-              </button>
-            </li>
-          ))}
-        </ul>
-      </aside>
-
+        <Button size="sm" variant="secondary" onClick={newChat}>
+          + {t('chat.newChat')}
+        </Button>
+      </header>
       {/* conversation */}
-      <div className="flex flex-col min-h-0 min-w-0">
-        <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-4">
-          <h1 className="font-bold text-ink">{t('pages.tutor.title')}</h1>
-          <button
-            type="button"
-            onClick={newChat}
-            className="md:hidden h-9 px-3 rounded-xl bg-sage text-leaf-2 text-[14px] font-bold"
-          >
-            + {t('chat.newChat')}
-          </button>
+      <div className="flex min-h-[580px] min-w-0 flex-col bg-paper lg:min-h-0">
+        <div className="relative flex items-center justify-between gap-3 border-b border-line px-5 py-3">
+          <p className="text-sm font-bold text-ink">{t('workspace.conversation')}</p>
+          <details className="group">
+            <summary className="cursor-pointer rounded-xl px-3 py-2 text-xs font-semibold text-leaf-2 hover:bg-sage">
+              {t('chat.history')} ({sessions.length})
+            </summary>
+            <div className="absolute left-3 right-3 top-full z-30 max-h-72 overflow-y-auto rounded-2xl border border-line bg-paper p-3 shadow-xl">
+              <ul className="grid gap-0.5 overflow-y-auto scroll-thin min-h-0 content-start">
+                {sessions.length === 0 && (
+                  <li className="px-2 py-1 text-[13.5px] text-ink-3">{t('chat.noHistory')}</li>
+                )}
+                {sessions.map((s) => (
+                  <li key={s.id} className="group relative">
+                    <button
+                      type="button"
+                      onClick={() => openChat(s)}
+                      className={cn(
+                        'w-full text-left truncate rounded-xl px-3 py-2.5 pr-8 text-[14px] transition-colors',
+                        s.id === activeId ? 'bg-sage text-leaf-2 font-semibold' : 'text-ink-2 hover:bg-paper',
+                      )}
+                    >
+                      {s.title}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => deleteChat(s.id)}
+                      aria-label={t('chat.deleteChat')}
+                      className="absolute right-1.5 top-1/2 -translate-y-1/2 size-6 rounded-lg text-ink-3 opacity-0 group-hover:opacity-100 focus:opacity-100 hover:bg-paper-2 hover:text-danger"
+                    >
+                      ×
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </details>
         </div>
 
-        <div className="flex-1 overflow-y-auto scroll-thin px-4 md:px-8 py-6 min-h-0">
+        <div className="flex-1 overflow-y-auto scroll-thin px-4 md:px-5 py-5 min-h-0">
           <div className="mx-auto w-full max-w-3xl grid gap-4">
             {ctx.problem && (
               <section aria-label={t('chat.problem')} className="rounded-2xl border border-line bg-paper p-4">
@@ -353,10 +341,29 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
             )}
 
             {empty && !ctx.problem && (
-              <div className="grid justify-items-center text-center pt-6 md:pt-14 pb-4">
-                <SuuAvatar size={112} className="shadow-[0_18px_36px_-18px_rgba(12,40,22,.45)]" />
-                <h2 className="mt-6 text-[19px] md:text-[21px] text-ink-2">{t('chat.hero')}</h2>
-              </div>
+              <section className="rounded-2xl border border-line bg-sage/30 p-5">
+                <p className="text-xs font-bold uppercase tracking-wider text-leaf-2">
+                  {t('workspace.welcome')}
+                </p>
+                <h2 className="mt-2 font-display text-2xl font-bold text-ink">{t('workspace.title')}</h2>
+                <p className="mt-3 text-sm leading-relaxed text-ink-2">{t('workspace.intro')}</p>
+                {empty && !ctx.problem && starters.length > 0 && (
+                  <ul className="mt-5 grid gap-2 sm:grid-cols-2">
+                    {starters.map((s) => (
+                      <li key={s}>
+                        <button
+                          type="button"
+                          onClick={() => void run({ kind: 'free', text: plain(s) })}
+                          className="flex h-full w-full items-start justify-between gap-2 rounded-2xl border border-line bg-paper p-3 text-left text-[13px] leading-relaxed text-ink-2 transition-colors hover:border-leaf hover:bg-sage"
+                        >
+                          <Starter text={s} />
+                          <Icon name="chevron" size={17} className="text-ink-3 shrink-0" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </section>
             )}
 
             <ol aria-live="polite" className="grid gap-4">
@@ -390,27 +397,11 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
           </div>
         </div>
 
-        <div className="px-4 md:px-8 pb-4 md:pb-6 sticky bottom-20 md:static">
+        <div className="border-t border-line bg-paper px-4 py-4 md:px-5">
           <div className="mx-auto w-full max-w-3xl">
-            {empty && !ctx.problem && starters.length > 0 && (
-              <ul className="mb-4 grid">
-                {starters.map((s) => (
-                  <li key={s}>
-                    <button
-                      type="button"
-                      onClick={() => void run({ kind: 'free', text: plain(s) })}
-                      className="w-full flex items-center justify-between gap-3 rounded-xl px-3 py-3 text-left text-[15px] text-ink-3 hover:bg-paper-2 transition-colors"
-                    >
-                      <Starter text={s} />
-                      <Icon name="chevron" size={17} className="text-ink-3 shrink-0" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
             <form
               onSubmit={onSubmit}
-              className="rounded-[24px] bg-paper-2 border border-line p-3 pl-4 focus-within:border-leaf transition-colors"
+              className="rounded-2xl bg-paper-2 border border-line p-3 pl-4 focus-within:border-leaf transition-colors"
             >
               <label htmlFor={inputId} className="sr-only">
                 {t('chat.inputLabel')}
@@ -451,7 +442,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
         </div>
       </div>
 
-      {desmos && (
+      {desmos ? (
         <DesmosSidePanel
           inset
           input={desmos}
@@ -461,6 +452,8 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
           onView={setPanel}
           fetchImpl={fetchImpl}
         />
+      ) : (
+        <TutorGraph />
       )}
     </div>
   );
@@ -489,11 +482,6 @@ export function SuuBubble({
   }
   return (
     <div className="grid max-w-[85%] gap-2 rounded-2xl rounded-tl-md bg-paper-2 px-4 py-3">
-      {msg.demo && (
-        <Pill tone="amber" className="w-fit">
-          {t('chat.demo')}
-        </Pill>
-      )}
       {msg.sample && (
         <Pill tone="leaf" className="w-fit">
           {t('chat.sample')}

@@ -2,7 +2,7 @@
 // the Desmos lessons. Gemini never decides the facts on its own: the server looks the problem up in the question
 // bank, grades the student's answer with code, and tells Gemini the verdict. The correct answer is sent only once
 // the student may see it (they answered, unlocked it, or asked for the full explanation), so a hint can never
-// leak it. Returns null instead of throwing, so the route falls back to demo replies.
+// leak it. Returns null instead of throwing, so the route can answer 503 (Суу cannot be reached).
 import { roadmapQuestionById } from '@/features/roadmap/content/bank';
 import { answersMatch } from '@/features/tutor/lib/desmos-lesson-parse';
 import { questionById } from '@/server/bank';
