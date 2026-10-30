@@ -41,5 +41,22 @@
     "unapprove": "Undo",
     "reviewed": "Approved",
     "readOnly": "Read-only: Supabase is not configured or you are not an admin."
+  },
+  "offline": {
+    "download": "Save words for offline",
+    "open": "Open offline words",
+    "downloading": "Downloading the cards and the website…",
+    "downloaded": "{n} cards ready to review offline.",
+    "downloadError": "Could not download. Check your connection and try again.",
+    "hint": "Saves every word, formula and your review progress in this browser.",
+    "title": "Offline words",
+    "back": "Back to words",
+    "practice": "Offline practice",
+    "online": "Online",
+    "offline": "Offline",
+    "empty": "No saved cards. While online, save them from the «Words» page.",
+    "pending": "{n} reviews waiting to sync.",
+    "ready": "Reviews are saved on this device and sync automatically when you are back online.",
+    "storageError": "Could not save. Check the browser's storage permission and free space."
   }
 }

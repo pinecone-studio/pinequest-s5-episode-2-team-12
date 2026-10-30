@@ -321,4 +321,18 @@ describe('StopPlayer (demo mode)', () => {
       expect(ask.getAttribute('href')).toMatch(/^\/tutor\?kind=question&id=t1-\d+&chosen=1$/),
     );
   });
+
+  test('«AI багш Суу» opens beside the problem; checking the answer unlocks the full explanation', async () => {
+    saveLocalRoadmap({ ...loadLocalRoadmap(), state: withPlacement(initialState(), skippedResult()) });
+    render(
+      <StopPlayer no={1} testOut={false} pool={pool} intro={[]} demo server={null} serverHistory={[]} />,
+    );
+    await screen.findByRole('region', { name: 'Бодлого 1 / 8' });
+    fireEvent.click(screen.getByRole('button', { name: 'AI багш Суу-г хажууд нээх' }));
+    expect(screen.getByRole('complementary', { name: 'AI багш Суу' })).toBeTruthy();
+    expect((screen.getByRole('button', { name: /Бүтэн тайлбар/ }) as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.click(screen.getByRole('radio', { name: /^B/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Шалгах' }));
+    expect((screen.getByRole('button', { name: 'Бүтэн тайлбар' }) as HTMLButtonElement).disabled).toBe(false);
+  });
 });

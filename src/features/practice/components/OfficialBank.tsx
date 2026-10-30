@@ -3,6 +3,8 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { type FormEvent, useId, useState, useTransition } from 'react';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { DownloadQuestions } from '@/features/offline/DownloadQuestions';
+import { SuuSidePanel } from '@/features/tutor/components/SuuSidePanel';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import type { Domain } from '@/types';
@@ -13,7 +15,7 @@ import {
   type OfficialPage,
   officialFilterToParams,
 } from '../lib/official';
-import { OfficialQuestionCard } from './OfficialQuestionCard';
+import { OfficialQuestionCard, type SuuState } from './OfficialQuestionCard';
 
 const DOMAINS: (Domain | 'all')[] = ['all', 'alg', 'adv', 'psda', 'geo'];
 const field =
@@ -29,6 +31,9 @@ export function OfficialBank({ data, filter }: { data: OfficialPage; filter: Off
   const [resetKeys, setResetKeys] = useState<Record<string, number>>({});
   const [search, setSearch] = useState(filter.search ?? '');
   const searchId = useId();
+  // the question open in the «AI багш Суу» side panel, and what its card reports (checked, the answer given)
+  const [suu, setSuu] = useState<({ id: string } & SuuState) | null>(null);
+  const suuQuestion = suu ? data.questions.find((q) => q.id === suu.id) : undefined;
 
   function go(next: Partial<OfficialFilter>) {
     const params = officialFilterToParams({ ...filter, page: 1, ...next });
@@ -54,6 +59,8 @@ export function OfficialBank({ data, filter }: { data: OfficialPage; filter: Off
           <span className="text-xs font-semibold text-ink-3">{t('bank.available')}</span>
         </div>
       </PageHeader>
+
+      <DownloadQuestions questions={data.questions} />
 
       <section className="section-panel space-y-5 p-5 sm:p-6">
         <div className="space-y-2.5">
@@ -186,7 +193,7 @@ export function OfficialBank({ data, filter }: { data: OfficialPage; filter: Off
             <p className="mt-1 text-sm text-ink-3">{t('bank.emptyBody')}</p>
           </div>
         )}
-      </section>
+      </div>
 
       {data.pageCount > 1 && (
         <nav aria-label={t('official.pagination')} className="flex items-center justify-center gap-3">

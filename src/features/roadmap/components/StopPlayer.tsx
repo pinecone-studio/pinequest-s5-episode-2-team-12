@@ -10,6 +10,8 @@ import { Button } from '@/components/ui/Button';
 import { Confetti } from '@/components/ui/Confetti';
 import { Modal } from '@/components/ui/Modal';
 import { toast } from '@/components/ui/toast';
+import { SuuSidePanel, SuuTutorButton, splitLayout } from '@/features/tutor/components/SuuSidePanel';
+import { chosenText, questionProblem } from '@/features/tutor/lib/suu-panel';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
@@ -71,6 +73,7 @@ export function StopPlayer({
   const [value, setValue] = useState('');
   const [revealed, setRevealed] = useState(false);
   const [hint, setHint] = useState(false);
+  const [showSuu, setShowSuu] = useState(false);
   const [answers, setAnswers] = useState<SubmittedAnswer[]>([]);
   const [outcome, setOutcome] = useState<StopOutcome | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -338,7 +341,6 @@ export function StopPlayer({
           <div className="relative z-10 animate-fade-in rounded-2xl bg-teal-soft/90 p-3 text-base sm:text-lg font-bold text-teal border border-teal/20 max-h-24 overflow-hidden">
             <Rich text={q.hint} />
           </div>
-        )}
 
         {/* Explanation */}
         {revealed && (
@@ -356,13 +358,21 @@ export function StopPlayer({
                   <Rich text={t('stop.answerWas', { a: correctAnswerText(q) })} />
                 </span>
               )}
-            </p>
-            <p className="text-base sm:text-lg leading-snug text-ink font-medium">
-              <Rich text={q.explain} />
-            </p>
-          </div>
-        )}
-      </section>
+            >
+              <p className={cn('text-lg sm:text-xl font-black', correct ? 'text-leaf-2' : 'text-danger')}>
+                {correct ? t('stop.correct') : t('stop.wrong')}
+                {!correct && (
+                  <span className="ml-2 font-bold text-ink-2 text-sm sm:text-base">
+                    <Rich text={t('stop.answerWas', { a: correctAnswerText(q) })} />
+                  </span>
+                )}
+              </p>
+              <p className="text-base sm:text-lg leading-snug text-ink font-medium">
+                <Rich text={q.explain} />
+              </p>
+            </div>
+          )}
+        </section>
 
       {/* Footer Navigation Buttons */}
       <div className="relative z-10 flex items-center justify-between gap-4 pt-2 border-t border-border/20 shrink-0">
@@ -386,32 +396,62 @@ export function StopPlayer({
                 href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}
                 className="inline-flex min-h-11 items-center rounded-2xl border border-line bg-paper px-4 text-sm font-bold text-ink hover:bg-paper-2"
               >
-                {t('stop.askSuu')}
-              </Link>
+                {t('stop.hint')}
+              </Button>
+            ) : (
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="text-sm font-extrabold text-ink-3 tnum">
+                  Зөв: {right}/{answers.length}
+                </span>
+                {/* a wrong answer goes to Суу with the problem and what the student chose */}
+                {!correct && (
+                  <Link
+                    href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}
+                    className="inline-flex min-h-11 items-center rounded-2xl border border-line bg-paper px-4 text-sm font-bold text-ink hover:bg-paper-2"
+                  >
+                    {t('stop.askSuu')}
+                  </Link>
+                )}
+              </div>
             )}
+            <SuuTutorButton open={showSuu} onClick={() => setShowSuu((v) => !v)} />
           </div>
-        )}
-        {!revealed ? (
-          <Button
-            variant="lime"
-            size="xl"
-            className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
-            onClick={check}
-            disabled={!value.trim()}
-          >
-            {t('stop.check')}
-          </Button>
-        ) : (
-          <Button
-            variant="lime"
-            size="xl"
-            className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
-            onClick={next}
-          >
-            {i < total - 1 ? t('stop.next') : t('stop.finish')}
-          </Button>
-        )}
+          {!revealed ? (
+            <Button
+              variant="lime"
+              size="xl"
+              className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
+              onClick={check}
+              disabled={!value.trim()}
+            >
+              {t('stop.check')}
+            </Button>
+          ) : (
+            <Button
+              variant="lime"
+              size="xl"
+              className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
+              onClick={next}
+            >
+              {i < total - 1 ? t('stop.next') : t('stop.finish')}
+            </Button>
+          )}
+        </div>
       </div>
+
+      {showSuu && (
+        <SuuSidePanel
+          context={{
+            kind: 'question',
+            id: q.id,
+            title: q.skill,
+            problem: questionProblem(q),
+            chosen: revealed ? chosenText(q, value) : undefined,
+          }}
+          revealed={revealed}
+          onClose={() => setShowSuu(false)}
+        />
+      )}
     </div>
     <Modal
       open={showSummary}

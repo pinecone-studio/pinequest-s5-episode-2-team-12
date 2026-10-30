@@ -64,8 +64,8 @@ export function SuuInsights({
     <section aria-label={t('insights.title')} className="soft-card grid gap-3 p-4 md:p-5">
       <div className="flex flex-wrap items-center gap-2">
         <span className="grid size-8 place-items-center overflow-hidden rounded-[30%] bg-sage" aria-hidden>
-          {/* biome-ignore lint/performance/noImgElement: static transparent PNG */}
-          <img src="/brand/suu-logo-head.png" alt="" width={32} height={32} className="w-[88%] h-auto" />
+          {/* biome-ignore lint/performance/noImgElement: static transparent image */}
+          <img src="/brand/suu-logo-head.webp" alt="" width={32} height={32} className="w-[88%] h-auto" />
         </span>
         <h2 className="font-bold text-ink">{t('insights.title')}</h2>
         {res?.analysis && (

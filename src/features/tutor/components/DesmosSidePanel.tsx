@@ -65,8 +65,8 @@ export function DesmosCatButton({
         className="grid size-7 place-items-center overflow-hidden rounded-[30%] bg-sage"
         aria-hidden="true"
       >
-        {/* biome-ignore lint/performance/noImgElement: static transparent PNG */}
-        <img src="/brand/suu-logo-head.png" alt="" width={28} height={28} className="w-[88%] h-auto" />
+        {/* biome-ignore lint/performance/noImgElement: static transparent image */}
+        <img src="/brand/suu-logo-head.webp" alt="" width={28} height={28} className="w-[88%] h-auto" />
       </span>
       {t('desmosPanel.button')}
     </button>
@@ -178,8 +178,8 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
             className="grid size-8 shrink-0 place-items-center overflow-hidden rounded-[30%] bg-sage"
             aria-hidden
           >
-            {/* biome-ignore lint/performance/noImgElement: static transparent PNG */}
-            <img src="/brand/suu-logo-head.png" alt="" width={32} height={32} className="w-[88%] h-auto" />
+            {/* biome-ignore lint/performance/noImgElement: static transparent image */}
+            <img src="/brand/suu-logo-head.webp" alt="" width={32} height={32} className="w-[88%] h-auto" />
           </span>
           <h2 className="truncate font-bold text-ink">{t('desmosPanel.title')}</h2>
           {lesson && (

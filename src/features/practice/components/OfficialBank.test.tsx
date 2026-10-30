@@ -74,6 +74,22 @@ describe('OfficialBank', () => {
     expect(screen.getByText('Зөв! Сайн байна.')).toBeTruthy();
   });
 
+  test('«AI багш Суу» opens beside the list for that question and unlocks the explanation once checked', () => {
+    render(<OfficialBank data={data} filter={{ page: 1 }} />);
+    expect(screen.queryByRole('complementary', { name: 'AI багш Суу' })).toBeNull();
+    fireEvent.click(screen.getAllByRole('button', { name: 'AI багш Суу-г хажууд нээх' })[0]);
+    expect(screen.getByRole('complementary', { name: 'AI багш Суу' })).toBeTruthy();
+    expect((screen.getByRole('button', { name: /Бүтэн тайлбар/ }) as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.click(screen.getAllByRole('radio')[1]);
+    fireEvent.click(screen.getAllByRole('button', { name: 'Шалгах' })[0]);
+    expect((screen.getByRole('button', { name: 'Бүтэн тайлбар' }) as HTMLButtonElement).disabled).toBe(false);
+    // the other card's button switches the panel; × closes it
+    fireEvent.click(screen.getAllByRole('button', { name: 'AI багш Суу-г хажууд нээх' })[0]);
+    expect(screen.getAllByRole('button', { name: 'AI багш Суу-г хаах' })).toHaveLength(2);
+    fireEvent.click(screen.getAllByRole('button', { name: 'AI багш Суу-г хаах' })[1]);
+    expect(screen.queryByRole('complementary', { name: 'AI багш Суу' })).toBeNull();
+  });
+
   test('picking a topic pushes it into the URL and resets the page', () => {
     pushed.length = 0;
     render(<OfficialBank data={data} filter={{ page: 3, difficulty: 3 }} />);

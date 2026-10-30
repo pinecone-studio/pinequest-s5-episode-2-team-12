@@ -57,6 +57,13 @@ export function OfficialQuestionCard({
   const isMcq = question.format === 'mcq';
   const canCheck = isMcq ? choice !== null : typed.trim() !== '';
   const answerText = isMcq ? question.answer : question.accepted.join(', ');
+  const chosen = checked ? (isMcq ? (choice ?? undefined) : typed.trim() || undefined) : undefined;
+
+  // keep the open panel in step with this card: checking unlocks the full explanation
+  // biome-ignore lint/correctness/useExhaustiveDependencies: onSuu is a fresh closure on every render
+  useEffect(() => {
+    if (suuOpen) onSuu?.({ checked, chosen });
+  }, [suuOpen, checked, chosen]);
 
   function check(event?: FormEvent) {
     event?.preventDefault();
