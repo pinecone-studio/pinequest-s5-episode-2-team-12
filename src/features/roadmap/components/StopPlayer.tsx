@@ -326,7 +326,7 @@ export function StopPlayer({
             </div>
           </div>
 
-          {/* Main Question Box */}
+          {/* Main Question Box - Tom, tod fontoooor, yamar ch holhiltguigeer baikh bolovch horigdohgui */}
           <section
             className="relative flex flex-col justify-center flex-1 my-auto gap-3 py-1 transition-all text-foreground overflow-hidden"
             aria-label={t('stop.problem', { i: i + 1, n: total })}
@@ -342,14 +342,14 @@ export function StopPlayer({
               />
             </div>
 
-            {/* Hint */}
+            {/* Hint - Tom, tod text */}
             {hint && !revealed && (
               <div className="relative z-10 animate-fade-in rounded-2xl bg-teal-soft/90 p-3 text-base sm:text-lg font-bold text-teal border border-teal/20 max-h-24 overflow-hidden">
                 <Rich text={q.hint} />
               </div>
             )}
 
-            {/* Explanation */}
+            {/* Explanation - Tom, tod text */}
             {revealed && (
               <div
                 role="status"
@@ -375,7 +375,7 @@ export function StopPlayer({
             )}
           </section>
 
-          {/* Footer Navigation Buttons */}
+          {/* Footer Navigation Buttons - Tom, darsan baihad amar tovchnuud */}
           <div className="relative z-10 flex items-center justify-between gap-4 pt-2 border-t border-border/20 shrink-0">
             <div className="flex flex-wrap items-center gap-2">
               {!revealed ? (
@@ -393,6 +393,7 @@ export function StopPlayer({
                   <span className="text-sm font-extrabold text-ink-3 tnum">
                     Зөв: {right}/{answers.length}
                   </span>
+                  {/* a wrong answer goes to Суу with the problem and what the student chose */}
                   {!correct && (
                     <Link
                       href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}

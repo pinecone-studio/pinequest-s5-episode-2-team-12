@@ -1,14 +1,56 @@
 'use client';
 
-import { type FormEvent, useEffect, useId, useState } from 'react';
+import { type ClipboardEvent, type FormEvent, useEffect, useId, useState } from 'react';
 import { SaveStatus } from '@/features/mistakes/components/SaveStatus';
 import { useAnswerSubmission } from '@/features/mistakes/useAnswerSubmission';
 import { SuuTutorButton } from '@/features/tutor/components/SuuSidePanel';
 import { checkGridInAnswer } from '@/lib/check-answer';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
+import { copyText, questionCopyText } from '../lib/copy-text';
 import { cbScope, type OfficialQuestion } from '../lib/official';
 import { officialSolveIssue } from '../lib/topic-bank';
+
+/** Copy a selection inside a question as one-line math instead of MathML's symbol-per-line text. */
+function copyAsText(event: ClipboardEvent) {
+  const selection = window.getSelection();
+  if (!selection || selection.isCollapsed) return;
+  const text = Array.from({ length: selection.rangeCount }, (_, i) =>
+    copyText(selection.getRangeAt(i).cloneContents()),
+  ).join('\n');
+  if (!text) return;
+  event.preventDefault();
+  event.clipboardData.setData('text/plain', text);
+}
+
+/** Copies the whole question (prompt + choices) as plain text. */
+function CopyQuestionButton({ question }: { question: OfficialQuestion }) {
+  const [state, setState] = useState<'idle' | 'copied' | 'failed'>('idle');
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(questionCopyText(question.promptHtml, question.choices));
+      setState('copied');
+    } catch {
+      setState('failed');
+    }
+    setTimeout(() => setState('idle'), 2000);
+  }
+  return (
+    <button
+      type="button"
+      onClick={() => void copy()}
+      aria-label={`Бодлогыг хуулах · ${question.id}`}
+      className="rounded-lg border border-line bg-paper-2 px-2.5 py-1 text-xs font-bold text-ink-2 transition hover:border-leaf hover:text-leaf-2"
+    >
+      <span aria-live="polite">
+        {state === 'copied' ? 'Хуулсан ✓' : state === 'failed' ? 'Хуулж чадсангүй' : 'Хуулах'}
+      </span>
+    </button>
+  );
+}
+
+/** What the bank's «AI багш Суу» panel needs from the card that opened it. */
+export type SuuState = { checked: boolean; chosen?: string };
 
 /** College Board HTML that was prepared on the server with the same scope (see lib/cb-html.ts). */
 export function CbHtml({ html, scope, className }: { html: string; scope: string; className?: string }) {
@@ -52,20 +94,29 @@ export function OfficialQuestionCard({
   onComplete?: () => void;
   lastInTopic?: boolean;
   onResolved?: () => void;
+  /** This card's problem is open in the Суу side panel. */
+  suuOpen?: boolean;
+  /** Opens (state) or closes (null) the Суу side panel for this card. */
+  onSuu?: (state: SuuState | null) => void;
+  /** Offline practice: the answer saved on this device, and whether it was already checked. */
+  initialAnswer?: string;
+  initiallyChecked?: boolean;
+  onAnswer?: (answer: string) => void;
 }) {
   const t = useT('practice');
   const inputId = useId();
   const isMcq = question.format === 'mcq';
   const [choice, setChoice] = useState<string | null>(isMcq ? (initialAnswer ?? null) : null);
-  const [typed, setTyped] = useState(isMcq ? '' : (initialAnswer ?? ''));
+  const [typed, setTyped] = useState(question.format === 'spr' ? (initialAnswer ?? '') : '');
   const [checked, setChecked] = useState(initiallyChecked);
-  const [correct, setCorrect] = useState(
-    () =>
-      initiallyChecked &&
-      initialAnswer !== undefined &&
-      (isMcq ? initialAnswer === question.answer : checkGridInAnswer(initialAnswer, question.accepted)),
+  const [correct, setCorrect] = useState(() =>
+    initiallyChecked && initialAnswer !== undefined
+      ? isMcq
+        ? initialAnswer === question.answer
+        : checkGridInAnswer(initialAnswer, question.accepted)
+      : false,
   );
-  const [showExplanation, setShowExplanation] = useState(correct);
+  const [showExplanation, setShowExplanation] = useState(initiallyChecked);
   const saving = useAnswerSubmission(onResolved);
   const chosen = checked ? (isMcq ? (choice ?? undefined) : typed.trim() || undefined) : undefined;
 
@@ -112,6 +163,7 @@ export function OfficialQuestionCard({
       aria-labelledby={`${inputId}-title`}
       id={`official-question-${question.id}`}
       tabIndex={-1}
+      onCopy={copyAsText}
     >
       <div className="flex flex-wrap items-center gap-2">
         <span className="font-display text-sm font-bold text-ink-3 tnum">#{index}</span>
@@ -136,6 +188,7 @@ export function OfficialQuestionCard({
           </span>
         )}
         <span className="ml-auto font-mono text-[11px] text-ink-3">{question.id}</span>
+        <CopyQuestionButton question={question} />
       </div>
 
       <CbHtml

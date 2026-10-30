@@ -1,9 +1,8 @@
-import { afterEach, beforeEach, expect, test } from 'bun:test';
+import { afterEach, beforeEach, expect, mock, test } from 'bun:test';
 import { QUESTIONS } from '@/mocks/questions';
 import { answerTransport, resetAnswerTransport } from '@/test/mock-submissions';
-import { act, fireEvent, render, screen } from '@/test/render';
+import { act, fireEvent, render, screen, within } from '@/test/render';
 import { mapOfficialRow } from '../lib/official';
-import { BankTopics } from './BankTopics';
 import { OfficialQuestionCard } from './OfficialQuestionCard';
 import { PracticePlayer } from './PracticePlayer';
 
@@ -23,6 +22,12 @@ const question = mapOfficialRow({
   explanation_html: '<p>Private explanation</p>',
 });
 const settled = () => act(async () => {});
+const pushed: string[] = [];
+mock.module('next/navigation', () => ({
+  useRouter: () => ({ push: (href: string) => pushed.push(href), refresh() {} }),
+  usePathname: () => '/bank',
+}));
+const { OfficialBank } = await import('./OfficialBank');
 
 test('wrong official answers stay neutral; reveal and hints never resolve; only a saved correct retry resolves', async () => {
   let resolved = 0;
@@ -86,26 +91,30 @@ test('practice SPR wrong answer hides explanation, allows retry, and hint/view d
 
 test('topic Next is explicit, resets solver state, and the last correct answer offers completion', async () => {
   const second = { ...question, id: 'second', promptHtml: '<p>Second official question</p>' };
-  render(<BankTopics questions={[]} officialQuestions={[question, second]} />);
-  fireEvent.click(screen.getByRole('button', { name: 'Алгебр' }));
-  fireEvent.click(screen.getByRole('button', { name: `Бодох: ${question.skill} · ${question.id}` }));
-  fireEvent.click(screen.getAllByRole('radio')[0]);
-  fireEvent.click(screen.getByRole('button', { name: 'Шалгах' }));
-  await settled();
-  expect(screen.getByText('First official question')).toBeTruthy();
-  fireEvent.click(screen.getByRole('button', { name: 'Дараагийн бодлого →' }));
-  expect(screen.getByText('Second official question')).toBeTruthy();
-  expect(screen.queryByText('Private explanation')).toBeNull();
-  expect(screen.queryByRole('status')).toBeNull();
-  expect(screen.getAllByRole('radio').every((radio) => radio.getAttribute('aria-checked') === 'false')).toBe(
-    true,
+  const { container } = render(
+    <OfficialBank
+      data={{ questions: [question, second], total: 2, bankTotal: 2, page: 1, pageCount: 1 }}
+      filter={{ page: 1, domain: 'alg' }}
+    />,
   );
-  fireEvent.click(screen.getAllByRole('radio')[0]);
-  fireEvent.click(screen.getByRole('button', { name: 'Шалгах' }));
+  const card = (id: string) =>
+    container.querySelector<HTMLElement>(`#official-question-${id}`) as HTMLElement;
+  const first = card(question.id);
+  fireEvent.click(within(first).getAllByRole('radio')[0]);
+  fireEvent.click(within(first).getByRole('button', { name: 'Шалгах' }));
   await settled();
-  expect(screen.getByText('Сэдвийн бодлогууд дууслаа!')).toBeTruthy();
-  fireEvent.click(screen.getByRole('button', { name: 'Бодлогын жагсаалт руу буцах' }));
-  expect(screen.getAllByRole('button', { name: /^Бодох:/ })).toHaveLength(2);
+  expect(within(first).getByText('Private explanation')).toBeTruthy();
+  fireEvent.click(within(first).getByRole('button', { name: 'Дараагийн бодлого →' }));
+  // Next remounts the following card with fresh solver state.
+  const last = card('second');
+  expect(within(last).getByText('Second official question')).toBeTruthy();
+  expect(within(last).queryByRole('status')).toBeNull();
+  fireEvent.click(within(last).getAllByRole('radio')[0]);
+  fireEvent.click(within(last).getByRole('button', { name: 'Шалгах' }));
+  await settled();
+  expect(within(last).getByText('Сэдвийн бодлогууд дууслаа!')).toBeTruthy();
+  fireEvent.click(within(last).getByRole('button', { name: 'Бодлогын жагсаалт руу буцах' }));
+  expect(pushed).toEqual(['/bank']);
 });
 
 test('a correct answer with a failed database save never invokes resolution and can retry persistence', async () => {
@@ -148,3 +157,18 @@ test('practice MCQ mistakes never highlight the right choice before explicit rev
 
 beforeEach(resetAnswerTransport);
 afterEach(resetAnswerTransport);
+
+test('the copy button copies the question and lettered choices as plain text', async () => {
+  const copied: string[] = [];
+  const clipboard = navigator.clipboard;
+  Object.defineProperty(navigator, 'clipboard', {
+    configurable: true,
+    value: { writeText: async (text: string) => void copied.push(text) },
+  });
+  render(<OfficialQuestionCard question={question} index={1} />);
+  fireEvent.click(screen.getByRole('button', { name: `Бодлогыг хуулах · ${question.id}` }));
+  await settled();
+  expect(copied).toEqual(['First official question\n\nA) 1\nB) 2']);
+  expect(screen.getByText('Хуулсан ✓')).toBeTruthy();
+  Object.defineProperty(navigator, 'clipboard', { configurable: true, value: clipboard });
+});

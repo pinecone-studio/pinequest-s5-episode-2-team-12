@@ -16,7 +16,7 @@ import type { DesmosAiLesson } from '../lib/desmos-lessons';
 import { type DesmosPanelInput, panelView, visibleSteps } from '../lib/desmos-panel';
 
 type LessonReply =
-  | { lesson: DesmosAiLesson; source: 'sample' | 'model' }
+  | { lesson: DesmosAiLesson; source: 'sample' | 'model' | 'solver' }
   | { lesson: null; source: 'none'; reason: 'off' | 'failed' };
 
 type Props = {
@@ -76,7 +76,7 @@ export function DesmosCatButton({
 export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl, inset, onView }: Props) {
   const t = useT('tutor');
   const [lesson, setLesson] = useState<DesmosAiLesson | null>(null);
-  const [source, setSource] = useState<'sample' | 'model' | null>(null);
+  const [source, setSource] = useState<'sample' | 'model' | 'solver' | null>(null);
   const [thinking, setThinking] = useState(true);
   const waited = useElapsed(thinking);
   const [cur, setCur] = useState(0);
@@ -183,8 +183,14 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
           </span>
           <h2 className="truncate font-bold text-ink">{t('desmosPanel.title')}</h2>
           {lesson && (
-            <Pill tone={source === 'model' ? 'teal' : 'amber'}>
-              {source === 'model' ? t('desmosAi.live') : t('desmosAi.sample')}
+            <Pill tone={source === 'model' ? 'teal' : source === 'solver' ? 'leaf' : 'amber'}>
+              {t(
+                source === 'model'
+                  ? 'desmosAi.live'
+                  : source === 'solver'
+                    ? 'desmosAi.solver'
+                    : 'desmosAi.sample',
+              )}
             </Pill>
           )}
           {!lesson && !thinking && input.rows?.length ? (

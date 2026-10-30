@@ -15,6 +15,7 @@ import {
   type OfficialPage,
   officialFilterToParams,
 } from '../lib/official';
+import { FloatingTools } from './FloatingTools';
 import { OfficialQuestionCard, type SuuState } from './OfficialQuestionCard';
 
 const DOMAINS: (Domain | 'all')[] = ['all', 'alg', 'adv', 'psda', 'geo'];
@@ -241,6 +242,7 @@ export function OfficialBank({ data, filter }: { data: OfficialPage; filter: Off
       )}
 
       <p className="px-1 text-center text-xs text-ink-3">{t('official.source')}</p>
+      <FloatingTools />
     </div>
   );
 }
