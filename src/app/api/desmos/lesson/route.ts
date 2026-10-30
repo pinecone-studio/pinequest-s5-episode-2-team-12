@@ -2,10 +2,13 @@
 // 1. The 6 pitch questions get their hand-written sample lesson (labelled «Жишээ хичээл»). With the model off,
 //    keyword matches count too (demo); with it on, only the exact sample question does.
 // 2. Otherwise Suu writes the lesson live (OLLAMA_URL), checked by parseModelLesson before it is sent.
-// 3. Model off or every try failed the checks → { lesson: null } and the page says so.
+// 3. A plain equation in x ("5(x - 4) + 7 = 3(x + 2) + 5") is solved by code and drawn Photomath-style
+//    (both sides graphed, the crossing is the answer) — instant and always right (lib/equation-graph.ts).
+// 4. Model off or every try failed the checks → { lesson: null } and the page says so.
 import { z } from 'zod';
 import { answersMatch } from '@/features/tutor/lib/desmos-lesson-parse';
 import { findLesson } from '@/features/tutor/lib/desmos-lessons';
+import { equationLesson } from '@/features/tutor/lib/equation-graph';
 import { modelDesmosLesson } from '@/server/ai/desmos-lesson';
 import { hasOllama } from '@/server/ai/ollama-client';
 
@@ -23,7 +26,7 @@ const SAMPLE_DELAY_MS = process.env.NODE_ENV === 'test' ? 0 : 900;
 export type DesmosLessonResponse =
   | {
       lesson: NonNullable<ReturnType<typeof findLesson>>;
-      source: 'sample' | 'model';
+      source: 'sample' | 'model' | 'solver';
       answerFrom?: 'student' | 'model';
       technique?: string | null;
     }
@@ -42,6 +45,12 @@ export async function POST(req: Request) {
   if (sample) {
     await new Promise((r) => setTimeout(r, SAMPLE_DELAY_MS));
     return Response.json({ lesson: sample, source: 'sample' } satisfies DesmosLessonResponse);
+  }
+
+  // the solver's answer must agree with the one we were given (a bank problem always sends it)
+  const solved = equationLesson(question);
+  if (solved && (!answer || answersMatch(solved.answer, answer))) {
+    return Response.json({ lesson: solved, source: 'solver' } satisfies DesmosLessonResponse);
   }
 
   if (!modelOn) {

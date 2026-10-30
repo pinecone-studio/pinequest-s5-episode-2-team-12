@@ -133,4 +133,55 @@ describe('TutorChat Desmos side panel', () => {
     expect(screen.queryByRole('button', { name: 'Desmos-ийг хажууд нээх' })).toBeNull();
     window.Desmos = undefined;
   });
+
+  test('free chat: a typed equation opens the graph by itself (Photomath-style)', async () => {
+    const urls: string[] = [];
+    const fn = (async (url: string) => {
+      urls.push(url);
+      return url === '/api/desmos/lesson'
+        ? Response.json({ lesson, source: 'solver' })
+        : Response.json({ text: 'x = 5', demo: false, model: 'suu' });
+    }) as unknown as typeof fetch;
+    window.Desmos = {
+      GraphingCalculator: () => ({ setBlank() {}, setExpression() {}, setMathBounds() {}, destroy() {} }),
+    };
+    render(<TutorChat context={general} fetchImpl={fn} />);
+    const box = screen.getByLabelText('Суу-д асуулт бичих');
+    fireEvent.change(box, { target: { value: '3x + 5 = 20' } });
+    fireEvent.keyDown(box, { key: 'Enter' });
+    expect(await screen.findByText('Огтлолцлын x = 5.')).toBeTruthy();
+    expect(screen.getByText('Графикаар бодсон')).toBeTruthy();
+    expect(urls.sort()).toEqual(['/api/desmos/lesson', '/api/tutor']);
+    window.Desmos = undefined;
+  });
+
+  test('free chat: a model reply can draw the typed question in the panel; demo replies cannot', async () => {
+    const sent: { url: string; body: Record<string, unknown> }[] = [];
+    const fn = (async (url: string, init: RequestInit) => {
+      sent.push({ url, body: JSON.parse(String(init.body)) });
+      if (url === '/api/desmos/lesson') return Response.json({ lesson, source: 'model' });
+      return Response.json(
+        sent.length === 1 ? { text: 'x ≤ 5.', demo: false, model: 'suu' } : { text: 'Демо.', demo: true },
+      );
+    }) as unknown as typeof fetch;
+    window.Desmos = {
+      GraphingCalculator: () => ({ setBlank() {}, setExpression() {}, setMathBounds() {}, destroy() {} }),
+    };
+    render(<TutorChat context={general} fetchImpl={fn} />);
+    const box = screen.getByLabelText('Суу-д асуулт бичих');
+    fireEvent.change(box, { target: { value: '3x+5 ≤ 20 бол x хамгийн ихдээ хэд вэ?' } });
+    fireEvent.keyDown(box, { key: 'Enter' });
+    fireEvent.click(await screen.findByRole('button', { name: /Desmos дээр зурж харах/ }));
+    // the student asked it themselves, so every step is open
+    expect(await screen.findByText('Огтлолцлын x = 5.')).toBeTruthy();
+    expect(sent[1]).toEqual({
+      url: '/api/desmos/lesson',
+      body: { question: '3x+5 ≤ 20 бол x хамгийн ихдээ хэд вэ?' },
+    });
+    fireEvent.change(box, { target: { value: 'Сайн уу' } });
+    fireEvent.keyDown(box, { key: 'Enter' });
+    await screen.findByText('Демо.');
+    expect(screen.getAllByRole('button', { name: /Desmos дээр зурж харах/ })).toHaveLength(1);
+    window.Desmos = undefined;
+  });
 });
