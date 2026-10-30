@@ -12,7 +12,7 @@ export type ChatMsg = {
   /** Desmos lesson to open from this reply (/desmos/ai?l=…). */
   lesson?: string;
   /** Which model wrote it: Suu (our fine-tune) or Gemini (free chat). */
-  model?: 'suu' | 'gemini';
+  model?: 'suu' | 'gemini' | 'solver';
   status?: 'pending' | 'error';
 };
 
@@ -101,7 +101,7 @@ export type ApiReply = {
   text: string;
   sample?: boolean;
   lesson?: string;
-  model?: 'suu' | 'gemini';
+  model?: 'suu' | 'gemini' | 'solver';
 };
 
 /** Calls the tutor API. Throws on network or server errors (503 = Suu cannot be reached) so the caller can show a retry. */
@@ -116,7 +116,9 @@ export async function askSuu(req: TutorRequest, fetchImpl: typeof fetch = fetch)
   if (!data.text) throw new Error('tutor empty');
   return {
     text: data.text,
-    ...(data.model === 'suu' || data.model === 'gemini' ? { model: data.model } : {}),
+    ...(data.model === 'suu' || data.model === 'gemini' || data.model === 'solver'
+      ? { model: data.model }
+      : {}),
     ...(data.sample ? { sample: true } : {}),
     ...(data.lesson ? { lesson: data.lesson } : {}),
   };

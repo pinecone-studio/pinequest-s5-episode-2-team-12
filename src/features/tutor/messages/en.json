@@ -35,7 +35,9 @@
     "deleteChat": "Delete chat",
     "sample": "Sample answer",
     "openDesmos": "See it step by step in Desmos",
+    "drawDesmos": "Draw it in Desmos",
     "bySuu": "Suu (our model)",
+    "bySolver": "Solved by code · checked on the graph",
     "byGemini": "Gemini chat"
   },
   "modes": {
@@ -63,6 +65,7 @@
     "empty": "Type a question or pick an example above. Suu draws the answer on Desmos.",
     "notFound": "This demo teaches the 6 question types above. Pick one of them to try.",
     "sample": "Sample lesson",
+    "solver": "Solved on the graph",
     "steps": "Steps",
     "prev": "Back",
     "next": "Next",

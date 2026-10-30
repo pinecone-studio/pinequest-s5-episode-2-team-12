@@ -93,3 +93,48 @@ test('a panel with too many steps is rejected', async () => {
   const steps = Array.from({ length: 13 }, () => ({ text: 'x', latex: [] }));
   expect((await call({ message: 'hi', panel: { step: 0, steps } })).status).toBe(400);
 });
+
+test('a typed equation: a wrong model answer is replaced by the solver steps; a matching one is kept', async () => {
+  const saved = { ...process.env };
+  const realFetch = globalThis.fetch;
+  process.env.OLLAMA_URL = 'http://ollama:11434';
+  process.env.OLLAMA_SKILLS = 'chat';
+  process.env.GEMINI_API_KEY = '';
+  let reply = 'Хариу: 1';
+  const sent: string[] = [];
+  globalThis.fetch = (async (_u: string, init: RequestInit) => {
+    sent.push(String(init.body));
+    return Response.json({ message: { content: reply } });
+  }) as unknown as typeof fetch;
+  try {
+    const message = 'x: 5(x - 4) + 7 = 3(x + 2) + 5';
+    const wrong = await (await call({ mode: 'explain', message, raw: true })).json();
+    expect(wrong).toMatchObject({ model: 'solver' });
+    expect(wrong.text).toContain('$2x = 24$');
+    expect(wrong.text).toContain('**Хариу:** $x = 12$');
+    // the model was told the code-checked answer
+    expect(sent[0]).toContain('Кодоор шалгасан хариу: x = 12');
+
+    reply = 'Хаалтыг задлаад 2x = 24 болно. Хариу: x = 12';
+    expect(await (await call({ mode: 'explain', message, raw: true })).json()).toMatchObject({
+      text: reply,
+      model: 'suu',
+    });
+  } finally {
+    process.env = saved;
+    globalThis.fetch = realFetch;
+  }
+});
+
+test('without any model, a typed equation still gets the solver answer instead of a demo', async () => {
+  const saved = { ...process.env };
+  process.env.OLLAMA_URL = '';
+  process.env.GEMINI_API_KEY = '';
+  try {
+    const res = await (await call({ mode: 'explain', message: '2x + 1 = 7', raw: true })).json();
+    expect(res).toMatchObject({ model: 'solver' });
+    expect(res.text).toContain('$x = 3$');
+  } finally {
+    process.env = saved;
+  }
+});

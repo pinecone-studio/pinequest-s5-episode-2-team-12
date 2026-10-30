@@ -11,7 +11,7 @@ import { Pill } from '@/components/ui/Pill';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
-import type { TutorContext, TutorMode } from '@/types';
+import type { DesmosPanelInput, TutorContext, TutorMode } from '@/types';
 import { useElapsed, waitLabel } from '../hooks/useElapsed';
 import {
   askSuu,
@@ -24,6 +24,8 @@ import {
   requestFor,
   userBubbleText,
 } from '../lib/chat';
+import { PANEL_QUESTION_MAX } from '../lib/desmos-panel';
+import { extractEquation } from '../lib/equation-graph';
 import { DesmosCatButton, DesmosSidePanel } from './DesmosSidePanel';
 import { FeedbackButtons } from './FeedbackButtons';
 import { TutorGraph } from './TutorGraph';
@@ -107,6 +109,8 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
   // the cat «Desmos» side panel for a bank problem; its last step unlocks once the student has answered
   const [desmosOpen, setDesmosOpen] = useState(false);
   const [desmosRevealed, setDesmosRevealed] = useState(false);
+  // free chat has no bank problem: a reply's «Desmos» button draws the question the student typed instead
+  const [freeDesmos, setFreeDesmos] = useState<DesmosPanelInput | null>(null);
   // what the Desmos panel shows right now, so the chat (Gemini) talks about the same graph
   const [panel, setPanel] = useState<PanelView | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
@@ -154,6 +158,9 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
     });
     if (!req || busy) return;
     if (!activeId) setActiveId(newId('chat'));
+    // Photomath-style: a typed equation is drawn and solved on the graph next to the chat right away
+    if (action.kind === 'free' && !ctx.desmos && !retryOf && extractEquation(action.text))
+      drawFree(action.text);
     const replyId = retryOf ?? newId('suu');
     if (retryOf) {
       setMessages((list) => patch(list, retryOf, { status: 'pending', text: '' }));
@@ -199,6 +206,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
     setDraft('');
     setDesmosOpen(false);
     setDesmosRevealed(false);
+    setFreeDesmos(null);
   }
 
   function openChat(s: Session) {
@@ -208,6 +216,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
     setMessages(s.messages);
     setDesmosOpen(false);
     setDesmosRevealed(false);
+    setFreeDesmos(null);
   }
 
   function deleteChat(id: string) {
@@ -235,7 +244,13 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
   }
 
   const empty = messages.length === 0;
-  const desmos = desmosOpen && ctx.desmos ? ctx.desmos : null;
+  const desmos = desmosOpen ? (ctx.desmos ?? freeDesmos) : null;
+
+  function drawFree(question: string) {
+    setFreeDesmos({ question: question.slice(0, PANEL_QUESTION_MAX) });
+    setDesmosRevealed(true);
+    setDesmosOpen(true);
+  }
 
   return (
     <div className="mx-auto grid w-full max-w-[1500px] overflow-hidden rounded-3xl border border-line bg-paper shadow-sm lg:h-[calc(100dvh-125px)] lg:min-h-[620px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)]">
@@ -364,7 +379,15 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
                   ) : (
                     <>
                       <SuuAvatar size={34} className="mt-0.5" />
-                      <SuuBubble msg={m} onRetry={() => retry(m)} />
+                      <SuuBubble
+                        msg={m}
+                        onRetry={() => retry(m)}
+                        onDesmos={
+                          !ctx.desmos && m.sent?.raw && !m.lesson && !m.status
+                            ? () => drawFree(m.sent?.message ?? '')
+                            : undefined
+                        }
+                      />
                     </>
                   )}
                 </li>
@@ -436,7 +459,15 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
   );
 }
 
-export function SuuBubble({ msg, onRetry }: { msg: ChatMsg; onRetry: () => void }) {
+export function SuuBubble({
+  msg,
+  onRetry,
+  onDesmos,
+}: {
+  msg: ChatMsg;
+  onRetry: () => void;
+  onDesmos?: () => void;
+}) {
   const t = useT('tutor');
   if (msg.status === 'pending') return <Pending />;
   if (msg.status === 'error') {
@@ -457,8 +488,11 @@ export function SuuBubble({ msg, onRetry }: { msg: ChatMsg; onRetry: () => void 
         </Pill>
       )}
       {msg.model && (
-        <Pill tone={msg.model === 'suu' ? 'teal' : 'neutral'} className="w-fit">
-          {t(msg.model === 'suu' ? 'chat.bySuu' : 'chat.byGemini')}
+        <Pill
+          tone={msg.model === 'suu' ? 'teal' : msg.model === 'solver' ? 'leaf' : 'neutral'}
+          className="w-fit"
+        >
+          {t(msg.model === 'suu' ? 'chat.bySuu' : msg.model === 'solver' ? 'chat.bySolver' : 'chat.byGemini')}
         </Pill>
       )}
       <Rich text={msg.text} className="text-[15px] leading-relaxed text-ink" />
@@ -470,6 +504,16 @@ export function SuuBubble({ msg, onRetry }: { msg: ChatMsg; onRetry: () => void 
           {t('chat.openDesmos')}
           <Icon name="chevron" size={16} />
         </Link>
+      )}
+      {onDesmos && (
+        <button
+          type="button"
+          onClick={onDesmos}
+          className="mt-1 inline-flex w-fit items-center gap-2 rounded-xl bg-sage px-3.5 py-2 text-[14px] font-bold text-leaf-2 hover:brightness-105"
+        >
+          {t('chat.drawDesmos')}
+          <Icon name="chevron" size={16} />
+        </button>
       )}
       {!msg.sample && msg.sent && (
         <FeedbackButtons
