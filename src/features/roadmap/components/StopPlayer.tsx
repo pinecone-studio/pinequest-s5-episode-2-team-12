@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/Button';
 import { Confetti } from '@/components/ui/Confetti';
 import { Modal } from '@/components/ui/Modal';
 import { toast } from '@/components/ui/toast';
-import { SuuSidePanel, SuuTutorButton, splitLayout } from '@/features/tutor/components/SuuSidePanel';
+import { SuuSidePanel, SuuTutorButton } from '@/features/tutor/components/SuuSidePanel';
 import { chosenText, questionProblem } from '@/features/tutor/lib/suu-panel';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
@@ -32,6 +32,8 @@ import { QuestionView } from './QuestionView';
 import { StopIntro } from './StopIntro';
 import { saveStop, useRoadmapState } from './store';
 import { StarRow, TopicIcon } from './TopicIcon';
+
+import { loadDesmos, drawRows, type Calc } from '../../tutor/lib/desmos-calc';
 
 type Phase = 'intro' | 'play' | 'saving' | 'result';
 
@@ -74,14 +76,16 @@ export function StopPlayer({
   const [revealed, setRevealed] = useState(false);
   const [hint, setHint] = useState(false);
   const [showSuu, setShowSuu] = useState(false);
+  const [showDesmos, setShowDesmos] = useState(false);
   const [answers, setAnswers] = useState<SubmittedAnswer[]>([]);
   const [outcome, setOutcome] = useState<StopOutcome | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showSummary, setShowSummary] = useState(false);
   const started = useRef(Date.now());
 
-  // draw the set once the state is known; a new round (retry) draws a fresh one
-  // biome-ignore lint/correctness/useExhaustiveDependencies: draw only when readiness, stop number or round changes
+  const desmosContainerRef = useRef<HTMLDivElement>(null);
+  const calcInstanceRef = useRef<Calc | null>(null);
+
   useEffect(() => {
     if (!loaded.ready || !allowed || phase === 'saving' || phase === 'result') return;
     const history = demo ? loaded.history : serverHistory;
@@ -117,7 +121,50 @@ export function StopPlayer({
   const qs = (ids ?? []).map((id) => byId.get(id)!).filter(Boolean);
   const q = qs[i];
   const total = qs.length;
-  const right = answers.filter((a, j) => isCorrect(qs[j], a.answer)).length;
+
+  useEffect(() => {
+    if (!showDesmos || !desmosContainerRef.current) return;
+
+    let isMounted = true;
+    loadDesmos().then((Desmos) => {
+      if (!isMounted || !desmosContainerRef.current) return;
+      
+      if (calcInstanceRef.current) {
+        calcInstanceRef.current.destroy();
+      }
+
+      const calculator = Desmos.GraphingCalculator(desmosContainerRef.current, {
+        expressions: true,
+        settingsMenu: true,
+        zoomButtons: true,
+        keypad: true,
+      });
+
+      calcInstanceRef.current = calculator;
+
+      if (q?.desmos?.rows) {
+        drawRows(calculator, q.desmos.rows);
+      } else {
+        calculator.setBlank();
+      }
+
+      setTimeout(() => {
+        if (isMounted && calcInstanceRef.current?.resize) {
+          calcInstanceRef.current.resize();
+        }
+      }, 100);
+    }).catch((err) => {
+      console.error('Failed to load Desmos:', err);
+    });
+
+    return () => {
+      isMounted = false;
+      if (calcInstanceRef.current) {
+        calcInstanceRef.current.destroy();
+        calcInstanceRef.current = null;
+      }
+    };
+  }, [showDesmos, q]);
 
   if (!loaded.ready)
     return <div className="h-48 w-full animate-pulse rounded-2xl bg-sage/20" aria-busy="true" />;
@@ -140,7 +187,6 @@ export function StopPlayer({
     );
   }
 
-  // Header - Том тод гарчиг
   const header = (
     <header className="flex items-center gap-4 px-1 py-1 shrink-0">
       <span
@@ -155,24 +201,39 @@ export function StopPlayer({
           {topic.title}
         </h1>
       </div>
-      {intro.length > 0 && phase !== 'intro' && (
-        <Button
-          variant="secondary"
-          size="md"
-          className="font-medium gap-2"
-          onClick={() => setShowSummary(true)}
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          Товч тайлбар
-        </Button>
-      )}
+      
+      <div className="flex items-center gap-2">
+        {phase !== 'intro' && (
+          <Button
+            variant="secondary"
+            size="md"
+            className={cn(
+              "font-medium gap-1.5 transition-colors",
+              showDesmos ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-blue-50 text-blue-600 hover:bg-blue-100 border-blue-200"
+            )}
+            onClick={() => setShowDesmos((prev) => !prev)}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            {showDesmos ? 'Desmos хаах' : 'Desmos'}
+          </Button>
+        )}
+
+        {intro.length > 0 && phase !== 'intro' && (
+          <Button
+            variant="secondary"
+            size="md"
+            className="font-medium gap-2"
+            onClick={() => setShowSummary(true)}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Товч тайлбар
+          </Button>
+        )}
+      </div>
     </header>
   );
 
@@ -305,33 +366,34 @@ export function StopPlayer({
   }
 
   const correct = revealed && isCorrect(q, value.trim());
+  const right = answers.filter((a, j) => isCorrect(qs[j], a.answer)).length;
+
   return (
     <>
-      <div className={cn('mx-auto h-full w-full', splitLayout(showSuu, 'max-w-4xl'))}>
-        <div className="flex h-full min-w-0 flex-col justify-between py-1 overflow-hidden">
-          {/* Header & Прогресс бар */}
-          <div className="flex flex-col gap-2 shrink-0">
-            {header}
-            <div className="flex items-center gap-3 px-1">
-              <Bar
-                value={(i + (revealed ? 1 : 0)) / total}
-                tone="lime"
-                h={10}
-                className="flex-1"
-                label={t('stop.problem', { i: i + 1, n: total })}
-              />
-              <span className="shrink-0 text-sm font-extrabold text-ink-2 tnum">
-                {i + 1} / {total}
-              </span>
-            </div>
+      <div className={cn("w-full mx-auto flex flex-col justify-between h-full py-1 overflow-hidden transition-all duration-300", showDesmos ? "max-w-7xl" : "max-w-4xl")}>
+        <div className="flex flex-col gap-2 shrink-0">
+          {header}
+          <div className="flex items-center gap-3 px-1">
+            <Bar
+              value={(i + (revealed ? 1 : 0)) / total}
+              tone="lime"
+              h={10}
+              className="flex-1"
+              label={t('stop.problem', { i: i + 1, n: total })}
+            />
+            <span className="shrink-0 text-sm font-extrabold text-ink-2 tnum">
+              {i + 1} / {total}
+            </span>
           </div>
+        </div>
 
-          {/* Main Question Box - Tom, tod fontoooor, yamar ch holhiltguigeer baikh bolovch horigdohgui */}
+        {/* Side-by-Side Grid Layout */}
+        <div className={cn("grid gap-6 flex-1 my-auto items-start overflow-hidden transition-all duration-300 py-2", showDesmos ? "grid-cols-1 lg:grid-cols-12" : "grid-cols-1")}>
           <section
-            className="relative flex flex-col justify-center flex-1 my-auto gap-3 py-1 transition-all text-foreground overflow-hidden"
+            className={cn("relative flex flex-col justify-center gap-3 py-1 transition-all text-foreground overflow-hidden", showDesmos ? "lg:col-span-5" : "w-full")}
             aria-label={t('stop.problem', { i: i + 1, n: total })}
           >
-            <div className="relative z-10 text-xl sm:text-2xl md:text-3xl leading-snug text-ink font-bold max-h-[38vh] overflow-hidden pr-1">
+            <div className="relative z-10 text-xl sm:text-2xl md:text-3xl leading-snug text-ink font-bold overflow-y-auto max-h-[45vh] pr-2 custom-scrollbar">
               <QuestionView
                 key={`${round}-${i}`}
                 q={q}
@@ -342,22 +404,18 @@ export function StopPlayer({
               />
             </div>
 
-            {/* Hint - Tom, tod text */}
             {hint && !revealed && (
-              <div className="relative z-10 animate-fade-in rounded-2xl bg-teal-soft/90 p-3 text-base sm:text-lg font-bold text-teal border border-teal/20 max-h-24 overflow-hidden">
+              <div className="relative z-10 animate-fade-in rounded-2xl bg-teal-soft/90 p-3 text-base sm:text-lg font-bold text-teal border border-teal/20 max-h-24 overflow-y-auto">
                 <Rich text={q.hint} />
               </div>
             )}
 
-            {/* Explanation - Tom, tod text */}
             {revealed && (
               <div
                 role="status"
                 className={cn(
-                  'relative z-10 flex flex-col gap-2 rounded-2xl p-4 max-h-[24vh] overflow-hidden transition-all duration-300 shadow-sm',
-                  correct
-                    ? 'bg-sage/90 border border-leaf-2/30'
-                    : 'bg-danger-soft/90 border border-danger/30',
+                  'relative z-10 flex flex-col gap-2 rounded-2xl p-4 max-h-[26vh] overflow-y-auto transition-all duration-300 shadow-sm',
+                  correct ? 'bg-sage/90 border border-leaf-2/30' : 'bg-danger-soft/90 border border-danger/30',
                 )}
               >
                 <p className={cn('text-lg sm:text-xl font-black', correct ? 'text-leaf-2' : 'text-danger')}>
@@ -375,74 +433,91 @@ export function StopPlayer({
             )}
           </section>
 
-          {/* Footer Navigation Buttons - Tom, darsan baihad amar tovchnuud */}
-          <div className="relative z-10 flex items-center justify-between gap-4 pt-2 border-t border-border/20 shrink-0">
-            <div className="flex flex-wrap items-center gap-2">
-              {!revealed ? (
-                <Button
-                  variant="ghost"
-                  size="lg"
-                  className="text-base font-bold px-5 py-2"
-                  onClick={() => setHint(true)}
-                  disabled={hint}
-                >
-                  {t('stop.hint')}
+          {/* Desmos Panel */}
+          {showDesmos && (
+            <div className="lg:col-span-7 flex flex-col w-full rounded-2xl border border-line bg-paper p-3 overflow-hidden shadow-md animate-fade-in">
+              <div className="flex items-center justify-between pb-2 mb-2 px-1 border-b border-line shrink-0">
+                <span className="text-sm font-bold text-ink flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-blue-500" />
+                  Desmos Graphing Calculator
+                </span>
+                <Button variant="ghost" size="sm" className="h-8 text-xs font-bold" onClick={() => setShowDesmos(false)}>
+                  Хаах
                 </Button>
-              ) : (
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="text-sm font-extrabold text-ink-3 tnum">
-                    Зөв: {right}/{answers.length}
-                  </span>
-                  {/* a wrong answer goes to Суу with the problem and what the student chose */}
-                  {!correct && (
-                    <Link
-                      href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}
-                      className="inline-flex min-h-11 items-center rounded-2xl border border-line bg-paper px-4 text-sm font-bold text-ink hover:bg-paper-2"
-                    >
-                      {t('stop.askSuu')}
-                    </Link>
-                  )}
-                </div>
+              </div>
+              <div className="w-full h-[520px] rounded-xl overflow-hidden relative">
+                <div ref={desmosContainerRef} className="absolute inset-0 w-full h-full" />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Navigation buttons */}
+        <div className="relative z-10 flex items-center justify-between gap-4 pt-2 border-t border-border/20 shrink-0">
+          {!revealed ? (
+            <Button
+              variant="ghost"
+              size="lg"
+              className="text-base font-bold px-5 py-2"
+              onClick={() => setHint(true)}
+              disabled={hint}
+            >
+              {t('stop.hint')}
+            </Button>
+          ) : (
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-sm font-extrabold text-ink-3 tnum">
+                Зөв: {right}/{answers.length}
+              </span>
+              {!correct && (
+                <Link
+                  href={routes.tutor({ kind: 'question', id: q.id, chosen: value.trim() })}
+                  className="inline-flex min-h-11 items-center rounded-2xl border border-line bg-paper px-4 text-sm font-bold text-ink hover:bg-paper-2"
+                >
+                  {t('stop.askSuu')}
+                </Link>
               )}
               <SuuTutorButton open={showSuu} onClick={() => setShowSuu((v) => !v)} />
             </div>
-            {!revealed ? (
-              <Button
-                variant="lime"
-                size="xl"
-                className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
-                onClick={check}
-                disabled={!value.trim()}
-              >
-                {t('stop.check')}
-              </Button>
-            ) : (
-              <Button
-                variant="lime"
-                size="xl"
-                className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
-                onClick={next}
-              >
-                {i < total - 1 ? t('stop.next') : t('stop.finish')}
-              </Button>
-            )}
-          </div>
-        </div>
+          )}
 
-        {showSuu && (
-          <SuuSidePanel
-            context={{
-              kind: 'question',
-              id: q.id,
-              title: q.skill,
-              problem: questionProblem(q),
-              chosen: revealed ? chosenText(q, value) : undefined,
-            }}
-            revealed={revealed}
-            onClose={() => setShowSuu(false)}
-          />
-        )}
+          {!revealed ? (
+            <Button
+              variant="lime"
+              size="xl"
+              className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
+              onClick={check}
+              disabled={!value.trim()}
+            >
+              {t('stop.check')}
+            </Button>
+          ) : (
+            <Button
+              variant="lime"
+              size="xl"
+              className="text-lg px-8 py-3 rounded-2xl font-black shadow-md"
+              onClick={next}
+            >
+              {i < total - 1 ? t('stop.next') : t('stop.finish')}
+            </Button>
+          )}
+        </div>
       </div>
+
+      {showSuu && (
+        <SuuSidePanel
+          context={{
+            kind: 'question',
+            id: q.id,
+            title: q.skill,
+            problem: questionProblem(q),
+            chosen: revealed ? chosenText(q, value) : undefined,
+          }}
+          revealed={revealed}
+          onClose={() => setShowSuu(false)}
+        />
+      )}
+
       <Modal
         open={showSummary}
         onClose={() => setShowSummary(false)}
