@@ -11,7 +11,7 @@
   "allTopics": "All topics",
   "current": "Current stop: {place}",
   "stats": {
-    "due": "Due today",
+    "due": "Review again",
     "fresh": "New",
     "learned": "Learned"
   },
@@ -33,7 +33,7 @@
   "done": "Done for today!",
   "doneBody": "New and due cards come back tomorrow.",
   "left": "{n} cards left",
-  "keys": "Space flip · 1–4 grade",
+  "keys": "Space to flip · 1 review again · 2 memorized",
   "admin": {
     "title": "Review flashcards",
     "lead": "Check drafted cards and approve them. Unapproved cards show as «Draft».",
@@ -58,5 +58,37 @@
     "pending": "{n} reviews waiting to sync.",
     "ready": "Reviews are saved on this device and sync automatically when you are back online.",
     "storageError": "Could not save. Check the browser's storage permission and free space."
+  },
+  "session": {
+    "eyebrow": "A little practice every day",
+    "ready": "Ready to practice?",
+    "intro": "Choose words or formulas and study at your own pace. Recall the answer, then flip the card to check.",
+    "count": "{n} cards this session",
+    "recall": "Recall the answer",
+    "reveal": "Flip to check",
+    "rate": "Rate your recall",
+    "start": "Start",
+    "study": "Flashcard session",
+    "reviewed": "{n} cards reviewed",
+    "finish": "Pause",
+    "progress": "Session progress",
+    "answer": "Answer",
+    "question": "Question",
+    "flipHint": "Click or press Space to flip",
+    "ratePrompt": "How well did you know the answer?",
+    "back": "Back to decks",
+    "offline": "Use offline"
+  },
+  "sections": {
+    "label": "Study sections",
+    "today": "Today’s cards",
+    "repeat": "Review again",
+    "learned": "Memorized",
+    "repeatIntro": "Cards marked for another review stay here until you mark them memorized.",
+    "learnedIntro": "Revisit memorized cards here. If you forget one, move it back to Review again.",
+    "repeatEmpty": "No cards to review again.",
+    "keep": "Keep in Review again",
+    "remove": "Move to Memorized",
+    "saved": "Saved review cards"
   }
 }

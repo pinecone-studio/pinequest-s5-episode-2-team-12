@@ -7,7 +7,7 @@ import { adminUserId } from '@/features/roadmap/admin';
 import { GRADES, type Grade, type ReviewState } from '@/lib/sm2';
 import { getDb } from '@/lib/supabase/server';
 import { applyGrade, isCardKey } from './grade';
-import { FLASHCARDS } from './lib/decks';
+import { CUSTOM_KEY, FLASHCARDS } from './lib/decks';
 
 export type FlashResult =
   | { ok: true; state: ReviewState }

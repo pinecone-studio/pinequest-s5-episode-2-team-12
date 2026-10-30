@@ -1,5 +1,17 @@
 {
-  "catEncouragement": "Keep going, you can do it! 😊",
+  "catGuide": {
+    "next": "Next tip",
+    "tips": {
+      "0": "Hi! Let me show you around 🐾",
+      "1": "Cross Mongolia's 26 stops in order",
+      "2": "Tap a stop to start its lesson",
+      "3": "Know a topic? Test out of it",
+      "4": "Stuck? Ask tutor Suu",
+      "5": "Your missed problems are saved in Mistakes",
+      "6": "Earn points and dress up your cat in the shop",
+      "7": "Keep going, you can do it! 😊"
+    }
+  },
   "pages": {
     "roadmap": {
       "title": "Journey across Mongolia"

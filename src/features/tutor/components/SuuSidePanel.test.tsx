@@ -10,7 +10,7 @@ function fakeApi(text = 'Суугийн хариу', status = 200) {
   const fn = (async (url: string, init: RequestInit) => {
     expect(url).toBe('/api/tutor');
     sent.push(JSON.parse(String(init.body)));
-    return status === 200 ? Response.json({ text, demo: false }) : new Response('', { status });
+    return status === 200 ? Response.json({ text, model: 'suu' }) : new Response('', { status });
   }) as unknown as typeof fetch;
   return { fn, sent };
 }
@@ -106,7 +106,7 @@ describe('SuuSidePanel', () => {
     await waitFor(() => expect(screen.queryByText('Тийм ээ.')).toBeNull());
   });
 
-  test('a failed reply can be retried; Escape and × close the panel', async () => {
+  test('when Suu cannot be reached the panel says so and can retry; Escape and × close it', async () => {
     let fail = true;
     const fn = (async () =>
       fail
@@ -116,6 +116,7 @@ describe('SuuSidePanel', () => {
     render(<SuuSidePanel context={ctx()} revealed={false} onClose={() => closed++} fetchImpl={fn} />);
     fireEvent.click(screen.getByRole('button', { name: 'Төстэй бодлого' }));
     const retry = await screen.findByRole('button', { name: 'Дахин оролдох' });
+    expect(screen.getByText('Суу одоогоор холбогдохгүй байна, дахин оролдоно уу')).toBeTruthy();
     fail = false;
     fireEvent.click(retry);
     expect(await screen.findByText('Одоо болсон.')).toBeTruthy();

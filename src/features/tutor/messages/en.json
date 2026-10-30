@@ -25,9 +25,8 @@
     "inputLabel": "Ask Suu a question",
     "placeholder": "Ask a question…",
     "send": "Send",
-    "error": "Couldn't get a reply.",
+    "error": "Suu can't be reached right now. Please try again.",
     "retry": "Try again",
-    "demo": "Demo reply — model not connected",
     "newChat": "New chat",
     "history": "Recent chats",
     "noHistory": "No chats yet",
@@ -91,5 +90,29 @@
     "free": "No ready steps for this problem. The calculator is yours — try it yourself.",
     "tip": "Tip",
     "seconds": "s"
+  },
+  "suuPanel": {
+    "button": "AI tutor Suu",
+    "open": "Open AI tutor Suu beside the problem",
+    "close": "Close AI tutor Suu",
+    "title": "AI tutor Suu",
+    "empty": "Hi! I'm Suu 🐱 Ask me anything about this problem: get a hint, translate a word, or try a similar one.",
+    "locked": "The full explanation unlocks after you check your answer.",
+    "inputLabel": "Ask Suu about this problem",
+    "placeholder": "Ask about this problem…"
+  },
+  "workspace": {
+    "eyebrow": "SAT Math · Study workspace",
+    "conversation": "Work through it with Suu",
+    "welcome": "Understand · Explore · Practice",
+    "title": "Let’s work through the problem.",
+    "intro": "Ask Suu for an explanation and explore the graph in Desmos beside it. Write a question or choose a starting point.",
+    "graph": "Desmos graph workspace",
+    "graphHint": "Enter an equation and explore its graph.",
+    "openGraph": "Open separately",
+    "clear": "Clear",
+    "graphLoading": "Loading Desmos…",
+    "graphFailed": "Could not load the graph. Check your connection and try again.",
+    "retryGraph": "Reload Desmos"
   }
 }

@@ -20,6 +20,7 @@
     "roadmap:terrain": "bun scripts/roadmap/fetch-terrain.ts && bun scripts/roadmap/build-terrain.ts",
     "roadmap:import": "bun scripts/roadmap/import-questions.ts",
     "roadmap:check-answers": "bun scripts/roadmap/check-answers.ts",
+    "mock:check": "bun scripts/mock/check-practice-tests.ts",
     "check": "biome check . && tsc --noEmit && bun run messages && bun test src ai scripts",
     "ai:build": "bun ai/pipeline/ingest.ts && bun ai/train/export.ts",
     "ai:eval": "bun ai/eval/run.ts"

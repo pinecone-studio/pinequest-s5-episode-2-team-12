@@ -1390,7 +1390,12 @@
     "pool": "stop",
     "prompt": "For $x \\ne 1$ and $x \\ne -1$, which expression is equivalent to $\\frac{3}{x-1} - \\frac{2}{x+1}$?",
     "mn": "$x \\ne 1$, $x \\ne -1$ үед $\\frac{3}{x-1} - \\frac{2}{x+1}$-тай тэнцүү илэрхийлэл аль нь вэ?",
-    "choices": ["$\\frac{x+5}{x^2-1}$", "$\\frac{x+1}{x^2-1}$", "$\\frac{5x+1}{x^2-1}$", "$\\frac{1}{x^2-1}$"],
+    "choices": [
+      "$\\frac{x+5}{x^2-1}$",
+      "$\\frac{x+1}{x^2-1}$",
+      "$\\frac{5x+1}{x^2-1}$",
+      "$\\frac{1}{x^2-1}$"
+    ],
     "answer": 0,
     "explain": "Ерөнхий хуваарь $(x-1)(x+1) = x^2 - 1$. $\\frac{3(x+1) - 2(x-1)}{x^2-1} = \\frac{3x + 3 - 2x + 2}{x^2-1} = \\frac{x+5}{x^2-1}$.",
     "hint": "Ерөнхий хуваарьт аваад, хасах тэмдгийг хаалтанд тарааж бод.",
@@ -1729,7 +1734,12 @@
     "pool": "stop",
     "prompt": "What are the solutions to the equation $x^2 - 5x - 14 = 0$?",
     "mn": "$x^2 - 5x - 14 = 0$ тэгшитгэлийн шийдүүд юу вэ?",
-    "choices": ["$x = -7$ and $x = 2$", "$x = -7$ and $x = -2$", "$x = 7$ and $x = -2$", "$x = 7$ and $x = 2$"],
+    "choices": [
+      "$x = -7$ and $x = 2$",
+      "$x = -7$ and $x = -2$",
+      "$x = 7$ and $x = -2$",
+      "$x = 7$ and $x = 2$"
+    ],
     "answer": 2,
     "explain": "$x^2 - 5x - 14 = (x - 7)(x + 2) = 0$. Иймд $x = 7$ эсвэл $x = -2$.",
     "hint": "Үржвэр нь $-14$, нийлбэр нь $-5$ байх хоёр тоог ол.",
@@ -1862,7 +1872,12 @@
     "pool": "stop",
     "prompt": "The function $g$ is defined by $g(x) = f(x) + 6$. How can the graph of $y = g(x)$ be obtained from the graph of $y = f(x)$?",
     "mn": "$g(x) = f(x) + 6$ функц өгөгджээ. $y = g(x)$ график нь $y = f(x)$ графикаас хэрхэн гарах вэ?",
-    "choices": ["Shifted up $6$ units", "Shifted down $6$ units", "Shifted left $6$ units", "Shifted right $6$ units"],
+    "choices": [
+      "Shifted up $6$ units",
+      "Shifted down $6$ units",
+      "Shifted left $6$ units",
+      "Shifted right $6$ units"
+    ],
     "answer": 0,
     "explain": "$f(x)$-д $+6$ нэмэх нь графикийг дээш $6$ нэгжээр шилжүүлнэ.",
     "hint": "Утгад нэмсэн тоо графикийг босоо чиглэлд шилжүүлнэ.",

@@ -1,5 +1,6 @@
 /* Only the public offline shell and immutable assets are cached; never account pages or APIs. */
-const CACHE = 'suprep-offline-v2';
+const CACHE = 'suprep-offline-v3';
+const LOCAL_DEV = ['localhost', '127.0.0.1', '[::1]'].includes(new URL(self.location.origin).hostname);
 // Public shells: question practice and «Шинэ үг» review. Navigation falls back by path.
 const SHELLS = ['/offline', '/offline/flashcards'];
 const shellFor = (pathname) => (pathname.startsWith('/flashcards') ? '/offline/flashcards' : '/offline');
@@ -50,10 +51,17 @@ self.addEventListener('fetch', (event) => {
       (async () => {
         const cache = await caches.open(CACHE);
         const saved = await cache.match(event.request);
-        if (saved) return saved;
-        const response = await fetch(event.request);
-        if (response.ok) await cache.put(event.request, response.clone());
-        return response;
+        // Production assets have hashed URLs. Dev assets reuse URLs after edits, so a cached
+        // bundle can disagree with fresh server HTML (and cause hydration errors).
+        if (saved && !LOCAL_DEV) return saved;
+        try {
+          const response = await fetch(event.request, LOCAL_DEV ? { cache: 'no-store' } : undefined);
+          if (response.ok) await cache.put(event.request, response.clone());
+          return response;
+        } catch (error) {
+          if (saved) return saved;
+          throw error;
+        }
       })(),
     );
   } else if (event.request.mode === 'navigate') {

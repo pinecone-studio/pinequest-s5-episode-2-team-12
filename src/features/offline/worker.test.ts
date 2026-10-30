@@ -2,7 +2,7 @@ import { describe, expect, test } from 'bun:test';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 
-function worker() {
+function worker(origin = 'https://suprep.test', onlineAsset?: string) {
   const handlers: Record<string, (event: unknown) => void> = {};
   const saved = new Map<string, Response>();
   const fetched: string[] = [];
@@ -24,7 +24,7 @@ function worker() {
   runInNewContext(readFileSync('public/offline-sw.js', 'utf8'), {
     URL,
     self: {
-      location: { origin: 'https://suprep.test' },
+      location: { origin },
       addEventListener: (type: string, cb: (event: unknown) => void) => {
         handlers[type] = cb;
       },
@@ -32,8 +32,10 @@ function worker() {
       clients: { claim: async () => {} },
     },
     caches: { open: async () => cache, keys: async () => ['unrelated'], delete: async () => {} },
-    fetch: async (input: string) => {
-      if (!input.startsWith('/offline')) throw new Error('offline');
+    fetch: async (input: string | Request) => {
+      const url = typeof input === 'string' ? input : input.url;
+      if (url.includes('/_next/static/') && onlineAsset !== undefined) return new Response(onlineAsset);
+      if (!url.startsWith('/offline')) throw new Error('offline');
       return new Response('<link href="/_next/static/app.css"><script src="/_next/static/app.js"></script>');
     },
   });
@@ -84,4 +86,37 @@ describe('offline service worker', () => {
     });
     expect(response).toBeUndefined();
   });
+});
+
+test('localhost refreshes cached dev bundles while production retains immutable asset caching', async () => {
+  for (const [origin, expected] of [
+    ['http://localhost:3000', 'fresh code'],
+    ['https://suprep.test', 'old code'],
+  ]) {
+    const { handlers, saved } = worker(origin, 'fresh code');
+    const url = `${origin}/_next/static/app.js`;
+    saved.set(url, new Response('old code'));
+    let response: Promise<Response> | undefined;
+    handlers.fetch({
+      request: { url, method: 'GET' },
+      respondWith: (value: Promise<Response>) => {
+        response = value;
+      },
+    });
+    expect(await (await response)?.text()).toBe(expected);
+  }
+});
+
+test('localhost still uses downloaded assets when offline', async () => {
+  const { handlers, saved } = worker('http://localhost:3000');
+  const url = 'http://localhost:3000/_next/static/app.js';
+  saved.set(url, new Response('offline code'));
+  let response: Promise<Response> | undefined;
+  handlers.fetch({
+    request: { url, method: 'GET' },
+    respondWith: (value: Promise<Response>) => {
+      response = value;
+    },
+  });
+  expect(await (await response)?.text()).toBe('offline code');
 });

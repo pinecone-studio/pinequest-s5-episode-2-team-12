@@ -1,8 +1,9 @@
 'use client';
 
-import { type FormEvent, useId, useState } from 'react';
+import { type FormEvent, useEffect, useId, useState } from 'react';
 import { SaveStatus } from '@/features/mistakes/components/SaveStatus';
 import { useAnswerSubmission } from '@/features/mistakes/useAnswerSubmission';
+import { SuuTutorButton } from '@/features/tutor/components/SuuSidePanel';
 import { checkGridInAnswer } from '@/lib/check-answer';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
@@ -21,6 +22,9 @@ export function CbHtml({ html, scope, className }: { html: string; scope: string
   );
 }
 
+/** What the bank's «AI багш Суу» panel needs from the card that opened it. */
+export type SuuState = { checked: boolean; chosen?: string };
+
 export function OfficialQuestionCard({
   question,
   index,
@@ -28,9 +32,22 @@ export function OfficialQuestionCard({
   onComplete,
   lastInTopic = false,
   onResolved,
+  suuOpen = false,
+  onSuu,
+  initialAnswer,
+  initiallyChecked = false,
+  onAnswer,
 }: {
   question: OfficialQuestion;
   index: number;
+  /** This card's problem is open in the Суу side panel. */
+  suuOpen?: boolean;
+  /** Opens (state) or closes (null) the Суу side panel for this card. */
+  onSuu?: (state: SuuState | null) => void;
+  /** Offline practice: the answer saved on this device, and whether it was checked. */
+  initialAnswer?: string;
+  initiallyChecked?: boolean;
+  onAnswer?: (answer: string) => void;
   onNext?: () => void;
   onComplete?: () => void;
   lastInTopic?: boolean;
@@ -38,12 +55,25 @@ export function OfficialQuestionCard({
 }) {
   const t = useT('practice');
   const inputId = useId();
-  const [choice, setChoice] = useState<string | null>(null);
-  const [typed, setTyped] = useState('');
-  const [checked, setChecked] = useState(false);
-  const [showExplanation, setShowExplanation] = useState(false);
-  const [correct, setCorrect] = useState(false);
+  const isMcq = question.format === 'mcq';
+  const [choice, setChoice] = useState<string | null>(isMcq ? (initialAnswer ?? null) : null);
+  const [typed, setTyped] = useState(isMcq ? '' : (initialAnswer ?? ''));
+  const [checked, setChecked] = useState(initiallyChecked);
+  const [correct, setCorrect] = useState(
+    () =>
+      initiallyChecked &&
+      initialAnswer !== undefined &&
+      (isMcq ? initialAnswer === question.answer : checkGridInAnswer(initialAnswer, question.accepted)),
+  );
+  const [showExplanation, setShowExplanation] = useState(correct);
   const saving = useAnswerSubmission(onResolved);
+  const chosen = checked ? (isMcq ? (choice ?? undefined) : typed.trim() || undefined) : undefined;
+
+  // keep the open panel in step with this card: checking unlocks the full explanation
+  // biome-ignore lint/correctness/useExhaustiveDependencies: onSuu is a fresh closure on every render
+  useEffect(() => {
+    if (suuOpen) onSuu?.({ checked, chosen });
+  }, [suuOpen, checked, chosen]);
 
   const issue = officialSolveIssue(question);
   if (issue)
@@ -54,16 +84,8 @@ export function OfficialQuestionCard({
       </article>
     );
 
-  const isMcq = question.format === 'mcq';
   const canCheck = isMcq ? choice !== null : typed.trim() !== '';
   const answerText = isMcq ? question.answer : question.accepted.join(', ');
-  const chosen = checked ? (isMcq ? (choice ?? undefined) : typed.trim() || undefined) : undefined;
-
-  // keep the open panel in step with this card: checking unlocks the full explanation
-  // biome-ignore lint/correctness/useExhaustiveDependencies: onSuu is a fresh closure on every render
-  useEffect(() => {
-    if (suuOpen) onSuu?.({ checked, chosen });
-  }, [suuOpen, checked, chosen]);
 
   function check(event?: FormEvent) {
     event?.preventDefault();
@@ -72,6 +94,7 @@ export function OfficialQuestionCard({
     setCorrect(right);
     setChecked(true);
     setShowExplanation(right);
+    onAnswer?.(isMcq ? (choice ?? '') : typed.trim());
     void saving.submit({ qid: question.id, questionSource: 'official' }, isMcq ? choice! : typed);
   }
 
@@ -211,6 +234,9 @@ export function OfficialQuestionCard({
             >
               {showExplanation ? 'Хариу нуух' : 'Хариу харах'}
             </button>
+          )}
+          {onSuu && (
+            <SuuTutorButton open={suuOpen} onClick={() => onSuu(suuOpen ? null : { checked, chosen })} />
           )}
         </div>
       </form>

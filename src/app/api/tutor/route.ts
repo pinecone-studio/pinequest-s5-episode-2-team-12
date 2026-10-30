@@ -3,13 +3,12 @@
 //   2. Suu (our fine-tuned model on Ollama) when OLLAMA_SKILLS allows its 'chat' skill
 //   3. Gemini (GEMINI_API_KEY) for free chat — with the facts the server checked: the bank problem, a code-graded
 //      verdict on the student's answer, the Desmos lesson Suu drew in the side panel (src/server/ai/gemini-chat.ts)
-//   4. otherwise a demo reply that says so (`demo: true`)
+//   4. otherwise 503 — no made-up reply; the chat tells the student Suu cannot be reached right now
 // Suu still writes every Desmos lesson (/api/desmos/lesson). Keys and model URLs stay on the server.
 import { z } from 'zod';
 import { geminiTutorReply, hasGeminiChat, verdictFor } from '@/server/ai/gemini-chat';
 import { hasOllama } from '@/server/ai/ollama-client';
 import { withVerdict } from '@/server/ai/verdict';
-import { demoReply } from '@/server/tutor/demo';
 import { ollamaReply } from '@/server/tutor/ollama';
 import { scriptedReply } from '@/server/tutor/scripted';
 
@@ -57,17 +56,17 @@ export async function POST(req: Request) {
   const sample = scriptedReply(message);
   if (sample) {
     await new Promise((r) => setTimeout(r, SAMPLE_DELAY_MS));
-    return Response.json({ text: sample.text, lesson: sample.lesson, demo: false, sample: true });
+    return Response.json({ text: sample.text, lesson: sample.lesson, sample: true });
   }
 
   if (hasOllama('chat')) {
     // the server grades the answer with code; Suu (v3 data) is trained to follow the verdict line
     const text = await ollamaReply(mode, withVerdict(message, verdictFor(parsed.data)), fetch, raw);
-    if (text) return Response.json({ text, demo: false, model: 'suu' });
+    if (text) return Response.json({ text, model: 'suu' });
   }
   if (hasGeminiChat()) {
     const text = await geminiTutorReply(parsed.data);
-    if (text) return Response.json({ text, demo: false, model: 'gemini' });
+    if (text) return Response.json({ text, model: 'gemini' });
   }
-  return Response.json({ text: demoReply(mode), demo: true });
+  return Response.json({ error: 'suu_unavailable' }, { status: 503 });
 }

@@ -26,7 +26,7 @@ ai/
    (`eval_report.md`: хариу зөв %, hint leak %, false praise %, монгол % — гараар бичсэн ба загварын асуултаар тусад нь) → `suu.zip` (GGUF + Modelfile) татна.
 3. Laptop дээр: `cd suu && ollama create suu -f Modelfile`
 4. `.env.local`: `OLLAMA_URL=http://localhost:11434`, `OLLAMA_MODEL=suu` → `/api/tutor` Суу-г ашиглана
-   (`demo: false`). Ollama унтарсан үед демо хариу руу буцна.
+   (`model: 'suu'`). Ollama унтарсан үед 503 буцааж, чат «Суу одоогоор холбогдохгүй байна» гэж харуулна.
 
 Сургалтын system prompt (`export.ts`) ба апп-ийн prompt (`src/server/tutor/ollama.ts`) ижил байх ёстой — тест шалгана.
 Notebook нь цорын ганц Python хэсэг (GPU сургалтад Unsloth хэрэгтэй).
@@ -63,7 +63,7 @@ Desmos хичээлийг сурагчид харуулахаас өмнө `desm
 
 | Хэсэг | Чадвар | Endpoint | Суу унтарсан/алдсан үед |
 | --- | --- | --- | --- |
-| AI багш Суу (`/tutor`) — чөлөөт чат | `chat` (Суу) эсвэл **Gemini** | `/api/tutor` | Gemini (`GEMINI_API_KEY`) → демо хариу (шошготой) |
+| AI багш Суу (`/tutor`) — чөлөөт чат | `chat` (Суу) эсвэл **Gemini** | `/api/tutor` | Gemini (`GEMINI_API_KEY`) → 503 «Суу одоогоор холбогдохгүй байна» |
 | Desmos Академи, бодлогын хажуугийн Desmos самбар | `desmos` | `/api/desmos/lesson` | жишээ хичээл / гараар бичсэн Desmos мөр |
 | AI төлөвлөгөө (`/planner`) | `planner` | `/api/suu/planner` | дүрмийн төлөвлөгөө (kit-ийн алтан хариуг гаргадаг дүрэм) |
 | Алдааны дэвтэр · «Суугийн дүгнэлт» | `analyze` | `/api/suu/analyze` | дүрмийн дүгнэлт |

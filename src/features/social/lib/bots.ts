@@ -1,6 +1,8 @@
 // Demo friends (no Supabase = no other real students). Clearly labelled «Демо найз» in the UI. Their numbers
 // are fixed, and their duel answers are deterministic per duel so a demo duel always resolves the same way.
+import { AVATARS } from '@/components/brand/avatars';
 import { seeded } from '@/features/roadmap/lib/select-problems';
+import { calculateLevel } from '@/lib/level';
 import type { Question } from '@/types';
 import { type Duel, type Run, startRun } from './duel';
 
@@ -93,6 +95,73 @@ export const BOTS: Bot[] = [
     pace: 70,
   },
 ];
+
+// 49 sample classmates plus Tuya make a 50-student national demo leaderboard.
+const CLASSMATES = [
+  'Мөнхжин',
+  'Энхжин',
+  'Төгөлдөр',
+  'Мишээл',
+  'Хүслэн',
+  'Тэнүүн',
+  'Амин-Эрдэнэ',
+  'Энэрэл',
+  'Сондор',
+  'Тэлмүүн',
+  'Бат-Эрдэнэ',
+  'Оюун',
+  'Нандин',
+  'Эрдэм',
+  'Халиун',
+  'Мөнх-Оргил',
+  'Дөлгөөн',
+  'Индра',
+  'Эгшиглэн',
+  'Ананд',
+  'Болор',
+  'Тэмүүжин',
+  'Уянга',
+  'Ивээл',
+  'Саруул',
+  'Азжаргал',
+  'Намуун',
+  'Итгэл',
+  'Есүй',
+  'Билэгт',
+  'Энхлэн',
+  'Эрхэс',
+  'Хулан',
+  'Түшиг',
+  'Марал',
+  'Хангай',
+  'Номин-Эрдэнэ',
+  'Мөнхтулга',
+  'Ануужин',
+  'Тамир',
+  'Золбоо',
+  'Солонго',
+  'Тэргэл',
+  'Цэлмэг',
+];
+BOTS.push(
+  ...CLASSMATES.map((name, i): Bot => {
+    const allXp = 720 + ((i * 397) % 5600);
+    return {
+      id: `bot-classmate-${i + 1}`,
+      name,
+      avatarId: AVATARS[i % AVATARS.length].id,
+      level: calculateLevel(allXp).level,
+      streak: 1 + (i % 15),
+      aimag: ['Улаанбаатар', 'Улаанбаатар', 'Орхон', 'Дархан-Уул', 'Хөвсгөл'][i % 5],
+      weekXp: 120 + ((i * 83) % 2200),
+      allXp,
+      daily: 350 + ((i * 31) % 430),
+      bestMock: 400 + ((i * 7) % 40) * 10,
+      accuracy: 0.5 + (i % 9) * 0.05,
+      pace: 35 + (i % 35),
+    };
+  }),
+);
 
 export const botById = (id: string) => BOTS.find((b) => b.id === id);
 export const isBot = (id: string) => id.startsWith('bot-');

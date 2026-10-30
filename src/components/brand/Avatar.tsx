@@ -29,14 +29,13 @@ export function Avatar({
   const accessoryLayers = Object.entries(accessories ?? {}).flatMap(([slot, itemId]) => {
     const layer = itemId ? ACCESSORY_ASSETS[itemId] : undefined;
     if (!layer || layer.slot !== slot) return [];
-    const avatarScale = size / 52;
-    const accessoryScale = avatarScale * 0.82;
-    const accessoryWidth = layer.previewWidth * accessoryScale;
-    const anchorTop = (layer.previewTop - 6) * avatarScale;
-    const centeredTop =
-      anchorTop +
-      (layer.previewWidth * avatarScale - accessoryWidth) / (2 * layer.aspect) -
-      (layer.slot === 'eyes' || layer.slot === 'neck' ? 8 * avatarScale : 0);
+    // Avatar portraits use neck/eye/head anchors, not the shop's 100px preview offsets.
+    const fit = {
+      head: { width: 0.9, top: -0.08 },
+      eyes: { width: 0.9, top: 0.36 },
+      neck: { width: 0.6, top: 0.8 },
+    }[layer.slot];
+    const accessoryWidth = size * fit.width;
     const zIndex = layer.slot === 'eyes' ? 30 : layer.slot === 'head' ? 20 : 10;
     return [
       // biome-ignore lint/performance/noImgElement: transparent accessory art is layered over the shared avatar
@@ -47,8 +46,9 @@ export function Avatar({
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 object-contain"
         style={{
-          top: centeredTop,
+          top: size * fit.top,
           width: accessoryWidth,
+          height: accessoryWidth / layer.aspect,
           transform: 'translateX(-50%)',
           zIndex,
         }}
@@ -70,7 +70,7 @@ export function Avatar({
   );
   return (
     <span
-      className="relative inline-grid shrink-0 place-items-center"
+      className="relative inline-grid shrink-0 place-items-center align-middle leading-none"
       style={{ width: size, height: size }}
       aria-hidden="true"
       title={name}

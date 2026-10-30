@@ -1,7 +1,6 @@
 'use server';
 // Sign-in: email one-time code, Google, and «Демо сурагчаар орох». No phone numbers.
-// The demo is a Supabase anonymous account when Supabase allows it (it can be upgraded later); otherwise a
-// cookie, and every feature falls back to localStorage / src/mocks as before.
+// Demo entry uses a cookie and Tuya’s local sample scenario; it does not create a Supabase account.
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
@@ -44,10 +43,12 @@ async function setDemoCookie(on: boolean) {
 
 export async function enterDemo(): Promise<never> {
   const db = await getDb();
-  const anon = db ? await db.auth.signInAnonymously() : null;
-  // anonymous sign-in disabled in the Supabase project → cookie demo
-  if (!anon || anon.error) await setDemoCookie(true);
-  redirect('/');
+  if (db) {
+    const { error } = await db.auth.signOut({ scope: 'local' });
+    if (error) throw error;
+  }
+  await setDemoCookie(true);
+  redirect('/demo');
 }
 
 export async function previewOnboarding(): Promise<never> {

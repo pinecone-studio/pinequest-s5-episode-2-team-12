@@ -24,13 +24,15 @@
     "cancel": "Cancel",
     "name": "Name",
     "avatar": "Avatar",
+    "age": "Age",
     "aimag": "Aimag / city",
     "aimagNone": "Not set",
     "school": "School (optional)",
     "saved": "Saved",
     "failed": "Could not save",
     "demo": "In demo mode changes stay on this device.",
-    "gems": "Gems"
+    "gems": "Gems",
+    "changeAvatar": "Change avatar"
   },
   "rank": {
     "title": "Ranking",
@@ -42,16 +44,21 @@
     "position": "#{n}",
     "none": "—",
     "soon": "Friends and aimag rankings are coming soon.",
-    "demo": "Rankings are not computed in demo mode.",
-    "more": "See leaderboard"
+    "demo": "Sample ranking among demo students.",
+    "more": "See leaderboard",
+    "pool": "of {n} students",
+    "note": "Based on this week’s XP. Select a scope to view its students.",
+    "student": "Student",
+    "you": "You",
+    "empty": "No ranked students in this scope."
   },
   "radar": {
     "title": "Skill map",
     "clusters": "8 skills",
     "domains": "4 SAT domains",
     "current": "Now",
-    "previous": "Last full test",
-    "overlay": "Compare with the last test",
+    "previous": "Earlier Mock test",
+    "overlay": "Compare with the earlier Mock test",
     "empty": "Not enough data",
     "noData": "Solve problems and your strengths and weaknesses will show up here.",
     "start": "Go to the map",
@@ -68,7 +75,11 @@
       "alg": "Algebra",
       "adv": "Advanced Math",
       "psda": "Problem-Solving & Data"
-    }
+    },
+    "answerCount": "Based on {n} answers",
+    "skill": "Skill",
+    "change": "Change",
+    "percentagePoints": "pp"
   },
   "mocks": {
     "title": "Full tests",
@@ -116,7 +127,8 @@
     "notFound": "This test was not found.",
     "loading": "Loading…",
     "back": "Back to profile",
-    "flagged": "Answers came in too fast, so this test does not count for rankings."
+    "flagged": "Answers came in too fast, so this test does not count for rankings.",
+    "practiceTest": "Practice Test {n}"
   },
   "compare": {
     "title": "Compare with an earlier test",

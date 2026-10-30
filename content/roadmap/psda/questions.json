@@ -1290,7 +1290,7 @@
     "pool": "stop",
     "prompt": "The price of a product was increased by $20\\%$. By what percent must the new price be decreased to return to the original price? (Round your answer to the nearest tenth. Do not enter the percent sign.)",
     "mn": "Бүтээгдэхүүний үнийг $20\\%$-иар нэмэгдүүлэв. Анхны үнэдээ эргэн орохын тулд шинэ үнийг хэдэн хувиар бууруулах ёстой вэ? (Хариуг аравны оронгоор нь бөөрөнхийл, хувийн тэмдэг бичихгүй.)",
-    "answer": ["16.7", "16.67", "50/3"],
+    "answer": ["50/3", "16.67"],
     "explain": "Анхны үнийг $100$ гэе. Шинэ үнэ $120$. Буцаж $100$ болгохын тулд $20$ бууруулна. $\\frac{20}{120} = \\frac{1}{6} \\approx 16.7\\%$.",
     "hint": "Анхны үнийг $100$ гэж авч тооцоол. Бууралтын хувийг ШИНЭ үнээс бод.",
     "verify": {

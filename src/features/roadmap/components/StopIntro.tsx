@@ -1,5 +1,5 @@
 'use client';
-// 2–4 short screens before a stop's problems: key idea, worked example, Desmos tip.
+// 2–10 short screens before a stop's problems: key idea, worked example, Desmos tip.
 import { useId, useState } from 'react';
 import { Rich } from '@/components/math';
 import { Button } from '@/components/ui/Button';

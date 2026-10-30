@@ -1,5 +1,5 @@
 // Suu on a small fine-tuned model (Qwen2.5 + LoRA, see ai/train/suu_v2.ipynb) served by Ollama.
-// Server-only. When OLLAMA_URL is empty or Ollama is down, the route falls back to demo replies.
+// Server-only. When OLLAMA_URL is empty or Ollama is down, the route answers 503 (no made-up reply).
 // The HTTP call itself lives in src/server/ai/ollama-client.ts (shared with the Desmos lessons).
 
 import { hasOllama, ollamaChat } from '@/server/ai/ollama-client';

@@ -221,18 +221,22 @@ export function MistakesView({
                   : (topicById(topicOf(key) ?? 0)?.title ?? t(`source.${note.source}`))}{' '}
                 · {note.qid}
               </p>
-              {question?.questionSource === 'official' ? (
-                <CbHtml html={question.question.promptHtml} scope={cbScope(note.qid, 'q')} />
-              ) : question ? (
-                <Rich text={question.question.prompt} />
-              ) : (
-                <p className="text-sm text-ink-3">
-                  {loading ? 'Ачаалж байна…' : 'Энэ асуултын өгөгдөл одоогоор олдсонгүй.'}
-                </p>
-              )}
-              <Button disabled={!question || loading} onClick={() => setSession([key])}>
-                Дахин бодох
-              </Button>
+              <div className="text-sm leading-relaxed text-ink">
+                {question?.questionSource === 'official' ? (
+                  <CbHtml html={question.question.promptHtml} scope={cbScope(note.qid, 'q')} />
+                ) : question ? (
+                  <Rich text={question.question.prompt} />
+                ) : (
+                  <p className="text-sm text-ink-3">
+                    {loading ? 'Ачаалж байна…' : 'Энэ асуултын өгөгдөл одоогоор олдсонгүй.'}
+                  </p>
+                )}
+              </div>
+              <div className="flex justify-end">
+                <Button size="sm" disabled={!question || loading} onClick={() => setSession([key])}>
+                  Дахин бодох
+                </Button>
+              </div>
             </article>
           );
         })}

@@ -99,7 +99,7 @@ export const TOPIC_NAMES: Record<number, string> = {
  * hand-written Desmos rows (equations, functions, systems, inequalities, quadratics, circles, data). Geometry,
  * trigonometry and probability are not Desmos topics.
  */
-export const DESMOS_TOPICS = new Set([2, 3, 5, 6, 12, 13, 14, 16, 19, 23, 25]);
+export const DESMOS_TOPICS = new Set([3, 6, 12, 13, 14, 16]);
 
 /** Share of letters that are Cyrillic (math and English terms are allowed around it). */
 export function mongolianShare(text: string): number {

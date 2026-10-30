@@ -500,7 +500,10 @@ export function PracticePlayer({ questions, onNext, onComplete, lastInTopic, onR
 
             <DesmosCatButton
               open={showDesmos}
-              onClick={() => setShowDesmos((visible) => !visible)}
+              onClick={() => {
+                setShowSuu(false);
+                setShowDesmos((visible) => !visible);
+              }}
               disabled={saving.busy || !timedSessionRunning}
             />
           </div>

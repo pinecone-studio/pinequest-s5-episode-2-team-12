@@ -1,19 +1,11 @@
 // Section I · profile.
+import { TUYA_PROFILE } from '@/features/demo/profile';
+import { getSession } from '@/lib/session';
 import { getDb } from '@/lib/supabase/server';
 import { TZ } from '@/lib/time';
 import type { Profile } from '@/types';
 
-export const DEMO_PROFILE: Profile = {
-  id: 'u-demo',
-  name: 'Demo',
-  onboarded: true,
-  target: 700,
-  examDate: '2026-12-05',
-  start: 'english',
-  tz: TZ,
-  hidePublic: false,
-  friendsOnly: false,
-};
+export const DEMO_PROFILE: Profile = TUYA_PROFILE;
 
 export type ProfileRow = {
   id: string;
@@ -31,6 +23,7 @@ export type ProfileRow = {
   avatar_id?: string | null;
   aimag?: string | null;
   school?: string | null;
+  age?: number | null;
   role?: Profile['role'] | null;
   last_math_score?: number | null;
   study_minutes?: Profile['studyMinutes'] | null;
@@ -45,7 +38,7 @@ export function profileFromRow(r: ProfileRow): Profile {
     confidence: r.confidence ?? undefined,
     satExp: r.sat_exp ?? undefined,
     desmos: r.desmos ?? undefined,
-    target: r.target ?? DEMO_PROFILE.target,
+    target: r.target ?? 700,
     examDate: r.exam_date ?? '',
     start: r.start ?? undefined,
     tz: r.tz ?? TZ,
@@ -54,6 +47,7 @@ export function profileFromRow(r: ProfileRow): Profile {
     avatarId: r.avatar_id ?? undefined,
     aimag: r.aimag ?? undefined,
     school: r.school ?? undefined,
+    age: r.age ?? undefined,
     role: r.role ?? undefined,
     lastMathScore: r.last_math_score ?? null,
     studyMinutes: r.study_minutes ?? undefined,
@@ -66,10 +60,20 @@ export async function getProfile(): Promise<Profile> {
   const {
     data: { user },
   } = await db.auth.getUser();
+  if (!user && (await getSession())?.kind === 'demo') return DEMO_PROFILE;
   if (!user) return { ...DEMO_PROFILE, id: 'anon', name: '', onboarded: false };
   const { data, error } = await db.from('profiles').select('*').eq('id', user.id).maybeSingle();
   if (error) throw error;
   return data
     ? profileFromRow(data as ProfileRow)
-    : { ...DEMO_PROFILE, id: user.id, name: '', onboarded: false };
+    : {
+        id: user.id,
+        name: '',
+        onboarded: false,
+        target: 700,
+        examDate: '',
+        tz: TZ,
+        hidePublic: false,
+        friendsOnly: false,
+      };
 }
