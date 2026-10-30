@@ -1,7 +1,7 @@
-import type { HardTopic } from '../lib/bank-topics';
+import type { Domain } from '@/types';
 
 /** Keep the supplied flat artwork intact; topic props never redraw or dress Suu. */
-export function TopicMascot({ topic }: { topic: HardTopic }) {
+export function TopicMascot({ topic }: { topic: Domain }) {
   return (
     <span className={`bank-mascot bank-mascot-${topic}`} aria-hidden="true">
       <svg viewBox="0 0 320 210" className="bank-mascot-scene" fill="none">
@@ -19,18 +19,6 @@ export function TopicMascot({ topic }: { topic: HardTopic }) {
               </text>
               <circle cx="191" cy="98" r="4" />
               <circle cx="181" cy="107" r="2" />
-            </g>
-          )}
-          {topic === 'fractions' && (
-            <g className="bank-mascot-prop">
-              <rect x="139" y="135" width="47" height="55" rx="10" />
-              <text x="162" y="157" textAnchor="middle">
-                1
-              </text>
-              <path d="M150 163h24" />
-              <text x="162" y="183" textAnchor="middle">
-                2
-              </text>
             </g>
           )}
           {topic === 'adv' && (

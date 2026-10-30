@@ -13,7 +13,7 @@ export type ChatMsg = {
   /** Desmos lesson to open from this reply (/desmos/ai?l=…). */
   lesson?: string;
   /** Which model wrote it: Suu (our fine-tune) or Gemini (free chat). */
-  model?: 'suu' | 'gemini';
+  model?: 'suu' | 'gemini' | 'solver';
   status?: 'pending' | 'error';
 };
 
@@ -103,7 +103,7 @@ export type ApiReply = {
   demo?: boolean;
   sample?: boolean;
   lesson?: string;
-  model?: 'suu' | 'gemini';
+  model?: 'suu' | 'gemini' | 'solver';
 };
 
 /** Calls the tutor API. Throws on network or server errors so the caller can show a retry. */
