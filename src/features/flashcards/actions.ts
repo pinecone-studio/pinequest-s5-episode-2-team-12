@@ -18,7 +18,9 @@ const KEYS = new Set(FLASHCARDS.map((c) => c.key));
 
 export async function gradeFlashcard(input: { key: string; grade: string }): Promise<FlashResult> {
   const parsed = Input.safeParse(input);
-  if (!parsed.success) return { ok: false, reason: 'invalid_input' };
+  const custom = parsed.success && CUSTOM_KEY.test(parsed.data.key);
+  if (!parsed.success || (!KEYS.has(parsed.data.key) && !custom))
+    return { ok: false, reason: 'invalid_input' };
   const db = await getDb();
   if (!db) return { ok: false, reason: 'demo_mode' };
   if (!(await isCardKey(db, parsed.data.key))) return { ok: false, reason: 'invalid_input' };
