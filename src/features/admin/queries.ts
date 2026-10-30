@@ -1,8 +1,11 @@
 // Admin panel reads. Each admin_* RPC (migration 0017) checks is_admin() inside the database, so they run on the
 // signed-in admin's own session; a student calling them gets 'forbidden'. No service-role key is needed.
+import { cache } from 'react';
 import type { XpRow } from '@/features/progress/lib/stats';
 import { getDb } from '@/lib/supabase/server';
+import { getAdminDb } from '@/server/db';
 import type { Profile } from '@/types';
+import { excludeSyntheticAccounts } from './lib/synthetic';
 
 export type AdminDay = { day: string; signups: number; active: number };
 
@@ -25,6 +28,7 @@ export type AdminOverview = {
 };
 
 export type AdminUser = {
+  synthetic?: boolean;
   id: string;
   email: string | null;
   username: string | null;
@@ -91,10 +95,52 @@ async function rpc<T>(fn: string, args?: Record<string, unknown>): Promise<Admin
   return { ok: true, data: data as T };
 }
 
-export const getOverview = () => rpc<AdminOverview>('admin_overview');
+// Only invoked after the admin-only RPC has authorized the requesting user.
+const syntheticAccounts = cache(async () => {
+  const admin = getAdminDb();
+  if (!admin) throw new Error('Synthetic account metadata unavailable');
+  const accounts = [];
+  for (let page = 1; ; page++) {
+    const { data, error } = await admin.auth.admin.listUsers({ page, perPage: 1000 });
+    if (error) throw error;
+    accounts.push(...data.users.filter((user) => user.app_metadata?.is_synthetic === true));
+    if (data.users.length < 1000) break;
+  }
+  if (!accounts.length) return [];
+  const { data: profiles, error } = await admin
+    .from('profiles')
+    .select('id,onboarded')
+    .in(
+      'id',
+      accounts.map((user) => user.id),
+    );
+  if (error) throw error;
+  const onboarded = new Set(
+    (profiles ?? []).filter((profile) => profile.onboarded).map((profile) => profile.id),
+  );
+  return accounts.map((user) => ({ ...user, onboarded: onboarded.has(user.id) }));
+});
 
-export const listUsers = (search = '') =>
-  rpc<AdminUser[]>('admin_users', { p_search: search.slice(0, 80), p_limit: 200 });
+export async function getOverview(): Promise<AdminRead<AdminOverview>> {
+  const result = await rpc<AdminOverview>('admin_overview');
+  if (!result.ok) return result;
+  try {
+    return { ok: true, data: excludeSyntheticAccounts(result.data, await syntheticAccounts()) };
+  } catch {
+    return { ok: false, reason: 'database_error' };
+  }
+}
+
+export async function listUsers(search = ''): Promise<AdminRead<AdminUser[]>> {
+  const result = await rpc<AdminUser[]>('admin_users', { p_search: search.slice(0, 80), p_limit: 200 });
+  if (!result.ok) return result;
+  try {
+    const ids = new Set((await syntheticAccounts()).map((user) => user.id));
+    return { ok: true, data: result.data.map((user) => ({ ...user, synthetic: ids.has(user.id) })) };
+  } catch {
+    return { ok: false, reason: 'database_error' };
+  }
+}
 
 export const listReports = (openOnly = true) =>
   rpc<AdminReport[]>('admin_reports', { p_open_only: openOnly });

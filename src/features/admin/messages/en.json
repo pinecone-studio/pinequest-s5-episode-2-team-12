@@ -54,7 +54,7 @@
     "lead": "Find students, grant admin access, send gems.",
     "search": "Search by name, username or email",
     "searchButton": "Search",
-    "count": "{n} users",
+    "count": "{n} accounts",
     "empty": "No users found",
     "guest": "Demo guest",
     "you": "You",
@@ -82,7 +82,8 @@
       "cancel": "Cancel",
       "done": "Sent {n} gems",
       "invalid": "Enter a whole number from -1000 to 1000, not 0"
-    }
+    },
+    "synthetic": "Synthetic test account"
   },
   "detail": {
     "title": "User details",

@@ -163,6 +163,7 @@ function UserRow({ user, me }: { user: AdminUser; me: string | null }) {
               <span className="text-[13px] text-ink-3">@{user.username}</span>
             )}
             <Pill tone={admin ? 'dark' : 'neutral'}>{t(`users.role.${user.role}`)}</Pill>
+            {user.synthetic && <Pill tone="amber">{t('users.synthetic')}</Pill>}
             {self && <Pill tone="leaf">{t('users.you')}</Pill>}
             {user.anonymous && <Pill>{t('users.guest')}</Pill>}
             {!user.anonymous && !user.onboarded && <Pill tone="amber">{t('users.notOnboarded')}</Pill>}
