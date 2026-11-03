@@ -1,0 +1,49 @@
+{
+  "version": 9,
+  "graph": {
+    "expressions": [
+      {
+        "id": "expr1",
+        "type": "expression",
+        "color": "#16a34a",
+        "latex": "y = 2x + 1"
+      },
+      {
+        "id": "expr2",
+        "type": "expression",
+        "color": "#2563eb",
+        "latex": "y = -0.5x + 3"
+      },
+      {
+        "id": "expr3",
+        "type": "expression",
+        "color": "#dc2626",
+        "latex": "y = 0.8x - 2"
+      },
+      {
+        "id": "expr4",
+        "type": "expression",
+        "color": "#9333ea",
+        "latex": "y = 0.8x + 1"
+      },
+      {
+        "id": "intersection1",
+        "type": "expression",
+        "color": "#000000",
+        "latex": "y_1 = y_2"
+      },
+      {
+        "id": "intersection2",
+        "type": "expression",
+        "color": "#000000",
+        "latex": "y_3 = y_4"
+      }
+    ],
+    "viewport": {
+      "xmin": -10,
+      "xmax": 10,
+      "ymin": -10,
+      "ymax": 10
+    }
+  }
+}

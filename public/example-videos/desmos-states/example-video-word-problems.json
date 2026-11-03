@@ -1,0 +1,37 @@
+{
+  "version": 9,
+  "graph": {
+    "expressions": [
+      {
+        "id": "expr1",
+        "type": "expression",
+        "color": "#16a34a",
+        "latex": "150000 + 40000h = 430000"
+      },
+      {
+        "id": "expr2",
+        "type": "expression",
+        "color": "#2563eb",
+        "latex": "h = 7"
+      },
+      {
+        "id": "expr3",
+        "type": "expression",
+        "color": "#dc2626",
+        "latex": "y = 4 \\cdot 3 + 3"
+      },
+      {
+        "id": "expr4",
+        "type": "expression",
+        "color": "#9333ea",
+        "latex": "y = 15"
+      }
+    ],
+    "viewport": {
+      "xmin": -10,
+      "xmax": 10,
+      "ymin": -100000,
+      "ymax": 500000
+    }
+  }
+}

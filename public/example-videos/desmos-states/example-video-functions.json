@@ -1,0 +1,61 @@
+{
+  "version": 9,
+  "graph": {
+    "expressions": [
+      {
+        "id": "expr1",
+        "type": "expression",
+        "color": "#16a34a",
+        "latex": "f(x) = 2x + 3"
+      },
+      {
+        "id": "expr2",
+        "type": "expression",
+        "color": "#2563eb",
+        "latex": "g(x) = x^2 - 1"
+      },
+      {
+        "id": "expr3",
+        "type": "expression",
+        "color": "#dc2626",
+        "latex": "f(g(x))"
+      },
+      {
+        "id": "expr4",
+        "type": "expression",
+        "color": "#9333ea",
+        "latex": "g(f(x))"
+      },
+      {
+        "id": "expr5",
+        "type": "expression",
+        "color": "#ea580c",
+        "latex": "f(3)"
+      },
+      {
+        "id": "expr6",
+        "type": "expression",
+        "color": "#000000",
+        "latex": "g(3)"
+      },
+      {
+        "id": "expr7",
+        "type": "expression",
+        "color": "#10b981",
+        "latex": "f(g(3))"
+      },
+      {
+        "id": "expr8",
+        "type": "expression",
+        "color": "#9333ea",
+        "latex": "g(f(3))"
+      }
+    ],
+    "viewport": {
+      "xmin": -10,
+      "xmax": 10,
+      "ymin": -10,
+      "ymax": 20
+    }
+  }
+}

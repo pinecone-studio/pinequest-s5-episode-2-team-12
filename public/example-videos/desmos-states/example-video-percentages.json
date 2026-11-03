@@ -1,0 +1,49 @@
+{
+  "version": 9,
+  "graph": {
+    "expressions": [
+      {
+        "id": "expr1",
+        "type": "expression",
+        "color": "#16a34a",
+        "latex": "P = 80000"
+      },
+      {
+        "id": "expr2",
+        "type": "expression",
+        "color": "#2563eb",
+        "latex": "r = 0.15"
+      },
+      {
+        "id": "expr3",
+        "type": "expression",
+        "color": "#dc2626",
+        "latex": "P_{\\text{discount}} = P(1 - r)"
+      },
+      {
+        "id": "expr4",
+        "type": "expression",
+        "color": "#9333ea",
+        "latex": "P_{\\text{after}} = P_{\\text{discount}}(1 + 0.10)"
+      },
+      {
+        "id": "expr5",
+        "type": "expression",
+        "color": "#ea580c",
+        "latex": "P_{\\text{final}} = 80000(0.85)(1.10)"
+      },
+      {
+        "id": "expr6",
+        "type": "expression",
+        "color": "#10b981",
+        "latex": "\\text{Percent change} = \\frac{P_{\\text{final}} - P}{P} \\times 100"
+      }
+    ],
+    "viewport": {
+      "xmin": -10,
+      "xmax": 10,
+      "ymin": -10,
+      "ymax": 10
+    }
+  }
+}

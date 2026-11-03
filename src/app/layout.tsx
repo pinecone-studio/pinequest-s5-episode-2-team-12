@@ -44,6 +44,25 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   title: { default: 'Suprep — SAT Math', template: '%s · Suprep' },
   description: 'Монгол сурагчдад зориулсан AI SAT Math платформ. Desmos Академи, AI багш Суу.',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml', sizes: 'any' },
+      { url: '/favicon-16.png', type: 'image/png', sizes: '16x16' },
+      { url: '/favicon-32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/favicon-48.png', type: 'image/png', sizes: '48x48' },
+      { url: '/favicon-64.png', type: 'image/png', sizes: '64x64' },
+      { url: '/favicon-128.png', type: 'image/png', sizes: '128x128' },
+      { url: '/favicon-192.png', type: 'image/png', sizes: '192x192' },
+      { url: '/favicon-512.png', type: 'image/png', sizes: '512x512' },
+    ],
+    apple: '/apple-touch-icon.png',
+    shortcut: '/favicon-16.png',
+    other: [
+      { rel: 'mask-icon', url: '/favicon.svg', color: '#16a34a' },
+    ],
+  },
+  manifest: '/site.webmanifest',
 };
 
 export const viewport: Viewport = {

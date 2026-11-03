@@ -1,0 +1,43 @@
+{
+  "version": 9,
+  "graph": {
+    "expressions": [
+      {
+        "id": "expr1",
+        "type": "expression",
+        "color": "#16a34a",
+        "latex": "\\theta_{\\text{deg}} = 135"
+      },
+      {
+        "id": "expr2",
+        "type": "expression",
+        "color": "#2563eb",
+        "latex": "\\theta_{\\text{rad}} = \\theta_{\\text{deg}} \\cdot \\frac{\\pi}{180}"
+      },
+      {
+        "id": "expr3",
+        "type": "expression",
+        "color": "#dc2626",
+        "latex": "r = 8"
+      },
+      {
+        "id": "expr4",
+        "type": "expression",
+        "color": "#9333ea",
+        "latex": "s = r \\cdot \\theta_{\\text{rad}}"
+      },
+      {
+        "id": "expr5",
+        "type": "expression",
+        "color": "#ea580c",
+        "latex": "A = \\frac{1}{2} r^2 \\theta_{\\text{rad}}"
+      }
+    ],
+    "viewport": {
+      "xmin": -10,
+      "xmax": 10,
+      "ymin": -10,
+      "ymax": 10
+    }
+  }
+}

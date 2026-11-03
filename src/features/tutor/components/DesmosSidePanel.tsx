@@ -56,13 +56,13 @@ export function DesmosCatButton({
       className={cn(
         'inline-flex items-center gap-2 rounded-2xl border px-3.5 py-2 text-sm font-bold transition disabled:cursor-not-allowed disabled:opacity-50',
         open
-          ? 'border-leaf bg-sage text-leaf-2'
-          : 'border-line bg-paper-2 text-ink hover:border-leaf hover:text-leaf-2',
+          ? 'border-leaf bg-leaf text-on-leaf dark:border-leaf dark:bg-leaf dark:text-on-leaf'
+          : 'border-line bg-paper-2 text-ink hover:border-leaf hover:text-leaf dark:hover:text-leaf dark:hover:border-leaf',
         className,
       )}
     >
       <span
-        className="grid size-7 place-items-center overflow-hidden rounded-[30%] bg-sage"
+        className="grid size-7 place-items-center overflow-hidden rounded-[30%] bg-sage dark:bg-leaf"
         aria-hidden="true"
       >
         {/* biome-ignore lint/performance/noImgElement: static transparent image */}
@@ -175,7 +175,7 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
       <header className="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
         <div className="flex min-w-0 items-center gap-2">
           <span
-            className="grid size-8 shrink-0 place-items-center overflow-hidden rounded-[30%] bg-sage"
+            className="grid size-8 shrink-0 place-items-center overflow-hidden rounded-[30%] bg-sage dark:bg-leaf"
             aria-hidden
           >
             {/* biome-ignore lint/performance/noImgElement: static transparent image */}
@@ -201,7 +201,7 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
           type="button"
           onClick={onClose}
           aria-label={t('desmosPanel.close')}
-          className="grid size-9 shrink-0 place-items-center rounded-xl text-[22px] leading-none text-ink-3 hover:bg-paper-2 hover:text-ink"
+          className="grid size-9 shrink-0 place-items-center rounded-xl text-[22px] leading-none text-ink-3 hover:bg-paper-2 hover:text-ink dark:text-ink-2 dark:hover:bg-leaf dark:hover:text-on-leaf"
         >
           ×
         </button>
@@ -227,12 +227,12 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
                       aria-current={i === step ? 'step' : undefined}
                       className={cn(
                         'w-full rounded-xl px-3 py-2 text-left leading-relaxed transition-colors',
-                        i === step && 'bg-sage font-medium text-ink',
+                        i === step && 'bg-sage font-medium text-ink dark:bg-leaf dark:text-on-leaf',
                         i < step && 'text-ink',
                         i > step && 'text-ink-3',
                       )}
                     >
-                      <span className="mr-1.5 font-bold text-leaf-2">{i + 1}.</span>
+                      <span className="mr-1.5 font-bold text-leaf-2 dark:text-on-leaf">{i + 1}.</span>
                       {s.text}
                     </button>
                   </li>
@@ -263,7 +263,7 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
               </div>
             )}
             {revealed && last && (
-              <div className="grid gap-0.5 rounded-xl bg-sage px-3 py-2 text-ink">
+              <div className="grid gap-0.5 rounded-xl bg-sage px-3 py-2 text-ink dark:bg-leaf dark:text-on-leaf">
                 <span>
                   {t('desmosAi.check')}: {lesson.check}
                 </span>

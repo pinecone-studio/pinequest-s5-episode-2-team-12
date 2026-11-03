@@ -112,8 +112,12 @@ export function StopPlayer({
     setValue('');
     setRevealed(false);
     setHint(false);
+    setShowDesmos(false);
+    setShowSuu(false);
+    setShowSummary(false);
     setAnswers([]);
     setOutcome(null);
+    setError(null);
     started.current = Date.now();
   }, [loaded.ready, allowed, round, no, forceIntro, testOut, mastery, intro.length, isFirstAttempt]);
 
@@ -205,12 +209,9 @@ export function StopPlayer({
       <div className="flex items-center gap-2">
         {phase !== 'intro' && (
           <Button
-            variant="secondary"
+            variant={showDesmos ? 'primary' : 'secondary'}
             size="md"
-            className={cn(
-              "font-medium gap-1.5 transition-colors",
-              showDesmos ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-blue-50 text-blue-600 hover:bg-blue-100 border-blue-200"
-            )}
+            className="font-medium gap-1.5 transition-colors"
             onClick={() => setShowDesmos((prev) => !prev)}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -346,7 +347,10 @@ export function StopPlayer({
                     variant="lime"
                     size="xl"
                     className="text-base h-14 px-8 rounded-2xl"
-                    onClick={() => setRound((r) => r + 1)}
+                    onClick={() => {
+                      setPhase('play');
+                      setRound((r) => r + 1);
+                    }}
                   >
                     {t('stop.retry')}
                   </Button>

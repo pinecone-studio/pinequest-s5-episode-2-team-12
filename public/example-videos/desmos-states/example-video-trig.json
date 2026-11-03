@@ -1,0 +1,73 @@
+{
+  "version": 9,
+  "graph": {
+    "expressions": [
+      {
+        "id": "expr1",
+        "type": "expression",
+        "color": "#16a34a",
+        "latex": "\\sin(x)"
+      },
+      {
+        "id": "expr2",
+        "type": "expression",
+        "color": "#2563eb",
+        "latex": "\\cos(x)"
+      },
+      {
+        "id": "expr3",
+        "type": "expression",
+        "color": "#dc2626",
+        "latex": "\\tan(x)"
+      },
+      {
+        "id": "expr4",
+        "type": "expression",
+        "color": "#9333ea",
+        "latex": "\\sin(x)^2 + \\cos(x)^2"
+      },
+      {
+        "id": "triangle_hyp",
+        "type": "expression",
+        "color": "#000000",
+        "latex": "c = 17"
+      },
+      {
+        "id": "triangle_leg1",
+        "type": "expression",
+        "color": "#000000",
+        "latex": "a = 8"
+      },
+      {
+        "id": "triangle_leg2",
+        "type": "expression",
+        "color": "#000000",
+        "latex": "b = 15"
+      },
+      {
+        "id": "sin_val",
+        "type": "expression",
+        "color": "#000000",
+        "latex": "\\sin(\\theta) = \\frac{8}{17}"
+      },
+      {
+        "id": "cos_val",
+        "type": "expression",
+        "color": "#000000",
+        "latex": "\\cos(\\theta) = \\frac{15}{17}"
+      },
+      {
+        "id": "tan_val",
+        "type": "expression",
+        "color": "#000000",
+        "latex": "\\tan(\\theta) = \\frac{8}{15}"
+      }
+    ],
+    "viewport": {
+      "xmin": -2,
+      "xmax": 7,
+      "ymin": -2,
+      "ymax": 2
+    }
+  }
+}
