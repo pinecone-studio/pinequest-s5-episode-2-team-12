@@ -11,7 +11,7 @@ mock.module('../mock-actions', () => ({
   beginModule2: async () => ({ ok: false, reason: 'test' }),
   viewMock: async () => ({ ok: false, reason: 'test' }),
 }));
-mock.module('next/navigation', () => ({ useRouter: () => ({ push: () => {} }) }));
+mock.module('next/navigation', () => ({ useRouter: () => ({ push: () => {} }), usePathname: () => '/mock' }));
 
 const { MockExam } = await import('./MockExam');
 

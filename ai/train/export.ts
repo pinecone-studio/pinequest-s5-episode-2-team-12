@@ -8,7 +8,7 @@ import { QUESTIONS } from '../../src/mocks/questions';
 import { withVerdict } from '../../src/server/ai/verdict';
 import type { Question } from '../../src/types';
 import { generalExamples } from '../pipeline/general';
-import { generate, mulberry32, type Rng } from '../pipeline/generate';
+import { generate, KIT_TEMPLATES, mulberry32, type Rng } from '../pipeline/generate';
 import { type ChatExample, ChatExample as ChatExampleSchema, type EvalItem } from '../schema';
 
 export const SYSTEM_PROMPT =
@@ -204,11 +204,11 @@ export const SIZES = { perTemplate: 8, valPerTemplate: 1, evalEvery: 2 } as cons
 
 export function buildSplits(perTemplate: number = SIZES.perTemplate) {
   const { train: origTrain, val: origVal } = split(QUESTIONS);
-  const genTrain = generate(1, perTemplate);
+  const genTrain = generate(1, perTemplate, KIT_TEMPLATES);
   const seen = new Set([...QUESTIONS, ...genTrain].map((q) => q.prompt));
   const fresh = (qs: Question[]) => qs.filter((q) => !seen.has(q.prompt) && seen.add(q.prompt));
-  const genVal = fresh(generate(2, SIZES.valPerTemplate));
-  const genEval = fresh(generate(3, 1)).filter((_, i) => i % SIZES.evalEvery === 0);
+  const genVal = fresh(generate(2, SIZES.valPerTemplate, KIT_TEMPLATES));
+  const genEval = fresh(generate(3, 1, KIT_TEMPLATES)).filter((_, i) => i % SIZES.evalEvery === 0);
   return { origTrain, origVal, genTrain, genVal, genEval };
 }
 
