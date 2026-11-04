@@ -169,7 +169,7 @@ export function StopPanel({
             <div className="min-w-0">
               <h2
                 style={textColor}
-                className="font-display text-[clamp(26px,3vw,44px)] font-bold leading-tight text-ink"
+                className="font-display text-[clamp(26px,3vw,44px)] font-bold leading-tight text-ink truncate"
               >
                 {v.topic.title}
               </h2>

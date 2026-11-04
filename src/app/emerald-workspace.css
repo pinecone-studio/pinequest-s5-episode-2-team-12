@@ -608,6 +608,7 @@
     left: var(--rail-w, 76px);
     right: var(--rail-gap);
     width: min(780px, calc(100% - var(--rail-w, 76px) - var(--rail-gap) - 64px));
+    min-height: 0; /* Allow grid container to shrink below content size for proper overflow scrolling */
     transition: left 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), width 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 }
