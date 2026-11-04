@@ -108,3 +108,9 @@ export function drawRows(calc: Calc, rows: string[]) {
     if (table[2]) calc.setExpression({ id: `r${i}reg`, latex: 'y_1\\sim mx_1+b' });
   });
 }
+
+/** Rows the chat suggested, drawn on top of the lesson in purple (ids chat0…, so redrawing replaces them). */
+export function drawExtra(calc: Calc, rows: string[]) {
+  for (const [i, latex] of rows.entries())
+    calc.setExpression({ id: `chat${i}`, latex, color: COLORS.purple });
+}

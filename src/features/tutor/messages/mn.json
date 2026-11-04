@@ -38,7 +38,8 @@
     "drawDesmos": "Desmos дээр зурж харах",
     "bySuu": "Суу (манай загвар)",
     "bySolver": "Кодоор бодсон · график шалгасан",
-    "byGemini": "Gemini чат"
+    "byGemini": "Gemini чат",
+    "drawRows": "Desmos-д зурах ({n})"
   },
   "modes": {
     "hint": "Зөвлөгөө",

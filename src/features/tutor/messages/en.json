@@ -38,7 +38,8 @@
     "drawDesmos": "Draw it in Desmos",
     "bySuu": "Suu (our model)",
     "bySolver": "Solved by code · checked on the graph",
-    "byGemini": "Gemini chat"
+    "byGemini": "Gemini chat",
+    "drawRows": "Draw in Desmos ({n})"
   },
   "modes": {
     "hint": "Hint",
