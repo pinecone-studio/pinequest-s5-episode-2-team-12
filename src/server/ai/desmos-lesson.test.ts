@@ -175,3 +175,10 @@ describe('RAG: similar checked lessons go first, as earlier turns', () => {
     expect(lessonMessages('what is  x?', '1', [hit])).toHaveLength(2);
   });
 });
+
+test('another lesson: sampled at 0.7 first (the greedy one was already shown), then 0.4', async () => {
+  const { calls, fetchImpl } = ollama('nonsense', good.output);
+  const res = await modelDesmosLesson(good.question, good.answer, fetchImpl, undefined, true);
+  expect(res).not.toBeNull();
+  expect(calls.map((c) => c.options.temperature)).toEqual([0.7, 0.4]);
+});

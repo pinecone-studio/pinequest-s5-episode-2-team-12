@@ -11,7 +11,7 @@ import { Pill } from '@/components/ui/Pill';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { useElapsed, waitLabel } from '../hooks/useElapsed';
-import { type Calc, drawLesson, drawRows, loadDesmos } from '../lib/desmos-calc';
+import { type Calc, drawExtra, drawLesson, drawRows, loadDesmos } from '../lib/desmos-calc';
 import type { DesmosAiLesson } from '../lib/desmos-lessons';
 import { type DesmosPanelInput, panelView, visibleSteps } from '../lib/desmos-panel';
 
@@ -31,6 +31,8 @@ type Props = {
   inset?: boolean;
   /** Tells the chat which steps the student sees (never the locked one), so it can talk about the same graph. */
   onView?: (view: ReturnType<typeof panelView> | null) => void;
+  /** Rows the chat suggested ("Desmos-д зурах"), drawn on top in purple. */
+  extra?: string[];
 };
 
 /** The cat button that opens the panel. */
@@ -73,7 +75,16 @@ export function DesmosCatButton({
   );
 }
 
-export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl, inset, onView }: Props) {
+export function DesmosSidePanel({
+  input,
+  revealed,
+  onClose,
+  onReveal,
+  fetchImpl,
+  inset,
+  onView,
+  extra,
+}: Props) {
   const t = useT('tutor');
   const [lesson, setLesson] = useState<DesmosAiLesson | null>(null);
   const [source, setSource] = useState<'sample' | 'model' | 'solver' | null>(null);
@@ -81,6 +92,8 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
   const waited = useElapsed(thinking);
   const [cur, setCur] = useState(0);
   const [graph, setGraph] = useState<'loading' | 'ready' | 'failed'>('loading');
+  // «Өөр хичээл»: bumping this asks Suu for a new (sampled) lesson for the same problem
+  const [round, setRound] = useState(0);
   const box = useRef<HTMLDivElement>(null);
   const calc = useRef<Calc | null>(null);
   const doFetch = fetchImpl ?? ((...args: Parameters<typeof fetch>) => fetch(...args));
@@ -118,9 +131,11 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
     send('/api/desmos/lesson', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(
-        input.answer ? { question: input.question, answer: input.answer } : { question: input.question },
-      ),
+      body: JSON.stringify({
+        question: input.question,
+        ...(input.answer ? { answer: input.answer } : {}),
+        ...(round > 0 ? { another: true } : {}),
+      }),
       signal: ctrl.signal,
     })
       .then(async (res) => (res.ok ? ((await res.json()) as LessonReply) : null))
@@ -134,7 +149,7 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
         setThinking(false);
       });
     return () => ctrl.abort();
-  }, [input.question, input.answer]);
+  }, [input.question, input.answer, round]);
 
   const shown = lesson ? visibleSteps(lesson, revealed) : 0;
   const locked = lesson ? shown < lesson.steps.length : false;
@@ -147,7 +162,8 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
     if (lesson && shown > 0) drawLesson(calc.current, lesson, step);
     else if (!lesson && !thinking && input.rows?.length) drawRows(calc.current, input.rows);
     else calc.current.setBlank();
-  }, [graph, lesson, shown, step, thinking, input.rows]);
+    if (extra?.length) drawExtra(calc.current, extra);
+  }, [graph, lesson, shown, step, thinking, input.rows, extra]);
 
   const viewRef = useRef(onView);
   viewRef.current = onView;
@@ -261,6 +277,17 @@ export function DesmosSidePanel({ input, revealed, onClose, onReveal, fetchImpl,
                   {t('desmosAi.next')} →
                 </Button>
               </div>
+            )}
+            {source === 'model' && (
+              <Button
+                size="sm"
+                variant="secondary"
+                className="w-fit"
+                disabled={thinking}
+                onClick={() => setRound((r) => r + 1)}
+              >
+                ↻ {t('desmosPanel.another')}
+              </Button>
             )}
             {revealed && last && (
               <div className="grid gap-0.5 rounded-xl bg-sage px-3 py-2 text-ink">
