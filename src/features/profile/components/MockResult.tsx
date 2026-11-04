@@ -79,9 +79,11 @@ export function MockResult({
     );
 
   const byId = new Map(questions.map((q) => [q.id, q]));
-  const earlier = attempts.filter(
-    (a) => a.id !== id && Date.parse(a.finishedAt!) < Date.parse(attempt.finishedAt!),
-  );
+  const earlier = attempts
+    .filter((a) => a.id !== id && Date.parse(a.finishedAt!) < Date.parse(attempt.finishedAt!))
+    .sort((a, b) => Date.parse(a.finishedAt!) - Date.parse(b.finishedAt!));
+  const previous = earlier.find((a) => a.id === withId) ?? earlier[0];
+  const scoreDelta = (attempt.score ?? 0) - (previous?.score ?? 0);
   let n = 0;
 
   return (
@@ -92,6 +94,9 @@ export function MockResult({
       <header className="soft-card grid gap-4 p-5 md:p-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
+            {attempt.formId?.match(/^pt(\d+)$/) && (
+              <p className="eyebrow">{t('result.practiceTest', { n: Number(attempt.formId.slice(2)) })}</p>
+            )}
             <h1 className="font-display text-2xl font-bold text-ink">{t('result.title')}</h1>
             <p className="text-[13px] text-ink-3">{t('result.disclaimer')}</p>
           </div>
@@ -155,29 +160,37 @@ export function MockResult({
         {earlier.length === 0 ? (
           <p className="text-[13.5px] text-ink-3">{t('result.noPrevious')}</p>
         ) : (
-          <div className="flex flex-wrap items-center gap-2">
-            <label className="sr-only" htmlFor={`${uid}-compare-with`}>
-              {t('result.compareWith')}
-            </label>
-            <select
-              id={`${uid}-compare-with`}
-              value={withId}
-              onChange={(e) => setWithId(e.target.value)}
-              className="h-11 rounded-2xl border border-line bg-paper-2 px-3 text-[14px]"
-            >
-              <option value="">{t('result.compareWith')}</option>
-              {earlier.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {fmtDate(a.finishedAt!)} · {a.score}
-                </option>
-              ))}
-            </select>
-            <Link
-              href={routes.mockCompare(id, withId || earlier[0].id)}
-              className="inline-flex h-11 items-center rounded-2xl bg-leaf-deep px-5 text-[14px] font-bold text-[var(--c-on-leaf)]"
-            >
-              {t('result.compare')}
-            </Link>
+          <div className="grid gap-4">
+            <p className="text-sm text-ink-2">
+              {fmtDate(previous.finishedAt!)} · {previous.score} → {attempt.score}
+              <span className={cn('ml-3 font-bold', scoreDelta >= 0 ? 'text-leaf-2' : 'text-danger')}>
+                {scoreDelta > 0 ? '+' : ''}
+                {scoreDelta}
+              </span>
+            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <label className="sr-only" htmlFor={`${uid}-compare-with`}>
+                {t('result.compareWith')}
+              </label>
+              <select
+                id={`${uid}-compare-with`}
+                value={previous?.id ?? ''}
+                onChange={(e) => setWithId(e.target.value)}
+                className="h-11 rounded-2xl border border-line bg-paper-2 px-3 text-[14px]"
+              >
+                {earlier.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {fmtDate(a.finishedAt!)} · {a.score}
+                  </option>
+                ))}
+              </select>
+              <Link
+                href={routes.mockCompare(id, previous.id)}
+                className="inline-flex h-11 items-center rounded-2xl bg-leaf-deep px-5 text-[14px] font-bold text-[var(--c-on-leaf)]"
+              >
+                {t('result.compare')}
+              </Link>
+            </div>
           </div>
         )}
       </section>

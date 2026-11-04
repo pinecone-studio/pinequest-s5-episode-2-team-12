@@ -158,12 +158,22 @@ describe('RoadmapMap', () => {
     const views = stopViews(sampleState(), true);
     render(<RoadmapMap views={views} frontierNo={5} onOpen={() => {}} cluster={false} />);
     const map = screen.getByRole('application');
-    const pins = within(map).getAllByRole('button');
+    const pins = within(map).getAllByRole('button', { name: /зогсоол/ });
     expect(pins).toHaveLength(26);
     expect(
       screen.getByRole('button', { name: '6-р зогсоол, Мөрөн, Шулуун ба шугаман тэгшитгэл, түгжээтэй' }),
     ).toBeTruthy();
     expect(screen.getByRole('button', { name: /^1-р зогсоол, Өлгий, .*дууссан, 3 од$/ })).toBeTruthy();
+  });
+
+  test('tapping the cat bubble shows the next guide tip', () => {
+    render(
+      <RoadmapMap views={stopViews(sampleState(), true)} frontierNo={5} onOpen={() => {}} cluster={false} />,
+    );
+    const bubble = screen.getByRole('button', { name: 'Дараагийн зөвлөгөө' });
+    expect(bubble.textContent).toContain('Сайн уу!');
+    fireEvent.click(bubble);
+    expect(bubble.textContent).toContain('26 буудлыг');
   });
 
   test('home map stays fixed while pins remain clickable', () => {
@@ -320,5 +330,19 @@ describe('StopPlayer (demo mode)', () => {
     await waitFor(() =>
       expect(ask.getAttribute('href')).toMatch(/^\/tutor\?kind=question&id=t1-\d+&chosen=1$/),
     );
+  });
+
+  test('«AI багш Суу» opens beside the problem; checking the answer unlocks the full explanation', async () => {
+    saveLocalRoadmap({ ...loadLocalRoadmap(), state: withPlacement(initialState(), skippedResult()) });
+    render(
+      <StopPlayer no={1} testOut={false} pool={pool} intro={[]} demo server={null} serverHistory={[]} />,
+    );
+    await screen.findByRole('region', { name: 'Бодлого 1 / 8' });
+    fireEvent.click(screen.getByRole('button', { name: 'AI багш Суу-г хажууд нээх' }));
+    expect(screen.getByRole('complementary', { name: 'AI багш Суу' })).toBeTruthy();
+    expect((screen.getByRole('button', { name: /Бүтэн тайлбар/ }) as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.click(screen.getByRole('radio', { name: /^B/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Шалгах' }));
+    expect((screen.getByRole('button', { name: 'Бүтэн тайлбар' }) as HTMLButtonElement).disabled).toBe(false);
   });
 });

@@ -3,12 +3,10 @@
 // it also moves the note on the SM-2 schedule in `mistakes`.
 import { z } from 'zod';
 import { type PublicQuestion, toPublic } from '@/features/exam/lib/mock';
-import { correctAnswerText, isCorrect } from '@/features/roadmap/lib/grade';
-import { getDb } from '@/lib/supabase/server';
+import { correctAnswerText } from '@/features/roadmap/lib/grade';
 import { questionById } from '@/server/bank';
-import { getAdminDb } from '@/server/db';
-import { awardXp } from '@/server/xp';
 import { afterReview, type NoteState } from './lib/notebook';
+import { submitQuestionAnswer } from './submission-actions';
 
 export type Preview = PublicQuestion & { topicId?: number };
 
@@ -32,50 +30,20 @@ export async function checkMistake(input: {
   state?: NoteState;
 }): Promise<CheckResult> {
   const parsed = Input.safeParse(input);
-  const q = parsed.success ? questionById(parsed.data.qid) : undefined;
-  if (!parsed.success || !q) return { ok: false, reason: 'invalid_input' };
-  const correct = isCorrect(q, parsed.data.answer);
-  const now = Date.now();
-  let state: NoteState | null = null;
-  const db = await getDb();
-  const user = db ? (await db.auth.getUser()).data.user : null;
-  const admin = getAdminDb();
-  if (user && admin) {
-    const { data } = await admin
-      .from('mistakes')
-      .select('reps, interval_days, ease, lapses, due_at, resolved')
-      .eq('user_id', user.id)
-      .eq('question_id', q.id)
-      .maybeSingle();
-    if (data) {
-      state = afterReview(
-        {
-          reps: data.reps,
-          interval: data.interval_days,
-          ease: Number(data.ease),
-          lapses: data.lapses,
-          due: Date.parse(data.due_at),
-          resolved: data.resolved,
-        },
-        correct,
-        now,
-      );
-      await admin
-        .from('mistakes')
-        .update({
-          reps: state.reps,
-          interval_days: state.interval,
-          ease: state.ease,
-          lapses: state.lapses,
-          due_at: new Date(state.due).toISOString(),
-          resolved: state.resolved,
-        })
-        .eq('user_id', user.id)
-        .eq('question_id', q.id);
-      if (correct) await awardXp(user.id, 3, 'mistake-review', `mistake:${q.id}:${state.reps}`);
-    }
-  } else if (input.state) {
-    state = afterReview(input.state, correct, now);
-  }
-  return { ok: true, correct, correctText: correctAnswerText(q), explain: q.explain, state };
+  if (!parsed.success) return { ok: false, reason: 'invalid_input' };
+  const result = await submitQuestionAnswer({
+    qid: parsed.data.qid,
+    questionSource: 'practice',
+    answer: parsed.data.answer,
+  });
+  if (!result.ok) return { ok: false, reason: 'invalid_input' };
+  const q = questionById(parsed.data.qid);
+  // Compatibility for older callers: wrong feedback never discloses the answer or explanation.
+  return {
+    ok: true,
+    correct: result.correct,
+    correctText: result.correct && q ? correctAnswerText(q) : '',
+    explain: result.correct ? (q?.explain ?? '') : '',
+    state: input.state ? afterReview(input.state, result.correct, Date.now()) : null,
+  };
 }

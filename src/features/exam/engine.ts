@@ -7,6 +7,7 @@ import { placementPool, stopPool } from '@/features/roadmap/content/bank';
 import { type Rng, seeded } from '@/features/roadmap/lib/select-problems';
 import type { Domain, Question } from '@/types';
 import { DOMAINS, MOCK } from './config';
+import { allFormQuestions, formById, module2Of } from './forms';
 import {
   buildModule,
   finishAttempt,
@@ -20,11 +21,17 @@ import {
 
 let cached: { pool: Question[]; bank: Map<string, Question> } | null = null;
 
-/** Every servable question (review gate as in the roadmap), by id. */
+/**
+ * `pool`: every servable roadmap question (review gate as in the roadmap) — the random mock, daily and duels
+ * draw from it. `bank`: the pool plus the practice-test questions, by id (grading, review, mistakes). Practice
+ * test items stay out of the pool so a practice test is always new when a student first sits it.
+ */
 export function mockBank() {
   if (!cached) {
     const pool = [...stopPool(undefined, ROADMAP.allowUnreviewed), ...placementPool(ROADMAP.allowUnreviewed)];
-    cached = { pool, bank: new Map(pool.map((q) => [q.id, q])) };
+    const bank = new Map(pool.map((q) => [q.id, q]));
+    for (const q of allFormQuestions()) if (!bank.has(q.id)) bank.set(q.id, q);
+    cached = { pool, bank };
   }
   return cached;
 }
@@ -49,9 +56,11 @@ export function startAttempt(
   seen: ReadonlySet<string>,
   now: number,
   rng: Rng = seeded(now),
+  formId?: string,
 ): MockAttempt {
   const { pool } = mockBank();
-  const ids = buildModule({ pool, mix: MOCK.mix.module1, seen, rng });
+  const form = formById(formId);
+  const ids = form ? form.module1.map((q) => q.id) : buildModule({ pool, mix: MOCK.mix.module1, seen, rng });
   const module1: MockModule = {
     no: 1,
     ids,
@@ -71,6 +80,7 @@ export function startAttempt(
     domains: emptyDomains(),
     timeUsedSec: 0,
     flagged: false,
+    ...(form && { formId: form.id }),
   };
 }
 
@@ -134,7 +144,10 @@ export function submitModule(
   }
   if (no === 1) {
     const route = routeFor(graded.answers.filter((x) => x.correct).length);
-    const ids = buildModule({ pool, mix: MOCK.mix[route], exclude: new Set(mod.ids), seen, rng });
+    const form = a.formId ? formById(a.formId, true) : undefined;
+    const ids = form
+      ? module2Of(form, route)
+      : buildModule({ pool, mix: MOCK.mix[route], exclude: new Set(mod.ids), seen, rng });
     next = {
       ...next,
       route,

@@ -64,5 +64,29 @@
     "adv": "Advanced Math",
     "psda": "Problem-Solving and Data Analysis",
     "geo": "Geometry and Trigonometry"
+  },
+  "practice": {
+    "title": "Practice tests",
+    "lead": "Full-length tests built like Bluebook: module 1, then a harder or easier module 2 based on how you did. Every question is an original Suprep question.",
+    "name": "Practice Test {n}",
+    "meta": "{q} questions · {m} minutes",
+    "new": "Not taken",
+    "best": "Best: {score}",
+    "start": "Start",
+    "retake": "Retake"
+  },
+  "random": {
+    "title": "Random mock test",
+    "lead": "A new test drawn from the question bank — different questions every time."
+  },
+  "official": {
+    "title": "Official Bluebook tests",
+    "lead": "Take College Board's real full-length practice tests for free in the Bluebook app.",
+    "step1": "Install Bluebook on your computer or tablet and sign in with your College Board account.",
+    "step2": "Pick a full-length practice test under “Practice and Prepare” and take it timed, like the real exam.",
+    "step3": "Check your score in My Practice, then review the topics you missed on the Suprep roadmap.",
+    "download": "Download Bluebook",
+    "tests": "Bluebook practice tests",
+    "paper": "PDF (paper) tests"
   }
 }

@@ -1,7 +1,18 @@
-import { describe, expect, test } from 'bun:test';
+import { afterEach, beforeEach, describe, expect, test } from 'bun:test';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { TutorContext } from '@/types';
 import { TutorChat } from './TutorChat';
+
+let previousDesmos: typeof window.Desmos;
+beforeEach(() => {
+  previousDesmos = window.Desmos;
+  window.Desmos = {
+    GraphingCalculator: () => ({ setBlank() {}, setExpression() {}, setMathBounds() {}, destroy() {} }),
+  };
+});
+afterEach(() => {
+  window.Desmos = previousDesmos;
+});
 
 type Reply = { status?: number; body?: unknown };
 
@@ -26,22 +37,30 @@ const question: TutorContext = {
 
 describe('TutorChat', () => {
   test('empty general chat shows starters; a starter is sent as free chat', async () => {
-    const api = fakeApi([{ body: { text: 'Нийт 44 асуулт.', demo: false } }]);
+    const api = fakeApi([{ body: { text: 'Нийт 44 асуулт.', model: 'suu' } }]);
     render(<TutorChat context={general} starters={['SAT Math хэдэн асуулттай вэ?']} fetchImpl={api.fn} />);
     fireEvent.click(screen.getByText('SAT Math хэдэн асуулттай вэ?'));
     await waitFor(() => expect(screen.getByText('Нийт 44 асуулт.')).toBeTruthy());
     expect(api.sent[0]).toMatchObject({ raw: true, message: 'SAT Math хэдэн асуулттай вэ?' });
-    // a real (non-demo) reply can be rated
+    // a model reply can be rated
     expect(screen.getByLabelText('Тусалсан')).toBeTruthy();
   });
 
-  test('quick action sends the problem in training format; demo replies are labelled and not rated', async () => {
-    const api = fakeApi([{ body: { text: 'Эхлээд 5-ыг хас.', demo: true } }]);
+  test('quick action sends the problem in training format', async () => {
+    const api = fakeApi([{ body: { text: 'Эхлээд 5-ыг хас.', model: 'suu' } }]);
     render(<TutorChat context={question} fetchImpl={api.fn} />);
     fireEvent.click(screen.getByText('Зөвлөгөө'));
     await waitFor(() => expect(screen.getByText('Эхлээд 5-ыг хас.')).toBeTruthy());
     expect(api.sent[0]).toMatchObject({ mode: 'hint', raw: false, context: { kind: 'question', id: 'a1' } });
-    expect(screen.getByText(/Демо хариу/)).toBeTruthy();
+    expect(screen.queryByText(/Демо хариу/)).toBeNull();
+  });
+
+  test('when Suu cannot be reached (503) the chat says so instead of showing a made-up reply', async () => {
+    const api = fakeApi([{ status: 503 }]);
+    render(<TutorChat context={question} fetchImpl={api.fn} />);
+    fireEvent.click(screen.getByText('Зөвлөгөө'));
+    expect(await screen.findByText('Суу одоогоор холбогдохгүй байна, дахин оролдоно уу')).toBeTruthy();
+    expect(screen.getByText('Дахин оролдох')).toBeTruthy();
     expect(screen.queryByLabelText('Тусалсан')).toBeNull();
   });
 
@@ -101,7 +120,7 @@ describe('TutorChat Desmos side panel', () => {
     return { fn, urls };
   }
 
-  test('a bank problem has the cat Desmos button; the panel splits the chat and hides the history', async () => {
+  test('a bank problem opens guided Desmos beside the chat and retains a compact history menu', async () => {
     const { fn, urls } = api();
     window.Desmos = {
       GraphingCalculator: () => ({ setBlank() {}, setExpression() {}, setMathBounds() {}, destroy() {} }),
@@ -112,7 +131,7 @@ describe('TutorChat Desmos side panel', () => {
     expect(urls).toEqual(['/api/desmos/lesson']);
     const root = container.firstElementChild as HTMLElement;
     expect(root.className).toContain('lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]');
-    expect(container.querySelector('aside')?.className).toContain('lg:hidden');
+    expect(container.querySelector('details summary')).toBeTruthy();
     // not answered yet: the student can unlock the last step from the panel
     expect(screen.queryByText('Огтлолцлын x = 5.')).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'Сүүлийн алхмыг харах' }));
@@ -131,6 +150,57 @@ describe('TutorChat Desmos side panel', () => {
     unmount();
     render(<TutorChat context={question} fetchImpl={fn} />);
     expect(screen.queryByRole('button', { name: 'Desmos-ийг хажууд нээх' })).toBeNull();
+    window.Desmos = undefined;
+  });
+
+  test('free chat: a typed equation opens the graph by itself (Photomath-style)', async () => {
+    const urls: string[] = [];
+    const fn = (async (url: string) => {
+      urls.push(url);
+      return url === '/api/desmos/lesson'
+        ? Response.json({ lesson, source: 'solver' })
+        : Response.json({ text: 'x = 5', demo: false, model: 'suu' });
+    }) as unknown as typeof fetch;
+    window.Desmos = {
+      GraphingCalculator: () => ({ setBlank() {}, setExpression() {}, setMathBounds() {}, destroy() {} }),
+    };
+    render(<TutorChat context={general} fetchImpl={fn} />);
+    const box = screen.getByLabelText('Суу-д асуулт бичих');
+    fireEvent.change(box, { target: { value: '3x + 5 = 20' } });
+    fireEvent.keyDown(box, { key: 'Enter' });
+    expect(await screen.findByText('Огтлолцлын x = 5.')).toBeTruthy();
+    expect(screen.getByText('Графикаар бодсон')).toBeTruthy();
+    expect(urls.sort()).toEqual(['/api/desmos/lesson', '/api/tutor']);
+    window.Desmos = undefined;
+  });
+
+  test('free chat: a model reply can draw the typed question in the panel; demo replies cannot', async () => {
+    const sent: { url: string; body: Record<string, unknown> }[] = [];
+    const fn = (async (url: string, init: RequestInit) => {
+      sent.push({ url, body: JSON.parse(String(init.body)) });
+      if (url === '/api/desmos/lesson') return Response.json({ lesson, source: 'model' });
+      return Response.json(
+        sent.length === 1 ? { text: 'x ≤ 5.', demo: false, model: 'suu' } : { text: 'Демо.', demo: true },
+      );
+    }) as unknown as typeof fetch;
+    window.Desmos = {
+      GraphingCalculator: () => ({ setBlank() {}, setExpression() {}, setMathBounds() {}, destroy() {} }),
+    };
+    render(<TutorChat context={general} fetchImpl={fn} />);
+    const box = screen.getByLabelText('Суу-д асуулт бичих');
+    fireEvent.change(box, { target: { value: '3x+5 ≤ 20 бол x хамгийн ихдээ хэд вэ?' } });
+    fireEvent.keyDown(box, { key: 'Enter' });
+    fireEvent.click(await screen.findByRole('button', { name: /Desmos дээр зурж харах/ }));
+    // the student asked it themselves, so every step is open
+    expect(await screen.findByText('Огтлолцлын x = 5.')).toBeTruthy();
+    expect(sent[1]).toEqual({
+      url: '/api/desmos/lesson',
+      body: { question: '3x+5 ≤ 20 бол x хамгийн ихдээ хэд вэ?' },
+    });
+    fireEvent.change(box, { target: { value: 'Сайн уу' } });
+    fireEvent.keyDown(box, { key: 'Enter' });
+    await screen.findByText('Демо.');
+    expect(screen.getAllByRole('button', { name: /Desmos дээр зурж харах/ })).toHaveLength(1);
     window.Desmos = undefined;
   });
 });

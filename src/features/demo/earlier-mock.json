@@ -1,0 +1,361 @@
+{
+  "id": "local-tuya-earlier-mock",
+  "startedAt": "2026-10-21T00:00:00.000Z",
+  "finishedAt": "2026-10-21T00:54:00.000Z",
+  "route": "hard",
+  "modules": [
+    {
+      "no": 1,
+      "ids": [
+        "rmpt1-m1-01",
+        "rmpt1-m1-02",
+        "rmpt1-m1-03",
+        "rmpt1-m1-04",
+        "rmpt1-m1-05",
+        "rmpt1-m1-06",
+        "rmpt1-m1-07",
+        "rmpt1-m1-08",
+        "rmpt1-m1-09",
+        "rmpt1-m1-10",
+        "rmpt1-m1-11",
+        "rmpt1-m1-12",
+        "rmpt1-m1-13",
+        "rmpt1-m1-14",
+        "rmpt1-m1-15",
+        "rmpt1-m1-16",
+        "rmpt1-m1-17",
+        "rmpt1-m1-18",
+        "rmpt1-m1-19",
+        "rmpt1-m1-20",
+        "rmpt1-m1-21",
+        "rmpt1-m1-22"
+      ],
+      "answers": [
+        {
+          "qid": "rmpt1-m1-01",
+          "answer": "1",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-02",
+          "answer": "0",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-03",
+          "answer": "84",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-04",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-05",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-06",
+          "answer": "13",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-07",
+          "answer": "0",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-08",
+          "answer": "0",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-09",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-10",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-11",
+          "answer": "1",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-12",
+          "answer": "1",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-13",
+          "answer": "0",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-14",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-15",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-16",
+          "answer": "0",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-17",
+          "answer": "9",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-18",
+          "answer": "4",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-19",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-20",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-21",
+          "answer": "1",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-m1-22",
+          "answer": "12",
+          "correct": true,
+          "timeMs": 60000
+        }
+      ],
+      "startedAt": "2026-10-21T00:00:00.000Z",
+      "endsAt": "2026-10-21T00:35:00.000Z",
+      "submittedAt": "2026-10-21T00:22:00.000Z"
+    },
+    {
+      "no": 2,
+      "ids": [
+        "rmpt1-h-01",
+        "rmpt1-h-02",
+        "rmpt1-h-03",
+        "rmpt1-h-04",
+        "rmpt1-h-05",
+        "rmpt1-h-06",
+        "rmpt1-h-07",
+        "rmpt1-h-08",
+        "rmpt1-h-09",
+        "rmpt1-h-10",
+        "rmpt1-h-11",
+        "rmpt1-h-12",
+        "rmpt1-h-13",
+        "rmpt1-h-14",
+        "rmpt1-h-15",
+        "rmpt1-h-16",
+        "rmpt1-h-17",
+        "rmpt1-h-18",
+        "rmpt1-h-19",
+        "rmpt1-h-20",
+        "rmpt1-h-21",
+        "rmpt1-h-22"
+      ],
+      "answers": [
+        {
+          "qid": "rmpt1-h-01",
+          "answer": "21",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-02",
+          "answer": "0",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-03",
+          "answer": "0",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-04",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-05",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-06",
+          "answer": "8",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-07",
+          "answer": "58",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-08",
+          "answer": "0",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-09",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-10",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-11",
+          "answer": "1/2",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-12",
+          "answer": "69",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-13",
+          "answer": "0",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-14",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-15",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-16",
+          "answer": "8",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-17",
+          "answer": "90",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-18",
+          "answer": "0",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-19",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-20",
+          "answer": "__wrong__",
+          "correct": false,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-21",
+          "answer": "0",
+          "correct": true,
+          "timeMs": 60000
+        },
+        {
+          "qid": "rmpt1-h-22",
+          "answer": "19",
+          "correct": true,
+          "timeMs": 60000
+        }
+      ],
+      "startedAt": "2026-10-21T00:32:00.000Z",
+      "endsAt": "2026-10-21T01:07:00.000Z",
+      "submittedAt": "2026-10-21T00:54:00.000Z"
+    }
+  ],
+  "score": 580,
+  "raw": {
+    "correct": 28,
+    "total": 44
+  },
+  "domains": {
+    "alg": {
+      "correct": 10,
+      "total": 16
+    },
+    "adv": {
+      "correct": 11,
+      "total": 16
+    },
+    "psda": {
+      "correct": 4,
+      "total": 6
+    },
+    "geo": {
+      "correct": 3,
+      "total": 6
+    }
+  },
+  "timeUsedSec": 2640,
+  "flagged": false
+}

@@ -11,6 +11,8 @@ type Props = {
   questions: Question[];
   savedIds?: string[];
   hardOnly?: boolean;
+  hideFilters?: boolean;
+  onSelectQuestion?: (question: Question) => void;
 };
 
 const domains: { id: Domain | 'all'; label: string }[] = [
@@ -31,7 +33,13 @@ const chipBase = 'rounded-xl border px-4 py-2 text-xs font-bold transition';
 const chipIdle = 'border-line bg-paper-2 text-ink-3 hover:border-leaf hover:text-ink';
 const chipActive = 'border-leaf bg-leaf/10 text-leaf-2';
 
-export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Props) {
+export function QuestionBank({
+  questions,
+  savedIds = [],
+  hardOnly = false,
+  hideFilters = false,
+  onSelectQuestion,
+}: Props) {
   const t = useT('practice');
   const [domain, setDomain] = useState<Domain | 'all'>('all');
   const [difficulty, setDifficulty] = useState<1 | 2 | 3 | 'all'>(hardOnly ? 3 : 'all');
@@ -64,79 +72,81 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
       )}
 
       {/* Filters */}
-      <section className={`${card} bank-filters space-y-5 p-5 sm:p-6`}>
-        <div className="space-y-2.5">
-          <h2 className={fieldLabel}>{t('bank.domain')}</h2>
+      {!hideFilters && (
+        <section className={`${card} bank-filters space-y-5 p-5 sm:p-6`}>
+          <div className="space-y-2.5">
+            <h2 className={fieldLabel}>{t('bank.domain')}</h2>
 
-          <nav className="flex flex-wrap gap-2" aria-label={t('bank.domainsLabel')}>
-            {domains.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setDomain(item.id)}
-                aria-pressed={domain === item.id}
-                className={`${chipBase} ${domain === item.id ? chipActive : chipIdle}`}
-              >
-                {t(`bank.domains.${item.id}`)}
-              </button>
-            ))}
-          </nav>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <label className="space-y-2">
-            <span className={fieldLabel}>{t('bank.search')}</span>
-            <input
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder={t('bank.searchPlaceholder')}
-              className={field}
-            />
-          </label>
-
-          {!hardOnly && (
-            <label className="space-y-2">
-              <span className={fieldLabel}>{t('bank.difficulty')}</span>
-              <select
-                value={difficulty}
-                onChange={(event) =>
-                  setDifficulty(
-                    event.target.value === 'all' ? 'all' : (Number(event.target.value) as 1 | 2 | 3),
-                  )
-                }
-                className={field}
-              >
-                <option value="all">{t('bank.allDifficulties')}</option>
-                <option value="1">{t('bank.easy')}</option>
-                <option value="2">{t('bank.medium')}</option>
-                <option value="3">{t('bank.hard')}</option>
-              </select>
-            </label>
-          )}
-
-          <div className="flex flex-col justify-end gap-3 pb-2 text-sm text-ink-2">
-            <label className="flex cursor-pointer items-center gap-2.5">
-              <input
-                type="checkbox"
-                checked={desmosOnly}
-                onChange={(event) => setDesmosOnly(event.target.checked)}
-                className="h-4 w-4 accent-(--c-leaf)"
-              />
-              {t('bank.desmosOnly')}
-            </label>
-
-            <label className="flex cursor-pointer items-center gap-2.5">
-              <input
-                type="checkbox"
-                checked={savedOnly}
-                onChange={(event) => setSavedOnly(event.target.checked)}
-                className="h-4 w-4 accent-(--c-leaf)"
-              />
-              {t('bank.savedOnly')}
-            </label>
+            <nav className="flex flex-wrap gap-2" aria-label={t('bank.domainsLabel')}>
+              {domains.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setDomain(item.id)}
+                  aria-pressed={domain === item.id}
+                  className={`${chipBase} ${domain === item.id ? chipActive : chipIdle}`}
+                >
+                  {t(`bank.domains.${item.id}`)}
+                </button>
+              ))}
+            </nav>
           </div>
-        </div>
-      </section>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <label className="space-y-2">
+              <span className={fieldLabel}>{t('bank.search')}</span>
+              <input
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder={t('bank.searchPlaceholder')}
+                className={field}
+              />
+            </label>
+
+            {!hardOnly && (
+              <label className="space-y-2">
+                <span className={fieldLabel}>{t('bank.difficulty')}</span>
+                <select
+                  value={difficulty}
+                  onChange={(event) =>
+                    setDifficulty(
+                      event.target.value === 'all' ? 'all' : (Number(event.target.value) as 1 | 2 | 3),
+                    )
+                  }
+                  className={field}
+                >
+                  <option value="all">{t('bank.allDifficulties')}</option>
+                  <option value="1">{t('bank.easy')}</option>
+                  <option value="2">{t('bank.medium')}</option>
+                  <option value="3">{t('bank.hard')}</option>
+                </select>
+              </label>
+            )}
+
+            <div className="flex flex-col justify-end gap-3 pb-2 text-sm text-ink-2">
+              <label className="flex cursor-pointer items-center gap-2.5">
+                <input
+                  type="checkbox"
+                  checked={desmosOnly}
+                  onChange={(event) => setDesmosOnly(event.target.checked)}
+                  className="h-4 w-4 accent-(--c-leaf)"
+                />
+                {t('bank.desmosOnly')}
+              </label>
+
+              <label className="flex cursor-pointer items-center gap-2.5">
+                <input
+                  type="checkbox"
+                  checked={savedOnly}
+                  onChange={(event) => setSavedOnly(event.target.checked)}
+                  className="h-4 w-4 accent-(--c-leaf)"
+                />
+                {t('bank.savedOnly')}
+              </label>
+            </div>
+          </div>
+        </section>
+      )}
 
       <p className="px-1 text-sm text-ink-3" aria-live="polite">
         {t('bank.found', { n: visibleQuestions.length })}
@@ -163,6 +173,17 @@ export function QuestionBank({ questions, savedIds = [], hardOnly = false }: Pro
             <div className="whitespace-pre-wrap text-[17px] font-medium leading-relaxed text-ink">
               <Rich text={question.prompt} />
             </div>
+
+            {onSelectQuestion && (
+              <button
+                type="button"
+                onClick={() => onSelectQuestion(question)}
+                className="rounded-xl bg-leaf px-5 py-3 text-sm font-bold text-white"
+                aria-label={`Бодох: ${question.skill}`}
+              >
+                Бодлого бодох
+              </button>
+            )}
 
             {question.choices && (
               <ol className="grid gap-2.5">

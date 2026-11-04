@@ -43,7 +43,7 @@ export function LineChart({
   const h = hover === null ? null : points[hover];
 
   return (
-    <figure className="grid gap-2">
+    <figure className="mx-auto grid w-full max-w-[640px] gap-2">
       <div className="relative">
         <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-labelledby={`${uid}-cap`}>
           {ticks.map((y) => (

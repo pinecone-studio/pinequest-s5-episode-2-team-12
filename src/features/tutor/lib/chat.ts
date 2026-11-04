@@ -8,13 +8,12 @@ export type ChatMsg = {
   text: string;
   /** What we sent to /api/tutor for this reply — needed for 👍/👎 feedback. */
   sent?: TutorRequest;
-  demo?: boolean;
   /** Hand-written pitch answer (not live model output). */
   sample?: boolean;
   /** Desmos lesson to open from this reply (/desmos/ai?l=…). */
   lesson?: string;
   /** Which model wrote it: Suu (our fine-tune) or Gemini (free chat). */
-  model?: 'suu' | 'gemini';
+  model?: 'suu' | 'gemini' | 'solver';
   status?: 'pending' | 'error';
 };
 
@@ -101,13 +100,12 @@ export function userBubbleText(action: ChatAction, label: (mode: TutorMode) => s
 
 export type ApiReply = {
   text: string;
-  demo?: boolean;
   sample?: boolean;
   lesson?: string;
-  model?: 'suu' | 'gemini';
+  model?: 'suu' | 'gemini' | 'solver';
 };
 
-/** Calls the tutor API. Throws on network or server errors so the caller can show a retry. */
+/** Calls the tutor API. Throws on network or server errors (503 = Suu cannot be reached) so the caller can show a retry. */
 export async function askSuu(req: TutorRequest, fetchImpl: typeof fetch = fetch): Promise<ApiReply> {
   const res = await fetchImpl('/api/tutor', {
     method: 'POST',
@@ -119,7 +117,6 @@ export async function askSuu(req: TutorRequest, fetchImpl: typeof fetch = fetch)
   if (!data.text) throw new Error('tutor empty');
   return {
     text: data.text,
-    demo: Boolean(data.demo),
     ...(data.model === 'suu' || data.model === 'gemini' ? { model: data.model } : {}),
     ...(data.sample ? { sample: true } : {}),
     ...(data.lesson ? { lesson: data.lesson } : {}),

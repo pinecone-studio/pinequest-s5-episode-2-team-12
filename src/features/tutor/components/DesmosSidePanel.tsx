@@ -10,12 +10,13 @@ import { Button } from '@/components/ui/Button';
 import { Pill } from '@/components/ui/Pill';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
+import { useElapsed, waitLabel } from '../hooks/useElapsed';
 import { type Calc, drawExtra, drawLesson, drawRows, loadDesmos } from '../lib/desmos-calc';
 import type { DesmosAiLesson } from '../lib/desmos-lessons';
 import { type DesmosPanelInput, panelView, visibleSteps } from '../lib/desmos-panel';
 
 type LessonReply =
-  | { lesson: DesmosAiLesson; source: 'sample' | 'model' }
+  | { lesson: DesmosAiLesson; source: 'sample' | 'model' | 'solver' }
   | { lesson: null; source: 'none'; reason: 'off' | 'failed' };
 
 type Props = {
@@ -66,8 +67,8 @@ export function DesmosCatButton({
         className="grid size-7 place-items-center overflow-hidden rounded-[30%] bg-sage"
         aria-hidden="true"
       >
-        {/* biome-ignore lint/performance/noImgElement: static transparent PNG */}
-        <img src="/brand/suu-logo-head.png" alt="" width={28} height={28} className="w-[88%] h-auto" />
+        {/* biome-ignore lint/performance/noImgElement: static transparent image */}
+        <img src="/brand/suu-logo-head.webp" alt="" width={28} height={28} className="w-[88%] h-auto" />
       </span>
       {t('desmosPanel.button')}
     </button>
@@ -86,8 +87,9 @@ export function DesmosSidePanel({
 }: Props) {
   const t = useT('tutor');
   const [lesson, setLesson] = useState<DesmosAiLesson | null>(null);
-  const [source, setSource] = useState<'sample' | 'model' | null>(null);
+  const [source, setSource] = useState<'sample' | 'model' | 'solver' | null>(null);
   const [thinking, setThinking] = useState(true);
+  const waited = useElapsed(thinking);
   const [cur, setCur] = useState(0);
   const [graph, setGraph] = useState<'loading' | 'ready' | 'failed'>('loading');
   const box = useRef<HTMLDivElement>(null);
@@ -188,13 +190,19 @@ export function DesmosSidePanel({
             className="grid size-8 shrink-0 place-items-center overflow-hidden rounded-[30%] bg-sage"
             aria-hidden
           >
-            {/* biome-ignore lint/performance/noImgElement: static transparent PNG */}
-            <img src="/brand/suu-logo-head.png" alt="" width={32} height={32} className="w-[88%] h-auto" />
+            {/* biome-ignore lint/performance/noImgElement: static transparent image */}
+            <img src="/brand/suu-logo-head.webp" alt="" width={32} height={32} className="w-[88%] h-auto" />
           </span>
           <h2 className="truncate font-bold text-ink">{t('desmosPanel.title')}</h2>
           {lesson && (
-            <Pill tone={source === 'model' ? 'teal' : 'amber'}>
-              {source === 'model' ? t('desmosAi.live') : t('desmosAi.sample')}
+            <Pill tone={source === 'model' ? 'teal' : source === 'solver' ? 'leaf' : 'amber'}>
+              {t(
+                source === 'model'
+                  ? 'desmosAi.live'
+                  : source === 'solver'
+                    ? 'desmosAi.solver'
+                    : 'desmosAi.sample',
+              )}
             </Pill>
           )}
           {!lesson && !thinking && input.rows?.length ? (
@@ -215,6 +223,7 @@ export function DesmosSidePanel({
         {thinking && (
           <p className="animate-pulse text-ink-3" role="status">
             {t('desmosPanel.thinking')}
+            {waitLabel(waited, t('desmosPanel.seconds'))}
           </p>
         )}
 

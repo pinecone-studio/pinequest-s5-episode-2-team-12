@@ -58,6 +58,10 @@ describe('checkQuestion', () => {
     expect(checkQuestion(spr(['3/4', '.75', '0.75'], { value: '3/4' }))).toEqual([]);
   });
 
+  test('explicitly accepted rounded and truncated three-place decimals agree with the exact fraction', () => {
+    expect(checkQuestion(spr(['1/6', '.1666', '.1667'], { value: '1/6' }))).toEqual([]);
+  });
+
   test('mcq: keyed choice must match, others must not', () => {
     expect(checkQuestion(mcq(['$3$', '$4$', '$5$', '$6$'], 2, { value: '15/3' }))).toEqual([]);
     expect(checkQuestion(mcq(['$3$', '$4$', '$5$', '$6$'], 1, { value: '15/3' }))[0].level).toBe('mismatch');

@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, jest, test } from 'bun:test';
+import { resetAnswerTransport } from '@/test/mock-submissions';
 import { act, fireEvent, render, screen, within } from '@/test/render';
 import type { Question } from '@/types';
 import { PracticePlayer } from './PracticePlayer';
@@ -119,5 +120,21 @@ describe('PracticePlayer Desmos side panel', () => {
     fireEvent.click(within(panel).getByRole('button', { name: 'Desmos-ийг хаах' }));
     expect(screen.queryByRole('complementary', { name: 'Desmos · Суу' })).toBeNull();
     expect(container.querySelector('main')?.className).not.toContain('lg:grid-cols-2');
+  });
+});
+
+beforeEach(resetAnswerTransport);
+afterEach(resetAnswerTransport);
+
+describe('PracticePlayer «AI багш Суу»', () => {
+  test('the button splits the page: the problem on one side, Суу on the other; Desmos takes its place', () => {
+    render(<PracticePlayer questions={questions} />);
+    fireEvent.click(screen.getByRole('button', { name: 'AI багш Суу-г хажууд нээх' }));
+    const panel = screen.getByRole('complementary', { name: 'AI багш Суу' });
+    expect(panel).toBeTruthy();
+    expect(screen.getByRole('main').className).toContain('lg:grid-cols-2');
+    // only one side panel at a time
+    fireEvent.click(screen.getByRole('button', { name: 'Desmos-ийг хажууд нээх' }));
+    expect(screen.queryByRole('complementary', { name: 'AI багш Суу' })).toBeNull();
   });
 });
