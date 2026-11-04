@@ -153,6 +153,17 @@ describe('geminiTutorReply', () => {
   });
 });
 
+describe('RAG in the chat', () => {
+  test('similar solved problems with their Desmos rows go into the facts', async () => {
+    const { searchLocal } = await import('./rag/retrieve');
+    const hits = searchLocal('If $3x+5=20$, what is $x$?', 2);
+    const f = factsFor({ mode: 'hint', message: 'тусла', raw: true }, hits);
+    expect(f).toContain('төстэй бодлогууд');
+    expect(f).toContain('(intersection_equation)');
+    expect(f).toMatch(/Desmos: `y=/);
+  });
+});
+
 describe('busy Gemini', () => {
   test('429 on the main model → one try on the fallback model', async () => {
     process.env.GEMINI_CHAT_FALLBACK = 'gemini-lite-test';
