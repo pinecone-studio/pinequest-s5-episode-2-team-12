@@ -145,3 +145,10 @@ test('checkableAnswer', () => {
     expect(checkableAnswer(a)).toBe(true);
   for (const a of ['', 'yes', 'x squared', '1'.repeat(41)]) expect(checkableAnswer(a)).toBe(false);
 });
+
+test('another lesson: sampled at 0.7 first (the greedy one was already shown), then 0.4', async () => {
+  const { calls, fetchImpl } = ollama('nonsense', good.output);
+  const res = await modelDesmosLesson(good.question, good.answer, fetchImpl, undefined, true);
+  expect(res).not.toBeNull();
+  expect(calls.map((c) => c.options.temperature)).toEqual([0.7, 0.4]);
+});

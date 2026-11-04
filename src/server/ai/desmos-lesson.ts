@@ -57,6 +57,8 @@ export async function modelDesmosLesson(
   answer?: string,
   fetchImpl: typeof fetch = fetch,
   budgetMs = LESSON_BUDGET_MS,
+  /** The student asked for another lesson: skip the greedy one (they've seen it) and sample instead. */
+  another = false,
 ): Promise<ModelLesson | null> {
   const deadline = Date.now() + budgetMs;
   const left = () => deadline - Date.now();
@@ -87,7 +89,7 @@ export async function modelDesmosLesson(
     { role: 'user', content: desmosUserMessage(question, correct) },
   ];
   // greedy first (what the scores were measured with), then one sampled retry if there is time left
-  for (const temperature of [0, 0.4]) {
+  for (const temperature of another ? [0.7, 0.4] : [0, 0.4]) {
     if (left() < MIN_CALL_MS) return null;
     const reply = await ollamaChat(messages, { ...DESMOS_OPTS, temperature, timeoutMs: left() }, fetchImpl);
     if (!reply) return null; // model off, down or too slow: no point retrying
