@@ -21,9 +21,11 @@
     "roadmap:import": "bun scripts/roadmap/import-questions.ts",
     "roadmap:check-answers": "bun scripts/roadmap/check-answers.ts",
     "mock:check": "bun scripts/mock/check-practice-tests.ts",
-    "check": "biome check . && tsc --noEmit && bun run messages && bun test src ai scripts",
+    "check": "biome check . && tsc --noEmit && bun run messages && bun test src ai scripts && bun ai/eval/gate.ts",
     "ai:build": "bun ai/pipeline/ingest.ts && bun ai/train/export.ts",
-    "ai:eval": "bun ai/eval/run.ts"
+    "ai:eval": "bun ai/eval/run.ts",
+    "ai:gate": "bun ai/eval/gate.ts",
+    "ai:hard-set": "bun ai/eval/hard-set.ts"
   },
   "dependencies": {
     "@google/genai": "^1.20.0",
