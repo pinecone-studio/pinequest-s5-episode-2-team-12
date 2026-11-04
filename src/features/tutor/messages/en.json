@@ -38,7 +38,8 @@
     "drawDesmos": "Draw it in Desmos",
     "bySuu": "Suu (our model)",
     "bySolver": "Solved by code · checked on the graph",
-    "byGemini": "Gemini chat"
+    "byGemini": "Gemini chat",
+    "drawRows": "Draw in Desmos ({n})"
   },
   "modes": {
     "hint": "Hint",
@@ -92,6 +93,7 @@
     "ownNote": "Suu hasn't written a lesson yet — the problem's Desmos rows are drawn on the calculator.",
     "free": "No ready steps for this problem. The calculator is yours — try it yourself.",
     "tip": "Tip",
+    "another": "Another lesson",
     "seconds": "s"
   },
   "suuPanel": {
