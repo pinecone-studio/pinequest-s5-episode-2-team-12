@@ -50,6 +50,10 @@ export const routes = {
   practice: (opts: { ids?: string[]; timed?: boolean } = {}) =>
     `/practice${qs({ ids: opts.ids?.join(','), timed: opts.timed })}`,
 
+  // teacher classes
+  classes: '/classes',
+  classReport: (id: string) => `/classes/${seg(id)}`,
+
   // D · exam & mistakes
   mock: '/mock',
   mockResult: (id: string) => `/profile/mock/${seg(id)}`,
