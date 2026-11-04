@@ -17,6 +17,7 @@ import { SuuSidePanel, SuuTutorButton, splitLayout } from '@/features/tutor/comp
 import { panelInput } from '@/features/tutor/lib/desmos-panel';
 import { chosenText, questionProblem } from '@/features/tutor/lib/suu-panel';
 import type { Question } from '@/types';
+import { SimilarQuestion } from './SimilarQuestion';
 
 type Props = {
   questions: Question[];
@@ -582,6 +583,7 @@ export function PracticePlayer({ questions, onNext, onComplete, lastInTopic, onR
               )}
             </section>
           )}
+          {submitted && <SimilarQuestion key={question.id} base={question} />}
           <SaveStatus {...saving} />
 
           <footer className="flex items-center justify-between gap-3 border-t border-line pt-5">
