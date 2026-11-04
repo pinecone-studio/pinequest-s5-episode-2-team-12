@@ -9,10 +9,10 @@ export type RadarSeries = { id: string; label: string; values: (number | null)[]
 
 const SIZE = 280;
 const C = SIZE / 2;
-const R = 100;
+const R = 110;
 const RINGS = [0.25, 0.5, 0.75, 1];
 /** Room left and right of the plot for axis labels (they wrap to two lines, so ~14 characters wide). */
-const PAD_X = 96;
+const PAD_X = 80;
 
 /** Long labels («Шугаман функц, систем») split onto two lines at the space nearest the middle. */
 function wrap(label: string): string[] {
@@ -49,9 +49,9 @@ export function RadarChart({
 
   return (
     <figure className="grid gap-3">
-      <div className="relative mx-auto w-full max-w-[420px]">
+      <div className="relative mx-auto w-full max-w-[480px]">
         <svg
-          viewBox={`${-PAD_X} -14 ${SIZE + PAD_X * 2} ${SIZE + 28}`}
+          viewBox={`${-PAD_X} -24 ${SIZE + PAD_X * 2} ${SIZE + 72}`}
           className="w-full overflow-hidden"
           role="img"
           aria-labelledby={`${uid}-cap`}
@@ -83,19 +83,23 @@ export function RadarChart({
                       {line}
                     </tspan>
                   ))}
+                  <tspan x={lx} dy="1.3em" className="fill-[var(--c-ink)] text-[13px] font-bold">
+                    {series[0]?.values[i] == null ? '—' : format(series[0].values[i]!)}
+                  </tspan>
                 </text>
               </g>
             );
           })}
-          {series.map((s) => {
+          {[...series].reverse().map((s) => {
             const pts = s.values.map((v, i) => point(i, n, v ?? 0));
             return (
               <g key={s.id}>
                 <polygon
                   points={pts.map((p) => p.join(',')).join(' ')}
                   style={{ fill: s.color, stroke: s.color }}
-                  fillOpacity={0.1}
-                  strokeWidth={2}
+                  fillOpacity={s.id === 'now' ? 0.24 : 0.08}
+                  strokeWidth={3}
+                  strokeDasharray={s.id === 'prev' ? '5 4' : undefined}
                   strokeLinejoin="round"
                 />
                 {pts.map(([x, y], i) =>

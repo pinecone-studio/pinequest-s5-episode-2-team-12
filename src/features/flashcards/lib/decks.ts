@@ -34,7 +34,13 @@ export const FLASHCARDS: FlashCard[] = DECKS.filter((d) => d.kind !== 'mine').fl
 /** Stored key of an admin-written word card (custom_cards, migration 0018). */
 export const CUSTOM_KEY = /^custom\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
-export type CustomCardRow = { id: string; front: string; back: string; ex: string | null; hook: string | null };
+export type CustomCardRow = {
+  id: string;
+  front: string;
+  back: string;
+  ex: string | null;
+  hook: string | null;
+};
 
 /** custom_cards row → a «Үгс» card, shown after the bundled decks. Admin-written, so already reviewed. */
 export function customFlashcard(r: CustomCardRow, group: string): FlashCard {

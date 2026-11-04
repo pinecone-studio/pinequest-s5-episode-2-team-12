@@ -11,6 +11,10 @@ test('sign-up preview → setup → saved demo profile', async ({ page }) => {
   await page.getByRole('radio', { name: 'Зөвхөн туршилтын тест өгсөн' }).check();
   await page.getByRole('button', { name: 'Үргэлжлүүлэх' }).click();
   await page.getByRole('spinbutton', { name: 'SAT Math-ийн зорилтот оноо', exact: false }).fill('750');
+  const examDate = page.getByRole('combobox', { name: 'Шалгалтын товлосон өдөр' });
+  await expect(examDate).toBeVisible();
+  await expect(examDate.locator('option[value="2027-02-11"]')).toHaveCount(0);
+  await examDate.selectOption('2027-03-06');
   await page.getByRole('button', { name: 'Үргэлжлүүлэх' }).click();
   await page.getByRole('radio', { name: 'Бага зэрэг мэднэ' }).check();
   await page.getByRole('button', { name: 'Үргэлжлүүлэх' }).click();

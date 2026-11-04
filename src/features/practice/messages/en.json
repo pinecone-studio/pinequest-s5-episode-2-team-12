@@ -59,5 +59,28 @@
     "yourAnswer": "Your answer",
     "answerPlaceholder": "e.g. 12, 3/4, -2.5",
     "choicesLabel": "Answer choices"
+  },
+  "offline": {
+    "download": "Download this page for offline",
+    "open": "Open offline practice",
+    "downloading": "Downloading questions and website…",
+    "downloaded": "{n} questions available offline.",
+    "downloadError": "Download failed. Check your connection and try again.",
+    "downloadHint": "Save this page’s questions, diagrams and explanations on this browser.",
+    "back": "Back to question bank",
+    "words": "Offline words",
+    "title": "Offline practice",
+    "online": "Online",
+    "offline": "Offline",
+    "count": "{n} downloaded questions",
+    "tutorHint": "Saved explanations work offline. The AI tutor requires internet. Downloads are shared on this browser; use your own device.",
+    "syncError": "Saved on this device. Sync will retry when connected and signed into the original account.",
+    "storageError": "Could not save on this device. Check browser storage permissions and space.",
+    "saved": "Progress saved on this device.",
+    "pending": "{n} attempts waiting to sync.",
+    "ready": "Progress is saved on this device. Account attempts sync automatically when connected.",
+    "empty": "No downloaded questions yet. Connect to the internet and download a page from the question bank.",
+    "delete": "Remove downloaded questions",
+    "confirmDelete": "Remove downloaded questions from this browser? Pending attempts will be kept."
   }
 }

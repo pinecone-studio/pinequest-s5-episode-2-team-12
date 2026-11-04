@@ -3,6 +3,7 @@
 // finished mocks. The mistake notebook shows them; Суу's planner and analysis get them (POST /api/suu/*).
 import { loadLocalMocks } from '@/features/exam/lib/local-mocks';
 import { loadLocalRoadmap } from '@/features/roadmap/lib/local-store';
+import { readDemoNotebook } from './demo-notebook';
 import type { Entry } from './notebook';
 
 /** Demo: wrong answers from the roadmap history and finished mocks. */
@@ -22,7 +23,7 @@ export function localEntries(): Entry[] {
         })),
     ),
   );
-  return [...road, ...mocks];
+  return [...road, ...mocks, ...readDemoNotebook().entries];
 }
 
 /** What a demo browser sends to /api/suu/planner and /api/suu/analyze (signed-in students are read on the server). */

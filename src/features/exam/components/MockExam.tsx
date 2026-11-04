@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 // «Mock тест»: intro → module 1 (35 min) → break (≤10 min) → module 2 (adaptive, 35 min) → results.
 // The server grades every module (mock-actions.ts); the browser only ever sees questions without answers.
@@ -14,6 +14,7 @@ import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
 import type { Question } from '@/types';
 import { MOCK } from '../config';
+import type { PracticeTestMeta } from '../forms';
 import { getRemainingSeconds } from '../lib/exam-machine';
 import {
   type InProgress,
@@ -58,15 +59,28 @@ function useCountdown(endsAt: string | undefined, onZero: () => void) {
   return left;
 }
 
+/** College Board's own pages: the official tests stay in Bluebook (we link to them, we do not copy them). */
+const OFFICIAL_LINKS = [
+  { key: 'download', href: 'https://satsuite.collegeboard.org/practice/bluebook' },
+  { key: 'tests', href: 'https://satsuite.collegeboard.org/practice/practice-tests/bluebook' },
+  { key: 'paper', href: 'https://satsuite.collegeboard.org/practice/practice-tests/paper' },
+] as const;
+
 const mmss = (s: number) =>
   `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 
 export function MockExam({
   demo,
   attemptId,
+  forms = [],
+  best = {},
 }: {
   demo: boolean /** Open this signed-in attempt (group mock). */;
   attemptId?: string;
+  /** Fixed practice tests that can be started (forms.ts). */
+  forms?: PracticeTestMeta[];
+  /** Signed in: best estimated score per practice test id. Demo reads it from localStorage. */
+  best?: Record<string, number>;
 }) {
   const t = useT('exam');
   const router = useRouter();
@@ -80,7 +94,17 @@ export function MockExam({
   const [resumable, setResumable] = useState<InProgress | null>(null);
   const entered = useRef(Date.now());
 
+  const [bestScores, setBestScores] = useState(best);
+  const uid = useId();
+
   useEffect(() => setResumable(loadInProgress()), []);
+  useEffect(() => {
+    if (!demo) return;
+    const out: Record<string, number> = {};
+    for (const a of loadLocalMocks())
+      if (a.formId && a.score !== null) out[a.formId] = Math.max(out[a.formId] ?? 0, a.score);
+    setBestScores(out);
+  }, [demo]);
 
   const persist = useCallback((p: InProgress | null) => {
     setProgress(p);
@@ -120,10 +144,10 @@ export function MockExam({
     [demo],
   );
 
-  const start = async () => {
+  const start = async (formId?: string) => {
     setBusy(true);
     setError('');
-    const r = await startMock({ seen: seen() });
+    const r = await startMock({ seen: seen(), formId });
     setBusy(false);
     if (!r.ok) return setError(t('error'));
     apply(r.step);
@@ -225,8 +249,95 @@ export function MockExam({
         <p className="rounded-2xl bg-amber-soft px-4 py-3 text-sm font-semibold text-amber">
           {t('intro.note')}
         </p>
+        <section aria-labelledby={`${uid}-official`} className="soft-card grid gap-3 p-5 sm:p-6">
+          <div>
+            <h2 id={`${uid}-official`} className="font-display text-xl font-bold text-ink">
+              {t('official.title')}
+            </h2>
+            <p className="text-[14px] text-ink-2">{t('official.lead')}</p>
+          </div>
+          <ol className="grid gap-1.5 text-[14px] text-ink-2">
+            {[1, 2, 3].map((n) => (
+              <li key={n} className="flex gap-2">
+                <span className="font-bold text-leaf-2 tnum">{n}.</span>
+                {t(`official.step${n}`)}
+              </li>
+            ))}
+          </ol>
+          <div className="flex flex-wrap gap-3">
+            {OFFICIAL_LINKS.map(({ key, href }) => (
+              <a
+                key={key}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-11 items-center rounded-2xl border border-line px-4 text-[14px] font-bold text-ink hover:border-line-2"
+              >
+                {t(`official.${key}`)} ↗
+              </a>
+            ))}
+          </div>
+        </section>
+        {forms.length > 0 && (
+          <section aria-labelledby={`${uid}-practice`} className="grid gap-3">
+            <div>
+              <h2 id={`${uid}-practice`} className="font-display text-xl font-bold text-ink">
+                {t('practice.title')}
+              </h2>
+              <p className="text-[14px] text-ink-2">{t('practice.lead')}</p>
+            </div>
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {forms.map((f) => {
+                const score = bestScores[f.id];
+                return (
+                  <li key={f.id} className="soft-card flex flex-col gap-3 p-5">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <h3 className="font-display text-lg font-bold text-ink">
+                          {t('practice.name', { n: f.no })}
+                        </h3>
+                        <p className="text-[13px] text-ink-3">
+                          {t('practice.meta', {
+                            q: MOCK.questionsPerModule * 2,
+                            m: MOCK.moduleMinutes * 2,
+                          })}
+                        </p>
+                      </div>
+                      <span
+                        className={cn(
+                          'shrink-0 rounded-full px-3 py-1 text-[12px] font-bold tnum',
+                          score === undefined ? 'bg-paper-2 text-ink-3' : 'bg-sage text-leaf-2',
+                        )}
+                      >
+                        {score === undefined ? t('practice.new') : t('practice.best', { score })}
+                      </span>
+                    </div>
+                    <Button
+                      variant={score === undefined ? 'primary' : 'secondary'}
+                      onClick={() => start(f.id)}
+                      disabled={busy}
+                    >
+                      {score === undefined ? t('practice.start') : t('practice.retake')}
+                    </Button>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )}
+        <section aria-labelledby={`${uid}-random`} className="grid gap-1">
+          <h2 id={`${uid}-random`} className="font-display text-xl font-bold text-ink">
+            {t('random.title')}
+          </h2>
+          <p className="text-[14px] text-ink-2">{t('random.lead')}</p>
+        </section>
         <div className="flex flex-wrap gap-3">
-          <Button size="lg" onClick={start} disabled={busy}>
+          <Button
+            size="lg"
+            variant={forms.length ? 'secondary' : 'primary'}
+            onClick={() => start()}
+            disabled={busy}
+          >
             {t('intro.start')}
           </Button>
           {resumable && (

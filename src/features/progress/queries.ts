@@ -1,16 +1,24 @@
 // Section F · stats, badges, league.
+import { TUYA_XP } from '@/features/demo/profile';
+import { calculateLevel } from '@/lib/level';
 import { getDb } from '@/lib/supabase/server';
 import { BADGES } from '@/mocks/meta';
 import type { Badge, LeagueRow, Stats } from '@/types';
 import { statsFromXp, type XpRow } from './lib/stats';
 
-// Demo mode shows a fresh student: no invented XP, streak or rivals.
-const DEMO_STATS: Stats = { xp: 0, level: 1, streak: 0, days: [], mastery: {} };
+// Tuya is the sample student; these stats describe the seeded demo scenario.
+const DEMO_STATS: Stats = {
+  xp: TUYA_XP,
+  level: calculateLevel(TUYA_XP).level,
+  streak: 7,
+  days: [],
+  mastery: {},
+};
 
 /** XP, level, streak and study days, all derived from xp_events. */
 export async function getStats(userId: string): Promise<Stats> {
   const db = await getDb();
-  if (!db) return DEMO_STATS;
+  if (!db || userId === 'u-demo') return DEMO_STATS;
   const [{ data, error }, freezes] = await Promise.all([
     db.from('xp_events').select('amount, at').eq('user_id', userId),
     // streak freezes from the shop bridge missed days

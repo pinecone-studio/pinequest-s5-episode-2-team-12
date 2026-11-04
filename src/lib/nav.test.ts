@@ -32,5 +32,5 @@ test('drawer keeps Question Bank directly accessible without the Materials group
   ]);
   expect(NAV.map((g) => g.key)).toEqual(['main', 'me']);
   expect(NAV[0].items.find((i) => i.key === 'bank')?.href).toBe('/bank');
-  expect(NAV.at(-1)?.items.map((i) => i.key)).toEqual(['settings']);
+  expect(NAV.at(-1)?.items.map((i) => i.key)).toEqual(['help', 'settings']);
 });

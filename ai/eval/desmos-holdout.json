@@ -1,0 +1,242 @@
+[
+  {
+    "technique": "circle",
+    "question": "A circle has equation x^2 + y^2 + 14x + 6y + 33 = 0. What is the radius of the circle?",
+    "answer": "5"
+  },
+  {
+    "technique": "circle",
+    "question": "The equation of a circle in the xy-plane is x^2 + y^2 - 4x + 2y - 31 = 0. What is the radius of the circle?",
+    "answer": "6"
+  },
+  {
+    "technique": "circle",
+    "question": "A circle has equation x^2 + y^2 - 10x - 8y + 5 = 0. What is the radius of the circle?",
+    "answer": "6"
+  },
+  {
+    "technique": "distance_midpoint",
+    "question": "Segment AB has endpoints A(-3, 5) and B(-15, 15). What is the x-coordinate of the midpoint of segment AB?",
+    "answer": "-9"
+  },
+  {
+    "technique": "distance_midpoint",
+    "question": "Segment AB has endpoints A(4, 0) and B(6, -6). What are the coordinates of the midpoint of segment AB?",
+    "answer": "(5, -3)"
+  },
+  {
+    "technique": "distance_midpoint",
+    "question": "Points A(-3, -1) and B(9, -5) are in the xy-plane. What is the x-coordinate of the midpoint of segment AB?",
+    "answer": "3"
+  },
+  {
+    "technique": "equivalent_expressions",
+    "question": "Which of the following is equivalent to (x + 8)(x + 5)? (A) x^2 + 40 (B) x^2 + 13x + 40 (C) x^2 + 13x - 40 (D) x^2 + 3x + 40",
+    "answer": "B"
+  },
+  {
+    "technique": "equivalent_expressions",
+    "question": "The expression (x - 7)(x + 3) can be rewritten as which of the following? (A) x^2 - 4x - 21 (B) x^2 - 10x - 21 (C) x^2 - 4x + 21 (D) x^2 + 4x - 21",
+    "answer": "A"
+  },
+  {
+    "technique": "equivalent_expressions",
+    "question": "Which expression is equivalent to (x - 4)(x + 5)? (A) x^2 + x - 20 (B) x^2 - 20 (C) x^2 - x - 20 (D) x^2 - 20x + 1",
+    "answer": "A"
+  },
+  {
+    "technique": "exponential_regression",
+    "question": "A population of bacteria is modeled by an exponential function. The table shows the number of bacteria y after x hours. x = 0, y = 2; x = 1, y = 8; x = 2, y = 32. If y = ab^x, what is the value of a?",
+    "answer": "2"
+  },
+  {
+    "technique": "exponential_regression",
+    "question": "x = 0, y = 80; x = 1, y = 40; x = 3, y = 10; x = 4, y = 5. The relationship between x and y is exponential. If y = ab^x, what is the value of b?",
+    "answer": "1/2"
+  },
+  {
+    "technique": "exponential_regression",
+    "question": "x = 0, y = 3; x = 1, y = 6; x = 2, y = 12; x = 4, y = 48. The relationship between x and y is exponential. What is the value of y when x = 5?",
+    "answer": "96"
+  },
+  {
+    "technique": "function_eval",
+    "question": "The function f is defined by f(x) = -x^2 - 7x + 7. What is the value of f(2)?",
+    "answer": "-11"
+  },
+  {
+    "technique": "function_eval",
+    "question": "For the function f(x) = 3x^2 - 6x + 3, find the value asked: What is the value of f(-1)?",
+    "answer": "12"
+  },
+  {
+    "technique": "function_eval",
+    "question": "f(x) = -3x^2 - 9. What is the value of f(-3)?",
+    "answer": "-36"
+  },
+  {
+    "technique": "function_input",
+    "question": "f(x) = 2x^2 + 1. For what positive value of x is f(x) = 73?",
+    "answer": "6"
+  },
+  {
+    "technique": "function_input",
+    "question": "Given f(x) = 6x + 12, find the input x that gives an output of 6.",
+    "answer": "-1"
+  },
+  {
+    "technique": "function_input",
+    "question": "Given f(x) = -3x - 5, find the input x that gives an output of -29.",
+    "answer": "8"
+  },
+  {
+    "technique": "inequality_system",
+    "question": "Which point is a solution to the system of inequalities y ≥ x - 3 and y < -3x + 5? (A) (0, 5) (B) (5, -3) (C) (3, 7) (D) (1, 0)",
+    "answer": "D"
+  },
+  {
+    "technique": "inequality_system",
+    "question": "Which point is a solution to the system of inequalities y ≥ -3x + 3 and y < -2x + 4? (A) (-1, 6) (B) (3, -4) (C) (-1, 0) (D) (-5, -2)",
+    "answer": "B"
+  },
+  {
+    "technique": "inequality_system",
+    "question": "Which point is a solution to the system of inequalities y > 4x + 2 and y < 3x + 3? (A) (-2, -4) (B) (-4, 0) (C) (-1, 0) (D) (1, 1)",
+    "answer": "A"
+  },
+  {
+    "technique": "intersection_equation",
+    "question": "Solve the equation 2x - 5 = 5x - 11. What is the value of x?",
+    "answer": "2"
+  },
+  {
+    "technique": "intersection_equation",
+    "question": "Solve the equation sqrt(x - 10) = 7. What is the value of x?",
+    "answer": "59"
+  },
+  {
+    "technique": "intersection_equation",
+    "question": "What value of x satisfies the equation 2(x - 6) = -12?",
+    "answer": "0"
+  },
+  {
+    "technique": "linear_regression",
+    "question": "The table shows the amount of water y, in liters, in a tank x minutes after a pump starts. The relationship is linear. x = 0, y = 35; x = 3, y = 32; x = 6, y = 29. What is the slope (rate of change) of the relationship?",
+    "answer": "-1"
+  },
+  {
+    "technique": "linear_regression",
+    "question": "x = 1, y = 22; x = 5, y = 10; x = 9, y = -2; x = 13, y = -14. These values of x and y form a linear relationship. What is the value of y when x = 0?",
+    "answer": "25"
+  },
+  {
+    "technique": "linear_regression",
+    "question": "x = 0, y = 17; x = 4, y = 49; x = 8, y = 81; x = 12, y = 113; x = 16, y = 145. These values of x and y form a linear relationship. What is the value of y when x = 0?",
+    "answer": "17"
+  },
+  {
+    "technique": "max_min",
+    "question": "A ball is thrown upward. Its height, in feet, t seconds after it is thrown is h(t) = -16t^2 + 32t + 21. How many seconds after it is thrown does the ball reach its maximum height?",
+    "answer": "1"
+  },
+  {
+    "technique": "max_min",
+    "question": "h(t) = -5t^2 + 40t + 20 models the height of an object in meters after t seconds. Find the value of t at which h(t) is maximum.",
+    "answer": "4"
+  },
+  {
+    "technique": "max_min",
+    "question": "The function h(t) = -4t^2 + 40t + 8 gives the height, in meters, of a ball t seconds after launch. What is the greatest height the ball reaches?",
+    "answer": "108"
+  },
+  {
+    "technique": "number_theory",
+    "question": "Two lights blink every 15 seconds and every 10 seconds. They blink together now. In how many seconds will they next blink together?",
+    "answer": "30"
+  },
+  {
+    "technique": "number_theory",
+    "question": "Two lights blink every 10 seconds and every 12 seconds. They blink together now. In how many seconds will they next blink together?",
+    "answer": "60"
+  },
+  {
+    "technique": "number_theory",
+    "question": "A teacher has 18 pencils and 9 erasers. She wants to make identical kits with no items left over. What is the greatest number of kits she can make?",
+    "answer": "9"
+  },
+  {
+    "technique": "percent",
+    "question": "What percent of 250 is 100?",
+    "answer": "40"
+  },
+  {
+    "technique": "percent",
+    "question": "A $400 item is marked up 20% and then discounted 50%. What is the final price in dollars?",
+    "answer": "240"
+  },
+  {
+    "technique": "percent",
+    "question": "A store has 360 items and 12% of them are sold. How many items are sold?",
+    "answer": "43.2"
+  },
+  {
+    "technique": "quadratic_zeros",
+    "question": "What is the sum of the solutions to the equation x^2 + 11x + 28 = 0?",
+    "answer": "-11"
+  },
+  {
+    "technique": "quadratic_zeros",
+    "question": "The equation x^2 + 4x = 0 has two solutions. What is the sum of the solutions?",
+    "answer": "-4"
+  },
+  {
+    "technique": "quadratic_zeros",
+    "question": "Let f(x) = 3x^2 - 42x + 144. The graph of y = f(x) crosses the x-axis twice. Using the x-intercepts, find the greater solution to f(x) = 0.",
+    "answer": "8"
+  },
+  {
+    "technique": "slider_constant",
+    "question": "In the equation y = kx + 3, k is a constant. If the point (1, 7) lies on the graph, what is k?",
+    "answer": "4"
+  },
+  {
+    "technique": "slider_constant",
+    "question": "In the equation y = kx + 6, k is a constant. If the point (-4, 10) lies on the graph, what is k?",
+    "answer": "-1"
+  },
+  {
+    "technique": "slider_constant",
+    "question": "The system of equations y = kx - 9 and y = -4x - 6 has no solution. What is the value of k?",
+    "answer": "-4"
+  },
+  {
+    "technique": "statistics",
+    "question": "The data set 3, 25, 23, 22, 22, 4, 11, 10 shows the ages of people in a club. What is the mean of the data set?",
+    "answer": "15"
+  },
+  {
+    "technique": "statistics",
+    "question": "Data set: 13, 10, 25, 20, 22. What is the mean of the data set minus its median?",
+    "answer": "-2"
+  },
+  {
+    "technique": "statistics",
+    "question": "The data set 19, 20, 1, 4, 1 shows the number of books read by students. What is the mean of the data set?",
+    "answer": "9"
+  },
+  {
+    "technique": "system_intersection",
+    "question": "-5x + 5y = 45\n-5x - y = 27\nIf (x, y) is the solution to the system of equations above, what is the value of x - y?",
+    "answer": "-9"
+  },
+  {
+    "technique": "system_intersection",
+    "question": "A system of two linear equations is 5x + 2y = -22 and 5x + 4y = -14. Its solution is (x, y). Find the value of x + y.",
+    "answer": "-2"
+  },
+  {
+    "technique": "system_intersection",
+    "question": "x - y = 7\n3x - y = 13\nIf (x, y) is the solution to the system of equations above, what is the value of x - y?",
+    "answer": "7"
+  }
+]

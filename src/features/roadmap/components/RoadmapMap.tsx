@@ -15,6 +15,7 @@ import {
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
+import type { AccessorySlot } from '@/features/shop/catalog';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import {
@@ -36,6 +37,7 @@ import { CHIP, clusterPins, FLOAT, labelWidth, placeLabels } from '../lib/labels
 import { type StopView, stopAriaLabel } from '../lib/view';
 import { MAP } from '../map/mongolia.generated';
 import { STOPS } from '../stops';
+import { CatGuide } from './CatGuide';
 import { MapCat } from './MapCat';
 import { StopCard } from './StopCard';
 import { StarRow } from './TopicIcon';
@@ -246,6 +248,7 @@ export function RoadmapMap({
   selectedNo = null,
   skin,
   outfit,
+  accessories = {},
   showTopicHeading = true,
 }: {
   views: StopView[];
@@ -263,6 +266,8 @@ export function RoadmapMap({
   skin?: string;
   /** The user’s equipped shop outfit. */
   outfit?: string;
+  /** Shop accessories worn over the selected outfit. */
+  accessories?: Partial<Record<AccessorySlot, string>>;
   showTopicHeading?: boolean;
 }) {
   const t = useT('roadmap');
@@ -626,48 +631,8 @@ export function RoadmapMap({
                   pointerEvents: 'none',
                 }}
               >
-                <MapCat outfit={outfit} />
-                <div
-                  className="roadmap-cat-message"
-                  aria-hidden="true"
-                  style={{
-                    position: 'absolute',
-                    left: '50%',
-                    bottom: 'calc(100% + 8px * var(--inv, 1))',
-                    transform: 'translateX(-50%)',
-                    width: 'calc(174px * var(--inv, 1))',
-                    height: 'calc(87px * var(--inv, 1))',
-                    display: 'grid',
-                    placeItems: 'center',
-                  }}
-                >
-                  <svg
-                    viewBox="0 0 200 100"
-                    focusable="false"
-                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
-                  >
-                    <path
-                      d="M99 5C151 3 190 7 192 42 197 73 170 83 133 80 129 92 117 97 104 96 114 90 116 86 116 80 72 89 23 86 12 69-8 36 16 8 62 6Z"
-                      fill="var(--c-paper)"
-                      stroke="var(--c-ink)"
-                      strokeWidth="1.8"
-                    />
-                  </svg>
-                  <span
-                    style={{
-                      position: 'relative',
-                      maxWidth: '78%',
-                      paddingBottom: 'calc(15px * var(--inv, 1))',
-                      textAlign: 'center',
-                      fontSize: 'calc(12px * var(--inv, 1))',
-                      fontWeight: 700,
-                      lineHeight: 1.4,
-                      color: 'var(--c-ink)',
-                    }}
-                  >
-                    {t('catEncouragement')}
-                  </span>
-                </div>
+                <MapCat outfit={outfit} accessories={accessories} />
+                <CatGuide />
               </div>
               {views.map((v) => {
                 if (!visible.has(v.stop.no)) return null;

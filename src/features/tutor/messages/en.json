@@ -25,9 +25,8 @@
     "inputLabel": "Ask Suu a question",
     "placeholder": "Ask a question…",
     "send": "Send",
-    "error": "Couldn't get a reply.",
+    "error": "Suu can't be reached right now. Please try again.",
     "retry": "Try again",
-    "demo": "Demo reply — model not connected",
     "newChat": "New chat",
     "history": "Recent chats",
     "noHistory": "No chats yet",
@@ -36,7 +35,9 @@
     "deleteChat": "Delete chat",
     "sample": "Sample answer",
     "openDesmos": "See it step by step in Desmos",
+    "drawDesmos": "Draw it in Desmos",
     "bySuu": "Suu (our model)",
+    "bySolver": "Solved by code · checked on the graph",
     "byGemini": "Gemini chat"
   },
   "modes": {
@@ -64,6 +65,7 @@
     "empty": "Type a question or pick an example above. Suu draws the answer on Desmos.",
     "notFound": "This demo teaches the 6 question types above. Pick one of them to try.",
     "sample": "Sample lesson",
+    "solver": "Solved on the graph",
     "steps": "Steps",
     "prev": "Back",
     "next": "Next",
@@ -90,6 +92,17 @@
     "ownNote": "Suu hasn't written a lesson yet — the problem's Desmos rows are drawn on the calculator.",
     "free": "No ready steps for this problem. The calculator is yours — try it yourself.",
     "tip": "Tip",
-    "another": "Another lesson"
+    "another": "Another lesson",
+    "seconds": "s"
+  },
+  "suuPanel": {
+    "button": "AI tutor Suu",
+    "open": "Open AI tutor Suu beside the problem",
+    "close": "Close AI tutor Suu",
+    "title": "AI tutor Suu",
+    "empty": "Hi! I'm Suu 🐱 Ask me anything about this problem: get a hint, translate a word, or try a similar one.",
+    "locked": "The full explanation unlocks after you check your answer.",
+    "inputLabel": "Ask Suu about this problem",
+    "placeholder": "Ask about this problem…"
   }
 }

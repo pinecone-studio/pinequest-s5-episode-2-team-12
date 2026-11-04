@@ -30,34 +30,37 @@ export function QuestionView({
   const mcq = isMcq(q);
 
   return (
-    <div className="flex flex-col gap-4" data-qid={q.id}>
-      <div className="text-[17px] leading-relaxed text-ink">
+    <div className="flex flex-col gap-3" data-qid={q.id}>
+      {/* Асуултын текстийг илүү тод, том болгосон */}
+      <div className="text-lg sm:text-xl font-bold leading-snug text-ink">
         <Rich text={q.prompt} />
       </div>
+
       {q.mn && (
         <div>
           <button
             type="button"
             aria-pressed={mn}
             onClick={() => setMn((x) => !x)}
-            className="min-h-11 rounded-xl px-2 text-[13px] font-bold text-leaf-2 underline-offset-4 hover:underline"
+            className="min-h-9 rounded-xl px-2 text-[12px] font-bold text-leaf-2 underline-offset-4 hover:underline"
           >
             {mn ? t('stop.translateHide') : t('stop.translate')}
           </button>
           {mn && (
-            <p lang="mn" className="mt-1 rounded-2xl bg-paper-2 px-4 py-3 text-[15px] text-ink-2">
+            <p lang="mn" className="mt-1 rounded-2xl bg-paper-2 px-3 py-2 text-[14px] text-ink-2">
               <Rich text={q.mn} />
             </p>
           )}
         </div>
       )}
+
       {q.figure?.startsWith('/') && (
         // biome-ignore lint/performance/noImgElement: static figures from /public, no optimisation needed
-        <img src={q.figure} alt="" className="mx-auto max-h-64 max-w-full" />
+        <img src={q.figure} alt="" className="mx-auto max-h-48 max-w-full object-contain" />
       )}
 
       {mcq ? (
-        <div role="radiogroup" aria-label={t('stop.choices')} className="grid gap-2.5">
+        <div role="radiogroup" aria-label={t('stop.choices')} className="grid gap-1.5 sm:gap-2">
           {(q.choices ?? []).map((c, i) => {
             const chosen = value === String(i);
             const right = revealed && q.answer === i;
@@ -71,7 +74,7 @@ export function QuestionView({
                 disabled={revealed}
                 onClick={() => onChange(String(i))}
                 className={cn(
-                  'flex min-h-12 items-center gap-3 rounded-2xl border-[1.5px] px-4 py-2.5 text-left text-[15px] transition-colors',
+                  'flex min-h-10 sm:min-h-11 items-center gap-2.5 rounded-xl border-[1.5px] px-3.5 py-2 text-left text-xs sm:text-sm transition-colors',
                   'border-line bg-paper hover:border-line-2 disabled:cursor-default',
                   chosen && !revealed && 'border-leaf bg-sage',
                   right && 'border-leaf bg-sage',
@@ -80,14 +83,16 @@ export function QuestionView({
               >
                 <span
                   className={cn(
-                    'grid size-8 shrink-0 place-items-center rounded-full border-[1.5px] border-line-2 text-[13px] font-bold text-ink-2',
+                    'grid size-6 sm:size-7 shrink-0 place-items-center rounded-lg border-[1.5px] border-line-2 text-xs font-bold text-ink-2',
                     (chosen || right) && 'border-leaf bg-leaf text-[var(--c-on-leaf)]',
                     wrong && 'border-danger bg-danger text-[var(--c-on-leaf)]',
                   )}
                 >
                   {'ABCD'[i]}
                 </span>
-                <Rich text={c} />
+                <span className="leading-tight flex-1">
+                  <Rich text={c} />
+                </span>
               </button>
             );
           })}
@@ -107,7 +112,7 @@ export function QuestionView({
             autoComplete="off"
             placeholder={placeholder ?? t('stop.placeholder')}
             className={cn(
-              'h-12 w-full max-w-xs rounded-2xl border-[1.5px] border-line-2 bg-paper px-4 font-mono text-lg text-ink',
+              'h-11 w-full max-w-xs rounded-xl border-[1.5px] border-line-2 bg-paper px-3 font-mono text-base text-ink',
               'focus:border-leaf focus:outline-none disabled:opacity-80',
             )}
           />

@@ -25,7 +25,10 @@ export const NAV: NavGroup[] = [
   },
   {
     key: 'me',
-    items: [{ key: 'settings', href: routes.settings, section: 'I' }],
+    items: [
+      { key: 'help', href: routes.help, section: 'I' },
+      { key: 'settings', href: routes.settings, section: 'I' },
+    ],
   },
 ];
 

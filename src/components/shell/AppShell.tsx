@@ -9,7 +9,10 @@ import { Logo } from '@/components/brand';
 import { Avatar } from '@/components/brand/Avatar';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { useDialog } from '@/components/ui/useDialog';
+import type { SettingsPatch } from '@/features/settings/actions';
+import { readLocalSettings } from '@/features/settings/local';
 import type { StudentSettings } from '@/features/settings/use-settings';
+import type { AccessorySlot } from '@/features/shop/catalog';
 import { useWallet } from '@/features/shop/lib/use-wallet';
 import type { ServerWallet } from '@/features/shop/queries';
 import { cn } from '@/lib/cn';
@@ -28,6 +31,12 @@ export type ShellUser = {
   avatarId?: string;
   /** profiles.role = 'admin': the drawer adds the Admin link. */
   admin?: boolean;
+};
+
+type UserLook = {
+  frame?: string;
+  outfit?: string;
+  accessories?: Partial<Record<AccessorySlot, string>>;
 };
 export { Avatar };
 
@@ -153,7 +162,7 @@ function NavFooter({
 }: {
   user: ShellUser;
   gems: number;
-  look: { frame?: string; outfit?: string };
+  look: UserLook;
   onNavigate?: () => void;
 }) {
   const t = useT('common');
@@ -211,7 +220,7 @@ function NavRail({
   user: ShellUser;
   pathname: string;
   gems: number;
-  look: { frame?: string; outfit?: string };
+  look: UserLook;
 }) {
   const t = useT('common');
   return (
@@ -276,7 +285,7 @@ function NavDrawer({
   user: ShellUser;
   pathname: string;
   gems: number;
-  look: { frame?: string; outfit?: string };
+  look: UserLook;
 }) {
   const t = useT('common');
   const ref = useRef<HTMLDivElement>(null);
@@ -349,10 +358,28 @@ export function AppShell({
   }, [setOpen]);
   const drawerId = useId();
   const railId = useId();
-  const me: ShellUser = user ?? { name: '', level: 1, xp: 0, streak: 0 };
+  const [localAvatar, setLocalAvatar] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    setLocalAvatar(demo ? readLocalSettings().avatarId : undefined);
+    const changed = (event: Event) => {
+      const patch = (event as CustomEvent<SettingsPatch>).detail;
+      if (patch.avatarId !== undefined) setLocalAvatar(patch.avatarId);
+    };
+    window.addEventListener('suprep-settings', changed);
+    return () => window.removeEventListener('suprep-settings', changed);
+  }, [demo]);
+  const me: ShellUser = {
+    ...(user ?? { name: '', level: 1, xp: 0, streak: 0 }),
+    ...(localAvatar !== undefined && { avatarId: localAvatar }),
+  };
+
   const map = variant === 'map';
   const w = useWallet(demo, wallet);
-  const look = { frame: w.equipped.frame, outfit: w.equipped.outfit };
+  const look: UserLook = {
+    frame: w.equipped.frame,
+    outfit: w.equipped.outfit,
+    accessories: { head: w.equipped.head, eyes: w.equipped.eyes, neck: w.equipped.neck },
+  };
 
   return (
     <div
@@ -451,7 +478,7 @@ export function AppShell({
               href={routes.profile}
               prefetch={false}
               aria-label={t('shell.profile')}
-              className="rounded-full ring-2 ring-paper/80 hover:ring-leaf"
+              className="flex size-10 shrink-0 items-center justify-center rounded-full ring-2 ring-paper/80 hover:ring-leaf"
             >
               <Avatar name={me.name || t('shell.guest')} avatarId={me.avatarId} size={40} {...look} />
             </Link>

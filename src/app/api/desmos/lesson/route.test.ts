@@ -124,3 +124,18 @@ test('another: true skips the sample lesson and asks Suu for a sampled one', asy
   expect(body.source).toBe('model');
   expect(temps[0]).toBe(0.7);
 });
+
+test('a plain equation is solved and graphed by code, without the model', async () => {
+  const calls = fakeOllama();
+  const res = await call({ question: 'x: 5(x - 4) + 7 = 3(x + 2) + 5' });
+  expect(await res.json()).toMatchObject({ source: 'solver', lesson: { id: 'solver', answer: 'x = 12' } });
+  expect(calls()).toBe(0);
+  // a given answer must agree with the solver's, or the solver lesson is not used
+  process.env.OLLAMA_URL = '';
+  expect(await (await call({ question: '2x + 1 = 7', answer: '3' })).json()).toMatchObject({
+    source: 'solver',
+  });
+  expect(await (await call({ question: '2x + 1 = 7', answer: '4' })).json()).toMatchObject({
+    source: 'none',
+  });
+});

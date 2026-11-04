@@ -9,8 +9,12 @@ export const metadata = { title: getT('mistakes')('pages.mistakes.title') };
 export default async function MistakesPage() {
   const session = await getSession().catch(() => null);
   const userId = session?.kind === 'user' ? session.userId : null;
+  let loadError = false;
   const server = userId
-    ? await listNotebook(userId).catch(() => ({ entries: [], states: {} }))
+    ? await listNotebook(userId).catch(() => {
+        loadError = true;
+        return { entries: [], states: {} };
+      })
     : { entries: [], states: {} };
-  return <MistakesView demo={!userId} server={server} />;
+  return <MistakesView demo={session?.kind === 'demo'} server={server} loadError={loadError || !session} />;
 }

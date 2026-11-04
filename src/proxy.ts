@@ -7,6 +7,8 @@ import { DEMO_COOKIE, gate } from '@/lib/auth-gate';
 import { hasSupabase, publicEnv } from '@/lib/env';
 
 export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  if (pathname === '/offline' || pathname.startsWith('/offline/')) return NextResponse.next();
   let response = NextResponse.next({ request });
   let signedIn = request.cookies.get(DEMO_COOKIE)?.value === '1';
   let accountSignedIn = false;

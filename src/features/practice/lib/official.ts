@@ -1,7 +1,10 @@
 // Official SAT Math questions (College Board question bank) stored in Supabase `sat_math_questions`.
 // Pure helpers shared by the server query and the bank UI.
+
+import { PROBLEM_MAX } from '@/features/tutor/lib/suu-panel';
 import type { Domain } from '@/types';
 import { prepareCbHtml } from './cb-html';
+import { cbText } from './cb-text';
 
 export const OFFICIAL_TABLE = 'sat_math_questions';
 export const OFFICIAL_PAGE_SIZE = 10;
@@ -49,7 +52,9 @@ export type OfficialQuestion = {
   domain: Domain;
   skill: string;
   difficulty: OfficialDifficulty;
-  format: 'mcq' | 'spr';
+  format: 'mcq' | 'spr' | 'unsupported';
+  source?: string | null;
+  questionType?: string;
   /** Display-ready HTML (MathML, figures). */
   promptHtml: string;
   choices: { label: string; html: string }[];
@@ -58,6 +63,8 @@ export type OfficialQuestion = {
   /** Every accepted grid-in value (e.g. '.1764', '3/17'). */
   accepted: string[];
   explanationHtml: string;
+  /** The problem and its choices as plain text, for Суу (the «AI багш Суу» side panel). */
+  text: string;
 };
 
 export type OfficialFilter = {
@@ -130,10 +137,11 @@ export type OfficialRow = {
   correct_answer: string | null;
   accepted_answers: string[] | null;
   explanation_html: string | null;
+  source?: string | null;
 };
 
 export const OFFICIAL_COLUMNS =
-  'id, domain, skill, difficulty, question_type, question_html, choices, correct_answer, accepted_answers, explanation_html';
+  'id, domain, skill, difficulty, question_type, question_html, choices, correct_answer, accepted_answers, explanation_html, source';
 
 /** The scope a snippet was prepared with; the element showing it carries the same `data-cb`. */
 export function cbScope(id: string, part: string): string {
@@ -152,14 +160,31 @@ export function mapOfficialRow(row: OfficialRow): OfficialQuestion {
     domain,
     skill: row.skill.trim(),
     difficulty,
-    format: row.question_type === 'multiple_choice' ? 'mcq' : 'spr',
+    format:
+      row.question_type === 'multiple_choice'
+        ? 'mcq'
+        : row.question_type === 'student_response'
+          ? 'spr'
+          : 'unsupported',
+    source: row.source,
+    questionType: row.question_type,
     promptHtml: prepareCbHtml(row.question_html, cbScope(row.id, 'q')),
     choices: (row.choices ?? []).map((c) => ({
       label: c.label,
       html: prepareCbHtml(c.html, cbScope(row.id, c.label)),
     })),
-    answer: row.correct_answer ?? '',
-    accepted: row.accepted_answers ?? [],
+    answer:
+      row.correct_answer?.trim() ||
+      (row.question_type === 'multiple_choice' ? row.accepted_answers?.[0]?.trim() : '') ||
+      '',
+    accepted: row.accepted_answers?.filter((answer) => answer.trim())?.length
+      ? row.accepted_answers.filter((answer) => answer.trim())
+      : row.correct_answer?.trim()
+        ? [row.correct_answer.trim()]
+        : [],
     explanationHtml: prepareCbHtml(row.explanation_html ?? '', cbScope(row.id, 'e')),
+    text: [cbText(row.question_html), ...(row.choices ?? []).map((c) => `${c.label}) ${cbText(c.html)}`)]
+      .join('\n')
+      .slice(0, PROBLEM_MAX),
   };
 }

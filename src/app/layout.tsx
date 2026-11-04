@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Caveat, JetBrains_Mono, Onest, Oranienbaum, Roboto_Slab, Yeseva_One } from 'next/font/google';
 import type { ReactNode } from 'react';
+import { getMessages } from '@/lib/i18n';
 import { THEME_SCRIPT } from '@/lib/theme';
 import './globals.css';
 import './emerald-workspace.css';
@@ -64,7 +65,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Providers messages={getMessages('mn')}>{children}</Providers>
       </body>
     </html>
   );

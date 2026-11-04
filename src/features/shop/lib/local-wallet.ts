@@ -3,6 +3,7 @@
 // (demoEarnings) so they always match what the student did on this device.
 import { loadLocalMocks } from '@/features/exam/lib/local-mocks';
 import { loadLocalRoadmap } from '@/features/roadmap/lib/local-store';
+import { equipmentSlot, itemById, outfitHasAccessory } from '../catalog';
 import { demoEarnings, emptyWallet, type GemEvent, type Wallet } from './wallet';
 
 const KEY = 'suprep:wallet:v1';
@@ -48,7 +49,16 @@ export function loadLocalWallet(): Wallet {
     bestStreak: 0,
   });
   const s = readStored();
-  return { events: [...earned, ...s.credits, ...s.spent], owned: s.owned, equipped: s.equipped };
+  const equipped = { ...s.equipped };
+  const legacyOutfit = equipped.outfit ? itemById(equipped.outfit) : undefined;
+  if (legacyOutfit?.accessorySlot) {
+    delete equipped.outfit;
+    equipped[equipmentSlot(legacyOutfit)] = legacyOutfit.id;
+  }
+  if (outfitHasAccessory(equipped.outfit, 'head')) delete equipped.head;
+  if (outfitHasAccessory(equipped.outfit, 'eyes')) delete equipped.eyes;
+  if (outfitHasAccessory(equipped.outfit, 'neck')) delete equipped.neck;
+  return { events: [...earned, ...s.credits, ...s.spent], owned: s.owned, equipped };
 }
 
 export function saveLocalWallet(w: Wallet) {

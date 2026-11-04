@@ -10,6 +10,10 @@ export type Profile = {
   desmos?: 'never' | 'little' | 'often';
   /** Target Math score 200–800. */
   target: number;
+  /** Official SAT Math score, only after taking the real test (satExp 'taken'). */
+  lastMathScore?: number | null;
+  /** Minutes a day the student plans to study. */
+  studyMinutes?: 15 | 30 | 45 | 60;
   /** YYYY-MM-DD */
   examDate: string;
   start?: StartPoint;
@@ -24,6 +28,7 @@ export type Profile = {
   /** Home aimag (lib/aimags.ts), for the aimag leaderboard. */
   aimag?: string;
   school?: string;
+  age?: number;
   /** Only an admin (or the service role) can change it — see protect_profile_role in migration 0006. */
   role?: 'student' | 'admin';
 };
