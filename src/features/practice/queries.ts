@@ -17,10 +17,16 @@ function warnBank(error: { message: string }) {
 }
 
 export async function listQuestions(filter: QuestionFilter = {}): Promise<Question[]> {
+  return (await listQuestionsWithSource(filter)).questions;
+}
+
+export async function listQuestionsWithSource(
+  filter: QuestionFilter = {},
+): Promise<{ questions: Question[]; source: 'supabase' | 'mock' }> {
   const db = await getQuestionsDb();
 
   if (!db) {
-    return filterQuestions(QUESTIONS, filter);
+    return { questions: filterQuestions(QUESTIONS, filter), source: 'mock' };
   }
 
   let query = db.from(getQuestionsTable()).select('content').eq('reviewed', true);
@@ -38,13 +44,16 @@ export async function listQuestions(filter: QuestionFilter = {}): Promise<Questi
   // e.g. no service-role key (the table is admin-only since 0009) or a legacy table without `content`
   if (error) {
     warnBank(error);
-    return filterQuestions(QUESTIONS, filter);
+    return { questions: filterQuestions(QUESTIONS, filter), source: 'mock' };
   }
 
-  return filterQuestions(
-    (data ?? []).map((row) => row.content as Question),
-    filter,
-  );
+  return {
+    questions: filterQuestions(
+      (data ?? []).map((row) => row.content as Question),
+      filter,
+    ),
+    source: 'supabase',
+  };
 }
 
 export async function getQuestion(id: string): Promise<Question | null> {

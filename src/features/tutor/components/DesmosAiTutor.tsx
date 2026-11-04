@@ -13,7 +13,7 @@ import { DESMOS_AI_LESSONS, type DesmosAiLesson } from '../lib/desmos-lessons';
 
 /** What /api/desmos/lesson returns (see src/app/api/desmos/lesson/route.ts). */
 type LessonReply =
-  | { lesson: DesmosAiLesson; source: 'sample' | 'model'; answerFrom?: 'student' | 'model' }
+  | { lesson: DesmosAiLesson; source: 'sample' | 'model' | 'solver'; answerFrom?: 'student' | 'model' }
   | { lesson: null; source: 'none'; reason: 'off' | 'failed' };
 
 /** Why there is no lesson: model off (demo), model couldn't write a checked lesson, or the request failed. */
@@ -27,7 +27,7 @@ export function DesmosAiTutor({ initial, fetchImpl }: { initial?: string; fetchI
   const [answerDraft, setAnswerDraft] = useState('');
   const [asked, setAsked] = useState<string | null>(null);
   const [lesson, setLesson] = useState<DesmosAiLesson | null>(null);
-  const [source, setSource] = useState<'sample' | 'model' | null>(null);
+  const [source, setSource] = useState<'sample' | 'model' | 'solver' | null>(null);
   const [answerByModel, setAnswerByModel] = useState(false);
   const [thinking, setThinking] = useState(false);
   const [miss, setMiss] = useState<Miss | null>(null);
@@ -227,6 +227,8 @@ export function DesmosAiTutor({ initial, fetchImpl }: { initial?: string; fetchI
                 <Pill tone="leaf">{lesson.title}</Pill>
                 {source === 'model' ? (
                   <Pill tone="teal">{t('desmosAi.live')}</Pill>
+                ) : source === 'solver' ? (
+                  <Pill tone="leaf">{t('desmosAi.solver')}</Pill>
                 ) : (
                   <Pill tone="amber">{t('desmosAi.sample')}</Pill>
                 )}

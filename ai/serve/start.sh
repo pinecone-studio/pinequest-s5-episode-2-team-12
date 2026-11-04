@@ -28,12 +28,13 @@ PIDS=()
 cleanup() { for p in "${PIDS[@]:-}"; do [[ -n "$p" ]] && kill "$p" 2>/dev/null || true; done; }
 trap cleanup EXIT INT TERM
 
-# 1 · tools
-say "1/6 Хэрэгслүүдийг шалгаж байна (Homebrew, Ollama, cloudflared, Bun)"
-need brew || die "Homebrew алга. https://brew.sh дээрх нэг мөр командыг Terminal-д ажиллуулаад дахин оролдоно уу."
-need ollama || brew install ollama
-[[ $LOCAL -eq 1 ]] || need cloudflared || brew install cloudflared
-need bun || { curl -fsSL https://bun.sh/install | bash; export PATH="$HOME/.bun/bin:$PATH"; }
+# 1 · tools (Homebrew when this user can use it, otherwise official downloads into ~/.suu/tools — no admin needed)
+say "1/6 Хэрэгслүүдийг шалгаж байна (Ollama, cloudflared, Bun)"
+# shellcheck source=ai/serve/tools.sh
+source "$REPO/ai/serve/tools.sh"
+ensure_tool ollama || die "Ollama суулгаж чадсангүй. https://ollama.com/download-аас гараар суулгаад дахин оролдоно уу."
+[[ $LOCAL -eq 1 ]] || ensure_tool cloudflared || die "cloudflared татаж чадсангүй."
+ensure_tool bun || die "Bun суулгаж чадсангүй. https://bun.sh"
 
 # 2 · model files
 say "2/6 Загварын файлууд: $MODEL_DIR"
@@ -50,7 +51,8 @@ SKILLS="$(sed -n 's/^SKILLS=//p' "$MODEL_DIR/build.env" 2>/dev/null | tail -n 1)
 # 3 · Ollama server
 say "3/6 Ollama асааж байна"
 if ! curl -sf "$OLLAMA/api/version" >/dev/null; then
-  ollama serve >"$STATE/ollama.log" 2>&1 &
+  # keep Suu loaded between students (default: unloaded after 5 idle minutes, then a ~20 s reload)
+  OLLAMA_KEEP_ALIVE="${OLLAMA_KEEP_ALIVE:-2h}" ollama serve >"$STATE/ollama.log" 2>&1 &
   PIDS+=($!)
   for _ in $(seq 1 30); do curl -sf "$OLLAMA/api/version" >/dev/null && break; sleep 1; done
 fi

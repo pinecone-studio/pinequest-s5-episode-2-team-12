@@ -4,7 +4,8 @@ import { getProfile } from './queries';
 test('demo profile without Supabase', async () => {
   const p = await getProfile();
   expect(p.onboarded).toBe(true);
-  expect(p.target).toBe(700);
+  expect(p.target).toBe(750);
+  expect(p.name).toBe('Tuya');
 });
 
 test('profile rows map snake_case columns and fill defaults', async () => {

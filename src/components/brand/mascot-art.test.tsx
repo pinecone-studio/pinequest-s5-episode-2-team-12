@@ -38,3 +38,18 @@ test('each supplied outfit can be bought, equipped, shown, and taken off', () =>
     unmount();
   }
 });
+
+test('the equipped scarf stays anchored to the avatar neck at small and profile sizes', () => {
+  for (const size of [32, 40, 48, 76]) {
+    const { container, unmount } = render(
+      <Avatar name="Tuya" size={size} accessories={{ neck: 'outfit-scarf' }} />,
+    );
+    const scarf = container.querySelector('img')!;
+    expect(scarf.getAttribute('src')).toBe('/brand/shop-accessories/scarf.png');
+    expect(parseFloat(scarf.style.top)).toBeCloseTo(size * 0.8);
+    expect(parseFloat(scarf.style.width)).toBeCloseTo(size * 0.6);
+    expect(parseFloat(scarf.style.top)).toBeLessThan(size);
+    expect(parseFloat(scarf.style.top) + parseFloat(scarf.style.height)).toBeLessThan(size * 1.25);
+    unmount();
+  }
+});

@@ -128,3 +128,44 @@ test('DesmosCatButton says what it does and shows when the panel is open', () =>
   rerender(<DesmosCatButton open onClick={() => clicks++} />);
   expect(screen.getByRole('button', { name: 'Desmos-ийг хаах' }).getAttribute('aria-pressed')).toBe('true');
 });
+
+describe('what the panel tells the chat (onView)', () => {
+  test('only the visible steps, the current step, and null when the panel closes', async () => {
+    const api = fakeApi({ lesson, source: 'model' });
+    const views: (null | { step: number; steps: { text: string; latex: string[] }[] })[] = [];
+    const { unmount } = render(
+      <DesmosSidePanel
+        input={input}
+        revealed={false}
+        onClose={() => {}}
+        fetchImpl={api.fn}
+        onView={(v) => views.push(v)}
+      />,
+    );
+    await screen.findByText(lesson.steps[0].text);
+    await waitFor(() => expect(views.at(-1)).not.toBeNull());
+    const first = views.at(-1)!;
+    expect(first.step).toBe(0);
+    expect(first.steps.length).toBeLessThan(lesson.steps.length); // the locked step is never sent
+    expect(JSON.stringify(first)).not.toContain(lastStep.text);
+    fireEvent.click(screen.getByRole('button', { name: /Дараах/ }));
+    await waitFor(() => expect(views.at(-1)?.step).toBe(1));
+    unmount();
+    expect(views.at(-1)).toBeNull();
+  });
+
+  test('after the answer, the whole lesson can be talked about', async () => {
+    const api = fakeApi({ lesson, source: 'model' });
+    const views: (null | { steps: unknown[] })[] = [];
+    render(
+      <DesmosSidePanel
+        input={input}
+        revealed
+        onClose={() => {}}
+        fetchImpl={api.fn}
+        onView={(v) => views.push(v)}
+      />,
+    );
+    await waitFor(() => expect(views.at(-1)?.steps.length).toBe(lesson.steps.length));
+  });
+});

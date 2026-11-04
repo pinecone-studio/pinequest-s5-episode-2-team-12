@@ -1,0 +1,1553 @@
+{
+  "id": "pt1",
+  "no": 1,
+  "module1": [
+    {
+      "id": "rmpt1-m1-01",
+      "topicId": 3,
+      "domain": "alg",
+      "skill": "Linear equations in one variable",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "If $3x - 7 = 11$, what is the value of $x$?",
+      "mn": "Хэрэв $3x - 7 = 11$ бол $x$-ийн утга хэд вэ?",
+      "choices": ["$\\frac{4}{3}$", "$6$", "$12$", "$18$"],
+      "answer": 1,
+      "explain": "Хоёр талд $7$ нэмбэл $3x = 18$. Хоёр талыг $3$-т хуваавал $x = 6$.",
+      "hint": "Эхлээд $-7$-г арилга.",
+      "why": {
+        "0": "$7$-г нэмэх ёстой байхад хассан: $(11-7)/3$.",
+        "3": "$18$ бол $3x$-ийн утга. $3$-т хуваахаа мартжээ."
+      },
+      "verify": {
+        "sub": {
+          "var": "x",
+          "eq": "3x - 7 = 11"
+        }
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-02",
+      "topicId": 1,
+      "domain": "adv",
+      "skill": "Equivalent expressions",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "Which expression is equivalent to $x^{3} \\cdot x^{4}$?",
+      "mn": "$x^{3} \\cdot x^{4}$-тэй тэнцүү илэрхийлэл аль вэ?",
+      "choices": ["$x^{7}$", "$x^{12}$", "$2x^{7}$", "$x$"],
+      "answer": 0,
+      "explain": "Ижил суурьтай зэргүүдийг үржүүлэхэд илтгэгчийг нэмнэ: $x^{3+4} = x^{7}$.",
+      "hint": "$a^m \\cdot a^n = a^{m+n}$.",
+      "why": {
+        "1": "Илтгэгчийг үржүүлжээ. Үржүүлэхэд илтгэгчийг **нэмнэ**."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-03",
+      "topicId": 8,
+      "domain": "psda",
+      "skill": "Percentages",
+      "difficulty": 1,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "What is $35\\%$ of $240$?",
+      "mn": "$240$-ийн $35\\%$ хэд вэ?",
+      "answer": ["84"],
+      "explain": "$35\\% = 0.35$. $0.35 \\cdot 240 = 84$.",
+      "hint": "Хувийг аравтын бутархай болгоод үржүүл.",
+      "verify": {
+        "value": "0.35*240"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-04",
+      "topicId": 17,
+      "domain": "geo",
+      "skill": "Lines, angles, and triangles",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "Two angles are supplementary. One of the angles measures $68^\\circ$. What is the measure of the other angle?",
+      "mn": "Хоёр өнцөг нийлээд $180^\\circ$ (supplementary) болно. Нэг нь $68^\\circ$ бол нөгөө өнцөг хэдэн градус вэ?",
+      "choices": ["$22^\\circ$", "$112^\\circ$", "$122^\\circ$", "$292^\\circ$"],
+      "answer": 1,
+      "explain": "Supplementary өнцгүүдийн нийлбэр $180^\\circ$. $180^\\circ - 68^\\circ = 112^\\circ$.",
+      "hint": "Supplementary $= 180^\\circ$, complementary $= 90^\\circ$.",
+      "why": {
+        "0": "Энэ нь complementary ($90^\\circ$) өнцөг. Supplementary бол $180^\\circ$."
+      },
+      "verify": {
+        "value": "180-68"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-05",
+      "topicId": 6,
+      "domain": "alg",
+      "skill": "Linear equations in two variables",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "A line in the $xy$-plane passes through the points $(0, 4)$ and $(2, 10)$. What is the slope of the line?",
+      "mn": "$xy$ хавтгай дээрх шулуун $(0, 4)$ ба $(2, 10)$ цэгүүдийг дайрна. Шулууны налалт хэд вэ?",
+      "choices": ["$2$", "$3$", "$4$", "$6$"],
+      "answer": 1,
+      "explain": "Налалт $= \\frac{10 - 4}{2 - 0} = \\frac{6}{2} = 3$.",
+      "hint": "Налалт $= \\frac{y_2 - y_1}{x_2 - x_1}$.",
+      "why": {
+        "3": "$6$ бол зөвхөн $y$-ийн өөрчлөлт; $x$-ийн өөрчлөлтөд хуваах хэрэгтэй."
+      },
+      "verify": {
+        "value": "(10-4)/(2-0)"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-06",
+      "topicId": 5,
+      "domain": "adv",
+      "skill": "Nonlinear functions",
+      "difficulty": 1,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "The function $f$ is defined by $f(x) = 2x^{2} - 5$. What is the value of $f(3)$?",
+      "mn": "$f$ функц $f(x) = 2x^{2} - 5$ гэж тодорхойлогдсон. $f(3)$-ийн утга хэд вэ?",
+      "answer": ["13"],
+      "explain": "$x = 3$-ыг орлуулбал $2 \\cdot 3^{2} - 5 = 2 \\cdot 9 - 5 = 13$.",
+      "hint": "Эхлээд зэргээ бодоод дараа нь $2$-оор үржүүл.",
+      "verify": {
+        "value": "2*3^2-5"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-07",
+      "topicId": 7,
+      "domain": "alg",
+      "skill": "Linear functions",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "A plumber charges a fixed fee plus an hourly rate for each job. The total charge $C$, in dollars, for a job that lasts $h$ hours is given by $C = 45h + 60$. What is the best interpretation of $60$ in this context?",
+      "mn": "Сантехникч ажил бүрт тогтмол хөлс дээр цагийн төлбөр нэмж авдаг. $h$ цаг үргэлжлэх ажлын нийт төлбөр $C$ (доллароор) $C = 45h + 60$. Энэ нөхцөлд $60$ юуг илэрхийлэх вэ?",
+      "choices": [
+        "The fixed fee, in dollars",
+        "The hourly rate, in dollars per hour",
+        "The total charge, in dollars, for a 1-hour job",
+        "The number of hours the job lasts"
+      ],
+      "answer": 0,
+      "explain": "$h = 0$ үед $C = 60$: ажил хэдэн цаг үргэлжлэхээс үл хамааран төлөх тогтмол хөлс. $45$ бол нэг цагийн төлбөр.",
+      "hint": "Тогтмол гишүүн бол $h = 0$ үеийн утга.",
+      "why": {
+        "1": "Цагийн төлбөр бол $h$-ийн коэффициент $45$."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-08",
+      "topicId": 12,
+      "domain": "adv",
+      "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "What are the solutions to the equation $(x - 4)(x + 9) = 0$?",
+      "mn": "$(x - 4)(x + 9) = 0$ тэгшитгэлийн шийдүүд аль вэ?",
+      "choices": [
+        "$x = 4$ and $x = -9$",
+        "$x = -4$ and $x = 9$",
+        "$x = 4$ and $x = 9$",
+        "$x = -4$ and $x = -9$"
+      ],
+      "answer": 0,
+      "explain": "Үржвэр тэгтэй тэнцүү бол аль нэг үржигдэхүүн нь тэг: $x - 4 = 0 \\Rightarrow x = 4$, $x + 9 = 0 \\Rightarrow x = -9$.",
+      "hint": "Хаалт бүрийг тэгтэй тэнцүүл.",
+      "why": {
+        "1": "Тэмдгийг эсрэгээр нь авчээ. $x - 4 = 0$ бол $x = 4$."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-09",
+      "topicId": 13,
+      "domain": "alg",
+      "skill": "Systems of two linear equations in two variables",
+      "difficulty": 2,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "$x + y = 17$\n$x - y = 5$\nThe solution to the given system of equations is $(x, y)$. What is the value of $x$?",
+      "mn": "$x + y = 17$\n$x - y = 5$\nӨгөгдсөн тэгшитгэлийн системийн шийд $(x, y)$. $x$-ийн утга хэд вэ?",
+      "answer": ["11"],
+      "explain": "Хоёр тэгшитгэлийг нэмбэл $y$ устаж $2x = 22$, тэгэхээр $x = 11$ ($y = 6$).",
+      "hint": "Тэгшитгэлүүдийг нэмээд $y$-ийг устга.",
+      "verify": {
+        "value": "(17+5)/2"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-10",
+      "topicId": 2,
+      "domain": "adv",
+      "skill": "Equivalent expressions",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "Which expression is equivalent to $(2x + 3)^{2}$?",
+      "mn": "$(2x + 3)^{2}$-тэй тэнцүү илэрхийлэл аль вэ?",
+      "choices": ["$4x^{2} + 9$", "$4x^{2} + 6x + 9$", "$4x^{2} + 12x + 9$", "$2x^{2} + 12x + 9$"],
+      "answer": 2,
+      "explain": "$(a+b)^2 = a^2 + 2ab + b^2$: $(2x)^2 + 2(2x)(3) + 3^2 = 4x^2 + 12x + 9$.",
+      "hint": "Дунд гишүүн $2ab$-г бүү март.",
+      "why": {
+        "0": "Дунд гишүүн $2ab = 12x$ орхигдсон.",
+        "1": "Дунд гишүүн $2 \\cdot 2x \\cdot 3 = 12x$, $6x$ биш."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-11",
+      "topicId": 10,
+      "domain": "psda",
+      "skill": "Ratios, rates, proportional relationships, and units",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "A recipe uses $3$ cups of flour for every $2$ cups of sugar. If a baker uses $12$ cups of flour, how many cups of sugar are needed to keep the same ratio?",
+      "mn": "Жоронд $3$ аяга гурил тутамд $2$ аяга элсэн чихэр ордог. Талхчин $12$ аяга гурил хэрэглэвэл ижил харьцааг хадгалахын тулд хэдэн аяга элсэн чихэр хэрэгтэй вэ?",
+      "choices": ["$6$", "$8$", "$10$", "$18$"],
+      "answer": 1,
+      "explain": "$\\frac{3}{2} = \\frac{12}{s}$ гэвэл $3s = 24$, $s = 8$. Өөрөөр хэлбэл гурил $4$ дахин нэмэгдсэн тул чихэр ч $4$ дахин: $2 \\cdot 4 = 8$.",
+      "hint": "Пропорц зохио: гурил/чихэр.",
+      "why": {
+        "3": "Харьцааг урвуу авчээ: $12 \\cdot \\frac{3}{2}$."
+      },
+      "verify": {
+        "value": "12*2/3"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-12",
+      "topicId": 21,
+      "domain": "geo",
+      "skill": "Right triangles and trigonometry",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "In right triangle $ABC$, angle $C$ is a right angle, $AC = 8$, and $BC = 15$. What is the value of $\\sin A$?",
+      "mn": "$ABC$ тэгш өнцөгт гурвалжинд $C$ өнцөг тэгш, $AC = 8$, $BC = 15$. $\\sin A$-ийн утга хэд вэ?",
+      "choices": ["$\\frac{8}{17}$", "$\\frac{15}{17}$", "$\\frac{8}{15}$", "$\\frac{15}{8}$"],
+      "answer": 1,
+      "explain": "Гипотенуз $AB = \\sqrt{8^2 + 15^2} = \\sqrt{289} = 17$. $A$ өнцгийн эсрэг катет $BC = 15$, тэгэхээр $\\sin A = \\frac{15}{17}$.",
+      "hint": "SOH: $\\sin = \\frac{\\text{эсрэг}}{\\text{гипотенуз}}$.",
+      "why": {
+        "0": "Энэ нь $\\cos A$ (хажуугийн катет / гипотенуз)."
+      },
+      "verify": {
+        "value": "15/17"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-13",
+      "topicId": 14,
+      "domain": "alg",
+      "skill": "Linear inequalities in one or two variables",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "Which of the following values of $x$ satisfies the inequality $5 - 2x > 11$?",
+      "mn": "Аль $x$-ийн утга $5 - 2x > 11$ тэнцэтгэл бишийг хангах вэ?",
+      "choices": ["$-4$", "$-3$", "$0$", "$3$"],
+      "answer": 0,
+      "explain": "$-2x > 6$. Сөрөг тоонд хуваахад тэмдэг эргэнэ: $x < -3$. Сонголтуудаас зөвхөн $-4$ нь $-3$-аас бага.",
+      "hint": "Сөрөг тоонд хуваахад тэнцэтгэл бишийн тэмдэг эргэдэг.",
+      "why": {
+        "1": "$x = -3$ үед $5 + 6 = 11$, $11 > 11$ худал.",
+        "3": "Тэмдгийг эргүүлэхээ мартжээ."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-14",
+      "topicId": 9,
+      "domain": "adv",
+      "skill": "Nonlinear functions",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "The population of a town is $12{,}000$ and is expected to increase by $3\\%$ each year. Which function $P$ gives the expected population $t$ years from now?",
+      "mn": "Хотын хүн ам $12{,}000$ бөгөөд жил бүр $3\\%$-иар өснө. $t$ жилийн дараах хүн амыг аль $P$ функц илэрхийлэх вэ?",
+      "choices": [
+        "$P(t) = 12{,}000(1.03)^{t}$",
+        "$P(t) = 12{,}000(0.03)^{t}$",
+        "$P(t) = 12{,}000(1.3)^{t}$",
+        "$P(t) = 12{,}000 + 0.03t$"
+      ],
+      "answer": 0,
+      "explain": "Жил бүр $3\\%$ өсөх нь өмнөх оныхыг $1 + 0.03 = 1.03$-аар үржүүлэх юм. Тэгэхээр $P(t) = 12{,}000(1.03)^{t}$.",
+      "hint": "Хувиар өсөх нь экспоненциал: $a(1 + r)^t$.",
+      "why": {
+        "1": "$0.03$-аар үржүүлбэл хүн ам огцом буурна. Өсөлтөд $1 + r$.",
+        "2": "$3\\% = 0.03$, $0.3$ биш."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-15",
+      "topicId": 11,
+      "domain": "alg",
+      "skill": "Linear equations in one variable",
+      "difficulty": 2,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "A phone plan costs \\$$25$ per month plus \\$$0.10$ for each text message sent. Last month, Dana's bill was \\$$38.50$. How many text messages did Dana send last month?",
+      "mn": "Утасны багц сард \\$$25$, илгээсэн мессеж бүрт \\$$0.10$ нэмэгддэг. Өнгөрсөн сард Данагийн төлбөр \\$$38.50$ байв. Дана хэдэн мессеж илгээсэн бэ?",
+      "answer": ["135"],
+      "explain": "$25 + 0.10m = 38.50$. $0.10m = 13.50$, $m = 135$.",
+      "hint": "Тогтмол төлбөрийг эхлээд хас.",
+      "verify": {
+        "value": "(38.5-25)/0.1"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-16",
+      "topicId": 16,
+      "domain": "adv",
+      "skill": "Nonlinear functions",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "The function $f$ is defined by $f(x) = x^{2} - 6x + 5$. What is the minimum value of $f(x)$?",
+      "mn": "$f(x) = x^{2} - 6x + 5$. $f(x)$-ийн хамгийн бага утга хэд вэ?",
+      "choices": ["$-4$", "$-1$", "$3$", "$5$"],
+      "answer": 0,
+      "explain": "Оройн $x = -\\frac{b}{2a} = \\frac{6}{2} = 3$. $f(3) = 9 - 18 + 5 = -4$. Парабол дээшээ нээгдэх тул энэ нь хамгийн бага утга.",
+      "hint": "Хамгийн бага утга нь оройн $y$ координат.",
+      "why": {
+        "2": "$3$ бол оройн $x$ координат; асуулт $y$-ийг асууж байна.",
+        "3": "$5$ бол $y$ тэнхлэгийг огтлох цэг."
+      },
+      "verify": {
+        "value": "3^2-6*3+5"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-17",
+      "topicId": 6,
+      "domain": "alg",
+      "skill": "Linear equations in two variables",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "In the $xy$-plane, line $k$ has the equation $3x - 4y = 12$. Line $j$ is perpendicular to line $k$ and passes through the point $(6, 1)$. What is the $y$-coordinate of the $y$-intercept of line $j$?",
+      "mn": "$xy$ хавтгайд $k$ шулууны тэгшитгэл $3x - 4y = 12$. $j$ шулуун $k$-д перпендикуляр бөгөөд $(6, 1)$ цэгийг дайрна. $j$ шулууны $y$ тэнхлэгийг огтлох цэгийн $y$ координат хэд вэ?",
+      "answer": ["9"],
+      "explain": "$k$: $y = \\frac{3}{4}x - 3$, налалт $\\frac{3}{4}$. Перпендикуляр налалт $-\\frac{4}{3}$. $j$: $y - 1 = -\\frac{4}{3}(x - 6)$, тэгэхээр $y = -\\frac{4}{3}x + 8 + 1 = -\\frac{4}{3}x + 9$.",
+      "hint": "Перпендикуляр шулуунуудын налалтын үржвэр $-1$.",
+      "verify": {
+        "value": "1+(4/3)*6"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-18",
+      "topicId": 4,
+      "domain": "adv",
+      "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "$y = x^{2} - 3x + 2$\n$y = x + 7$\nThe given system of equations has two solutions, $(x_1, y_1)$ and $(x_2, y_2)$. What is the value of $x_1 + x_2$?",
+      "mn": "$y = x^{2} - 3x + 2$\n$y = x + 7$\nӨгөгдсөн систем $(x_1, y_1)$ ба $(x_2, y_2)$ гэсэн хоёр шийдтэй. $x_1 + x_2$ хэд вэ?",
+      "answer": ["4"],
+      "explain": "Тэнцүүлбэл $x^2 - 3x + 2 = x + 7$, өөрөөр хэлбэл $x^2 - 4x - 5 = 0$, $(x - 5)(x + 1) = 0$. $x_1 + x_2 = 5 + (-1) = 4$. (Виетийн теоремоор: $-\\frac{b}{a} = 4$.)",
+      "hint": "Хоёр $y$-ийг тэнцүүлээд квадрат тэгшитгэл гарга.",
+      "verify": {
+        "value": "5+(-1)"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-19",
+      "topicId": 25,
+      "domain": "psda",
+      "skill": "One-variable data: distributions and measures of center and spread",
+      "difficulty": 3,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "A data set consists of the $7$ values $4$, $8$, $8$, $10$, $12$, $15$, and $20$. If the value $20$ is replaced with $41$, which of the following statements is true?",
+      "mn": "Өгөгдлийн олонлог $4$, $8$, $8$, $10$, $12$, $15$, $20$ гэсэн $7$ утгаас бүрдэнэ. $20$-ийг $41$-ээр солибол аль өгүүлбэр үнэн бэ?",
+      "choices": [
+        "The mean increases, and the median stays the same.",
+        "The median increases, and the mean stays the same.",
+        "Both the mean and the median increase.",
+        "Neither the mean nor the median changes."
+      ],
+      "answer": 0,
+      "explain": "Медиан бол эрэмбэлсэн утгуудын дунд (4 дэх) утга $10$; хамгийн их утга өөрчлөгдөхөд дунд утга хэвээр. Нийлбэр $21$-ээр өсөх тул дундаж $3$-аар өснө.",
+      "hint": "Медианд зөвхөн дунд байрлалын утга нөлөөлнө.",
+      "why": {
+        "2": "Хамгийн их утга өсөхөд медиан (дунд утга) өөрчлөгдөхгүй."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-20",
+      "topicId": 19,
+      "domain": "geo",
+      "skill": "Circles",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "A circle in the $xy$-plane has the equation $x^{2} + y^{2} - 10x + 4y - 7 = 0$. What is the radius of the circle?",
+      "mn": "$xy$ хавтгай дээрх тойргийн тэгшитгэл $x^{2} + y^{2} - 10x + 4y - 7 = 0$. Тойргийн радиус хэд вэ?",
+      "answer": ["6"],
+      "explain": "Бүтэн квадрат болгоно: $(x^2 - 10x + 25) + (y^2 + 4y + 4) = 7 + 25 + 4$, тэгэхээр $(x - 5)^2 + (y + 2)^2 = 36$. Радиус $\\sqrt{36} = 6$.",
+      "hint": "$x$ ба $y$ тус бүрийг бүтэн квадрат болго.",
+      "verify": {
+        "value": "sqrt(7+25+4)"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-21",
+      "topicId": 13,
+      "domain": "alg",
+      "skill": "Systems of two linear equations in two variables",
+      "difficulty": 3,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "$4x + ky = 10$\n$6x + 9y = 15$\nIn the given system of equations, $k$ is a constant. For what value of $k$ does the system have infinitely many solutions?",
+      "mn": "$4x + ky = 10$\n$6x + 9y = 15$\nӨгөгдсөн системд $k$ тогтмол. $k$-ийн ямар утгад систем төгсгөлгүй олон шийдтэй вэ?",
+      "choices": ["$4$", "$6$", "$9$", "$\\frac{27}{2}$"],
+      "answer": 1,
+      "explain": "Хоёр дахь тэгшитгэлийг $\\frac{2}{3}$-аар үржүүлбэл $4x + 6y = 10$. Хоёр тэгшитгэл ижил байх ёстой тул $k = 6$.",
+      "hint": "Төгсгөлгүй олон шийдтэй бол хоёр тэгшитгэл нэг шулууныг илэрхийлнэ.",
+      "why": {
+        "2": "$9$ үед $x$-ийн коэффициентүүдийн харьцаа таарахгүй."
+      },
+      "verify": {
+        "value": "9*2/3"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-m1-22",
+      "topicId": 2,
+      "domain": "adv",
+      "skill": "Equivalent expressions",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "The expression $\\frac{4}{x - 3} + \\frac{2}{x + 3}$ is equivalent to $\\frac{ax + b}{x^{2} - 9}$, where $a$ and $b$ are constants and $x \\neq 3$, $x \\neq -3$. What is the value of $a + b$?",
+      "mn": "$\\frac{4}{x - 3} + \\frac{2}{x + 3}$ илэрхийлэл $\\frac{ax + b}{x^{2} - 9}$-тэй тэнцүү ($a$, $b$ тогтмол, $x \\neq \\pm 3$). $a + b$ хэд вэ?",
+      "answer": ["12"],
+      "explain": "Ерөнхий хуваарь $(x - 3)(x + 3) = x^2 - 9$. Хүртвэр: $4(x + 3) + 2(x - 3) = 4x + 12 + 2x - 6 = 6x + 6$. $a = 6$, $b = 6$, $a + b = 12$.",
+      "hint": "Бутархай бүрийг $x^2 - 9$ хуваарьтай болго.",
+      "verify": {
+        "value": "6+6"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    }
+  ],
+  "hard": [
+    {
+      "id": "rmpt1-h-01",
+      "topicId": 3,
+      "domain": "alg",
+      "skill": "Linear equations in one variable",
+      "difficulty": 1,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "If $\\frac{2}{3}x = 14$, what is the value of $x$?",
+      "mn": "Хэрэв $\\frac{2}{3}x = 14$ бол $x$ хэд вэ?",
+      "answer": ["21"],
+      "explain": "Хоёр талыг $\\frac{3}{2}$-оор үржүүлбэл $x = 14 \\cdot \\frac{3}{2} = 21$.",
+      "hint": "$\\frac{2}{3}$-ийн урвуу тоогоор үржүүл.",
+      "verify": {
+        "sub": {
+          "var": "x",
+          "eq": "(2/3)x = 14"
+        }
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-02",
+      "topicId": 1,
+      "domain": "adv",
+      "skill": "Equivalent expressions",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "Which expression is equivalent to $\\sqrt{50}$?",
+      "mn": "$\\sqrt{50}$-тэй тэнцүү илэрхийлэл аль вэ?",
+      "choices": ["$5\\sqrt{2}$", "$2\\sqrt{5}$", "$25\\sqrt{2}$", "$10\\sqrt{5}$"],
+      "answer": 0,
+      "explain": "$50 = 25 \\cdot 2$ тул $\\sqrt{50} = \\sqrt{25}\\sqrt{2} = 5\\sqrt{2}$.",
+      "hint": "$50$-ийг бүтэн квадрат үржигдэхүүнтэй болгож задал.",
+      "verify": {
+        "value": "sqrt(50)"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-03",
+      "topicId": 7,
+      "domain": "alg",
+      "skill": "Linear functions",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "The function $h$ is linear. If $h(2) = 11$ and $h(6) = 23$, which equation defines $h$?",
+      "mn": "$h$ шугаман функц. $h(2) = 11$, $h(6) = 23$ бол $h$-ийг аль тэгшитгэл тодорхойлох вэ?",
+      "choices": ["$h(x) = 3x + 5$", "$h(x) = 3x + 11$", "$h(x) = 4x + 3$", "$h(x) = 12x - 13$"],
+      "answer": 0,
+      "explain": "Налалт $\\frac{23 - 11}{6 - 2} = 3$. $h(x) = 3x + b$ ба $h(2) = 6 + b = 11$ тул $b = 5$. $h(x) = 3x + 5$.",
+      "hint": "Эхлээд хоёр цэгээр налалтыг ол.",
+      "why": {
+        "2": "$h(2) = 11$ таарч байгаа ч $h(6) = 27 \\neq 23$."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-04",
+      "topicId": 12,
+      "domain": "adv",
+      "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+      "difficulty": 2,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "What is the positive solution to the equation $2x^{2} - 5x - 12 = 0$?",
+      "mn": "$2x^{2} - 5x - 12 = 0$ тэгшитгэлийн эерэг шийд хэд вэ?",
+      "answer": ["4"],
+      "explain": "Үржигдэхүүнд задалбал $(2x + 3)(x - 4) = 0$. Шийдүүд $x = -\\frac{3}{2}$ ба $x = 4$; эерэг нь $4$.",
+      "hint": "$2 \\cdot (-12) = -24$; нийлбэр нь $-5$ болох хоёр тоо: $-8$ ба $3$.",
+      "verify": {
+        "sub": {
+          "var": "x",
+          "eq": "2x^2 - 5x - 12 = 0"
+        }
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-05",
+      "topicId": 24,
+      "domain": "psda",
+      "skill": "Probability and conditional probability",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "A survey asked $200$ students whether they prefer math or science. The results are shown in the table.\n$\\begin{array}{|l|c|c|c|}\\hline & \\text{Math} & \\text{Science} & \\text{Total} \\\\ \\hline \\text{Grade 10} & 45 & 55 & 100 \\\\ \\hline \\text{Grade 11} & 60 & 40 & 100 \\\\ \\hline \\text{Total} & 105 & 95 & 200 \\\\ \\hline \\end{array}$\nIf one of the students who prefer math is selected at random, what is the probability that the student is in grade 11?",
+      "mn": "$200$ сурагчаас математик эсвэл шинжлэх ухааны алийг илүүд үздэгийг асуужээ. Үр дүн хүснэгтэд.\n$\\begin{array}{|l|c|c|c|}\\hline & \\text{Math} & \\text{Science} & \\text{Total} \\\\ \\hline \\text{Grade 10} & 45 & 55 & 100 \\\\ \\hline \\text{Grade 11} & 60 & 40 & 100 \\\\ \\hline \\text{Total} & 105 & 95 & 200 \\\\ \\hline \\end{array}$\nМатематикийг илүүд үздэг сурагчдаас санамсаргүй нэгийг сонгоход 11-р ангийнх байх магадлал хэд вэ?",
+      "choices": ["$\\frac{4}{7}$", "$\\frac{3}{10}$", "$\\frac{3}{5}$", "$\\frac{2}{5}$"],
+      "answer": 0,
+      "explain": "Математикийг илүүд үздэг нийт $105$, үүнээс 11-р анги $60$. $\\frac{60}{105} = \\frac{4}{7}$.",
+      "hint": "Нөхцөлт магадлал: хуваарь нь зөвхөн «math» баганын нийт.",
+      "why": {
+        "1": "$\\frac{60}{200}$: бүх сурагчдад хуваасан. Зөвхөн math сонгосон $105$-д хуваана.",
+        "2": "$\\frac{60}{100}$: 11-р ангийн нийтэд хуваасан."
+      },
+      "verify": {
+        "value": "60/105"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-06",
+      "topicId": 22,
+      "domain": "geo",
+      "skill": "Area and volume",
+      "difficulty": 2,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "A right circular cylinder has a radius of $3$ inches and a volume of $72\\pi$ cubic inches. What is the height, in inches, of the cylinder?",
+      "mn": "Цилиндрийн радиус $3$ инч, эзэлхүүн $72\\pi$ куб инч. Цилиндрийн өндөр хэдэн инч вэ?",
+      "answer": ["8"],
+      "explain": "$V = \\pi r^2 h \\Rightarrow 72\\pi = \\pi \\cdot 9 \\cdot h \\Rightarrow h = 8$.",
+      "hint": "$V = \\pi r^{2} h$.",
+      "verify": {
+        "value": "72/9"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-07",
+      "topicId": 14,
+      "domain": "alg",
+      "skill": "Linear inequalities in one or two variables",
+      "difficulty": 2,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "A delivery truck can carry at most $2{,}500$ pounds. The driver weighs $180$ pounds, and each box weighs $40$ pounds. What is the maximum number of boxes the truck can carry along with the driver?",
+      "mn": "Хүргэлтийн машин дээд тал нь $2{,}500$ фунт ачна. Жолооч $180$ фунт, хайрцаг бүр $40$ фунт. Жолоочтой хамт хамгийн ихдээ хэдэн хайрцаг ачих вэ?",
+      "answer": ["58"],
+      "explain": "$180 + 40b \\le 2{,}500 \\Rightarrow 40b \\le 2{,}320 \\Rightarrow b \\le 58$. Хамгийн их нь $58$.",
+      "hint": "Тэнцэтгэл биш зохио: жолооч + хайрцгууд $\\le$ даац.",
+      "verify": {
+        "value": "(2500-180)/40"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-08",
+      "topicId": 15,
+      "domain": "adv",
+      "skill": "Nonlinear functions",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "The point $(1, 4)$ lies on the graph of $y = f(x)$ in the $xy$-plane. The function $g$ is defined by $g(x) = f(x - 3) + 2$. Which point must lie on the graph of $y = g(x)$?",
+      "mn": "$(1, 4)$ цэг $y = f(x)$-ийн график дээр оршино. $g(x) = f(x - 3) + 2$. Аль цэг $y = g(x)$-ийн график дээр заавал оршох вэ?",
+      "choices": ["$(4, 6)$", "$(-2, 6)$", "$(4, 2)$", "$(-2, 2)$"],
+      "answer": 0,
+      "explain": "$f(x - 3)$ нь графикийг баруун тийш $3$, $+2$ нь дээш $2$ шилжүүлнэ: $(1 + 3, 4 + 2) = (4, 6)$. Шалгах: $g(4) = f(1) + 2 = 6$.",
+      "hint": "Хаалт доторх $-3$ нь баруун тийш шилжүүлдэг.",
+      "why": {
+        "1": "$f(x - 3)$ нь **баруун** тийш шилжүүлнэ, зүүн биш."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-09",
+      "topicId": 13,
+      "domain": "alg",
+      "skill": "Systems of two linear equations in two variables",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "At a school fair, adult tickets cost \\$$8$ each and student tickets cost \\$$5$ each. A total of $120$ tickets were sold for \\$$750$. How many adult tickets were sold?",
+      "mn": "Сургуулийн үзэсгэлэнд насанд хүрэгчийн тасалбар \\$$8$, сурагчийнх \\$$5$. Нийт $120$ тасалбар \\$$750$-аар зарагджээ. Насанд хүрэгчийн хэдэн тасалбар зарагдсан бэ?",
+      "choices": ["$40$", "$50$", "$70$", "$80$"],
+      "answer": 1,
+      "explain": "$a + s = 120$, $8a + 5s = 750$. $s = 120 - a$-г орлуулбал $8a + 600 - 5a = 750$, $3a = 150$, $a = 50$.",
+      "hint": "Хоёр тэгшитгэлтэй систем зохио.",
+      "why": {
+        "2": "$70$ бол сурагчийн тасалбарын тоо."
+      },
+      "verify": {
+        "value": "(750-5*120)/3"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-10",
+      "topicId": 5,
+      "domain": "adv",
+      "skill": "Nonlinear functions",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "The function $f$ is defined by $f(x) = \\frac{x + 5}{x - 1}$. For what value of $x$ is $f(x) = 3$?",
+      "mn": "$f(x) = \\frac{x + 5}{x - 1}$. $x$-ийн ямар утгад $f(x) = 3$ байх вэ?",
+      "choices": ["$2$", "$4$", "$-4$", "$8$"],
+      "answer": 1,
+      "explain": "$\\frac{x + 5}{x - 1} = 3 \\Rightarrow x + 5 = 3x - 3 \\Rightarrow 8 = 2x \\Rightarrow x = 4$. Шалгах: $\\frac{9}{3} = 3$.",
+      "hint": "Хоёр талыг $(x - 1)$-ээр үржүүл.",
+      "verify": {
+        "sub": {
+          "var": "x",
+          "eq": "(x+5)/(x-1) = 3"
+        }
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-11",
+      "topicId": 6,
+      "domain": "alg",
+      "skill": "Linear equations in two variables",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "A line in the $xy$-plane passes through the points $(-2, 5)$ and $(4, -7)$. The line also passes through the point $(a, 0)$. What is the value of $a$?",
+      "mn": "$xy$ хавтгай дээрх шулуун $(-2, 5)$ ба $(4, -7)$ цэгүүдийг дайрна. Мөн $(a, 0)$ цэгийг дайрна. $a$ хэд вэ?",
+      "answer": ["1/2", ".5", "0.5"],
+      "explain": "Налалт $\\frac{-7 - 5}{4 - (-2)} = -2$. $y - 5 = -2(x + 2) \\Rightarrow y = -2x + 1$. $y = 0$ үед $x = \\frac{1}{2}$.",
+      "hint": "Шулууны тэгшитгэлийг гаргаад $y = 0$ гэж тавь.",
+      "verify": {
+        "value": "1/2"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-12",
+      "topicId": 16,
+      "domain": "adv",
+      "skill": "Nonlinear functions",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "The height $h$, in feet, of a ball $t$ seconds after it is thrown upward is given by $h(t) = -16t^{2} + 64t + 5$. What is the maximum height, in feet, that the ball reaches?",
+      "mn": "Дээш шидсэн бөмбөгний $t$ секундын дараах өндөр (фут) $h(t) = -16t^{2} + 64t + 5$. Бөмбөг хамгийн ихдээ хэдэн фут өндөрт хүрэх вэ?",
+      "answer": ["69"],
+      "explain": "Орой $t = -\\frac{64}{2(-16)} = 2$. $h(2) = -64 + 128 + 5 = 69$.",
+      "hint": "Хамгийн их өндөр нь оройн утга.",
+      "verify": {
+        "value": "-16*2^2+64*2+5"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-13",
+      "topicId": 26,
+      "domain": "psda",
+      "skill": "Inference from sample statistics and margin of error",
+      "difficulty": 3,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "A researcher surveyed a random sample of $400$ registered voters in a city. Of those surveyed, $56\\%$ said they support a new park proposal. The margin of error for this estimate is $4$ percentage points. Which of the following is the most appropriate conclusion?",
+      "mn": "Судлаач хотын $400$ сонгогчийг санамсаргүйгээр сонгож судалжээ. Тэдний $56\\%$ нь шинэ цэцэрлэгт хүрээлэнг дэмжсэн. Алдааны хязгаар $4$ хувийн пункт. Аль дүгнэлт хамгийн зөв бэ?",
+      "choices": [
+        "It is plausible that between $52\\%$ and $60\\%$ of all registered voters in the city support the proposal.",
+        "Exactly $56\\%$ of all registered voters in the city support the proposal.",
+        "Between $52\\%$ and $60\\%$ of the $400$ surveyed voters support the proposal.",
+        "The proposal will definitely pass because more than $50\\%$ of voters support it."
+      ],
+      "answer": 0,
+      "explain": "Алдааны хязгаар нь **бүх** сонгогчдын бодит хувь $56\\% \\pm 4\\%$, өөрөөр хэлбэл $52\\%$–$60\\%$ хооронд байх нь үндэслэлтэй гэж хэлнэ. Яг тодорхой хувь эсвэл баталгаа гэж хэлэхгүй.",
+      "hint": "Түүврээс бүх хүн ам руу дүгнэнэ, гэхдээ «магадгүй» хүрээгээр.",
+      "why": {
+        "2": "Түүврийн хувь яг $56\\%$ — мэдэгдэж байгаа. Хүрээ нь **бүх** сонгогчдод хамаарна."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-14",
+      "topicId": 18,
+      "domain": "geo",
+      "skill": "Lines, angles, and triangles",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "Triangle $ABC$ is similar to triangle $DEF$, where $A$ corresponds to $D$ and $B$ corresponds to $E$. The length of $\\overline{AB}$ is $6$, the length of $\\overline{DE}$ is $15$, and the area of triangle $ABC$ is $20$. What is the area of triangle $DEF$?",
+      "mn": "$ABC$ гурвалжин $DEF$-тэй төсөөтэй ($A \\leftrightarrow D$, $B \\leftrightarrow E$). $AB = 6$, $DE = 15$, $ABC$-ийн талбай $20$. $DEF$-ийн талбай хэд вэ?",
+      "answer": ["125"],
+      "explain": "Төсөөний коэффициент $\\frac{15}{6} = \\frac{5}{2}$. Талбай коэффициентийн квадратаар өөрчлөгдөнө: $20 \\cdot \\left(\\frac{5}{2}\\right)^2 = 20 \\cdot \\frac{25}{4} = 125$.",
+      "hint": "Урт $k$ дахин бол талбай $k^{2}$ дахин.",
+      "verify": {
+        "value": "20*(15/6)^2"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-15",
+      "topicId": 3,
+      "domain": "alg",
+      "skill": "Linear equations in one variable",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "In the equation $4(3x - 2) - 5 = 2(6x + k)$, $k$ is a constant. For what value of $k$ does the equation have infinitely many solutions?",
+      "mn": "$4(3x - 2) - 5 = 2(6x + k)$ тэгшитгэлд $k$ тогтмол. $k$-ийн ямар утгад тэгшитгэл төгсгөлгүй олон шийдтэй вэ?",
+      "answer": ["-13/2", "-6.5"],
+      "explain": "Зүүн тал $12x - 13$, баруун тал $12x + 2k$. Төгсгөлгүй олон шийдтэй байхын тулд хоёр тал адилхан байх ёстой: $2k = -13$, $k = -\\frac{13}{2}$.",
+      "hint": "$x$-ийн коэффициентүүд аль хэдийн тэнцүү байна; тогтмол гишүүдийг тэнцүүл.",
+      "verify": {
+        "value": "-13/2"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-16",
+      "topicId": 12,
+      "domain": "adv",
+      "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "In the equation $x^{2} + bx + 16 = 0$, $b$ is a positive constant. If the equation has exactly one real solution, what is the value of $b$?",
+      "mn": "$x^{2} + bx + 16 = 0$ тэгшитгэлд $b$ эерэг тогтмол. Тэгшитгэл яг нэг бодит шийдтэй бол $b$ хэд вэ?",
+      "answer": ["8"],
+      "explain": "Яг нэг шийдтэй бол дискриминант $b^2 - 4 \\cdot 1 \\cdot 16 = 0$, $b^2 = 64$, $b = 8$ (эерэг).",
+      "hint": "Нэг шийд $\\Leftrightarrow b^{2} - 4ac = 0$.",
+      "verify": {
+        "value": "sqrt(64)"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-17",
+      "topicId": 8,
+      "domain": "psda",
+      "skill": "Percentages",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "The price of a jacket was increased by $20\\%$. One week later, the new price was decreased by $25\\%$. The final price of the jacket is what percent of its original price?",
+      "mn": "Хүрэмний үнийг $20\\%$ нэмжээ. Долоо хоногийн дараа шинэ үнийг $25\\%$ хямдруулсан. Эцсийн үнэ анхны үнийн хэдэн хувь вэ?",
+      "answer": ["90"],
+      "explain": "Анхны үнэ $p$. $p \\cdot 1.20 \\cdot 0.75 = 0.9p$. Эцсийн үнэ анхныхаа $90\\%$.",
+      "hint": "Хувийн өөрчлөлтүүдийг үржвэрээр нийлүүл: $1.2 \\cdot 0.75$.",
+      "verify": {
+        "value": "1.2*0.75*100"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-18",
+      "topicId": 20,
+      "domain": "geo",
+      "skill": "Right triangles and trigonometry",
+      "difficulty": 3,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "An arc of a circle with radius $9$ has a length of $6\\pi$. What is the measure, in radians, of the central angle that intercepts this arc?",
+      "mn": "Радиус нь $9$ тойргийн нумын урт $6\\pi$. Энэ нумд тулсан төв өнцөг хэдэн радиан вэ?",
+      "choices": ["$\\frac{2\\pi}{3}$", "$\\frac{3\\pi}{2}$", "$\\frac{\\pi}{3}$", "$\\frac{\\pi}{6}$"],
+      "answer": 0,
+      "explain": "Нумын урт $s = r\\theta$. $\\theta = \\frac{6\\pi}{9} = \\frac{2\\pi}{3}$.",
+      "hint": "$s = r\\theta$ (радианаар).",
+      "why": {
+        "1": "$\\frac{r}{s}$ гэж урвуугаар хуваажээ."
+      },
+      "verify": {
+        "value": "6pi/9"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-19",
+      "topicId": 14,
+      "domain": "alg",
+      "skill": "Linear inequalities in one or two variables",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "$y \\ge 2x - 3$\n$y \\le -x + 6$\nThe point $(x, y)$ satisfies the given system of inequalities. What is the greatest possible value of $x$?",
+      "mn": "$y \\ge 2x - 3$\n$y \\le -x + 6$\n$(x, y)$ цэг өгөгдсөн тэнцэтгэл бишийн системийг хангана. $x$-ийн хамгийн их боломжит утга хэд вэ?",
+      "answer": ["3"],
+      "explain": "$2x - 3 \\le y \\le -x + 6$ тул $2x - 3 \\le -x + 6$ байх ёстой: $3x \\le 9$, $x \\le 3$. $x = 3$ үед $y = 3$ хоёуланг нь хангана.",
+      "hint": "$y$-ийг хоёр шулууны хооронд «хавчуулж» үз.",
+      "verify": {
+        "value": "9/3"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-20",
+      "topicId": 1,
+      "domain": "adv",
+      "skill": "Equivalent expressions",
+      "difficulty": 3,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "If $\\frac{x^{a}}{x^{2}} = x^{5}\\sqrt{x}$ for all positive values of $x$, what is the value of $a$?",
+      "mn": "Бүх эерэг $x$-ийн хувьд $\\frac{x^{a}}{x^{2}} = x^{5}\\sqrt{x}$ бол $a$ хэд вэ?",
+      "choices": ["$\\frac{15}{2}$", "$\\frac{11}{2}$", "$7$", "$\\frac{7}{2}$"],
+      "answer": 0,
+      "explain": "Зүүн тал $x^{a - 2}$. Баруун тал $x^{5} \\cdot x^{\\frac{1}{2}} = x^{\\frac{11}{2}}$. $a - 2 = \\frac{11}{2} \\Rightarrow a = \\frac{15}{2}$.",
+      "hint": "$\\sqrt{x} = x^{\\frac{1}{2}}$.",
+      "why": {
+        "1": "$\\frac{11}{2}$ бол $a - 2$; $2$-ыг нэмэхээ мартжээ."
+      },
+      "verify": {
+        "value": "2+5+1/2"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-21",
+      "topicId": 13,
+      "domain": "alg",
+      "skill": "Systems of two linear equations in two variables",
+      "difficulty": 3,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "$ax + 3y = 7$\n$2x + 6y = 5$\nIn the given system of equations, $a$ is a constant. If the system has no solution, what is the value of $a$?",
+      "mn": "$ax + 3y = 7$\n$2x + 6y = 5$\nӨгөгдсөн системд $a$ тогтмол. Систем шийдгүй бол $a$ хэд вэ?",
+      "choices": ["$1$", "$2$", "$3$", "$6$"],
+      "answer": 0,
+      "explain": "Шийдгүй бол шулуунууд параллель: налалт тэнцүү, огтлолцох цэг ялгаатай. $\\frac{a}{2} = \\frac{3}{6} \\Rightarrow a = 1$. Тэгвэл $x + 3y = 7$ ба $x + 3y = 2.5$ — параллель.",
+      "hint": "Шийдгүй систем = параллель шулуунууд.",
+      "why": {
+        "1": "$a = 2$ үед налалт $-\\frac{2}{3}$ ба $-\\frac{1}{3}$ — ялгаатай тул нэг шийдтэй."
+      },
+      "verify": {
+        "value": "2*3/6"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-h-22",
+      "topicId": 15,
+      "domain": "adv",
+      "skill": "Nonlinear functions",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "The graph of $y = x^{2} - 4x$ in the $xy$-plane is shifted $3$ units to the right and $2$ units down. The resulting graph has the equation $y = x^{2} + bx + c$, where $b$ and $c$ are constants. What is the value of $c$?",
+      "mn": "$y = x^{2} - 4x$-ийн графикийг $3$ нэгж баруун тийш, $2$ нэгж доош шилжүүлжээ. Үүссэн график $y = x^{2} + bx + c$. $c$ хэд вэ?",
+      "answer": ["19"],
+      "explain": "Шинэ функц: $(x - 3)^2 - 4(x - 3) - 2 = x^2 - 6x + 9 - 4x + 12 - 2 = x^2 - 10x + 19$. $c = 19$.",
+      "hint": "$x$-ийн оронд $x - 3$ тавиад, эцэст нь $2$ хас.",
+      "verify": {
+        "value": "9+12-2"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    }
+  ],
+  "easy": [
+    {
+      "id": "rmpt1-e-01",
+      "topicId": 3,
+      "domain": "alg",
+      "skill": "Linear equations in one variable",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "If $x + 15 = 42$, what is the value of $x$?",
+      "mn": "Хэрэв $x + 15 = 42$ бол $x$ хэд вэ?",
+      "choices": ["$27$", "$17$", "$37$", "$57$"],
+      "answer": 0,
+      "explain": "Хоёр талаас $15$ хасвал $x = 27$.",
+      "hint": "$15$-ыг нөгөө тал руу шилжүүл.",
+      "why": {
+        "3": "$15$-ыг хасах ёстой байхад нэмсэн."
+      },
+      "verify": {
+        "sub": {
+          "var": "x",
+          "eq": "x + 15 = 42"
+        }
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-02",
+      "topicId": 2,
+      "domain": "adv",
+      "skill": "Equivalent expressions",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "Which expression is equivalent to $3(x^{2} + 2x) - x^{2}$?",
+      "mn": "$3(x^{2} + 2x) - x^{2}$-тэй тэнцүү илэрхийлэл аль вэ?",
+      "choices": ["$2x^{2} + 6x$", "$2x^{2} + 2x$", "$4x^{2} + 6x$", "$3x^{2} + 5x$"],
+      "answer": 0,
+      "explain": "$3x^2 + 6x - x^2 = 2x^2 + 6x$.",
+      "hint": "Хаалтаа задлаад ижил гишүүдийг нэгтгэ.",
+      "why": {
+        "1": "$3$-ыг $2x$-д үржүүлэхээ мартжээ."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-03",
+      "topicId": 8,
+      "domain": "psda",
+      "skill": "Percentages",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "A shirt that regularly costs \\$$40$ is on sale for $25\\%$ off. What is the sale price of the shirt?",
+      "mn": "Ердийн үнэ нь \\$$40$ цамц $25\\%$ хямдарчээ. Хямдралтай үнэ хэд вэ?",
+      "choices": ["\\$$10$", "\\$$15$", "\\$$30$", "\\$$35$"],
+      "answer": 2,
+      "explain": "Хямдрал $0.25 \\cdot 40 = 10$. Хямдралтай үнэ $40 - 10 = 30$ доллар.",
+      "hint": "Хямдралын хэмжээг олоод анхны үнээс хас.",
+      "why": {
+        "0": "\\$$10$ бол хямдралын хэмжээ, үнэ биш."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-04",
+      "topicId": 22,
+      "domain": "geo",
+      "skill": "Area and volume",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "A rectangle has a length of $12$ centimeters and a width of $5$ centimeters. What is the perimeter, in centimeters, of the rectangle?",
+      "mn": "Тэгш өнцөгтийн урт $12$ см, өргөн $5$ см. Периметр нь хэдэн см вэ?",
+      "choices": ["$17$", "$34$", "$60$", "$120$"],
+      "answer": 1,
+      "explain": "$P = 2(12 + 5) = 34$.",
+      "hint": "Периметр $= 2(\\text{урт} + \\text{өргөн})$.",
+      "why": {
+        "2": "$60$ бол талбай."
+      },
+      "verify": {
+        "value": "2*(12+5)"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-05",
+      "topicId": 6,
+      "domain": "alg",
+      "skill": "Linear equations in two variables",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "What is the $y$-intercept of the graph of $y = 4x - 9$ in the $xy$-plane?",
+      "mn": "$y = 4x - 9$-ийн график $y$ тэнхлэгийг аль цэгт огтлох вэ?",
+      "choices": ["$(0, -9)$", "$(0, 4)$", "$(-9, 0)$", "$\\left(\\frac{9}{4}, 0\\right)$"],
+      "answer": 0,
+      "explain": "$y$ тэнхлэг дээр $x = 0$: $y = 4 \\cdot 0 - 9 = -9$. Цэг $(0, -9)$.",
+      "hint": "$y = mx + b$ хэлбэрт $b$ нь $y$-огтлол.",
+      "why": {
+        "3": "Энэ нь $x$ тэнхлэгийг огтлох цэг."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-06",
+      "topicId": 5,
+      "domain": "adv",
+      "skill": "Nonlinear functions",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "The function $g$ is defined by $g(x) = 5x + 1$. What is the value of $g(-2)$?",
+      "mn": "$g(x) = 5x + 1$. $g(-2)$ хэд вэ?",
+      "choices": ["$-9$", "$-11$", "$-7$", "$11$"],
+      "answer": 0,
+      "explain": "$g(-2) = 5(-2) + 1 = -10 + 1 = -9$.",
+      "hint": "$x$-ийн оронд $-2$ тавь.",
+      "verify": {
+        "value": "5*(-2)+1"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-07",
+      "topicId": 25,
+      "domain": "psda",
+      "skill": "One-variable data: distributions and measures of center and spread",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "What is the mean of the data set $6$, $9$, $12$, $13$?",
+      "mn": "$6$, $9$, $12$, $13$ өгөгдлийн арифметик дундаж хэд вэ?",
+      "choices": ["$9$", "$10$", "$10.5$", "$12$"],
+      "answer": 1,
+      "explain": "Нийлбэр $6 + 9 + 12 + 13 = 40$, тоо нь $4$. Дундаж $\\frac{40}{4} = 10$.",
+      "hint": "Дундаж $= \\frac{\\text{нийлбэр}}{\\text{тоо}}$.",
+      "why": {
+        "2": "$10.5$ бол медиан (дунд хоёр утгын дундаж)."
+      },
+      "verify": {
+        "value": "(6+9+12+13)/4"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-08",
+      "topicId": 18,
+      "domain": "geo",
+      "skill": "Lines, angles, and triangles",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "Two angles of a triangle measure $50^\\circ$ and $75^\\circ$. What is the measure of the third angle?",
+      "mn": "Гурвалжны хоёр өнцөг $50^\\circ$ ба $75^\\circ$. Гурав дахь өнцөг хэдэн градус вэ?",
+      "choices": ["$25^\\circ$", "$55^\\circ$", "$65^\\circ$", "$125^\\circ$"],
+      "answer": 1,
+      "explain": "Гурвалжны өнцгүүдийн нийлбэр $180^\\circ$: $180^\\circ - 50^\\circ - 75^\\circ = 55^\\circ$.",
+      "hint": "Гурвалжны өнцгүүдийн нийлбэр $180^\\circ$.",
+      "why": {
+        "3": "$125^\\circ$ бол өгөгдсөн хоёр өнцгийн нийлбэр."
+      },
+      "verify": {
+        "value": "180-50-75"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-09",
+      "topicId": 11,
+      "domain": "alg",
+      "skill": "Linear equations in one variable",
+      "difficulty": 1,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "Maya reads $30$ pages each day. At this rate, how many days will it take her to read a $450$-page book?",
+      "mn": "Маяа өдөр бүр $30$ хуудас уншдаг. Энэ хурдаар $450$ хуудастай номыг хэдэн өдөрт уншиж дуусах вэ?",
+      "answer": ["15"],
+      "explain": "$30d = 450 \\Rightarrow d = 15$.",
+      "hint": "Нийт хуудсыг өдрийн хуудсанд хуваа.",
+      "verify": {
+        "value": "450/30"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-10",
+      "topicId": 12,
+      "domain": "adv",
+      "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+      "difficulty": 1,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "If $x^{2} = 49$ and $x > 0$, what is the value of $x$?",
+      "mn": "Хэрэв $x^{2} = 49$ ба $x > 0$ бол $x$ хэд вэ?",
+      "answer": ["7"],
+      "explain": "$x = \\pm 7$; эерэг нь $7$.",
+      "hint": "Квадрат язгуур гарга.",
+      "verify": {
+        "sub": {
+          "var": "x",
+          "eq": "x^2 = 49"
+        }
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-11",
+      "topicId": 14,
+      "domain": "alg",
+      "skill": "Linear inequalities in one or two variables",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "Which inequality represents the statement “a number $n$ increased by $7$ is at most $20$”?",
+      "mn": "«$n$ тоог $7$-оор нэмэгдүүлэхэд хамгийн ихдээ $20$ байна» гэдгийг аль тэнцэтгэл биш илэрхийлэх вэ?",
+      "choices": ["$n + 7 \\le 20$", "$n + 7 < 20$", "$n + 7 \\ge 20$", "$7n \\le 20$"],
+      "answer": 0,
+      "explain": "«Хамгийн ихдээ» (at most) гэдэг нь $\\le$. $n + 7 \\le 20$.",
+      "hint": "At most $= \\le$, at least $= \\ge$.",
+      "why": {
+        "2": "«At least» бол $\\ge$; «at most» бол $\\le$."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-12",
+      "topicId": 1,
+      "domain": "adv",
+      "skill": "Equivalent expressions",
+      "difficulty": 1,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "Which expression is equivalent to $(x^{2})^{3}$?",
+      "mn": "$(x^{2})^{3}$-тэй тэнцүү илэрхийлэл аль вэ?",
+      "choices": ["$x^{6}$", "$x^{5}$", "$x^{8}$", "$3x^{2}$"],
+      "answer": 0,
+      "explain": "Зэргийн зэрэгт илтгэгчийг үржүүлнэ: $x^{2 \\cdot 3} = x^{6}$.",
+      "hint": "$(a^m)^n = a^{mn}$.",
+      "why": {
+        "1": "Илтгэгчийг нэмжээ; зэргийн зэрэгт **үржүүлнэ**."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-13",
+      "topicId": 13,
+      "domain": "alg",
+      "skill": "Systems of two linear equations in two variables",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "$y = 2x$\n$x + y = 18$\nThe solution to the given system of equations is $(x, y)$. What is the value of $y$?",
+      "mn": "$y = 2x$\n$x + y = 18$\nСистемийн шийд $(x, y)$. $y$ хэд вэ?",
+      "choices": ["$6$", "$9$", "$12$", "$18$"],
+      "answer": 2,
+      "explain": "Орлуулбал $x + 2x = 18$, $x = 6$, $y = 2 \\cdot 6 = 12$.",
+      "hint": "Эхний тэгшитгэлийг хоёр дахьд нь орлуул.",
+      "why": {
+        "0": "$6$ бол $x$-ийн утга."
+      },
+      "verify": {
+        "value": "2*18/3"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-14",
+      "topicId": 9,
+      "domain": "adv",
+      "skill": "Nonlinear functions",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "The function $f$ is defined by $f(x) = 500(2)^{x}$. What is the value of $f(3)$?",
+      "mn": "$f(x) = 500(2)^{x}$. $f(3)$ хэд вэ?",
+      "choices": ["$3{,}000$", "$4{,}000$", "$8{,}000$", "$1{,}000{,}000$"],
+      "answer": 1,
+      "explain": "$2^3 = 8$, $500 \\cdot 8 = 4{,}000$.",
+      "hint": "Эхлээд зэргийг бод, дараа нь $500$-аар үржүүл.",
+      "why": {
+        "0": "$500 \\cdot 2 \\cdot 3$: зэргийг үржвэр гэж үзжээ.",
+        "3": "$(500 \\cdot 2)^3$: зэрэг зөвхөн $2$-т хамаарна."
+      },
+      "verify": {
+        "value": "500*2^3"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-15",
+      "topicId": 10,
+      "domain": "psda",
+      "skill": "Ratios, rates, proportional relationships, and units",
+      "difficulty": 2,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "A car travels $225$ miles in $3.75$ hours at a constant speed. What is the speed of the car, in miles per hour?",
+      "mn": "Машин тогтмол хурдтай $3.75$ цагт $225$ миль явжээ. Хурд нь цагт хэдэн миль вэ?",
+      "answer": ["60"],
+      "explain": "Хурд $= \\frac{225}{3.75} = 60$ миль/цаг.",
+      "hint": "Хурд $=$ зай $/$ хугацаа.",
+      "verify": {
+        "value": "225/3.75"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-16",
+      "topicId": 19,
+      "domain": "geo",
+      "skill": "Circles",
+      "difficulty": 2,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "A circle has a diameter of $14$ units. The area of the circle is $k\\pi$ square units. What is the value of $k$?",
+      "mn": "Тойргийн диаметр $14$ нэгж. Дугуйн талбай $k\\pi$ квадрат нэгж. $k$ хэд вэ?",
+      "answer": ["49"],
+      "explain": "Радиус $\\frac{14}{2} = 7$. Талбай $\\pi r^2 = 49\\pi$, тэгэхээр $k = 49$.",
+      "hint": "Талбайд радиус хэрэгтэй, диаметр биш.",
+      "verify": {
+        "value": "7^2"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-17",
+      "topicId": 7,
+      "domain": "alg",
+      "skill": "Linear functions",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "A tree was $4$ feet tall when it was planted, and it grows $1.5$ feet each year. Which equation gives the height $H$, in feet, of the tree $t$ years after it was planted?",
+      "mn": "Модыг суулгахад $4$ фут өндөр байсан бөгөөд жил бүр $1.5$ фут ургадаг. Суулгаснаас хойш $t$ жилийн дараах өндөр $H$-ийг аль тэгшитгэл өгөх вэ?",
+      "choices": ["$H = 4 + 1.5t$", "$H = 1.5 + 4t$", "$H = 4(1.5)^{t}$", "$H = 5.5t$"],
+      "answer": 0,
+      "explain": "Эхний утга $4$, жил бүр тогтмол $1.5$ нэмэгдэнэ: $H = 4 + 1.5t$.",
+      "hint": "Тогтмол хэмжээгээр өсөх нь шугаман: эхний утга + хурд $\\cdot t$.",
+      "why": {
+        "2": "Энэ нь хувиар (үржвэрээр) өсөх экспоненциал загвар."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-18",
+      "topicId": 16,
+      "domain": "adv",
+      "skill": "Nonlinear functions",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "Which of the following are the $x$-intercepts of the graph of $y = x^{2} - 9$ in the $xy$-plane?",
+      "mn": "$y = x^{2} - 9$-ийн график $x$ тэнхлэгийг аль цэгүүдэд огтлох вэ?",
+      "choices": [
+        "$(-3, 0)$ and $(3, 0)$",
+        "$(0, -9)$ only",
+        "$(-9, 0)$ and $(9, 0)$",
+        "$(0, -3)$ and $(0, 3)$"
+      ],
+      "answer": 0,
+      "explain": "$y = 0$: $x^2 = 9$, $x = \\pm 3$. Цэгүүд $(-3, 0)$ ба $(3, 0)$.",
+      "hint": "$x$-огтлолд $y = 0$.",
+      "why": {
+        "1": "$(0, -9)$ бол $y$-огтлол."
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-19",
+      "topicId": 3,
+      "domain": "alg",
+      "skill": "Linear equations in one variable",
+      "difficulty": 2,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "What value of $x$ satisfies the equation $7(x - 2) = 3x + 10$?",
+      "mn": "$7(x - 2) = 3x + 10$ тэгшитгэлийг хангах $x$ хэд вэ?",
+      "answer": ["6"],
+      "explain": "$7x - 14 = 3x + 10 \\Rightarrow 4x = 24 \\Rightarrow x = 6$.",
+      "hint": "Эхлээд хаалтаа задал.",
+      "verify": {
+        "sub": {
+          "var": "x",
+          "eq": "7(x - 2) = 3x + 10"
+        }
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-20",
+      "topicId": 4,
+      "domain": "adv",
+      "skill": "Nonlinear equations in one variable and systems of equations in two variables",
+      "difficulty": 2,
+      "format": "mcq",
+      "pool": "stop",
+      "prompt": "If $\\sqrt{x + 3} = 5$, what is the value of $x$?",
+      "mn": "Хэрэв $\\sqrt{x + 3} = 5$ бол $x$ хэд вэ?",
+      "choices": ["$2$", "$8$", "$22$", "$28$"],
+      "answer": 2,
+      "explain": "Хоёр талыг квадрат зэрэгт дэвшүүлбэл $x + 3 = 25$, $x = 22$. Шалгах: $\\sqrt{25} = 5$.",
+      "hint": "Язгуурыг арилгахын тулд квадрат зэрэгт дэвшүүл.",
+      "why": {
+        "0": "Квадрат зэрэгт дэвшүүлэхээ мартжээ: $5 - 3$."
+      },
+      "verify": {
+        "sub": {
+          "var": "x",
+          "eq": "sqrt(x + 3) = 5"
+        }
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-21",
+      "topicId": 13,
+      "domain": "alg",
+      "skill": "Systems of two linear equations in two variables",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "A store sells pens for \\$$2$ each and notebooks for \\$$5$ each. Jordan bought a total of $11$ pens and notebooks and paid \\$$37$. How many notebooks did Jordan buy?",
+      "mn": "Дэлгүүрт үзэг \\$$2$, дэвтэр \\$$5$. Жордан нийт $11$ үзэг, дэвтэр авч \\$$37$ төлжээ. Жордан хэдэн дэвтэр авсан бэ?",
+      "answer": ["5"],
+      "explain": "$p + n = 11$, $2p + 5n = 37$. $p = 11 - n$: $22 - 2n + 5n = 37$, $3n = 15$, $n = 5$.",
+      "hint": "Хоёр үл мэдэгдэгчтэй систем зохио.",
+      "verify": {
+        "value": "(37-22)/3"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    },
+    {
+      "id": "rmpt1-e-22",
+      "topicId": 16,
+      "domain": "adv",
+      "skill": "Nonlinear functions",
+      "difficulty": 3,
+      "format": "spr",
+      "pool": "stop",
+      "prompt": "The function $f$ is defined by $f(x) = (x - 5)(x + 1)$. What is the minimum value of $f(x)$?",
+      "mn": "$f(x) = (x - 5)(x + 1)$. $f(x)$-ийн хамгийн бага утга хэд вэ?",
+      "answer": ["-9"],
+      "explain": "Тэгүүд $5$ ба $-1$; орой тэдний дунд $x = \\frac{5 + (-1)}{2} = 2$. $f(2) = (-3)(3) = -9$.",
+      "hint": "Параболын орой хоёр тэгийн яг дунд байрлана.",
+      "verify": {
+        "value": "(2-5)*(2+1)"
+      },
+      "source": "original",
+      "reviewed": false,
+      "author": "suprep-mock",
+      "createdAt": "2026-10-28"
+    }
+  ]
+}

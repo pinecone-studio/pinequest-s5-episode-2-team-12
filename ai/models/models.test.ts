@@ -41,7 +41,7 @@ for (const dir of MODELS) {
       const env = readEnv(await readText(join(dir, 'build.env')));
       const bytes = await Bun.file(join(dir, env.ADAPTER)).arrayBuffer();
       expect(createHash('sha256').update(new Uint8Array(bytes)).digest('hex')).toBe(env.ADAPTER_SHA256);
-    });
+    }, 60_000); // hashing a 60 MB adapter can pass bun's 5 s default on a busy CI runner
 
     test('Modelfile loads the locally built suu.gguf with the Qwen chat template and the chat prompt', async () => {
       const mf = await readText(join(dir, 'Modelfile'));

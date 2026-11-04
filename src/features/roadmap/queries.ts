@@ -1,4 +1,5 @@
 // Section A · roadmap reads. Without Supabase every function returns content/roadmap (demo mode).
+import { currentUser } from '@/lib/session';
 import { getDb } from '@/lib/supabase/server';
 import { getQuestionsDb, getQuestionsTable } from '@/server/db';
 import type { Question } from '@/types';
@@ -9,13 +10,7 @@ import type { ProblemAttempt, RoadmapState } from './types';
 
 /** Signed-in Supabase user id, or null in demo mode / signed out. */
 export async function currentUserId(): Promise<string | null> {
-  const db = await getDb();
-  if (!db) return null;
-  const {
-    data: { user },
-    error,
-  } = await db.auth.getUser();
-  return error || !user ? null : user.id;
+  return (await currentUser())?.id ?? null;
 }
 
 export async function getRoadmap(userId: string): Promise<RoadmapState | null> {

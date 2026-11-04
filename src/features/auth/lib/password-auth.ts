@@ -3,11 +3,11 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { Email, type SignupInput, Username, usernamePattern } from './credentials';
 import { type AuthResult, authFailure } from './errors';
 
+// No confirmation email: the account is created already confirmed, then signed in right away.
 export async function registerPassword(
   db: SupabaseClient,
   admin: SupabaseClient,
   input: SignupInput,
-  redirectTo: string,
 ): Promise<AuthResult> {
   try {
     const { data: existing, error: lookupError } = await admin
@@ -17,16 +17,18 @@ export async function registerPassword(
       .maybeSingle();
     if (lookupError) return { ok: false, reason: 'service_unavailable' };
     if (existing) return { ok: false, reason: 'username_taken' };
-    const { data, error } = await db.auth.signUp({
+    const { error } = await admin.auth.admin.createUser({
       email: input.email,
       password: input.password,
-      options: { data: { username: input.username, name: input.username }, emailRedirectTo: redirectTo },
+      email_confirm: true,
+      user_metadata: { username: input.username, name: input.username },
     });
     if (error) return authFailure(error, 'send');
-    if (!data.user) return { ok: false, reason: 'failed' };
-    // Supabase may hide duplicate accounts with a fake user when email confirmation is enabled.
-    if (data.user.identities?.length === 0) return { ok: false, reason: 'account_exists' };
-    return { ok: true, confirmationRequired: !data.session };
+    const { error: loginError } = await db.auth.signInWithPassword({
+      email: input.email,
+      password: input.password,
+    });
+    return loginError ? authFailure(loginError, 'password') : { ok: true };
   } catch (error) {
     return authFailure(error, 'send');
   }

@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { dayKey, zonedMidnight } from '@/lib/time';
+import { dayKey } from '@/lib/time';
+import { SAT_DATES } from '@/mocks/meta';
 
 export const OnboardingSchema = z
   .object({
@@ -9,7 +10,7 @@ export const OnboardingSchema = z
     target: z.number().int().min(200).max(800).multipleOf(10),
     examDate: z
       .string()
-      .refine((date) => !date || (Number.isFinite(zonedMidnight(date)) && date >= dayKey())),
+      .refine((date) => !date || (SAT_DATES.some(({ d }) => d === date) && date >= dayKey())),
     confidence: z.number().int().min(1).max(5),
     desmos: z.enum(['never', 'little', 'often']),
     studyMinutes: z.union([z.literal(15), z.literal(30), z.literal(45), z.literal(60)]),

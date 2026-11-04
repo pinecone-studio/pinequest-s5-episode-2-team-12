@@ -1,6 +1,8 @@
 // Admin panel reads. Each admin_* RPC (migration 0017) checks is_admin() inside the database, so they run on the
 // signed-in admin's own session; a student calling them gets 'forbidden'. No service-role key is needed.
+import type { XpRow } from '@/features/progress/lib/stats';
 import { getDb } from '@/lib/supabase/server';
+import type { Profile } from '@/types';
 
 export type AdminDay = { day: string; signups: number; active: number };
 
@@ -96,6 +98,69 @@ export const listUsers = (search = '') =>
 
 export const listReports = (openOnly = true) =>
   rpc<AdminReport[]>('admin_reports', { p_open_only: openOnly });
+
+export type AdminUserDetail = {
+  profile: {
+    id: string;
+    email: string | null;
+    anonymous: boolean;
+    email_confirmed: boolean;
+    created_at: string;
+    last_sign_in_at: string | null;
+    username: string | null;
+    name: string;
+    role: 'student' | 'admin';
+    avatar_id: string | null;
+    aimag: string | null;
+    school: string | null;
+    onboarded: boolean;
+    sat_exp: Profile['satExp'] | null;
+    last_math_score: number | null;
+    target: number | null;
+    exam_date: string | null;
+    confidence: number | null;
+    desmos: Profile['desmos'] | null;
+    study_minutes: Profile['studyMinutes'] | null;
+    start: Profile['start'] | null;
+    friend_code: string | null;
+    hide_public: boolean;
+    friends_only: boolean;
+  };
+  xp_rows: XpRow[];
+  freezes: number;
+  gems: number;
+  answers: { total: number; correct: number; week: number };
+  roadmap: { level: string | null; current_stop: number | null; done: number; stars: number };
+  mocks: { id: string; kind: string | null; score: number | null; finished_at: string }[];
+  counts: {
+    cards: number;
+    mistakes_open: number;
+    friends: number;
+    badges: number;
+    ai_week: number;
+    reports_made: number;
+  };
+  reports: {
+    id: string;
+    reason: AdminReport['reason'];
+    context: AdminReport['context'];
+    resolved: boolean;
+    created_at: string;
+    reporter_name: string;
+  }[];
+  recent_xp: { amount: number; reason: string; at: string }[];
+};
+
+/** Everything about one account (admin_user_detail, migration 0019); null when the id isn't a user. */
+export async function getUserDetail(id: string): Promise<AdminRead<AdminUserDetail | null>> {
+  const db = await getDb();
+  if (!db) return { ok: false, reason: 'demo_mode' };
+  const { data, error } = await db.rpc('admin_user_detail', { p_user: id });
+  // no such account, or an id that isn't a uuid (22P02): both are «no user here»
+  if (error?.message === 'not_found' || error?.code === '22P02') return { ok: true, data: null };
+  if (error) return { ok: false, reason: adminFailure(error) };
+  return { ok: true, data: data as AdminUserDetail };
+}
 
 export type AdminSatItem = {
   id: string;

@@ -6,6 +6,7 @@ import { GlobalRegistrator } from '@happy-dom/global-registrator';
 for (const key of [
   'NEXT_PUBLIC_SUPABASE_URL',
   'NEXT_PUBLIC_SUPABASE_ANON_KEY',
+  'NEXT_PUBLIC_SUPABASE_KEY',
   'SUPABASE_SERVICE_ROLE_KEY',
   'GEMINI_API_KEY',
   'GOOGLE_CLOUD_PROJECT',

@@ -6,9 +6,17 @@
 
 ## Нэг удаа
 
-1. Mac-д [Homebrew](https://brew.sh) суулгасан байх (Xcode Command Line Tools хамт ирнэ).
+1. Xcode Command Line Tools (`xcode-select --install`; `git` ажиллаж байвал бий). Homebrew заавал биш: дундын
+   Mac дээр (жишээ нь Pinecone-ийн iMac, Homebrew өөр хэрэглэгчийнх) скрипт Ollama, cloudflared, cmake-ийг албан
+   ёсны GitHub release-ээс `~/.suu/tools` руу татна — admin эрх хэрэггүй.
 2. Mac-ийг унтуулахгүй: System Settings → Battery → Options → *Prevent automatic sleeping on power adapter when
    the display is off*. Цэнэглэгчтэй байлга.
+
+## Асаахаас өмнө шалгах
+
+```bash
+bash ai/serve/doctor.sh   # юу ч өөрчлөхгүй: чип, RAM, зай, SDK, хэрэгслүүд, загвар, Ollama
+```
 
 ## Асаах
 
@@ -31,10 +39,10 @@ OLLAMA_SKILLS=desmos
 ```
 
 `OLLAMA_SKILLS` = загварын сурсан чадварууд (`build.env`-ийн `SKILLS`). v1 зөвхөн Desmos хичээл сурсан тул AI багшийн
-чат демо хариугаа хэвээр өгнө, Desmos Академи (`/desmos/ai`) Суу-гаар хичээл бичнэ (сурагч зөв хариугаа оруулна).
+чат «Суу одоогоор холбогдохгүй байна» гэж харуулна, Desmos Академи (`/desmos/ai`) Суу-гаар хичээл бичнэ (сурагч зөв хариугаа оруулна).
 
 Эдгээрийг вэбсайтын хостинг дээр (Vercel → Settings → Environment Variables) тавиад **redeploy** хийнэ.
-`~/.suu/website.env`-д хадгалагдана. Terminal цонхыг хаавал Суу унтарна, вэбсайт демо хариу руу буцна.
+`~/.suu/website.env`-д хадгалагдана. Terminal цонхыг хаавал Суу унтарна, вэбсайтын чат «Суу одоогоор холбогдохгүй байна» гэж харуулна.
 
 ## Аюулгүй байдал
 

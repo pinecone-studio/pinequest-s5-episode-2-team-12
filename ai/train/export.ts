@@ -5,6 +5,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { QUESTIONS } from '../../src/mocks/questions';
+import { withVerdict } from '../../src/server/ai/verdict';
 import type { Question } from '../../src/types';
 import { generalExamples } from '../pipeline/general';
 import { generate, mulberry32, type Rng } from '../pipeline/generate';
@@ -139,7 +140,7 @@ export function examplesFor(q: Question, opts: ExampleOptions = {}, seed = hash(
       const i = Number(idx);
       out.push(
         chat(q.id, 'mistake', [
-          ask(q, `Би ${LETTERS[i]}) ${q.choices[i]} гэж сонгосон. Яагаад буруу вэ?`),
+          withVerdict(ask(q, `Би ${LETTERS[i]}) ${q.choices[i]} гэж сонгосон. Яагаад буруу вэ?`), false),
           `${reason} Дахиад оролдоод үз: ${q.hint}`,
         ]),
       );
@@ -151,7 +152,7 @@ export function examplesFor(q: Question, opts: ExampleOptions = {}, seed = hash(
   if (w) {
     out.push(
       chat(q.id, 'wrong', [
-        ask(q, `Миний хариу: ${w.text}. Зөв үү?`),
+        withVerdict(ask(q, `Миний хариу: ${w.text}. Зөв үү?`), false),
         `${pick(r, NOT_YET)} ${w.reason ? `${w.reason} ` : ''}Зөвлөгөө: ${q.hint} Дахиад оролдоод үз!`,
       ]),
     );
@@ -159,7 +160,7 @@ export function examplesFor(q: Question, opts: ExampleOptions = {}, seed = hash(
 
   out.push(
     chat(q.id, 'check', [
-      ask(q, `Миний хариу: ${answerText(q)}. Зөв үү?`),
+      withVerdict(ask(q, `Миний хариу: ${answerText(q)}. Зөв үү?`), true),
       `${pick(r, PRAISE)} ${q.explain}`,
     ]),
   );
@@ -297,7 +298,7 @@ function wrongEval(q: Question, source: EvalItem['source']): EvalItem[] {
       questionId: q.id,
       source,
       mode: 'wrong',
-      prompt: ask(q, `Миний хариу: ${w.text}. Зөв үү?`),
+      prompt: withVerdict(ask(q, `Миний хариу: ${w.text}. Зөв үү?`), false),
       answer: answerText(q),
       accepted: accepted(q),
     },
