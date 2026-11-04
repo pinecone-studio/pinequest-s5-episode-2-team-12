@@ -85,3 +85,22 @@ Desmos хичээлийг сурагчид харуулахаас өмнө `desm
 Апп-ын хэсэг бүрт (AI багш, AI төлөвлөгөө, Алдааны дэвтэр, Desmos Академи) хэрэгтэй чадваруудыг нэг загварт сургана:
 `chat`, `stepcheck`, `planner`, `analyze`, `desmos`. Дэлгэрэнгүй: [`ai/v2/README.md`](v2/README.md) · notebook:
 `ai/train/suu_v2.ipynb`.
+
+## RAG — Суу хичээл бичихээсээ өмнө төстэй бодлогыг хардаг
+
+Fine-tune нь Суу-д Desmos-оор **яаж** заахыг сургасан; RAG нь энэ бодлогод **аль арга** тохирохыг жишээгээр өгнө.
+
+1. Сан: Desmos kit-ийн шалгагдсан хичээлүүдээс (бүх хариуг код тооцоолж, Desmos алхмыг ажиллуулж шалгасан) 16 арга × 40 =
+   640 хичээл → `src/server/ai/rag/examples.json` (`bun ai/rag/build-index.ts <kit>`). Зөвхөн train хэсэг — kit-ийн
+   тест хөндөгдөөгүй.
+2. Хайлт (`src/server/ai/rag/retrieve.ts`):
+   - **offline (анхдагч):** TF-IDF вектор + cosine, математик хэлбэрийн токентой (`x^2`, `f(3)`, `%`, цэг, систем…).
+     Kit-ийн тест 192 бодлогоос 182-т (95%) хамгийн ойр жишээ нь зөв Desmos арга.
+   - **Supabase pgvector (`RAG_BACKEND=supabase`):** Gemini embedding (768) → `match_rag_examples` (migration 0019).
+     Seed: `bun ai/rag/embed.ts`. Алдаа гарвал offline руу буцна.
+3. Ашиглалт: Desmos хичээл (`/api/desmos/lesson`) — 2 жишээ Суу-гийн сургалтын яг ижил хэлбэрээр өмнөх ярианы
+   мөр болж орно (асуулт + зөв хариу → хичээл JSON); хариунд `examples` (ямар жишээ үзсэн). Gemini чат — ижил
+   жишээнүүд [Баримт]-д Desmos мөртэйгээ. `RAG_EXAMPLES=0` бол хуучнаараа.
+
+**Шударга тэмдэглэл:** RAG-тай Суу-гийн Desmos оноог GPU дээр хараахан хэмжээгүй (Colab GPU хязгаар). Хэмжих хүртэл
+`RAG_EXAMPLES=0`-тэй харьцуулж шалгана.
