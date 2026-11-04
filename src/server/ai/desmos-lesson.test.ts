@@ -79,20 +79,55 @@ describe('modelDesmosLesson', () => {
     expect(await modelDesmosLesson(good.question, wrong, fetchImpl)).toBeNull();
   });
 
-  test('without the answer: the chat skill solves first, then the Desmos skill teaches it', async () => {
+  test('without the answer: two solves must agree, then the Desmos skill teaches it', async () => {
     const explanation = `Хоёр талыг 6-д хуваа: $x + 4 = 7$.\n\nХариу: ${good.answer}`;
-    const { calls, fetchImpl } = ollama(explanation, good.output);
+    const { calls, fetchImpl } = ollama(explanation, explanation, good.output);
     const res = await modelDesmosLesson(good.question, undefined, fetchImpl);
     expect(res?.answerFrom).toBe('model');
+    expect(calls).toHaveLength(3);
     expect(calls[0].messages[0].content).toBe(CHAT_PROMPT);
     expect(calls[0].messages[1].content).toContain('Алхам алхмаар тайлбарлаж өгөөч.');
-    expect(calls[1].messages.at(-1)?.content).toBe(desmosUserMessage(good.question, good.answer));
+    expect(calls.slice(0, 2).map((c) => c.options.temperature)).toEqual([0, 0.6]);
+    expect(calls[2].messages.at(-1)?.content).toBe(desmosUserMessage(good.question, good.answer));
   });
 
-  test('null when the chat answer has no checkable answer', async () => {
-    const { calls, fetchImpl } = ollama('Энэ асуулт ойлгомжгүй байна.');
-    expect(await modelDesmosLesson('?', '', fetchImpl)).toBeNull();
-    expect(calls).toHaveLength(1);
+  test('two solves disagree: a third one breaks the tie', async () => {
+    const say = (a: string) => `Бодлоо.\n\nХариу: ${a}`;
+    const { calls, fetchImpl } = ollama(say('99'), say(good.answer), say(good.answer), good.output);
+    const res = await modelDesmosLesson(good.question, undefined, fetchImpl);
+    expect(res?.lesson.answer).toBe(good.answer);
+    expect(calls).toHaveLength(4);
+  });
+
+  test('no two solves agree: no lesson (a wrong answer is never taught)', async () => {
+    const say = (a: string) => `Бодлоо.\n\nХариу: ${a}`;
+    const { calls, fetchImpl } = ollama(say('1'), say('2'), say('3'), good.output);
+    expect(await modelDesmosLesson(good.question, undefined, fetchImpl)).toBeNull();
+    expect(calls).toHaveLength(3);
+  });
+
+  test('null when no solve has a checkable answer; stops at once when the model is down', async () => {
+    const unclear = ollama('Ойлгомжгүй.', 'Ойлгомжгүй.', 'Ойлгомжгүй.');
+    expect(await modelDesmosLesson('?', '', unclear.fetchImpl)).toBeNull();
+    expect(unclear.calls).toHaveLength(3);
+    const down = ollama(null);
+    expect(await modelDesmosLesson('?', '', down.fetchImpl)).toBeNull();
+    expect(down.calls).toHaveLength(1);
+  });
+
+  test('SELF_CHECK=0: one solve is trusted (the old behaviour)', async () => {
+    process.env.SELF_CHECK = '0';
+    const { calls, fetchImpl } = ollama(`Хариу: ${good.answer}`, good.output);
+    expect((await modelDesmosLesson(good.question, undefined, fetchImpl))?.answerFrom).toBe('model');
+    expect(calls).toHaveLength(2);
+  });
+
+  test('solveByVote: no solve starts without time for a lesson after it', async () => {
+    const { solveByVote } = await import('./desmos-lesson');
+    const { calls, fetchImpl } = ollama('Хариу: 1', 'Хариу: 1');
+    expect(await solveByVote('q', fetchImpl, () => 15_000)).toBeNull();
+    expect(calls).toHaveLength(0);
+    expect(await solveByVote('q', fetchImpl, () => 60_000)).toEqual({ answer: '1', agreed: 2, tries: 2 });
   });
 
   test('null without calling the model when the typed answer is not checkable or Ollama is off', async () => {
