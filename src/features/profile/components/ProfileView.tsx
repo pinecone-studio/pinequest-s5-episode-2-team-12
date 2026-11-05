@@ -725,7 +725,10 @@ export function ProfileView({
       />
       <AboutCard key={aboutKey} about={about} demo={demo} onSaved={setAbout} />
       <nav aria-label={common('shell.profile')} className="grid gap-3">
-        {[{ href: routes.planner, label: common('nav.planner') }].map((item) => (
+        {[
+          { href: routes.planner, label: common('nav.planner') },
+          { href: routes.classes, label: common('nav.classes') },
+        ].map((item) => (
           <Link
             key={item.href}
             href={item.href}

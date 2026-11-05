@@ -49,6 +49,12 @@ export const routes = {
   hard: '/hard',
   practice: (opts: { ids?: string[]; timed?: boolean } = {}) =>
     `/practice${qs({ ids: opts.ids?.join(','), timed: opts.timed })}`,
+  /** Adaptive practice: the next question is chosen by the student's Elo rating per domain. */
+  practiceAdaptive: '/practice/adaptive',
+
+  // teacher classes
+  classes: '/classes',
+  classReport: (id: string) => `/classes/${seg(id)}`,
 
   // D · exam & mistakes
   mock: '/mock',

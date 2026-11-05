@@ -4,9 +4,10 @@
 // by hand, so it can't be wrong. Run: `bun ai/pipeline/generate.ts` (prints a sample).
 import type { Question } from '../../src/types';
 import { TEMPLATES } from './templates';
+import type { Template } from './templates/shared';
 import { mulberry32 } from './templates/shared';
 
-export { TEMPLATES } from './templates';
+export { KIT_TEMPLATES, TEMPLATES } from './templates';
 export { frac, mulberry32, type Rng } from './templates/shared';
 
 /** The plain final answer (choice text without $ for MCQ). */
@@ -26,10 +27,11 @@ export function hintMentionsAnswer(q: Pick<Question, 'answer' | 'choices' | 'hin
   return mentionsAnswer(q, q.hint);
 }
 
-/** n questions per template from one seed. Ids look like `g-slope-s1-3`. */
-export function generate(seed: number, perTemplate: number): Question[] {
+/** n questions per template from one seed. Ids look like `g-slope-s1-3`. A template's questions depend only on
+ *  its position in TEMPLATES, so passing a prefix of it (KIT_TEMPLATES) gives the same questions for those. */
+export function generate(seed: number, perTemplate: number, templates: Template[] = TEMPLATES): Question[] {
   const out: Question[] = [];
-  for (const [ti, t] of TEMPLATES.entries()) {
+  for (const [ti, t] of templates.entries()) {
     const r = mulberry32(seed * 1000 + ti);
     const seen = new Set<string>();
     let tries = 0;

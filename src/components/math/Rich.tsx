@@ -12,9 +12,7 @@ export function Rich({ text, className = '' }: { text: string; className?: strin
 
     const elements: React.ReactNode[] = [];
     let lastIndex = 0;
-    let match: RegExpExecArray | null;
-
-    while ((match = mediaRegex.exec(text)) !== null) {
+    for (const match of text.matchAll(mediaRegex)) {
       // Медиагийн өмнөх текстийг parseRich руу явуулж хэвлэх
       if (match.index > lastIndex) {
         const textBefore = text.slice(lastIndex, match.index);
@@ -41,6 +39,7 @@ export function Rich({ text, className = '' }: { text: string; className?: strin
         );
       } else {
         elements.push(
+          // biome-ignore lint/performance/noImgElement: media URLs come from question text, not from known static assets
           <img
             key={`media-${match.index}`}
             src={url}
@@ -50,7 +49,7 @@ export function Rich({ text, className = '' }: { text: string; className?: strin
         );
       }
 
-      lastIndex = mediaRegex.lastIndex;
+      lastIndex = match.index + match[0].length;
     }
 
     // Төгсгөлийн текстийг parseRich руу явуулах

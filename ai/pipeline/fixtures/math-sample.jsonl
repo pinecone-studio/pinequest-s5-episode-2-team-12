@@ -1,0 +1,7 @@
+{"problem": "If $3x + 7 = 22$, what is $x$?", "solution": "Subtract 7: $3x = 15$, so $x = \\boxed{5}$.", "level": "Level 3", "type": "Algebra"}
+{"problem": "What is $\\frac{3}{4} + \\frac{1}{8}$?", "solution": "$\\frac{6}{8} + \\frac{1}{8} = \\boxed{\\frac{7}{8}}$.", "level": "Level 4", "type": "Prealgebra"}
+{"problem": "Find the vertex of $y = x^2 - 4x + 1$.", "solution": "Complete the square: $(x-2)^2 - 3$. The vertex is $\\boxed{(2,-3)}$.", "level": "Level 5", "type": "Algebra"}
+{"problem": "Simplify $\\sqrt{50}$.", "solution": "$\\sqrt{50} = \\boxed{5\\sqrt{2}}$.", "level": "Level 3", "type": "Algebra"}
+{"problem": "Compute $2+2$.", "solution": "$\\boxed{4}$", "level": "Level 1", "type": "Prealgebra"}
+{"problem": "How many ways can 5 books be arranged on a shelf?", "solution": "$5! = \\boxed{120}$.", "level": "Level 3", "type": "Counting & Probability"}
+{"problem": "Find the number of positive divisors of $2^{10}$ that are perfect cubes.", "solution": "Exponents 0,3,6,9: $\\boxed{4}$.", "level": "Level 5", "type": "Number Theory"}

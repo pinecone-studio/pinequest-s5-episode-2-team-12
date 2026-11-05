@@ -6,7 +6,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { Question } from '../../src/types';
-import { generate } from '../pipeline/generate';
+import { generate, KIT_TEMPLATES } from '../pipeline/generate';
 import { answerText, buildDataset, questionBlock } from '../train/export';
 import { analyzeRows } from './analyze';
 import { attackRows, generalRows, latinVariant } from './chat-extra';
@@ -65,8 +65,13 @@ export function buildV2() {
     ].map((q) => q.prompt),
   );
   const unused = (qs: Question[]) => qs.filter((q) => !used.has(q.prompt) && used.add(q.prompt));
-  const attackTrain = attackRows(unused(generate(7, 1)), explainReply, questionBlock, 77);
-  const attackVal = attackRows(unused(generate(8, 1)).slice(0, 10), explainReply, questionBlock, 78);
+  const attackTrain = attackRows(unused(generate(7, 1, KIT_TEMPLATES)), explainReply, questionBlock, 77);
+  const attackVal = attackRows(
+    unused(generate(8, 1, KIT_TEMPLATES)).slice(0, 10),
+    explainReply,
+    questionBlock,
+    78,
+  );
   const general = generalRows();
 
   // generated skills: test first, so train/val drop anything that repeats a test prompt

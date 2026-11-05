@@ -1,0 +1,218 @@
+[
+  {
+    "id": "hard-sys-no-sol-1",
+    "template": "sys-no-sol",
+    "question": "$$3x + 4y = 3$$ $$kx + 16y = 11$$ In the system of equations above, $k$ is a constant. If the system has no solution, what is the value of $k$?",
+    "answer": "12"
+  },
+  {
+    "id": "hard-sys-no-sol-2",
+    "template": "sys-no-sol",
+    "question": "$$2x + 2y = 10$$ $$kx + 8y = 43$$ In the system of equations above, $k$ is a constant. If the system has no solution, what is the value of $k$?",
+    "answer": "8"
+  },
+  {
+    "id": "hard-sys-no-sol-3",
+    "template": "sys-no-sol",
+    "question": "$$5x + 5y = 3$$ $$kx + 15y = 8$$ In the system of equations above, $k$ is a constant. If the system has no solution, what is the value of $k$?",
+    "answer": "15"
+  },
+  {
+    "id": "hard-sys-infinite-1",
+    "template": "sys-infinite",
+    "question": "$$4x - 3y = 2$$ $$16x - 12y = n$$ In the system of equations above, $n$ is a constant. If the system has infinitely many solutions, what is the value of $n$?",
+    "answer": "8"
+  },
+  {
+    "id": "hard-sys-infinite-2",
+    "template": "sys-infinite",
+    "question": "$$5x + 2y = 2$$ $$25x + 10y = n$$ In the system of equations above, $n$ is a constant. If the system has infinitely many solutions, what is the value of $n$?",
+    "answer": "10"
+  },
+  {
+    "id": "hard-sys-infinite-3",
+    "template": "sys-infinite",
+    "question": "$$4x - 2y = 11$$ $$8x - 4y = n$$ In the system of equations above, $n$ is a constant. If the system has infinitely many solutions, what is the value of $n$?",
+    "answer": "22"
+  },
+  {
+    "id": "hard-quad-one-sol-1",
+    "template": "quad-one-sol",
+    "question": "In the equation $x^2 + bx + 4 = 0$, $b$ is a positive constant. If the equation has exactly one real solution, what is the value of $b$?",
+    "answer": "4"
+  },
+  {
+    "id": "hard-quad-one-sol-2",
+    "template": "quad-one-sol",
+    "question": "In the equation $x^2 + bx + 64 = 0$, $b$ is a positive constant. If the equation has exactly one real solution, what is the value of $b$?",
+    "answer": "16"
+  },
+  {
+    "id": "hard-quad-one-sol-3",
+    "template": "quad-one-sol",
+    "question": "In the equation $x^2 + bx + 36 = 0$, $b$ is a positive constant. If the equation has exactly one real solution, what is the value of $b$?",
+    "answer": "12"
+  },
+  {
+    "id": "hard-circle-general-1",
+    "template": "circle-general",
+    "question": "The equation $x^2 + y^2 - 10x - 6y + 30 = 0$ defines a circle in the $xy$-plane. What is the radius of the circle?",
+    "answer": "2"
+  },
+  {
+    "id": "hard-circle-general-2",
+    "template": "circle-general",
+    "question": "The equation $x^2 + y^2 - 4x - 2y - 4 = 0$ defines a circle in the $xy$-plane. What is the radius of the circle?",
+    "answer": "3"
+  },
+  {
+    "id": "hard-circle-general-3",
+    "template": "circle-general",
+    "question": "The equation $x^2 + y^2 + 4x - 2y - 76 = 0$ defines a circle in the $xy$-plane. What is the radius of the circle?",
+    "answer": "9"
+  },
+  {
+    "id": "hard-line-parabola-sum-1",
+    "template": "line-parabola-sum",
+    "question": "In the $xy$-plane, the graphs of $y = x^2 - 9x - 6$ and $y = -4x + 8$ intersect at two points. What is the sum of the $x$-coordinates of the two points?",
+    "answer": "5"
+  },
+  {
+    "id": "hard-line-parabola-sum-2",
+    "template": "line-parabola-sum",
+    "question": "In the $xy$-plane, the graphs of $y = x^2 - 6x - 10$ and $y = -x + 4$ intersect at two points. What is the sum of the $x$-coordinates of the two points?",
+    "answer": "5"
+  },
+  {
+    "id": "hard-line-parabola-sum-3",
+    "template": "line-parabola-sum",
+    "question": "In the $xy$-plane, the graphs of $y = x^2 - 4x + 21$ and $y = 3x + 9$ intersect at two points. What is the sum of the $x$-coordinates of the two points?",
+    "answer": "7"
+  },
+  {
+    "id": "hard-pct-compound-1",
+    "template": "pct-compound",
+    "question": "A quantity increases by $50\\%$ every year. By what percent does the quantity increase every 2 years?\nA) $2500\\%$\nB) $125\\%$\nC) $225\\%$\nD) $100\\%$",
+    "answer": "B"
+  },
+  {
+    "id": "hard-pct-compound-2",
+    "template": "pct-compound",
+    "question": "A quantity increases by $20\\%$ every year. By what percent does the quantity increase every 2 years?\nA) $400\\%$\nB) $44\\%$\nC) $144\\%$\nD) $40\\%$",
+    "answer": "B"
+  },
+  {
+    "id": "hard-pct-compound-3",
+    "template": "pct-compound",
+    "question": "A quantity increases by $5\\%$ every year. By what percent does the quantity increase every 3 years?\nA) $15\\%$\nB) $125\\%$\nC) $115.8\\%$\nD) $15.8\\%$",
+    "answer": "D"
+  },
+  {
+    "id": "hard-pct-reverse-1",
+    "template": "pct-reverse",
+    "question": "The price of a jacket was increased by $50\\%$, and then the new price was decreased by $20\\%$. The final price was $\\$288$. What was the original price, in dollars?",
+    "answer": "240"
+  },
+  {
+    "id": "hard-pct-reverse-2",
+    "template": "pct-reverse",
+    "question": "The price of a jacket was increased by $25\\%$, and then the new price was decreased by $40\\%$. The final price was $\\$240$. What was the original price, in dollars?",
+    "answer": "320"
+  },
+  {
+    "id": "hard-pct-reverse-3",
+    "template": "pct-reverse",
+    "question": "The price of a jacket was increased by $50\\%$, and then the new price was decreased by $25\\%$. The final price was $\\$405$. What was the original price, in dollars?",
+    "answer": "360"
+  },
+  {
+    "id": "hard-trig-cofunction-1",
+    "template": "trig-cofunction",
+    "question": "In right triangle $ABC$, angle $C$ is the right angle and $\\sin A = \\frac{11}{61}$. What is $\\tan B$?\nA) $\\frac{60}{61}$\nB) $\\frac{60}{11}$\nC) $\\frac{11}{60}$\nD) $\\frac{11}{61}$",
+    "answer": "B"
+  },
+  {
+    "id": "hard-trig-cofunction-2",
+    "template": "trig-cofunction",
+    "question": "In right triangle $ABC$, angle $C$ is the right angle and $\\sin A = \\frac{7}{25}$. What is $\\tan B$?\nA) $\\frac{24}{7}$\nB) $\\frac{24}{25}$\nC) $\\frac{7}{25}$\nD) $\\frac{7}{24}$",
+    "answer": "A"
+  },
+  {
+    "id": "hard-trig-cofunction-3",
+    "template": "trig-cofunction",
+    "question": "In right triangle $ABC$, angle $C$ is the right angle and $\\sin A = \\frac{33}{65}$. What is $\\tan B$?\nA) $\\frac{33}{65}$\nB) $\\frac{56}{33}$\nC) $\\frac{33}{56}$\nD) $\\frac{56}{65}$",
+    "answer": "B"
+  },
+  {
+    "id": "hard-radians-1",
+    "template": "radians",
+    "question": "An angle has a measure of $240^\\circ$. What is the measure of the angle in radians?\nA) $\\frac{8\\pi}{3}$\nB) $\\frac{2\\pi}{3}$\nC) $\\frac{4\\pi}{3}$\nD) $\\frac{3\\pi}{4}$",
+    "answer": "C"
+  },
+  {
+    "id": "hard-radians-2",
+    "template": "radians",
+    "question": "An angle has a measure of $45^\\circ$. What is the measure of the angle in radians?\nA) $\\frac{\\pi}{8}$\nB) $4\\pi$\nC) $\\frac{\\pi}{4}$\nD) $\\frac{\\pi}{2}$",
+    "answer": "C"
+  },
+  {
+    "id": "hard-radians-3",
+    "template": "radians",
+    "question": "An angle has a measure of $300^\\circ$. What is the measure of the angle in radians?\nA) $\\frac{5\\pi}{6}$\nB) $\\frac{10\\pi}{3}$\nC) $\\frac{3\\pi}{5}$\nD) $\\frac{5\\pi}{3}$",
+    "answer": "D"
+  },
+  {
+    "id": "hard-outlier-mean-1",
+    "template": "outlier-mean",
+    "question": "The data set $27, 28, 21, 20, 21, 112, 25, 26$ contains one outlier. If the outlier is removed, by how much does the mean of the data set decrease?",
+    "answer": "11"
+  },
+  {
+    "id": "hard-outlier-mean-2",
+    "template": "outlier-mean",
+    "question": "The data set $19, 122, 12, 21, 20, 16, 17, 21$ contains one outlier. If the outlier is removed, by how much does the mean of the data set decrease?",
+    "answer": "13"
+  },
+  {
+    "id": "hard-outlier-mean-3",
+    "template": "outlier-mean",
+    "question": "The data set $20, 22, 24, 19, 18, 14, 123, 16$ contains one outlier. If the outlier is removed, by how much does the mean of the data set decrease?",
+    "answer": "13"
+  },
+  {
+    "id": "hard-abs-ineq-count-1",
+    "template": "abs-ineq-count",
+    "question": "How many integer values of $x$ satisfy $|x - 4| \\le 7$?",
+    "answer": "15"
+  },
+  {
+    "id": "hard-abs-ineq-count-2",
+    "template": "abs-ineq-count",
+    "question": "How many integer values of $x$ satisfy $|x - 1| \\le 7$?",
+    "answer": "15"
+  },
+  {
+    "id": "hard-abs-ineq-count-3",
+    "template": "abs-ineq-count",
+    "question": "How many integer values of $x$ satisfy $|x + 3| \\le 2$?",
+    "answer": "5"
+  },
+  {
+    "id": "hard-vertex-shift-1",
+    "template": "vertex-shift",
+    "question": "The function $f$ is defined by $f(x) = x^2 - 2x - 5$. The function $g$ is defined by $g(x) = f(x + 2) - 4$. What is the $x$-coordinate of the vertex of the graph of $y = g(x)$?",
+    "answer": "-1"
+  },
+  {
+    "id": "hard-vertex-shift-2",
+    "template": "vertex-shift",
+    "question": "The function $f$ is defined by $f(x) = x^2 - 10x + 25$. The function $g$ is defined by $g(x) = f(x - 3) - 5$. What is the $x$-coordinate of the vertex of the graph of $y = g(x)$?",
+    "answer": "8"
+  },
+  {
+    "id": "hard-vertex-shift-3",
+    "template": "vertex-shift",
+    "question": "The function $f$ is defined by $f(x) = x^2 + 2x + 5$. The function $g$ is defined by $g(x) = f(x + 3) + 5$. What is the $x$-coordinate of the vertex of the graph of $y = g(x)$?",
+    "answer": "-4"
+  }
+]

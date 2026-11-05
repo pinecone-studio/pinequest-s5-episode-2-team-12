@@ -16,6 +16,7 @@ import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n-client';
 import { routes } from '@/lib/routes';
 import type { Question } from '@/types';
+import { type Calc, drawRows, loadDesmos } from '../../tutor/lib/desmos-calc';
 import type { StopOutcome } from '../actions';
 import { ROADMAP } from '../config';
 import type { IntroScreen } from '../content/schema';
@@ -32,8 +33,6 @@ import { QuestionView } from './QuestionView';
 import { StopIntro } from './StopIntro';
 import { saveStop, useRoadmapState } from './store';
 import { StarRow, TopicIcon } from './TopicIcon';
-
-import { loadDesmos, drawRows, type Calc } from '../../tutor/lib/desmos-calc';
 
 type Phase = 'intro' | 'play' | 'saving' | 'result';
 
@@ -86,6 +85,8 @@ export function StopPlayer({
   const desmosContainerRef = useRef<HTMLDivElement>(null);
   const calcInstanceRef = useRef<Calc | null>(null);
 
+  // Runs only when a new round starts; phase, demo and state.level are read but must not restart the round.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: listing phase here would loop (this effect sets it)
   useEffect(() => {
     if (!loaded.ready || !allowed || phase === 'saving' || phase === 'result') return;
     const history = demo ? loaded.history : serverHistory;
@@ -130,36 +131,38 @@ export function StopPlayer({
     if (!showDesmos || !desmosContainerRef.current) return;
 
     let isMounted = true;
-    loadDesmos().then((Desmos) => {
-      if (!isMounted || !desmosContainerRef.current) return;
-      
-      if (calcInstanceRef.current) {
-        calcInstanceRef.current.destroy();
-      }
+    loadDesmos()
+      .then((Desmos) => {
+        if (!isMounted || !desmosContainerRef.current) return;
 
-      const calculator = Desmos.GraphingCalculator(desmosContainerRef.current, {
-        expressions: true,
-        settingsMenu: true,
-        zoomButtons: true,
-        keypad: true,
-      });
-
-      calcInstanceRef.current = calculator;
-
-      if (q?.desmos?.rows) {
-        drawRows(calculator, q.desmos.rows);
-      } else {
-        calculator.setBlank();
-      }
-
-      setTimeout(() => {
-        if (isMounted && calcInstanceRef.current?.resize) {
-          calcInstanceRef.current.resize();
+        if (calcInstanceRef.current) {
+          calcInstanceRef.current.destroy();
         }
-      }, 100);
-    }).catch((err) => {
-      console.error('Failed to load Desmos:', err);
-    });
+
+        const calculator = Desmos.GraphingCalculator(desmosContainerRef.current, {
+          expressions: true,
+          settingsMenu: true,
+          zoomButtons: true,
+          keypad: true,
+        });
+
+        calcInstanceRef.current = calculator;
+
+        if (q?.desmos?.rows) {
+          drawRows(calculator, q.desmos.rows);
+        } else {
+          calculator.setBlank();
+        }
+
+        setTimeout(() => {
+          if (isMounted && calcInstanceRef.current?.resize) {
+            calcInstanceRef.current.resize();
+          }
+        }, 100);
+      })
+      .catch((err) => {
+        console.error('Failed to load Desmos:', err);
+      });
 
     return () => {
       isMounted = false;
@@ -205,17 +208,27 @@ export function StopPlayer({
           {topic.title}
         </h1>
       </div>
-      
+
       <div className="flex items-center gap-2">
         {phase !== 'intro' && (
           <Button
             variant={showDesmos ? 'primary' : 'secondary'}
             size="md"
-            className="font-medium gap-1.5 transition-colors"
+            className={cn(
+              'font-medium gap-1.5 transition-colors',
+              showDesmos
+                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                : 'bg-blue-50 text-blue-600 hover:bg-blue-100 border-blue-200',
+            )}
             onClick={() => setShowDesmos((prev) => !prev)}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              />
             </svg>
             {showDesmos ? 'Desmos хаах' : 'Desmos'}
           </Button>
@@ -229,7 +242,12 @@ export function StopPlayer({
             onClick={() => setShowSummary(true)}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             Товч тайлбар
           </Button>
@@ -374,7 +392,12 @@ export function StopPlayer({
 
   return (
     <>
-      <div className={cn("w-full mx-auto flex flex-col justify-between h-full py-1 overflow-hidden transition-all duration-300", showDesmos ? "max-w-7xl" : "max-w-4xl")}>
+      <div
+        className={cn(
+          'w-full mx-auto flex flex-col justify-between h-full py-1 overflow-hidden transition-all duration-300',
+          showDesmos ? 'max-w-7xl' : 'max-w-4xl',
+        )}
+      >
         <div className="flex flex-col gap-2 shrink-0">
           {header}
           <div className="flex items-center gap-3 px-1">
@@ -392,9 +415,17 @@ export function StopPlayer({
         </div>
 
         {/* Side-by-Side Grid Layout */}
-        <div className={cn("grid gap-6 flex-1 my-auto items-start overflow-hidden transition-all duration-300 py-2", showDesmos ? "grid-cols-1 lg:grid-cols-12" : "grid-cols-1")}>
+        <div
+          className={cn(
+            'grid gap-6 flex-1 my-auto items-start overflow-hidden transition-all duration-300 py-2',
+            showDesmos ? 'grid-cols-1 lg:grid-cols-12' : 'grid-cols-1',
+          )}
+        >
           <section
-            className={cn("relative flex flex-col justify-center gap-3 py-1 transition-all text-foreground overflow-hidden", showDesmos ? "lg:col-span-5" : "w-full")}
+            className={cn(
+              'relative flex flex-col justify-center gap-3 py-1 transition-all text-foreground overflow-hidden',
+              showDesmos ? 'lg:col-span-5' : 'w-full',
+            )}
             aria-label={t('stop.problem', { i: i + 1, n: total })}
           >
             <div className="relative z-10 text-xl sm:text-2xl md:text-3xl leading-snug text-ink font-bold overflow-y-auto max-h-[45vh] pr-2 custom-scrollbar">
@@ -419,7 +450,9 @@ export function StopPlayer({
                 role="status"
                 className={cn(
                   'relative z-10 flex flex-col gap-2 rounded-2xl p-4 max-h-[26vh] overflow-y-auto transition-all duration-300 shadow-sm',
-                  correct ? 'bg-sage/90 border border-leaf-2/30' : 'bg-danger-soft/90 border border-danger/30',
+                  correct
+                    ? 'bg-sage/90 border border-leaf-2/30'
+                    : 'bg-danger-soft/90 border border-danger/30',
                 )}
               >
                 <p className={cn('text-lg sm:text-xl font-black', correct ? 'text-leaf-2' : 'text-danger')}>
@@ -445,7 +478,12 @@ export function StopPlayer({
                   <span className="size-2 rounded-full bg-blue-500" />
                   Desmos Graphing Calculator
                 </span>
-                <Button variant="ghost" size="sm" className="h-8 text-xs font-bold" onClick={() => setShowDesmos(false)}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 text-xs font-bold"
+                  onClick={() => setShowDesmos(false)}
+                >
                   Хаах
                 </Button>
               </div>

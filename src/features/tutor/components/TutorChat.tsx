@@ -182,6 +182,7 @@ export function TutorChat({ context, starters = [], fetchImpl = fetch }: Props) 
         patch(list, replyId, {
           text: reply.text,
           sample: reply.sample,
+          demo: reply.demo,
           lesson: reply.lesson,
           model: reply.model,
           status: undefined,
