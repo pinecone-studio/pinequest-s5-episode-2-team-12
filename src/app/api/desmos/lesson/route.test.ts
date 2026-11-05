@@ -92,8 +92,8 @@ test('model writes nonsense twice → no lesson, reason failed', async () => {
   expect(await res.json()).toEqual({ lesson: null, source: 'none', reason: 'failed' });
 });
 
-test('empty answer means Suu solves it first', async () => {
-  fakeOllama(`…\n\nХариу: ${good.answer}`, good.output);
+test('empty answer means Suu solves it first (two agreeing solves, then the lesson)', async () => {
+  fakeOllama(`…\n\nХариу: ${good.answer}`, `…\n\nХариу: ${good.answer}`, good.output);
   const body = await (await call({ question: good.question, answer: '' })).json();
   expect(body).toMatchObject({ source: 'model', answerFrom: 'model' });
 });

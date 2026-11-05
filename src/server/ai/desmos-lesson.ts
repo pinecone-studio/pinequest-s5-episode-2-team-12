@@ -1,9 +1,10 @@
 // Server-only. Asks Suu to write a step-by-step Desmos lesson for a SAT question.
 // The Desmos skill was trained with the correct answer in the prompt ("Зөв хариу: …") and teaches *how* to get
-// it in Desmos. When the student doesn't know the answer, the chat skill solves the question first, and the
+// it in Desmos. When the student doesn't know the answer, the chat skill solves the question first (2–3 times;
+// only an answer two solves agree on is taught — solveByVote), and the
 // page says that the answer came from Suu. Every lesson goes through parseModelLesson before it is shown.
 
-import { normAnswer, parseModelLesson } from '@/features/tutor/lib/desmos-lesson-parse';
+import { answersMatch, normAnswer, parseModelLesson } from '@/features/tutor/lib/desmos-lesson-parse';
 import type { DesmosAiLesson } from '@/features/tutor/lib/desmos-lessons';
 import { type ChatMessage, hasOllama, ollamaChat } from './ollama-client';
 import { CHAT_PROMPT, DESMOS_PROMPT, desmosUserMessage, EXPLAIN_ASK } from './prompts';
@@ -75,6 +76,49 @@ export const LESSON_BUDGET_MS = 55_000;
 /** Don't start a model call with less time than this left. */
 const MIN_CALL_MS = 12_000;
 
+/** Self-check: how many solves must agree before Suu's own answer is taught (SELF_CHECK=0 turns it off). */
+export const solveVotes = () => (process.env.SELF_CHECK === '0' ? 1 : 2);
+/** Greedy first, then sampled: a 3B model that is unsure gives different answers on different samples. */
+const SOLVE_TEMPS = [0, 0.6, 0.6] as const;
+/** A solve plus the lesson after it must still fit in the budget. */
+const MIN_SOLVE_MS = 8_000;
+
+export type Vote = { answer: string; agreed: number; tries: number };
+
+/**
+ * Self-consistency check for the answer Suu teaches when the student didn't give one: solve the question up to
+ * three times and accept an answer only when two solves agree. One confident-but-wrong solve no longer turns into
+ * a whole lesson that "proves" a wrong answer. Null when no two solves agree, the model is down, or time is short.
+ */
+export async function solveByVote(
+  question: string,
+  fetchImpl: typeof fetch,
+  left: () => number,
+  need = solveVotes(),
+): Promise<Vote | null> {
+  const answers: string[] = [];
+  let tries = 0;
+  for (const temperature of SOLVE_TEMPS.slice(0, need === 1 ? 1 : SOLVE_TEMPS.length)) {
+    if (left() < MIN_SOLVE_MS + MIN_CALL_MS) break;
+    tries++;
+    const explanation = await ollamaChat(
+      [
+        { role: 'system', content: CHAT_PROMPT },
+        { role: 'user', content: `${question.trim()}\n\n${EXPLAIN_ASK}` },
+      ],
+      { temperature, maxTokens: 700, timeoutMs: Math.min(25_000, left() - MIN_CALL_MS) },
+      fetchImpl,
+    );
+    if (!explanation) return null; // model off, down or too slow
+    const a = answerFromExplanation(explanation);
+    if (!a) continue;
+    answers.push(a);
+    const agreed = answers.filter((x) => answersMatch(x, a)).length;
+    if (agreed >= need) return { answer: a, agreed, tries };
+  }
+  return null;
+}
+
 /** A checked lesson from the model, or null (model off, too slow, or every try failed the checks). */
 export async function modelDesmosLesson(
   question: string,
@@ -94,17 +138,9 @@ export async function modelDesmosLesson(
   if (!correct) {
     // Solving needs the chat skill; with it off the page asks the student to add the answer.
     if (!hasOllama('chat')) return null;
-    const explanation = await ollamaChat(
-      [
-        { role: 'system', content: CHAT_PROMPT },
-        { role: 'user', content: `${question.trim()}\n\n${EXPLAIN_ASK}` },
-      ],
-      { temperature: 0, maxTokens: 700, timeoutMs: Math.min(25_000, left()) },
-      fetchImpl,
-    );
-    const solved = explanation ? answerFromExplanation(explanation) : null;
+    const solved = await solveByVote(question, fetchImpl, left);
     if (!solved) return null;
-    correct = solved;
+    correct = solved.answer;
     answerFrom = 'model';
   }
 
