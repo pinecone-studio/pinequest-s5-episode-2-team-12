@@ -54,6 +54,19 @@ test('a right answer offers the next question, picked from the pool without repe
   expect(second).not.toBe(first);
 });
 
+test('after a wrong answer the student can move on (no dead end)', async () => {
+  render(<AdaptivePractice pool={[mcq('q1', 'alg'), mcq('q2', 'alg')]} rng={() => 0} />);
+  await settled();
+  const first = screen.getByText(/^Question q[12]$/).textContent;
+  expect(screen.queryByRole('button', { name: /шилжих/ })).toBeNull();
+  fireEvent.click(screen.getByRole('button', { name: /^A\s*1$/ }));
+  await settled();
+  fireEvent.click(screen.getByRole('button', { name: /Дараагийн бодлого руу шилжих/ }));
+  await settled();
+  expect(screen.getByText(/^Question q[12]$/).textContent).not.toBe(first);
+  expect(screen.queryByRole('button', { name: /шилжих/ })).toBeNull(); // the new question starts fresh
+});
+
 test('an empty pool says so', async () => {
   render(<AdaptivePractice pool={[]} />);
   await settled();

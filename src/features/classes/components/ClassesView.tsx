@@ -4,6 +4,7 @@
 import Link from 'next/link';
 import { useId, useState, useTransition } from 'react';
 import { routes } from '@/lib/routes';
+import { errorText } from '../lib/errors';
 import type { ClassFailure, ClassItem } from '../queries';
 
 type Actions = {
@@ -14,18 +15,6 @@ type Actions = {
     code: string,
   ) => Promise<{ ok: true; id: string; name: string } | { ok: false; reason: string }>;
 };
-
-const ERRORS: Record<string, string> = {
-  bad_name: 'Ангийн нэр 1–60 тэмдэгт байна.',
-  bad_code: 'Код 6 үсэг/тоо байна (жишээ: SUU7QK).',
-  not_found: 'Ийм кодтой анги олдсонгүй.',
-  own_class: 'Энэ бол таны өөрийн анги.',
-  class_full: 'Анги дүүрсэн байна (200 сурагч).',
-  too_many_classes: 'Нэг багш 20 хүртэл анги үүсгэнэ.',
-  demo_mode: 'Анги үүсгэх, нэгдэхийн тулд нэвтэрнэ үү.',
-  not_installed: 'Ангийн хэсэг одоогоор идэвхжээгүй байна (migration 0022).',
-};
-export const errorText = (reason: string) => ERRORS[reason] ?? 'Алдаа гарлаа. Дахин оролдоно уу.';
 
 const input = 'w-full rounded-xl border border-line bg-paper-2 px-3 py-2 text-sm';
 const btn = 'rounded-2xl bg-leaf px-4 py-2 text-sm font-bold text-white disabled:opacity-50';

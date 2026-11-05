@@ -24,6 +24,8 @@ export function AdaptivePractice({ pool, rng = Math.random }: { pool: Question[]
   const [seen, setSeen] = useState<Set<string>>(() => new Set());
   const [current, setCurrent] = useState<Question | null>(null);
   const graded = useRef(new Set<string>());
+  /** The current question was answered wrong at least once: PracticePlayer shows «next» only after a right answer. */
+  const [missed, setMissed] = useState(false);
 
   // ratings come from localStorage, so they are read after mount (the server render has none)
   // biome-ignore lint/correctness/useExhaustiveDependencies: pick the first question once, with the loaded ratings
@@ -38,6 +40,7 @@ export function AdaptivePractice({ pool, rng = Math.random }: { pool: Question[]
   const estimate = useMemo(() => satEstimate(ratings), [ratings]);
 
   function onGraded(q: Question, correct: boolean) {
+    if (!correct) setMissed(true);
     if (graded.current.has(q.id)) return;
     graded.current.add(q.id);
     setRatings((r) => {
@@ -48,6 +51,7 @@ export function AdaptivePractice({ pool, rng = Math.random }: { pool: Question[]
   }
 
   function next() {
+    setMissed(false);
     const q = pickNext(pool, ratings, seen, rng);
     setCurrent(q);
     if (q) setSeen((s) => new Set(s).add(q.id));
@@ -81,6 +85,15 @@ export function AdaptivePractice({ pool, rng = Math.random }: { pool: Question[]
         </ul>
       </section>
 
+      {current && missed && (
+        <button
+          type="button"
+          onClick={next}
+          className="rounded-2xl border border-line bg-paper-2 px-4 py-2 text-sm font-bold text-ink hover:border-leaf"
+        >
+          Дараагийн бодлого руу шилжих →
+        </button>
+      )}
       {current ? (
         <PracticePlayer
           key={current.id}
