@@ -25,6 +25,8 @@ type Props = {
   onComplete?: () => void;
   lastInTopic?: boolean;
   onResolved?: () => void;
+  /** Called once per submitted answer with the grade (adaptive practice updates the ratings with it). */
+  onGraded?: (question: Question, correct: boolean) => void;
 };
 
 /* ───────── Shared look: uses the tokens from globals.css (--c-*, .card, .btn3d) ───────── */
@@ -57,7 +59,7 @@ const row = 'rounded-2xl border border-line bg-paper';
 // Teal info pill (like the "Демо горим" banner).
 const infoPill = 'rounded-full bg-teal-soft px-6 py-3 text-sm font-semibold text-teal';
 
-export function PracticePlayer({ questions, onNext, onComplete, lastInTopic, onResolved }: Props) {
+export function PracticePlayer({ questions, onNext, onComplete, lastInTopic, onResolved, onGraded }: Props) {
   const [index, setIndex] = useState(0);
   const [answer, setAnswer] = useState('');
   const [revealed, setRevealed] = useState(false);
@@ -163,7 +165,9 @@ export function PracticePlayer({ questions, onNext, onComplete, lastInTopic, onR
       }));
     }
 
-    if (isCorrect(question, value)) {
+    const right = isCorrect(question, value);
+    onGraded?.(question, right);
+    if (right) {
       toast('+5 XP', { tone: 'xp' });
     }
   }
