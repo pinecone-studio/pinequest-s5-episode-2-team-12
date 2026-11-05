@@ -1,0 +1,2 @@
+# Models in release order, oldest first. ai/eval/gate.ts compares the last two that have a scorecard.json.
+suu-v1
