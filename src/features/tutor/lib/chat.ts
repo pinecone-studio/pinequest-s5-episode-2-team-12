@@ -10,6 +10,8 @@ export type ChatMsg = {
   sent?: TutorRequest;
   /** Hand-written pitch answer (not live model output). */
   sample?: boolean;
+  /** Canned reply because no model was reachable (the route answered `demo: true`). */
+  demo?: boolean;
   /** Desmos lesson to open from this reply (/desmos/ai?l=…). */
   lesson?: string;
   /** Which model wrote it: Suu (our fine-tune) or Gemini (free chat). */
@@ -101,6 +103,8 @@ export function userBubbleText(action: ChatAction, label: (mode: TutorMode) => s
 export type ApiReply = {
   text: string;
   sample?: boolean;
+  /** Canned reply: no model could answer. */
+  demo?: boolean;
   lesson?: string;
   model?: 'suu' | 'gemini' | 'solver';
 };
@@ -119,6 +123,7 @@ export async function askSuu(req: TutorRequest, fetchImpl: typeof fetch = fetch)
     text: data.text,
     ...(data.model === 'suu' || data.model === 'gemini' ? { model: data.model } : {}),
     ...(data.sample ? { sample: true } : {}),
+    ...(data.demo ? { demo: true } : {}),
     ...(data.lesson ? { lesson: data.lesson } : {}),
   };
 }

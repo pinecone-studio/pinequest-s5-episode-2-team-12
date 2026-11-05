@@ -64,9 +64,6 @@ export function CbHtml({ html, scope, className }: { html: string; scope: string
   );
 }
 
-/** What the bank's «AI багш Суу» panel needs from the card that opened it. */
-export type SuuState = { checked: boolean; chosen?: string };
-
 export function OfficialQuestionCard({
   question,
   index,
@@ -94,14 +91,6 @@ export function OfficialQuestionCard({
   onComplete?: () => void;
   lastInTopic?: boolean;
   onResolved?: () => void;
-  /** This card's problem is open in the Суу side panel. */
-  suuOpen?: boolean;
-  /** Opens (state) or closes (null) the Суу side panel for this card. */
-  onSuu?: (state: SuuState | null) => void;
-  /** Offline practice: the answer saved on this device, and whether it was already checked. */
-  initialAnswer?: string;
-  initiallyChecked?: boolean;
-  onAnswer?: (answer: string) => void;
 }) {
   const t = useT('practice');
   const inputId = useId();
