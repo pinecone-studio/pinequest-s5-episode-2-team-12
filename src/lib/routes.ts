@@ -52,6 +52,10 @@ export const routes = {
   /** Adaptive practice: the next question is chosen by the student's Elo rating per domain. */
   practiceAdaptive: '/practice/adaptive',
 
+  // teacher classes
+  classes: '/classes',
+  classReport: (id: string) => `/classes/${seg(id)}`,
+
   // D · exam & mistakes
   mock: '/mock',
   mockResult: (id: string) => `/profile/mock/${seg(id)}`,
