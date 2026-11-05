@@ -84,4 +84,23 @@ describe('codes', () => {
     expect(sql).toContain("raise exception 'forbidden'");
     expect(sql).toContain('enable row level security');
   });
+  test('the latest class_report only reads tables our migrations create', () => {
+    const dir = new URL('../../../../supabase/migrations/', import.meta.url);
+    const { readdirSync } = require('node:fs') as typeof import('node:fs');
+    const files = readdirSync(dir)
+      .filter((f: string) => f.endsWith('.sql'))
+      .sort();
+    const all = files.map((f: string) => readFileSync(new URL(f, dir), 'utf8')).join('\n');
+    const created = new Set(
+      [...all.matchAll(/create table if not exists public\.([a-z_]+)/g)].map((m) => m[1]),
+    );
+    const last = files
+      .filter((f: string) => readFileSync(new URL(f, dir), 'utf8').includes('function public.class_report'))
+      .at(-1);
+    const fn =
+      readFileSync(new URL(last as string, dir), 'utf8').split('function public.class_report')[1] ?? '';
+    const used = [...fn.matchAll(/from public\.([a-z_]+)/g)].map((m) => m[1]);
+    expect(used.length).toBeGreaterThan(0);
+    for (const t of used) expect(created.has(t)).toBe(true);
+  });
 });
