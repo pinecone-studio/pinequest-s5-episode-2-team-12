@@ -113,8 +113,12 @@ export function StopPlayer({
     setValue('');
     setRevealed(false);
     setHint(false);
+    setShowDesmos(false);
+    setShowSuu(false);
+    setShowSummary(false);
     setAnswers([]);
     setOutcome(null);
+    setError(null);
     started.current = Date.now();
   }, [loaded.ready, allowed, round, no, forceIntro, testOut, mastery, intro.length, isFirstAttempt]);
 
@@ -208,7 +212,7 @@ export function StopPlayer({
       <div className="flex items-center gap-2">
         {phase !== 'intro' && (
           <Button
-            variant="secondary"
+            variant={showDesmos ? 'primary' : 'secondary'}
             size="md"
             className={cn(
               'font-medium gap-1.5 transition-colors',
@@ -361,7 +365,10 @@ export function StopPlayer({
                     variant="lime"
                     size="xl"
                     className="text-base h-14 px-8 rounded-2xl"
-                    onClick={() => setRound((r) => r + 1)}
+                    onClick={() => {
+                      setPhase('play');
+                      setRound((r) => r + 1);
+                    }}
                   >
                     {t('stop.retry')}
                   </Button>
