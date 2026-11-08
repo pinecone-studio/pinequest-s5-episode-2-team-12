@@ -37,12 +37,12 @@ export function FloatingTools({ fetchImpl }: { fetchImpl?: typeof fetch }) {
           className={cn(
             'inline-flex items-center gap-2 rounded-2xl border px-3.5 py-2 text-sm font-bold shadow-lg transition',
             open.suu
-              ? 'border-leaf bg-sage text-leaf-2'
-              : 'border-line bg-paper-2 text-ink hover:border-leaf hover:text-leaf-2',
+              ? 'border-leaf bg-leaf text-on-leaf dark:border-leaf dark:bg-leaf dark:text-on-leaf'
+              : 'border-line bg-paper-2 text-ink hover:border-leaf hover:text-leaf dark:hover:text-leaf dark:hover:border-leaf',
           )}
         >
           <span
-            className="grid size-7 place-items-center overflow-hidden rounded-[30%] bg-sage"
+            className="grid size-7 place-items-center overflow-hidden rounded-[30%] bg-sage dark:bg-leaf"
             aria-hidden="true"
           >
             {/* biome-ignore lint/performance/noImgElement: static transparent image */}
